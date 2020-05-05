@@ -1,0 +1,3 @@
+rootProject.name='SandwichDemo'
+include ':app'
+include ':sandwich'

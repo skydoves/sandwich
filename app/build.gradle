@@ -1,0 +1,44 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: '../dependencies.gradle'
+
+android {
+    compileSdkVersion versions.compileSdk
+    defaultConfig {
+        applicationId "com.skydoves.sandwichdemo"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
+        versionCode versions.versionCode
+        versionName versions.versionName
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    // kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+
+    // android supports
+    implementation "com.google.android.material:material:$versions.googleMaterial"
+    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintVersion"
+
+    // network
+    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofitVersion"
+    implementation project(":sandwich")
+
+    // glide
+    implementation "com.github.bumptech.glide:glide:$versions.glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$versions.glideVersion"
+
+    // adapter
+    implementation "com.github.skydoves:baserecyclerviewadapter:$versions.baseAdapter"
+
+    // logging
+    implementation "com.jakewharton.timber:timber:$versions.timberVersion"
+}
+
+apply from: '../spotless.gradle'
