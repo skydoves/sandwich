@@ -2,14 +2,15 @@
 <h1 align="center">Sandwich</h1></br>
 
 <p align="center"> 
-🥪 Android network response API for handling data and error response with <br>transformation extensions using Retrofit.
+🥪 A lightweight Android network response API for handling data and error response with <br>transformation extensions using Retrofit.
 </p>
 </br>
 
 <p align="center">
   <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
   <a href="https://android-arsenal.com/api?level=16"><img alt="API" src="https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat"/></a>
-  <a href="https://github.com/skydoves/TransformationLayout/actions">
+  <a href="https://github.com/skydoves/Sandwich/actions"><img alt="Build Status" src="https://github.com/skydoves/Sandwich/workflows/Android%20CI/badge.svg"/></a>
+  <a href="https://skydoves.github.io/libraries/sandwich/javadoc/sandwich/com.skydoves.sandwich/index.html"><img alt="Javadoc" src="https://skydoves.github.io/badges/javadoc-sandwich.svg"/></a>
   <a href="https://github.com/skydoves"><img alt="Profile" src="https://skydoves.github.io/badges/skydoves.svg"/></a>
 </p>
 
@@ -18,6 +19,8 @@
 </p>
 
 ## Download
+[![Download](https://api.bintray.com/packages/devmagician/maven/sandwich/images/download.svg) ](https://bintray.com/devmagician/maven/sandwich/_latestVersion)
+[![Jitpack](https://jitpack.io/v/skydoves/Sandwich.svg)](https://jitpack.io/#skydoves/Sandwich)
 ### Gradle
 Add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
