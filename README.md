@@ -18,6 +18,7 @@
 </p>
 
 ## Download
+[![Jitpack](https://jitpack.io/v/skydoves/Sandwich.svg)](https://jitpack.io/#skydoves/Sandwich)
 ### Gradle
 Add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
