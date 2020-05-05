@@ -2,7 +2,7 @@
 <h1 align="center">Sandwich</h1></br>
 
 <p align="center"> 
-🥪 Android network response API for handling data and error response with <br>transformation extensions using Retrofit.
+🥪 A lightweight Android network response API for handling data and error response with <br>transformation extensions using Retrofit.
 </p>
 </br>
 
