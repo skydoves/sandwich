@@ -1,2 +1,271 @@
-# Sandwich
-🥪 Network response API for handling data and error response with transformation extensions.
+
+<h1 align="center">Sandwich</h1></br>
+
+<p align="center"> 
+🥪 Android network response API for handling data and error response with <br>transformation extensions using Retrofit.
+</p>
+</br>
+
+<p align="center">
+  <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
+  <a href="https://android-arsenal.com/api?level=16"><img alt="API" src="https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat"/></a>
+  <a href="https://github.com/skydoves/TransformationLayout/actions">
+  <a href="https://github.com/skydoves"><img alt="Profile" src="https://skydoves.github.io/badges/skydoves.svg"/></a>
+</p>
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/24237865/81035939-fbb0c400-8ed7-11ea-9f4b-b90e65039457.png" width="620" height="307"/>
+</p>
+
+## Download
+### Gradle
+Add a dependency code to your **module**'s `build.gradle` file.
+```gradle
+dependencies {
+    implementation "com.github.skydoves:sandwich:1.0.0"
+}
+```
+
+## Usage
+### ApiResponse
+`ApiResponse` is an interface of the retrofit response for handling data and error response with useful extensions. <br>
+We can get `ApiResponse` using the scope extension `request` from the `Call`.
+
+```kotlin
+interface DisneyService {
+  @GET("/")
+  fun fetchDisneyPosterList(): Call<List<Poster>>
+}
+
+val disneyService = retrofit.create(DisneyService::class.java)
+// Asynchronously request REST call and get an ApiResponse model.
+disneyService.fetchDisneyPosterList().request { response ->
+      when (response) {
+        is ApiResponse.Success -> {
+          // stub success case
+          livedata.post(response.data)
+        }
+        is ApiResponse.Failure.Error -> {
+          // stub error case
+        }
+        is ApiResponse.Failure.Exception -> {
+          // stub exception case
+        }
+      }
+    }
+```
+#### ApiResponse.Success
+API success response class from retrofit. <br>
+We can get the response body data, `StatusCode`, `Headers` and etc from the `ApiResponse.Success`.
+
+```kotlin
+val data: List<Poster>? = response.data
+val statusCode: StatusCode = response.statusCode
+val headers: Headers = response.headers
+```
+
+#### ApiResponse.Failure.Error
+API format does not match or applications need to handle errors.
+e.g. Internal server error.
+
+```kotlin
+val errorBody: ResponseBody? = response.errorBody
+val statusCode: StatusCode = response.statusCode
+val headers: Headers = response.headers
+```
+
+#### ApiResponse.Failure.Exception 
+Gets called when an unexpected exception occurs while creating the request or processing <br>the response in client. e.g. Network connection error.
+
+### ApiResponse Extensions
+We can handle response cases more handy using extensions.
+
+#### onSuccess, onError, onException
+We can use these scope functions to the `ApiResponse`, it reduces the usage of the if/when clause.
+```kotlin
+disneyService.fetchDisneyPosterList().request { response ->
+      response.onSuccess {
+        // stub success case
+        livedata.post(response.data)
+      }.onError {
+        // stub error case
+      }.onException {
+        // stub exception case
+      }
+    }
+```
+
+### ApiErrorModelMapper
+We can map `ApiResponse.Failure.Error` model to our customized error model using the mapper.
+
+```kotlin
+data class ErrorEnvelope(
+  val code: Int,
+  val message: String
+)
+
+object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorEnvelope> {
+
+  override fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): ErrorEnvelope {
+    return ErrorEnvelope(apiErrorResponse.statusCode.code, apiErrorResponse.message())
+  }
+}
+
+// hadling the error response case.
+response.onError {
+  // map the ApiResponse.Failure.Error to a customized error model using the mapper.
+  map(ErrorEnvelopeMapper) {
+     val code = this.code
+     val message = this.message
+  }
+}
+```
+
+### ResponseDataSource
+ResponseDataSource is an implementation of the `DataSource` interface. <br>
+ * Asynchronously send requests.
+ * A response data holder from the REST API call for caching data on memory.
+ * Observerable for the every request responses.
+ * Retry fetching data when the request gets failure.
+ * Concat another `DataSource` and request sequentially.
+
+ #### Combine
+Combine a `Call` and lambda scope for constructing the DataSource.
+```kotlin
+val disneyService = retrofit.create(DisneyService::class.java)
+
+val dataSource = ResponseDataSource<List<Poster>>()
+dataSource.combine(disneyService.fetchDisneyPosterList()) { response ->
+    // stubs
+}
+```
+
+#### Request
+Request API network call asynchronously. <br>
+If the request is successful, this data source will hold the success response model.<br>
+In the next request after the success, request() returns the cached API response. <br>
+If we need to fetch a new response data or refresh, we can use `invalidate()`.
+
+```kotlin
+dataSource.request()
+```
+
+#### Retry
+Retry requesting API call when the request gets failure.
+```kotlin
+// retry fetching data 3 times with 5000 milli-seconds time interval when the request gets failure.
+dataSource.retry(3, 5000L)
+```
+
+#### ObserveResponse
+Observes every response data `ApiResponse` from the API call request.
+```kotlin
+dataSource.observeResponse {
+   Timber.d("observeResponse: $it")
+}
+```
+
+#### Invalidate
+Invalidate a cached (holding) data and re-fetching the API request.
+
+```kotlin
+dataSource.invalidate()
+```
+
+#### Concat
+Concat an another `DataSource` and request API call sequentially if the API call getting successful.
+
+```kotlin
+val dataSource2 = ResponseDataSource<List<PosterDetails>>()
+dataSource2.retry(3, 5000L).combine(disneyService.fetchDetails()) {
+    // stubs handling dataSource2 response
+}
+
+dataSource1
+   .request() // request() must be called before concat. 
+   .concat(dataSource2) // request dataSource2's API call after the success of the dataSource1.
+   .concat(dataSource3) // request dataSource3's API call after the success of the dataSource2.
+```
+
+Here is the exmaple of the `ResponseDataSource` in the `MainViewModel`.
+```kotlin
+class MainViewModel constructor(
+  private val disneyService: DisneyService
+) : ViewModel() {
+
+  // request API call Asynchronously and holding successful response data.
+  private val dataSource = ResponseDataSource<List<Poster>>()
+
+  val posterListLiveData = MutableLiveData<List<Poster>>()
+  val toastLiveData = MutableLiveData<String>()
+
+  /** fetch poster list data from the network. */
+  fun fetchDisneyPosters() {
+    dataSource
+      // retry fetching data 3 times with 5000 time interval when the request gets failure.
+      .retry(3, 5000L)
+      // combine network service to the data source.
+      .combine(disneyService.fetchDisneyPosterList()) { response ->
+        // handle the case when the API request gets a success response.
+        response.onSuccess {
+          Timber.d("$data")
+          posterListLiveData.postValue(data)
+        }
+          // handle the case when the API request gets a error response.
+          // e.g. internal server error.
+          .onError {
+            Timber.d(message())
+
+            // handling error based on status code.
+            when (statusCode) {
+              StatusCode.InternalServerError -> toastLiveData.postValue("InternalServerError")
+              StatusCode.BadGateway -> toastLiveData.postValue("BadGateway")
+              else -> toastLiveData.postValue("$statusCode(${statusCode.code}): ${message()}")
+            }
+
+            // map the ApiResponse.Failure.Error to a customized error model using the mapper.
+            map(ErrorEnvelopeMapper) {
+              Timber.d(this.toString())
+            }
+          }
+          // handle the case when the API request gets a exception response.
+          // e.g. network connection error.
+          .onException {
+            Timber.d(message())
+            toastLiveData.postValue(message())
+          }
+      }
+      // observe every API request responses.
+      .observeResponse {
+        Timber.d("observeResponse: $it")
+      }
+      // request API network call asynchronously.
+      // if the request is successful, the data source will hold the success data.
+      // in the next request after success, returns the cached API response.
+      // if you want to fetch a new response data, use invalidate().
+      .request()
+  }
+}
+```
+
+#### 
+
+## Find this library useful? :heart:
+Support it by joining __[stargazers](https://github.com/skydoves/sandwich/stargazers)__ for this repository. :star: <br>
+And __[follow](https://github.com/skydoves)__ me for my next creations! 🤩
+
+# License
+```xml
+Copyright 2020 skydoves (Jaewoong Eum)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

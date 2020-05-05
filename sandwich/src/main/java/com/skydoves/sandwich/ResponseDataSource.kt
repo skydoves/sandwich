@@ -24,7 +24,7 @@ import retrofit2.Response
 /**
  * ResponseDataSource is an implementation of the [DataSource] interface.
  *
- * Asynchronously send requests and A response data holder for the REST API call.
+ * Asynchronously send requests and A response data holder from the REST API call.
  * Support observer for the every request responses, concat another [DataSource],
  * Retry fetching data when the request gets failure.
  */
@@ -117,7 +117,7 @@ class ResponseDataSource<T> : DataSource<T> {
   inline fun combine(call: Call<T>, crossinline onResult: (response: ApiResponse<T>) -> Unit) =
     combine(call, getCallbackFromOnResult(onResult))
 
-  /** retry response data when the request gets failure. */
+  /** Retry requesting API call when the request gets failure. */
   override fun retry(retryCount: Int, interval: Long) = apply {
     this.retryCount = retryCount
     this.retryTimeInterval = interval
@@ -145,7 +145,7 @@ class ResponseDataSource<T> : DataSource<T> {
     }
   }
 
-  /** invalidate a cached data when the call is not executed. */
+  /** invalidate a cached data and re-fetching the API request. */
   override fun invalidate() {
     this.data = empty
     this.retryCount = retry
@@ -183,8 +183,8 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /**
-   * concat an another [DataSource] and request API call to the received data source
-   * if the receiver previous call getting successful.
+   * concat an another [DataSource] and request API call sequentially
+   * if the API call getting successful.
    */
   override fun <R> concat(dataSource: DataSource<R>): DataSource<R> {
     this.concat = { dataSource.request() }
