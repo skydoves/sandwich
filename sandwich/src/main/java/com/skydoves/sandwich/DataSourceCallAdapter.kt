@@ -40,6 +40,6 @@ class DataSourceCallAdapter<R> constructor(
     return responseDataSource.combine(call, object : Callback<R> {
       override fun onResponse(call: Call<R>, response: Response<R>) = Unit
       override fun onFailure(call: Call<R>, t: Throwable) = Unit
-    }).request()
+    })
   }
 }
