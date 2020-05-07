@@ -190,7 +190,7 @@ dataSource1
    .concat(dataSource3) // request dataSource3's API call after the success of the dataSource2.
 ```
 
-Here is the exmaple of the `ResponseDataSource` in the `MainViewModel`.
+Here is the example of the `ResponseDataSource` in the `MainViewModel`.
 ```kotlin
 class MainViewModel constructor(
   private val disneyService: DisneyService
