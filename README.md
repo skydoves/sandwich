@@ -251,7 +251,46 @@ class MainViewModel constructor(
 }
 ```
 
-#### 
+### DataSourceCallAdapterFactory
+We can get the `DataSource` directly from the Retrofit service. <br>
+Add call adapter factory `DataSourceCallAdapterFactory` to your Retrofit builder. <br>
+And change the return type of your service `Call` to `DataSource`.
+```kotlin
+Retrofit.Builder()
+    ...
+    .addCallAdapterFactory(DataSourceCallAdapterFactory())
+    .build()
+
+interface DisneyService {
+  @GET("DisneyPosters.json")
+  fun fetchDisneyPosterList(): DataSource<List<Poster>>
+}
+```
+Here is the exmaple of the `DataSource` in the MainViewModel.
+```kotlin
+class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
+
+  // request API call Asynchronously and holding successful response data.
+  private val dataSource: DataSource<List<Poster>>
+
+    init {
+    Timber.d("initialized MainViewModel.")
+
+    dataSource = disneyService.fetchDisneyPosterList()
+      // retry fetching data 3 times with 5000L interval when the request gets failure.
+      .retry(3, 5000L)
+      .observeResponse(object : ResponseObserver<List<Poster>> {
+        override fun observe(response: ApiResponse<List<Poster>>) {
+          // handle the case when the API request gets a success response.
+          response.onSuccess {
+            Timber.d("$data")
+            posterListLiveData.postValue(data)
+          }
+        }
+      })
+      .request() // must call request()
+```
+
 
 ## Find this library useful? :heart:
 Support it by joining __[stargazers](https://github.com/skydoves/sandwich/stargazers)__ for this repository. :star: <br>
