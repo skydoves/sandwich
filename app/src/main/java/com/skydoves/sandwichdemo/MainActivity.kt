@@ -43,7 +43,5 @@ class MainActivity : AppCompatActivity() {
     viewModel.toastLiveData.observe(this, Observer {
       Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
     })
-
-    viewModel.fetchDisneyPosters()
   }
 }

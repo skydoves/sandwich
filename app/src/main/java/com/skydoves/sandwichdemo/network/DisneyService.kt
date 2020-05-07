@@ -16,12 +16,12 @@
 
 package com.skydoves.sandwichdemo.network
 
+import com.skydoves.sandwich.DataSource
 import com.skydoves.sandwichdemo.model.Poster
-import retrofit2.Call
 import retrofit2.http.GET
 
 interface DisneyService {
 
   @GET("DisneyPosters.json")
-  fun fetchDisneyPosterList(): Call<List<Poster>>
+  fun fetchDisneyPosterList(): DataSource<List<Poster>>
 }
