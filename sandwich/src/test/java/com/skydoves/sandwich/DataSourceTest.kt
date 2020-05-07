@@ -16,6 +16,8 @@
 
 package com.skydoves.sandwich
 
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
@@ -42,5 +44,43 @@ class DataSourceTest : ApiAbstract<DisneyService>() {
     dataSource.combine(call, callback)
     assertThat(dataSource.call, `is`(call))
     assertThat(dataSource.callback, `is`(callback))
+  }
+
+  @Test
+  fun concat() {
+    var requests = 0
+
+    val dataSource: ResponseDataSource<List<Poster>> = mock()
+    whenever(dataSource.request()).thenAnswer {
+      requests++
+      assertThat(requests, `is`(1))
+      dataSource
+    }
+
+    val dataSource2: ResponseDataSource<List<Poster>> = mock()
+    whenever(dataSource2.request()).thenAnswer {
+      requests++
+      assertThat(requests, `is`(2))
+      dataSource
+    }
+
+    whenever(dataSource.concat(dataSource2)).thenAnswer {
+      dataSource2.request()
+    }
+
+    val dataSource3: ResponseDataSource<List<Poster>> = mock()
+    whenever(dataSource3.request()).thenAnswer {
+      requests++
+      assertThat(requests, `is`(3))
+      dataSource
+    }
+
+    whenever(dataSource2.concat(dataSource3)).thenAnswer {
+      dataSource3.request()
+    }
+
+    dataSource.request()
+      .concat(dataSource2)
+      .concat(dataSource3)
   }
 }
