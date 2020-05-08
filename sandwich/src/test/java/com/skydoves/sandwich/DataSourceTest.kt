@@ -17,6 +17,7 @@
 package com.skydoves.sandwich
 
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
@@ -44,6 +45,21 @@ class DataSourceTest : ApiAbstract<DisneyService>() {
     dataSource.combine(call, callback)
     assertThat(dataSource.call, `is`(call))
     assertThat(dataSource.callback, `is`(callback))
+  }
+
+  @Test
+  fun observeResponse() {
+    val dataSource: ResponseDataSource<List<Poster>> = mock()
+    val responseObserver: ResponseObserver<List<Poster>> = mock()
+    val apiResponse: ApiResponse<List<Poster>> = mock()
+
+    whenever(dataSource.observeResponse(responseObserver)).thenAnswer {
+      responseObserver.observe(apiResponse)
+      dataSource
+    }
+
+    dataSource.observeResponse(responseObserver)
+    verify(responseObserver).observe(apiResponse)
   }
 
   @Test
