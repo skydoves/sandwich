@@ -134,7 +134,7 @@ response.onError {
 ResponseDataSource is an implementation of the `DataSource` interface. <br>
  * Asynchronously send requests.
  * A response data holder from the REST API call for caching data on memory.
- * Observerable for the every request responses.
+ * Observable for every response.
  * Retry fetching data when the request gets failure.
  * Concat another `DataSource` and request sequentially.
 
@@ -160,7 +160,7 @@ dataSource.request()
 ```
 
 #### Retry
-Retry requesting API call when the request gets failure.
+Retry fetching data (re-request) if your request got failure.
 ```kotlin
 // retry fetching data 3 times with 5000 milli-seconds time interval when the request gets failure.
 dataSource.retry(3, 5000L)
@@ -259,7 +259,7 @@ class MainViewModel constructor(
 
 ### DataSourceCallAdapterFactory
 We can get the `DataSource` directly from the Retrofit service. <br>
-Add call adapter factory `DataSourceCallAdapterFactory` to your Retrofit builder. <br>
+Add a call adapter factory `DataSourceCallAdapterFactory` to your Retrofit builder. <br>
 And change the return type of your service `Call` to `DataSource`.
 ```kotlin
 Retrofit.Builder()
