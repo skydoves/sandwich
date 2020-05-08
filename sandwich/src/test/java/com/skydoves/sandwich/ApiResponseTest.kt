@@ -47,7 +47,7 @@ class ApiResponseTest : ApiAbstract<DisneyService>() {
   fun success() {
     val response = Response.success("foo")
     val apiResponse =
-      ApiResponse.of(SandwichInitializer.successCodeRange) { response }
+      ApiResponse.of { response }
     assertThat(apiResponse, instanceOf(ApiResponse.Success::class.java))
 
     val success = apiResponse as ApiResponse.Success<String>
@@ -140,7 +140,8 @@ class ApiResponseTest : ApiAbstract<DisneyService>() {
       assertThat(it, instanceOf(ApiResponse.Failure.Error::class.java))
       val response = requireNotNull((it as ApiResponse.Failure.Error))
       assertThat(response.statusCode.code, `is`(404))
-      assertThat(response.message(), `is`("[ApiResponse.Failure.Error-${response.statusCode}](errorResponse=${response.response})"))
+      assertThat(response.message(), `is`(
+        "[ApiResponse.Failure.Error-${response.statusCode}](errorResponse=${response.response})"))
 
       val errorResponse = response.map(ErrorEnvelopeMapper)
       assertThat(errorResponse, instanceOf(ErrorEnvelope::class.java))
@@ -172,7 +173,8 @@ class ApiResponseTest : ApiAbstract<DisneyService>() {
       val response = requireNotNull((it as ApiResponse.Failure.Error))
       response.onError {
         assertThat(statusCode.code, `is`(404))
-        assertThat(message(), `is`("[ApiResponse.Failure.Error-$statusCode](errorResponse=${this.response})"))
+        assertThat(message(),
+          `is`("[ApiResponse.Failure.Error-$statusCode](errorResponse=${this.response})"))
 
         map(ErrorEnvelopeMapper) {
           assertThat(this, instanceOf(ErrorEnvelope::class.java))

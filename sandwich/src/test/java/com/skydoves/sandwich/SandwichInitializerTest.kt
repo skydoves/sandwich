@@ -34,11 +34,13 @@ class SandwichInitializerTest {
 
     val successResponse = Response.success("foo")
     val apiResponse =
-      ApiResponse.of(SandwichInitializer.successCodeRange) { successResponse }
-    MatcherAssert.assertThat(apiResponse, CoreMatchers.instanceOf(ApiResponse.Failure.Error::class.java))
+      ApiResponse.of { successResponse }
+    MatcherAssert.assertThat(apiResponse,
+      CoreMatchers.instanceOf(ApiResponse.Failure.Error::class.java))
 
     val errorResponse = apiResponse as ApiResponse.Failure.Error
     MatcherAssert.assertThat(errorResponse.message(),
-      CoreMatchers.`is`("[ApiResponse.Failure.Error-${errorResponse.statusCode}](errorResponse=${errorResponse.response})"))
+      CoreMatchers.`is`(
+        "[ApiResponse.Failure.Error-${errorResponse.statusCode}](errorResponse=${errorResponse.response})"))
   }
 }

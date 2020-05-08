@@ -32,7 +32,7 @@ sealed class ApiResponse<out T> {
    *
    * [data] is optional. (There are responses without data)
    */
-  class Success<T>(val response: Response<T>) : ApiResponse<T>() {
+  data class Success<T>(val response: Response<T>) : ApiResponse<T>() {
     val statusCode: StatusCode = getStatusCodeFromResponse(response)
     val headers: Headers = response.headers()
     val raw: okhttp3.Response = response.raw()
@@ -52,7 +52,7 @@ sealed class ApiResponse<out T> {
    * e.g. network connection error.
    */
   sealed class Failure<T> {
-    class Error<T>(val response: Response<T>) : ApiResponse<T>() {
+    data class Error<T>(val response: Response<T>) : ApiResponse<T>() {
       val statusCode: StatusCode = getStatusCodeFromResponse(response)
       val headers: Headers = response.headers()
       val raw: okhttp3.Response = response.raw()
@@ -60,7 +60,7 @@ sealed class ApiResponse<out T> {
       override fun toString(): String = "[ApiResponse.Failure.Error-$statusCode](errorResponse=$response)"
     }
 
-    class Exception<T>(val exception: Throwable) : ApiResponse<T>() {
+    data class Exception<T>(val exception: Throwable) : ApiResponse<T>() {
       val message: String? = exception.localizedMessage
       override fun toString(): String = "[ApiResponse.Failure.Exception](message=$message)"
     }
@@ -82,7 +82,10 @@ sealed class ApiResponse<out T> {
      * If [retrofit2.Response] has errors, it creates [ApiResponse.Failure.Error].
      * If [retrofit2.Response] has occurred exceptions, it creates [ApiResponse.Failure.Exception].
      */
-    fun <T> of(successCodeRange: IntRange, f: () -> Response<T>): ApiResponse<T> = try {
+    fun <T> of(
+      successCodeRange: IntRange = SandwichInitializer.successCodeRange,
+      f: () -> Response<T>
+    ): ApiResponse<T> = try {
       val response = f()
       if (response.raw().code in successCodeRange) {
         Success(response)

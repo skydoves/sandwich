@@ -159,7 +159,7 @@ class ResponseDataSource<T> : DataSource<T> {
       val callback = object : Callback<T> {
         override fun onResponse(call: Call<T>, response: Response<T>) {
           callback?.onResponse(call, response)
-          postValue(ApiResponse.of(SandwichInitializer.successCodeRange) { response })
+          postValue(ApiResponse.of { response })
         }
 
         override fun onFailure(call: Call<T>, throwable: Throwable) {
