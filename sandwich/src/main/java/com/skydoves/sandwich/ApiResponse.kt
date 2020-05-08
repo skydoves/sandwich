@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "CanBeParameter")
+@file:Suppress("unused")
 
 package com.skydoves.sandwich
 
