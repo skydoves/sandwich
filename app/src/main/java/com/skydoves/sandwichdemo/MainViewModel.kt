@@ -16,6 +16,7 @@
 
 package com.skydoves.sandwichdemo
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.skydoves.sandwich.DataRetainPolicy
@@ -35,15 +36,15 @@ import timber.log.Timber
 class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
 
   // request API call Asynchronously and holding successful response data.
-  private val dataSource: ResponseDataSource<List<Poster>>
 
-  val posterListLiveData = MutableLiveData<List<Poster>>()
+
+  val posterListLiveData: LiveData<List<Poster>>
   val toastLiveData = MutableLiveData<String>()
 
   init {
     Timber.d("initialized MainViewModel.")
 
-    dataSource = disneyService.fetchDisneyPosterList().toResponseDataSource()
+    posterListLiveData = disneyService.fetchDisneyPosterList().toResponseDataSource()
       // retry fetching data 3 times with 5000L interval when the request gets failure.
       .retry(3, 5000L)
       // a retain policy for retaining data on the internal storage
@@ -56,7 +57,6 @@ class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
         // handle the case when the API request gets a success response.
         onSuccess {
           Timber.d("$data")
-          posterListLiveData.postValue(data)
         }
           // handle the case when the API request gets a error response.
           // e.g. internal server error.
@@ -81,6 +81,6 @@ class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
             Timber.d(message())
             toastLiveData.postValue(message())
           }
-      }
+      }.asLiveData()
   }
 }

@@ -26,7 +26,7 @@
 Add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.0.1"
+    implementation "com.github.skydoves:sandwich:1.0.2"
 }
 ```
 
@@ -134,7 +134,7 @@ response.onError {
 ### ResponseDataSource
 ResponseDataSource is an implementation of the `DataSource` interface. <br>
  * Asynchronously send requests.
- * A response data holder from the REST API call for caching data on memory.
+ * A temporarily response data holder from the REST API call for caching data on memory.
  * Observable for every response.
  * Retry fetching data when the request gets failure.
  * Concat another `DataSource` and request sequentially.
@@ -175,6 +175,15 @@ dataSource.observeResponse {
 }
 ```
 
+#### RetainPolicy
+We can limit the policy for retaining data on the temporarily internal storage.<br>
+The default policy is no retaining any fetched data from the network, but we can set the policy using `dataRetainPolicy` method.
+```kotlin
+// Retain fetched data on the memory storage temporarily.
+// If request again, returns the retained data instead of re-fetching from the network.
+dataSource.dataRetainPolicy(DataRetainPolicy.RETAIN)
+```
+
 #### Invalidate
 Invalidate a cached (holding) data and re-fetching the API request.
 
@@ -196,6 +205,22 @@ dataSource1
    .concat(dataSource2) // request dataSource2's API call after the success of the dataSource1.
    .concat(dataSource3) // request dataSource3's API call after the success of the dataSource2.
 ```
+
+#### asLiveData
+we can observe fetched data via `DataSource` as a `LiveData`.
+```kotlin
+val posterListLiveData: LiveData<List<Poster>>
+
+init {
+    posterListLiveData = disneyService.fetchDisneyPosterList().toResponseDataSource()
+      .retry(3, 5000L)
+      .dataRetainPolicy(DataRetainPolicy.RETAIN)
+      .request {
+        // ...
+      }.asLiveData()
+  }
+```
+
 
 Here is the example of the `ResponseDataSource` in the `MainViewModel`.
 ```kotlin
@@ -296,6 +321,18 @@ class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
         }
       })
       .request() // must call request()
+```
+
+#### toResponseDataSource
+We can change `DataSource` to `ResponseDataSource` after getting instance from network call using the below method.
+```kotlin
+private val dataSource: ResponseDataSource<List<Poster>>
+
+  init {
+    dataSource = disneyService.fetchDisneyPosterList().toResponseDataSource()
+
+    //...
+  }
 ```
 
 
