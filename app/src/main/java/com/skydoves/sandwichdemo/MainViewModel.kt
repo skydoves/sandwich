@@ -20,7 +20,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.skydoves.sandwich.DataRetainPolicy
-import com.skydoves.sandwich.ResponseDataSource
 import com.skydoves.sandwich.StatusCode
 import com.skydoves.sandwich.map
 import com.skydoves.sandwich.message
@@ -34,9 +33,6 @@ import com.skydoves.sandwichdemo.network.ErrorEnvelopeMapper
 import timber.log.Timber
 
 class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
-
-  // request API call Asynchronously and holding successful response data.
-
 
   val posterListLiveData: LiveData<List<Poster>>
   val toastLiveData = MutableLiveData<String>()
