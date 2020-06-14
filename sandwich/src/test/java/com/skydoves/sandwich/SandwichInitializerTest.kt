@@ -19,6 +19,8 @@ package com.skydoves.sandwich
 import java.io.IOException
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -27,11 +29,19 @@ import retrofit2.Response
 @RunWith(JUnit4::class)
 class SandwichInitializerTest {
 
+  @Before
+  fun initSuccessCodeRange() {
+    SandwichInitializer.successCodeRange = 201..400
+  }
+
+  @After
+  fun resetSuccessCodeRange() {
+    SandwichInitializer.successCodeRange = 200..299
+  }
+
   @Test
   @Throws(IOException::class)
   fun success() {
-    SandwichInitializer.successCodeRange = 201..400
-
     val successResponse = Response.success("foo")
     val apiResponse =
       ApiResponse.of { successResponse }

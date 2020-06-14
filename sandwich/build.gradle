@@ -12,10 +12,6 @@ android {
         versionCode versions.versionCode
         versionName versions.versionName
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
 dependencies {
@@ -27,13 +23,11 @@ dependencies {
     // unit test
     testImplementation "junit:junit:$versions.junit"
     testImplementation "org.mockito:mockito-core:$versions.mockito"
+    testImplementation "org.robolectric:robolectric:$versions.robolectric"
     testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttpVersion"
     testImplementation "com.squareup.retrofit2:converter-gson:$versions.retrofitVersion"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockitoKotlinVersion"
     testImplementation "org.mockito:mockito-inline:$versions.mockitoInlineVersion"
-    testImplementation("org.robolectric:robolectric:$versions.robolectric") {
-        exclude group: 'com.google.auto.service', module: 'auto-service'
-    }
 }
 
 tasks.withType(Javadoc) {
