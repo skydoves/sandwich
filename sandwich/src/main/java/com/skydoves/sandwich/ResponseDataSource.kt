@@ -44,8 +44,8 @@ class ResponseDataSource<T> : DataSource<T> {
   @Volatile
   internal var pending = empty
 
-  // when the value value is changed, the old value what on the internal storage
-  // will be changed as the new value.
+  // retain the fetched data on the memory storage temporarily.
+  // this data can be changed internally and observable.
   @Volatile
   var data: Any = empty
     private set
@@ -143,6 +143,12 @@ class ResponseDataSource<T> : DataSource<T> {
         else -> enqueue()
       }
     }
+  }
+
+  /** extension method for requesting and observing response at once. */
+  fun request(action: (ApiResponse<T>) -> Unit) = apply {
+    observeResponse(action)
+    request()
   }
 
   /** invalidate a cached data and re-fetching the API request. */
