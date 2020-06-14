@@ -50,8 +50,8 @@ class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
       .dataRetainPolicy(DataRetainPolicy.RETAIN)
       // request API network call asynchronously.
       // if the request is successful, the data source will hold the success data.
-      // in the next request after success, returns the cached API response.
-      // if you want to fetch a new response data, use invalidate().
+      // in the next request after success, returns the temporarily cached API response.
+      // if you want to fetch a new response data, use NO_RETAIN policy or invalidate().
       .request {
         // handle the case when the API request gets a success response.
         onSuccess {

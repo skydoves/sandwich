@@ -102,7 +102,7 @@ fun <T> ApiResponse<T>.onException(onResult: ApiResponse.Failure.Exception<T>.()
 }
 
 /** Returns a [LiveData] contains data if the response is a success.*/
-fun <T> ApiResponse<T>.asLiveData(): LiveData<T> {
+fun <T> ApiResponse<T>.toLiveData(): LiveData<T> {
   val liveData = MutableLiveData<T>()
   if (this is ApiResponse.Success) {
     liveData.postValue(data)

@@ -96,6 +96,9 @@ class ResponseDataSource<T> : DataSource<T> {
   // an observer for the new response data.
   private var responseObserver: ResponseObserver<T>? = null
 
+  // a live data for observing response data instead of a ResponseObserver.
+  private var liveData: MutableLiveData<T>? = null
+
   // a concat unit for executing after request success.
   private var concat: () -> Unit = { }
 
@@ -171,15 +174,19 @@ class ResponseDataSource<T> : DataSource<T> {
   /**
    * if the response is successful, it returns a [LiveData] which contains response data.
    * if the response is failure or exception, it returns an empty [LiveData].
+   * this live data can be observable from the network requests.
    */
   @Suppress("UNCHECKED_CAST")
   fun asLiveData(): LiveData<T> {
-    val liveData = MutableLiveData<T>()
-    val data = data as ApiResponse<T>
-    if (data is ApiResponse.Success<T>) {
-      liveData.postValue(data.response.body())
+    liveData = MutableLiveData<T>().apply {
+      if (data != empty) {
+        val data = data as ApiResponse<T>
+        if (data is ApiResponse.Success<T>) {
+          postValue(data.response.body())
+        }
+      }
     }
-    return liveData
+    return requireNotNull(liveData)
   }
 
   /** enqueue a callback to call and cache the [ApiResponse] data. */
@@ -208,6 +215,7 @@ class ResponseDataSource<T> : DataSource<T> {
   private fun emitResponseToObserver() {
     if (data != empty) {
       this.responseObserver?.observe(data as ApiResponse<T>)
+      this.liveData?.postValue((data as ApiResponse.Success<T>).data)
       this.concat()
     }
   }
