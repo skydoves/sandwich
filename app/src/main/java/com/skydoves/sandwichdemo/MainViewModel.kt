@@ -18,15 +18,15 @@ package com.skydoves.sandwichdemo
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.DataSource
-import com.skydoves.sandwich.ResponseObserver
+import com.skydoves.sandwich.DataRetainPolicy
+import com.skydoves.sandwich.ResponseDataSource
 import com.skydoves.sandwich.StatusCode
 import com.skydoves.sandwich.map
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.onSuccess
+import com.skydoves.sandwich.toResponseDataSource
 import com.skydoves.sandwichdemo.model.Poster
 import com.skydoves.sandwichdemo.network.DisneyService
 import com.skydoves.sandwichdemo.network.ErrorEnvelopeMapper
@@ -35,7 +35,7 @@ import timber.log.Timber
 class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
 
   // request API call Asynchronously and holding successful response data.
-  private val dataSource: DataSource<List<Poster>>
+  private val dataSource: ResponseDataSource<List<Poster>>
 
   val posterListLiveData = MutableLiveData<List<Poster>>()
   val toastLiveData = MutableLiveData<String>()
@@ -43,45 +43,44 @@ class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
   init {
     Timber.d("initialized MainViewModel.")
 
-    dataSource = disneyService.fetchDisneyPosterList()
+    dataSource = disneyService.fetchDisneyPosterList().toResponseDataSource()
       // retry fetching data 3 times with 5000L interval when the request gets failure.
       .retry(3, 5000L)
-      .observeResponse(object : ResponseObserver<List<Poster>> {
-        override fun observe(response: ApiResponse<List<Poster>>) {
-          // handle the case when the API request gets a success response.
-          response.onSuccess {
-            Timber.d("$data")
-            posterListLiveData.postValue(data)
-          }
-            // handle the case when the API request gets a error response.
-            // e.g. internal server error.
-            .onError {
-              Timber.d(message())
-
-              // handling error based on status code.
-              when (statusCode) {
-                StatusCode.InternalServerError -> toastLiveData.postValue("InternalServerError")
-                StatusCode.BadGateway -> toastLiveData.postValue("BadGateway")
-                else -> toastLiveData.postValue("$statusCode(${statusCode.code}): ${message()}")
-              }
-
-              // map the ApiResponse.Failure.Error to a customized error model using the mapper.
-              map(ErrorEnvelopeMapper) {
-                Timber.d(this.toString())
-              }
-            }
-            // handle the case when the API request gets a exception response.
-            // e.g. network connection error.
-            .onException {
-              Timber.d(message())
-              toastLiveData.postValue(message())
-            }
-        }
-      })
+      // a retain policy for retaining data on the internal storage
+      .dataRetainPolicy(DataRetainPolicy.RETAIN)
       // request API network call asynchronously.
       // if the request is successful, the data source will hold the success data.
       // in the next request after success, returns the cached API response.
       // if you want to fetch a new response data, use invalidate().
-      .request()
+      .request {
+        // handle the case when the API request gets a success response.
+        onSuccess {
+          Timber.d("$data")
+          posterListLiveData.postValue(data)
+        }
+          // handle the case when the API request gets a error response.
+          // e.g. internal server error.
+          .onError {
+            Timber.d(message())
+
+            // handling error based on status code.
+            when (statusCode) {
+              StatusCode.InternalServerError -> toastLiveData.postValue("InternalServerError")
+              StatusCode.BadGateway -> toastLiveData.postValue("BadGateway")
+              else -> toastLiveData.postValue("$statusCode(${statusCode.code}): ${message()}")
+            }
+
+            // map the ApiResponse.Failure.Error to a customized error model using the mapper.
+            map(ErrorEnvelopeMapper) {
+              Timber.d(this.toString())
+            }
+          }
+          // handle the case when the API request gets a exception response.
+          // e.g. network connection error.
+          .onException {
+            Timber.d(message())
+            toastLiveData.postValue(message())
+          }
+      }
   }
 }

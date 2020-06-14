@@ -16,7 +16,8 @@
 
 package com.skydoves.sandwich
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.skydoves.sandwich.executors.ArchTaskExecutor
 import retrofit2.Call
 import retrofit2.Callback
@@ -155,7 +156,7 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** extension method for requesting and observing response at once. */
-  fun request(action: (ApiResponse<T>) -> Unit) = apply {
+  fun request(action: (ApiResponse<T>).() -> Unit) = apply {
     observeResponse(action)
     request()
   }
@@ -165,6 +166,20 @@ class ResponseDataSource<T> : DataSource<T> {
     this.data = empty
     this.retryCount = retry
     enqueue()
+  }
+
+  /**
+   * if the response is successful, it returns a [LiveData] which contains response data.
+   * if the response is failure or exception, it returns an empty [LiveData].
+   */
+  @Suppress("UNCHECKED_CAST")
+  fun asLiveData(): LiveData<T> {
+    val liveData = MutableLiveData<T>()
+    val data = data as ApiResponse<T>
+    if (data is ApiResponse.Success<T>) {
+      liveData.postValue(data.response.body())
+    }
+    return liveData
   }
 
   /** enqueue a callback to call and cache the [ApiResponse] data. */
@@ -184,7 +199,6 @@ class ResponseDataSource<T> : DataSource<T> {
           call.cancel()
         }
       }
-      Log.e("Test", "call.enqueue(callback) fetching from network!")
       call.enqueue(callback)
     }
   }
