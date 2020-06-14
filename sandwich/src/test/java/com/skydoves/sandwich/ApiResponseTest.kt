@@ -47,8 +47,6 @@ class ApiResponseTest : ApiAbstract<DisneyService>() {
   fun success() {
     val response = Response.success("foo")
     val apiResponse = ApiResponse.of { response }
-    assertThat(apiResponse, instanceOf(ApiResponse.Success::class.java))
-
     val success = apiResponse as ApiResponse.Success<String>
     assertThat(success.data, `is`("foo"))
     assertThat(success.statusCode.code, `is`(200))

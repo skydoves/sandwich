@@ -16,6 +16,7 @@
 
 package com.skydoves.sandwich
 
+import android.util.Log
 import com.skydoves.sandwich.executors.ArchTaskExecutor
 import retrofit2.Call
 import retrofit2.Callback
@@ -58,6 +59,9 @@ class ResponseDataSource<T> : DataSource<T> {
       emitResponseToObserver()
     }
   }
+
+  // a policy for retaining data on the internal storage or not.
+  private var dataRetainPolicy = DataRetainPolicy.NO_RETAIN
 
   // backup property for retry count data.
   private var retry: Int = -1
@@ -107,6 +111,11 @@ class ResponseDataSource<T> : DataSource<T> {
     ArchTaskExecutor.instance.postToMainThread(postValueRunnable, 0)
   }
 
+  /** sets [DataRetainPolicy] for limiting retaining data. */
+  fun dataRetainPolicy(dataRetainPolicy: DataRetainPolicy) = apply {
+    this.dataRetainPolicy = dataRetainPolicy
+  }
+
   /** combine a call and callback instances for caching data. */
   override fun combine(call: Call<T>, callback: Callback<T>) = apply {
     this.call = call
@@ -132,7 +141,7 @@ class ResponseDataSource<T> : DataSource<T> {
   @Suppress("UNCHECKED_CAST")
   override fun request() = apply {
     val call = this.call ?: return this
-    if (data === empty) {
+    if (data === empty || dataRetainPolicy == DataRetainPolicy.NO_RETAIN) {
       enqueue()
     } else {
       when (val data = data as ApiResponse<T>) {
@@ -175,6 +184,7 @@ class ResponseDataSource<T> : DataSource<T> {
           call.cancel()
         }
       }
+      Log.e("Test", "call.enqueue(callback) fetching from network!")
       call.enqueue(callback)
     }
   }
