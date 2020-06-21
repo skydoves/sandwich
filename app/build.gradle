@@ -29,10 +29,16 @@ dependencies {
     // android supports
     implementation "com.google.android.material:material:$versions.googleMaterial"
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycleVersion"
 
     // network
     implementation "com.squareup.retrofit2:converter-gson:$versions.retrofitVersion"
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation project(":sandwich")
+
+    // coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutinesVersion"
 
     // glide
     implementation "com.github.bumptech.glide:glide:$versions.glideVersion"

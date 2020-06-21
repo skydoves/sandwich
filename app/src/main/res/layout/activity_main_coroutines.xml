@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+      name="viewModel"
+      type="com.skydoves.sandwichdemo.coroutines.MainCoroutinesViewModel" />
+
+    <variable
+      name="adapter"
+      type="com.skydoves.sandwichdemo.adapter.PosterAdapter" />
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recyclerView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:clipToPadding="false"
+      android:padding="6dp"
+      app:adapter="@{adapter}"
+      app:adapterPosterList="@{viewModel.posterListLiveData}"
+      app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+      app:spanCount="2"
+      tools:listitem="@layout/item_poster" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
