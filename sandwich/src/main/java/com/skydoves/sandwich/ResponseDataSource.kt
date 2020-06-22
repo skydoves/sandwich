@@ -121,7 +121,7 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** combine a call and callback instances for caching data. */
-  override fun combine(call: Call<T>, callback: Callback<T>) = apply {
+  override fun combine(call: Call<T>, callback: Callback<T>?) = apply {
     this.call = call
     this.callback = callback
   }
@@ -159,7 +159,10 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** extension method for requesting and observing response at once. */
-  fun request(action: (ApiResponse<T>).() -> Unit) = apply {
+  inline fun request(crossinline action: (ApiResponse<T>).() -> Unit) = apply {
+    if (call != null && callback == null) {
+      combine(requireNotNull(call), action)
+    }
     observeResponse(action)
     request()
   }
@@ -235,7 +238,7 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** observes a [ApiResponse] value from the API call request. */
-  fun observeResponse(action: (ApiResponse<T>) -> Unit) =
+  inline fun observeResponse(crossinline action: (ApiResponse<T>) -> Unit) =
     observeResponse(object : ResponseObserver<T> {
       override fun observe(response: ApiResponse<T>) {
         action(response)

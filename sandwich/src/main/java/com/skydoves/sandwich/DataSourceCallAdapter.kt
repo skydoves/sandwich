@@ -19,8 +19,6 @@ package com.skydoves.sandwich
 import java.lang.reflect.Type
 import retrofit2.Call
 import retrofit2.CallAdapter
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * DataSourceCallAdapter is an call adapter for creating [DataSource] from service method.
@@ -37,9 +35,6 @@ class DataSourceCallAdapter<R> constructor(
 
   override fun adapt(call: Call<R>): DataSource<R> {
     val responseDataSource: ResponseDataSource<R> = ResponseDataSource()
-    return responseDataSource.combine(call, object : Callback<R> {
-      override fun onResponse(call: Call<R>, response: Response<R>) = Unit
-      override fun onFailure(call: Call<R>, t: Throwable) = Unit
-    })
+    return responseDataSource.combine(call, null)
   }
 }

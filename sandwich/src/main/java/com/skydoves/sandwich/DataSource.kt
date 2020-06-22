@@ -23,7 +23,7 @@ import retrofit2.Callback
 interface DataSource<T> {
 
   /** combine a call and a callback to the DataSource. */
-  fun combine(call: Call<T>, callback: Callback<T>): DataSource<T>
+  fun combine(call: Call<T>, callback: Callback<T>?): DataSource<T>
 
   /** retry fetching data few times with time interval when the request gets failure. */
   fun retry(retryCount: Int, interval: Long): DataSource<T>
