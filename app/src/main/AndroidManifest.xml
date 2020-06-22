@@ -14,8 +14,8 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     tools:ignore="AllowBackup">
-    <activity android:name=".coroutines.MainCoroutinesActivity" />
-    <activity android:name="com.skydoves.sandwichdemo.MainActivity">
+    <activity android:name=".MainActivity" />
+    <activity android:name=".coroutines.MainCoroutinesActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 

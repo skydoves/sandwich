@@ -16,7 +16,7 @@
 
 package com.skydoves.sandwichdemo.network
 
-import com.skydoves.sandwich.DataSourceCallAdapterFactory
+import com.skydoves.sandwich.coroutines.CoroutinesDataSourceCallAdapterFactory
 import com.skydoves.sandwichdemo.coroutines.DisneyCoroutinesService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -26,14 +26,20 @@ object NetworkModule {
 
   private val retrofit: Retrofit = Retrofit.Builder()
     .client(OkHttpClient.Builder().build())
-    .baseUrl("https://gist.githubusercontent.com/skydoves/aa3bbbf495b0fa91db8a9e89f34e4873/raw/a1a13d37027e8920412da5f00f6a89c5a3dbfb9a/")
+    .baseUrl(
+      "https://gist.githubusercontent.com/skydoves/aa3bbbf495b0fa91db8a9e89f34e4873/raw/a1a13d37027e8920412da5f00f6a89c5a3dbfb9a/")
     .addConverterFactory(GsonConverterFactory.create())
-    .addCallAdapterFactory(DataSourceCallAdapterFactory())
-    // .addCallAdapterFactory(CoroutinesDataSourceCallAdapterFactory())
+
+    // asynchronous supports
+    // .addCallAdapterFactory(DataSourceCallAdapterFactory())
+
+    // coroutines supports
     // addCallAdapterFactory(CoroutinesResponseCallAdapterFactory())
+    .addCallAdapterFactory(CoroutinesDataSourceCallAdapterFactory())
     .build()
 
   val disneyService: DisneyService = retrofit.create(DisneyService::class.java)
 
-  val disneyCoroutinesService: DisneyCoroutinesService = retrofit.create(DisneyCoroutinesService::class.java)
+  val disneyCoroutinesService: DisneyCoroutinesService =
+    retrofit.create(DisneyCoroutinesService::class.java)
 }
