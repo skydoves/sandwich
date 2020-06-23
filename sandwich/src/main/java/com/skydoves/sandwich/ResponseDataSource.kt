@@ -163,7 +163,6 @@ class ResponseDataSource<T> : DataSource<T> {
     if (call != null && callback == null) {
       combine(requireNotNull(call), action)
     }
-    observeResponse(action)
     request()
   }
 
