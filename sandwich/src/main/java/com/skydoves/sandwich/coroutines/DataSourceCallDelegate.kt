@@ -25,17 +25,10 @@ import retrofit2.Response
 
 internal class DataSourceCallDelegate<T>(proxy: Call<T>) : CallDelegate<T, DataSource<T>>(proxy) {
 
-  override fun enqueueImpl(callback: Callback<DataSource<T>>) = proxy.enqueue(object : Callback<T> {
-    override fun onResponse(call: Call<T>, response: Response<T>) {
-      val responseDataSource = ResponseDataSource<T>().combine(call, null)
-      callback.onResponse(this@DataSourceCallDelegate, Response.success(responseDataSource))
-    }
-
-    override fun onFailure(call: Call<T>, t: Throwable) {
-      val responseDataSource = ResponseDataSource<T>().combine(call, null)
-      callback.onResponse(this@DataSourceCallDelegate, Response.success(responseDataSource))
-    }
-  })
+  override fun enqueueImpl(callback: Callback<DataSource<T>>) {
+    val responseDataSource = ResponseDataSource<T>().combine(proxy, null)
+    callback.onResponse(this@DataSourceCallDelegate, Response.success(responseDataSource))
+  }
 
   override fun timeout(): Timeout = Timeout.NONE
 
