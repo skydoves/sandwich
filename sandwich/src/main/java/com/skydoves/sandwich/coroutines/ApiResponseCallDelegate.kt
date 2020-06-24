@@ -30,7 +30,8 @@ internal class ApiResponseCallDelegate<T>(proxy: Call<T>) : CallDelegate<T, ApiR
       if (apiResponse is ApiResponse.Success) {
         callback.onResponse(this@ApiResponseCallDelegate, Response.success(apiResponse))
       } else if (apiResponse is ApiResponse.Failure.Error && apiResponse.errorBody != null) {
-        callback.onResponse(this@ApiResponseCallDelegate, Response.error(apiResponse.statusCode.code, apiResponse.errorBody))
+        callback.onResponse(this@ApiResponseCallDelegate,
+          Response.error(apiResponse.statusCode.code, apiResponse.errorBody))
       }
     }
 

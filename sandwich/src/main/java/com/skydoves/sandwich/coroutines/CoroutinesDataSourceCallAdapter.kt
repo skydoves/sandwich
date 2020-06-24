@@ -21,9 +21,15 @@ import java.lang.reflect.Type
 import retrofit2.Call
 import retrofit2.CallAdapter
 
-class CoroutinesDataSourceCallAdapter(
-  private val type: Type
+class CoroutinesDataSourceCallAdapter constructor(
+  private val responseType: Type
 ) : CallAdapter<Type, Call<DataSource<Type>>> {
-  override fun responseType() = type
-  override fun adapt(call: Call<Type>): Call<DataSource<Type>> = DataSourceCallDelegate(call)
+
+  override fun responseType(): Type {
+    return responseType
+  }
+
+  override fun adapt(call: Call<Type>): Call<DataSource<Type>> {
+    return DataSourceCallDelegate(call)
+  }
 }

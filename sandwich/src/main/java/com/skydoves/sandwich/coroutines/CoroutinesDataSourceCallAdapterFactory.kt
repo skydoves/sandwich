@@ -24,6 +24,7 @@ import retrofit2.CallAdapter
 import retrofit2.Retrofit
 
 class CoroutinesDataSourceCallAdapterFactory : CallAdapter.Factory() {
+
   override fun get(
     returnType: Type,
     annotations: Array<Annotation>,

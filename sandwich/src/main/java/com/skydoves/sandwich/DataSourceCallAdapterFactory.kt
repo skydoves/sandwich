@@ -33,7 +33,11 @@ import retrofit2.Retrofit
  */
 class DataSourceCallAdapterFactory : CallAdapter.Factory() {
 
-  override fun get(returnType: Type, annotations: Array<Annotation>, retrofit: Retrofit): CallAdapter<*, *>? {
+  override fun get(
+    returnType: Type,
+    annotations: Array<Annotation>,
+    retrofit: Retrofit
+  ): CallAdapter<*, *>? {
     val enclosingType = returnType as ParameterizedType
     val actualType = enclosingType.actualTypeArguments[0]
     return DataSourceCallAdapter<Type>(actualType)
