@@ -218,10 +218,11 @@ class ResponseDataSource<T> : DataSource<T> {
   /** emit response data to an observer when the request is successful. */
   @Suppress("UNCHECKED_CAST")
   private fun emitResponseToObserver() {
-    if (data != empty && (data as ApiResponse<T>) is ApiResponse.Success<T> ||
-      concatStrategy == DataSource.ConcatStrategy.CONTINUOUS) {
+    if (data != empty && (data as ApiResponse<T>) is ApiResponse.Success<T>) {
       this.responseObserver?.observe(data as ApiResponse<T>)
       this.liveData?.postValue((data as ApiResponse.Success<T>).data)
+      this.concat()
+    } else if (concatStrategy == DataSource.ConcatStrategy.CONTINUOUS) {
       this.concat()
     }
   }
