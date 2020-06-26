@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/85875296-f48aa000-b80e-11ea-9a41-c8490333634f.png" width="794" height="404"/>
+<img src="https://user-images.githubusercontent.com/24237865/85877362-00c42c80-b812-11ea-863a-56a4f6aa439d.png" width="794" height="404"/>
 </p>
 
 ## Download
@@ -155,14 +155,13 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
     posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
       emitSource(disneyService.fetchDisneyPosterList()
         .onSuccess {
-          Timber.d("$data")
-        }
-        .onError {
-          Timber.d(message())
-        }
-        .onException {
-          Timber.d(message())
-        }.toLiveData())
+          // stub success case
+          livedata.post(response.data)
+        }.onError {
+          // stub error case
+        }.onException {
+          // stub exception case
+        }.toLiveData()) // returns an observable LiveData
     }
   }
 }
@@ -257,7 +256,6 @@ init {
       }.asLiveData()
   }
 ```
-
 
 Here is the example of the `ResponseDataSource` in the `MainViewModel`.
 ```kotlin
