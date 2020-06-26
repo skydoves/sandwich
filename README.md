@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/81035939-fbb0c400-8ed7-11ea-9f4b-b90e65039457.png" width="620" height="307"/>
+<img src="https://user-images.githubusercontent.com/24237865/85875296-f48aa000-b80e-11ea-9a41-c8490333634f.png" width="794" height="404"/>
 </p>
 
 ## Download
@@ -127,6 +127,43 @@ response.onError {
   map(ErrorEnvelopeMapper) {
      val code = this.code
      val message = this.message
+  }
+}
+```
+
+### ApiResponse with coroutines
+We can use the `suspend` keyword in our service.<br>
+Build your retrofit using with `CoroutinesResponseCallAdapterFactory` call adapter factory.
+```kotlin
+.addCallAdapterFactory(CoroutinesResponseCallAdapterFactory())
+```
+And use the `suspend` keyword in our service functions. The response type must be `ApiResponse`.
+```kotlin
+interface DisneyCoroutinesService {
+
+  @GET("DisneyPosters.json")
+  suspend fun fetchDisneyPosterList(): ApiResponse<List<Poster>>
+}
+```
+We can use like this; An example of using `toLiveData`.
+```kotlin
+class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService) : ViewModel() {
+
+  val posterListLiveData: LiveData<List<Poster>>
+
+  init {
+    posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
+      emitSource(disneyService.fetchDisneyPosterList()
+        .onSuccess {
+          Timber.d("$data")
+        }
+        .onError {
+          Timber.d(message())
+        }
+        .onException {
+          Timber.d(message())
+        }.toLiveData())
+    }
   }
 }
 ```
@@ -298,7 +335,7 @@ interface DisneyService {
   fun fetchDisneyPosterList(): DataSource<List<Poster>>
 }
 ```
-Here is the exmaple of the `DataSource` in the MainViewModel.
+Here is an exmaple of the `DataSource` in the MainViewModel.
 ```kotlin
 class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
 
@@ -321,6 +358,50 @@ class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
         }
       })
       .request() // must call request()
+```
+
+### CoroutinesDataSourceCallAdapterFactory
+We can get the `DataSource` directly from the Retrofit service using with `suspend`. <br>
+```kotlin
+Retrofit.Builder()
+    ...
+    .addCallAdapterFactory(CoroutinesDataSourceCallAdapterFactory())
+    .build()
+
+interface DisneyService {
+  @GET("DisneyPosters.json")
+  fun fetchDisneyPosterList(): DataSource<List<Poster>>
+}
+```
+Here is an exmaple of the `DataSource` in the MainViewModel.
+```kotlin
+class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService) : ViewModel() {
+
+  val posterListLiveData: LiveData<List<Poster>>
+
+  init {
+    Timber.d("initialized MainViewModel.")
+
+    posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
+      emitSource(disneyService.fetchDisneyPosterList().toResponseDataSource()
+        // retry fetching data 3 times with 5000L interval when the request gets failure.
+        .retry(3, 5000L)
+        // a retain policy for retaining data on the internal storage
+        .dataRetainPolicy(DataRetainPolicy.RETAIN)
+        // request API network call asynchronously.
+        .request {
+          // handle the case when the API request gets a success response.
+          onSuccess {
+            Timber.d("$data")
+          }.onError { // handle the case when the API request gets a error response.
+              Timber.d(message())
+            }.onException {  // handle the case when the API request gets a exception response.
+              Timber.d(message())
+            }
+        }.asLiveData())
+    }
+  }
+}
 ```
 
 #### toResponseDataSource
