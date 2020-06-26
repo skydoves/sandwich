@@ -102,6 +102,9 @@ class ResponseDataSource<T> : DataSource<T> {
   // a concat unit for executing after request success.
   private var concat: () -> Unit = { }
 
+  // a strategy for determining to request continuously or stop when the first request got failed.
+  var concatStrategy = DataSource.ConcatStrategy.CONTINUOUS
+
   /** sets value on the worker thread and post the value to the main thread. */
   fun postValue(value: ApiResponse<T>) {
     val postTask: Boolean
@@ -215,7 +218,8 @@ class ResponseDataSource<T> : DataSource<T> {
   /** emit response data to an observer when the request is successful. */
   @Suppress("UNCHECKED_CAST")
   private fun emitResponseToObserver() {
-    if (data != empty && (data as ApiResponse<T>) is ApiResponse.Success<T>) {
+    if (data != empty && (data as ApiResponse<T>) is ApiResponse.Success<T> ||
+      concatStrategy == DataSource.ConcatStrategy.CONTINUOUS) {
       this.responseObserver?.observe(data as ApiResponse<T>)
       this.liveData?.postValue((data as ApiResponse.Success<T>).data)
       this.concat()

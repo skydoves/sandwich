@@ -32,8 +32,8 @@ interface DataSource<T> {
   fun observeResponse(observer: ResponseObserver<T>): DataSource<T>
 
   /**
-   * concat an another [DataSource] and request API call to the received data source
-   * if the receiver previous call getting successful.
+   * concat an another [DataSource] and request API calls sequentially.
+   * we can determine request continuously the concat [DataSource] or stop when failed using [ConcatStrategy].
    */
   fun <R> concat(dataSource: DataSource<R>): DataSource<R>
 
@@ -42,4 +42,12 @@ interface DataSource<T> {
 
   /** invalidate cached data and retry counts, request again API call. */
   fun invalidate()
+
+  /** A concat strategy for determining to request continuously or stop when the first request got failed. */
+  enum class ConcatStrategy {
+    // request next call continuously.
+    CONTINUOUS,
+    // break requesting chain when the previous request got failed.
+    BREAK
+  }
 }
