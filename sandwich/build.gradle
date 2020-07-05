@@ -31,6 +31,14 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:$versions.mockitoInlineVersion"
 }
 
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/javadoc"
+    configuration {
+        moduleName = 'sandwich'
+    }
+}
+
 tasks.withType(Javadoc) {
     excludes = ['**/*.kt']
     options.addBooleanOption('Xdoclint:none', true)
