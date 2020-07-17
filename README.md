@@ -26,7 +26,7 @@
 Add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.0.3"
+    implementation "com.github.skydoves:sandwich:1.0.4"
 }
 ```
 
@@ -104,6 +104,22 @@ disneyService.fetchDisneyPosterList().request { response ->
       }
     }
 ```
+
+#### suspendOnSuccess, suspendOnError, suspendOnException
+We can use suspension extensions for using suspend functions inside the lambda.<br>
+```kotlin
+flow {
+      val response = disneyService.fetchDisneyPosterList()
+      response.suspendOnSuccess {
+        emit(data)
+      }.suspendOnError {
+        // stub error case
+      }.suspendOnFailure {
+        // stub exception case
+      }
+    }
+```
+
 
 ### ApiErrorModelMapper
 We can map `ApiResponse.Failure.Error` model to our customized error model using the mapper.
