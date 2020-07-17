@@ -107,6 +107,7 @@ disneyService.fetchDisneyPosterList().request { response ->
 
 #### suspendOnSuccess, suspendOnError, suspendOnException
 We can use suspension extensions for using suspend functions inside the lambda.<br>
+In this case, we should use with [CoroutinesResponseCallAdapterFactory](https://github.com/skydoves/sandwich#apiresponse-with-coroutines).
 ```kotlin
 flow {
       val response = disneyService.fetchDisneyPosterList()
