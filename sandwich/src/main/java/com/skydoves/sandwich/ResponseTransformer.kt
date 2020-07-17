@@ -18,6 +18,7 @@ package com.skydoves.sandwich
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.skydoves.sandwich.coroutines.SuspensionFunction
 import retrofit2.Call
 import retrofit2.Callback
 
@@ -69,10 +70,38 @@ fun <T> ApiResponse<T>.onSuccess(onResult: ApiResponse.Success<T>.() -> Unit): A
 }
 
 /**
+ * A suspend scope function for handling success response [ApiResponse.Success] a unit
+ * block of code within the context of the response.
+ */
+@SuspensionFunction
+suspend fun <T> ApiResponse<T>.suspendOnSuccess(
+  onResult: suspend ApiResponse.Success<T>.() -> Unit
+): ApiResponse<T> {
+  if (this is ApiResponse.Success) {
+    onResult(this)
+  }
+  return this
+}
+
+/**
  * A scope function for handling failure response [ApiResponse.Failure] a unit
  * block of code within the context of the response.
  */
 fun <T> ApiResponse<T>.onFailure(onResult: ApiResponse.Failure<*>.() -> Unit): ApiResponse<T> {
+  if (this is ApiResponse.Failure<*>) {
+    onResult(this)
+  }
+  return this
+}
+
+/**
+ * A suspend scope function for handling failure response [ApiResponse.Failure] a unit
+ * block of code within the context of the response.
+ */
+@SuspensionFunction
+suspend fun <T> ApiResponse<T>.suspendOnFailure(
+  onResult: suspend ApiResponse.Failure<*>.() -> Unit
+): ApiResponse<T> {
   if (this is ApiResponse.Failure<*>) {
     onResult(this)
   }
@@ -91,10 +120,38 @@ fun <T> ApiResponse<T>.onError(onResult: ApiResponse.Failure.Error<T>.() -> Unit
 }
 
 /**
+ * A suspend scope function for handling error response [ApiResponse.Failure.Error] a unit
+ * block of code within the context of the response.
+ */
+@SuspensionFunction
+suspend fun <T> ApiResponse<T>.suspendOnError(
+  onResult: suspend ApiResponse.Failure.Error<T>.() -> Unit
+): ApiResponse<T> {
+  if (this is ApiResponse.Failure.Error) {
+    onResult(this)
+  }
+  return this
+}
+
+/**
  * A scope function for handling exception response [ApiResponse.Failure.Exception] a unit
  * block of code within the context of the response.
  */
 fun <T> ApiResponse<T>.onException(onResult: ApiResponse.Failure.Exception<T>.() -> Unit): ApiResponse<T> {
+  if (this is ApiResponse.Failure.Exception) {
+    onResult(this)
+  }
+  return this
+}
+
+/**
+ * A suspend scope function for handling exception response [ApiResponse.Failure.Exception] a unit
+ * block of code within the context of the response.
+ */
+@SuspensionFunction
+suspend fun <T> ApiResponse<T>.suspendOnException(
+  onResult: suspend ApiResponse.Failure.Exception<T>.() -> Unit
+): ApiResponse<T> {
   if (this is ApiResponse.Failure.Exception) {
     onResult(this)
   }
