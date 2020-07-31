@@ -350,7 +350,7 @@ interface DisneyService {
   fun fetchDisneyPosterList(): DataSource<List<Poster>>
 }
 ```
-Here is an exmaple of the `DataSource` in the MainViewModel.
+Here is an example of the `DataSource` in the MainViewModel.
 ```kotlin
 class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
 
