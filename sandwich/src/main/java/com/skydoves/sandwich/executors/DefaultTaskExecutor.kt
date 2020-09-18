@@ -49,17 +49,20 @@ internal class DefaultTaskExecutor : TaskExecutor() {
 
   private val mLock = Any()
 
-  private val mDiskIO = Executors.newFixedThreadPool(4, object : ThreadFactory {
-    private val THREAD_NAME_STEM = "arch_disk_io_%d"
+  private val mDiskIO = Executors.newFixedThreadPool(
+    4,
+    object : ThreadFactory {
+      private val THREAD_NAME_STEM = "arch_disk_io_%d"
 
-    private val mThreadId = AtomicInteger(0)
+      private val mThreadId = AtomicInteger(0)
 
-    override fun newThread(r: Runnable): Thread {
-      val t = Thread(r)
-      t.name = String.format(THREAD_NAME_STEM, mThreadId.getAndIncrement())
-      return t
+      override fun newThread(r: Runnable): Thread {
+        val t = Thread(r)
+        t.name = String.format(THREAD_NAME_STEM, mThreadId.getAndIncrement())
+        return t
+      }
     }
-  })
+  )
 
   @Volatile
   private var mMainHandler: Handler? = null
@@ -89,8 +92,11 @@ internal class DefaultTaskExecutor : TaskExecutor() {
     }
     if (Build.VERSION.SDK_INT >= 16) {
       try {
-        return Handler::class.java.getDeclaredConstructor(Looper::class.java, Handler.Callback::class.java,
-          Boolean::class.javaPrimitiveType)
+        return Handler::class.java.getDeclaredConstructor(
+          Looper::class.java,
+          Handler.Callback::class.java,
+          Boolean::class.javaPrimitiveType
+        )
           .newInstance(looper, null, true)
       } catch (ignored: IllegalAccessException) {
       } catch (ignored: InstantiationException) {

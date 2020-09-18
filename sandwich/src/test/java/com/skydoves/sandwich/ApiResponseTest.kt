@@ -18,7 +18,6 @@ package com.skydoves.sandwich
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import java.io.IOException
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.instanceOf
@@ -30,6 +29,7 @@ import org.junit.runners.JUnit4
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 
 @RunWith(JUnit4::class)
 class ApiResponseTest : ApiAbstract<DisneyService>() {
@@ -139,8 +139,12 @@ class ApiResponseTest : ApiAbstract<DisneyService>() {
       assertThat(it, instanceOf(ApiResponse.Failure.Error::class.java))
       val response = requireNotNull((it as ApiResponse.Failure.Error))
       assertThat(response.statusCode.code, `is`(404))
-      assertThat(response.message(), `is`(
-        "[ApiResponse.Failure.Error-${response.statusCode}](errorResponse=${response.response})"))
+      assertThat(
+        response.message(),
+        `is`(
+          "[ApiResponse.Failure.Error-${response.statusCode}](errorResponse=${response.response})"
+        )
+      )
 
       val errorResponse = response.map(ErrorEnvelopeMapper)
       assertThat(errorResponse, instanceOf(ErrorEnvelope::class.java))
@@ -172,8 +176,10 @@ class ApiResponseTest : ApiAbstract<DisneyService>() {
       val response = requireNotNull((it as ApiResponse.Failure.Error))
       response.onError {
         assertThat(statusCode.code, `is`(404))
-        assertThat(message(),
-          `is`("[ApiResponse.Failure.Error-$statusCode](errorResponse=${this.response})"))
+        assertThat(
+          message(),
+          `is`("[ApiResponse.Failure.Error-$statusCode](errorResponse=${this.response})")
+        )
 
         map(ErrorEnvelopeMapper) {
           assertThat(this, instanceOf(ErrorEnvelope::class.java))

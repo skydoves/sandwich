@@ -17,11 +17,11 @@
 package com.skydoves.sandwich.coroutines
 
 import com.skydoves.sandwich.DataSource
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 
 class CoroutinesDataSourceCallAdapterFactory : CallAdapter.Factory() {
 

@@ -16,7 +16,6 @@
 
 package com.skydoves.sandwich
 
-import java.io.IOException
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
 import org.junit.After
@@ -25,6 +24,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import retrofit2.Response
+import java.io.IOException
 
 @RunWith(JUnit4::class)
 class SandwichInitializerTest {
@@ -45,12 +45,17 @@ class SandwichInitializerTest {
     val successResponse = Response.success("foo")
     val apiResponse =
       ApiResponse.of { successResponse }
-    MatcherAssert.assertThat(apiResponse,
-      CoreMatchers.instanceOf(ApiResponse.Failure.Error::class.java))
+    MatcherAssert.assertThat(
+      apiResponse,
+      CoreMatchers.instanceOf(ApiResponse.Failure.Error::class.java)
+    )
 
     val errorResponse = apiResponse as ApiResponse.Failure.Error
-    MatcherAssert.assertThat(errorResponse.message(),
+    MatcherAssert.assertThat(
+      errorResponse.message(),
       CoreMatchers.`is`(
-        "[ApiResponse.Failure.Error-${errorResponse.statusCode}](errorResponse=${errorResponse.response})"))
+        "[ApiResponse.Failure.Error-${errorResponse.statusCode}](errorResponse=${errorResponse.response})"
+      )
+    )
   }
 }
