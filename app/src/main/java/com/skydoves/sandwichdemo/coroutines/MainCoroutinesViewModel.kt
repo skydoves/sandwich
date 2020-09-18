@@ -45,14 +45,14 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
     posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
       emitSource(
         disneyService.fetchDisneyPosterList().toResponseDataSource()
-// retry fetching data 3 times with 5000L interval when the request gets failure.
+          // retry fetching data 3 times with 5000L interval when the request gets failure.
           .retry(3, 5000L)
-// a retain policy for retaining data on the internal storage
+          // a retain policy for retaining data on the internal storage
           .dataRetainPolicy(DataRetainPolicy.RETAIN)
-// request API network call asynchronously.
-// if the request is successful, the data source will hold the success data.
-// in the next request after success, returns the temporarily cached API response.
-// if you want to fetch a new response data, use NO_RETAIN policy or invalidate().
+          // request API network call asynchronously.
+          // if the request is successful, the data source will hold the success data.
+          // in the next request after success, returns the temporarily cached API response.
+          // if you want to fetch a new response data, use NO_RETAIN policy or invalidate().
           .request {
             // handle the case when the API request gets a success response.
             onSuccess {
