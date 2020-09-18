@@ -27,12 +27,7 @@ internal class ApiResponseCallDelegate<T>(proxy: Call<T>) : CallDelegate<T, ApiR
   override fun enqueueImpl(callback: Callback<ApiResponse<T>>) = proxy.enqueue(object : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
       val apiResponse = ApiResponse.of { response }
-      if (apiResponse is ApiResponse.Success) {
-        callback.onResponse(this@ApiResponseCallDelegate, Response.success(apiResponse))
-      } else if (apiResponse is ApiResponse.Failure.Error && apiResponse.errorBody != null) {
-        callback.onResponse(this@ApiResponseCallDelegate,
-          Response.error(apiResponse.statusCode.code, apiResponse.errorBody))
-      }
+      callback.onResponse(this@ApiResponseCallDelegate, Response.success(apiResponse))
     }
 
     override fun onFailure(call: Call<T>, t: Throwable) {
