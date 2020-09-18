@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("unused")
+
 package com.skydoves.sandwich
 
 import androidx.lifecycle.LiveData
