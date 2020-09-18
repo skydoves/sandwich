@@ -15,7 +15,6 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
     implementation "androidx.appcompat:appcompat:$versions.androidxAppcompat"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutinesVersion"
     api "com.squareup.retrofit2:retrofit:$versions.retrofitVersion"
