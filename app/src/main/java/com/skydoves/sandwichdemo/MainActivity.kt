@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.skydoves.sandwichdemo.adapter.PosterAdapter
 import com.skydoves.sandwichdemo.databinding.ActivityMainBinding
@@ -42,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     viewModel.toastLiveData.observe(
       this,
-      Observer {
+      {
         Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
       }
     )
