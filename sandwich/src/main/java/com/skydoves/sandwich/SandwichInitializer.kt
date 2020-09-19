@@ -16,7 +16,17 @@
 
 package com.skydoves.sandwich
 
+/** SandwichInitializer is a rules and strategies initializer of the network response. */
 object SandwichInitializer {
 
+  /**
+   * determines the success code range of network responses.
+   * if a network request is successful and the response code is in the [successCodeRange],
+   * its response will be a [ApiResponse.Success].
+   *
+   * if a network request is successful and the response code is out of the [successCodeRange],
+   * its response will be a [ApiResponse.Failure.Error].
+   * */
+  @JvmStatic
   var successCodeRange: IntRange = 200..299
 }
