@@ -23,6 +23,16 @@ import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
+/**
+ * CoroutinesDataSourceCallAdapterFactory is an coroutines call adapter factory for creating [DataSource].
+ *
+ * Adding this class to [Retrofit] allows you to return on [DataSource] from service method.
+ *
+ * ```
+ * @GET("DisneyPosters.json")
+ * suspend fun fetchDisneyPosterList(): DataSource<List<Poster>>
+ * ```
+ */
 class CoroutinesDataSourceCallAdapterFactory : CallAdapter.Factory() {
 
   override fun get(

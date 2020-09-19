@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("unused")
+
 package com.skydoves.sandwich.coroutines
 
 import com.skydoves.sandwich.ApiResponse
@@ -23,6 +25,16 @@ import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
+/**
+ * CoroutinesResponseCallAdapterFactory is an coroutines call adapter factory for creating [ApiResponse].
+ *
+ * Adding this class to [Retrofit] allows you to return on [ApiResponse] from service method.
+ *
+ * ```
+ * @GET("DisneyPosters.json")
+ * suspend fun fetchDisneyPosterList(): ApiResponse<List<Poster>>
+ * ```
+ */
 class CoroutinesResponseCallAdapterFactory : CallAdapter.Factory() {
 
   override fun get(

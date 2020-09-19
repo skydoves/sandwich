@@ -21,6 +21,11 @@ import retrofit2.Call
 import retrofit2.CallAdapter
 import java.lang.reflect.Type
 
+/**
+ * CoroutinesDataSourceCallAdapter is an coroutines call adapter for creating [DataSource] from service method.
+ *
+ * request API network call asynchronously and returns [DataSource].
+ */
 class CoroutinesDataSourceCallAdapter constructor(
   private val responseType: Type
 ) : CallAdapter<Type, Call<DataSource<Type>>> {
