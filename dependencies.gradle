@@ -16,19 +16,18 @@ ext.versions = [
 
     // network
     retrofitVersion  : '2.9.0',
-    okhttpVersion    : '4.7.2',
+    okhttpVersion    : '4.9.0',
 
     // coroutines
     coroutinesVersion: '1.3.9',
 
     // unit test
-    junit            : '4.12',
+    junit            : '4.13.1',
     runner           : '1.2.0',
     junitExt         : '1.1.1',
-    robolectric      : '4.3.1',
-    mockito          : '3.3.3',
-    mockitoInline    : '3.3.3',
+    mockito          : '3.5.13',
     mockitoKotlin    : '2.2.0',
+    robolectric      : '4.4',
 
     // for demo
     googleMaterial   : '1.3.0-alpha01',

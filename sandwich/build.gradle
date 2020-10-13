@@ -27,7 +27,7 @@ dependencies {
     // unit test
     testImplementation "junit:junit:$versions.junit"
     testImplementation "org.mockito:mockito-core:$versions.mockito"
-    testImplementation "org.mockito:mockito-inline:$versions.mockitoInline"
+    testImplementation "org.mockito:mockito-inline:$versions.mockito"
     testImplementation "org.robolectric:robolectric:$versions.robolectric"
     testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttpVersion"
     testImplementation "com.squareup.retrofit2:converter-gson:$versions.retrofitVersion"
