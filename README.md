@@ -57,6 +57,14 @@ disneyService.fetchDisneyPosterList().request { response ->
         }
         is ApiResponse.Failure.Error -> {
           // stub error case
+          Timber.d(message())
+
+          // handling error based on status code.
+          when (statusCode) {
+            StatusCode.InternalServerError -> toastLiveData.postValue("InternalServerError")
+            StatusCode.BadGateway -> toastLiveData.postValue("BadGateway")
+            else -> toastLiveData.postValue("$statusCode(${statusCode.code}): ${message()}")
+          }
         }
         is ApiResponse.Failure.Exception -> {
           // stub exception case
@@ -110,15 +118,15 @@ We can use suspension extensions for using suspend functions inside the lambda.<
 In this case, we should use with [CoroutinesResponseCallAdapterFactory](https://github.com/skydoves/sandwich#apiresponse-with-coroutines).
 ```kotlin
 flow {
-      val response = disneyService.fetchDisneyPosterList()
-      response.suspendOnSuccess {
-        emit(data)
-      }.suspendOnError {
-        // stub error case
-      }.suspendOnFailure {
-        // stub exception case
-      }
-    }
+  val response = disneyService.fetchDisneyPosterList()
+  response.suspendOnSuccess {
+    emit(data)
+  }.suspendOnError {
+    // stub error case
+  }.suspendOnFailure {
+    // stub exception case
+  }
+}.flowOn()
 ```
 
 
