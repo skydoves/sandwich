@@ -16,20 +16,20 @@
 
 package com.skydoves.sandwich.disposable
 
-import okhttp3.Call
+import retrofit2.Call
 
 /** returns an instance of [Disposable] from a [Call]. */
-fun Call.disposable(): Disposable {
+fun <T> Call<T>.disposable(): Disposable {
   val call = this
   return object : Disposable {
     override fun dispose() {
-      if (call.isExecuted() && !call.isCanceled()) {
+      if (call.isExecuted && !call.isCanceled) {
         call.cancel()
       }
     }
 
     override fun isDisposed(): Boolean {
-      return call.isCanceled()
+      return call.isCanceled
     }
   }
 }

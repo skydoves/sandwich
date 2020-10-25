@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("unused")
+
 package com.skydoves.sandwich.disposable
 
 /** A disposable container that can hold onto multiple other disposables. */
