@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich
+package com.skydoves.sandwich.disposable
 
-/** A definition for canceling when works should be disposed. */
-interface Disposable {
+import okhttp3.Call
 
-  /** dispose the resource. */
-  fun dispose()
+/** returns an instance of [Disposable] from a [Call]. */
+fun Call.disposable(): Disposable {
+  val call = this
+  return object : Disposable {
+    override fun dispose() {
+      if (call.isExecuted() && !call.isCanceled()) {
+        call.cancel()
+      }
+    }
 
-  /** returns true if this resource has been disposed. */
-  fun isDisposed(): Boolean
+    override fun isDisposed(): Boolean {
+      return call.isCanceled()
+    }
+  }
 }
