@@ -20,6 +20,8 @@ package com.skydoves.sandwich
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.skydoves.sandwich.disposable.CompositeDisposable
+import com.skydoves.sandwich.disposable.disposable
 import com.skydoves.sandwich.executors.ArchTaskExecutor
 import retrofit2.Call
 import retrofit2.Callback
@@ -62,6 +64,10 @@ class ResponseDataSource<T> : DataSource<T> {
       emitResponseToObserver()
     }
   }
+
+  // a disposable container that can hold onto multiple other disposables.
+  var compositeDisposable: CompositeDisposable? = null
+    private set
 
   // a policy for retaining data on the internal storage or not.
   private var dataRetainPolicy = DataRetainPolicy.NO_RETAIN
@@ -164,11 +170,17 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** extension method for requesting and observing response at once. */
+  @JvmSynthetic
   inline fun request(crossinline action: (ApiResponse<T>).() -> Unit) = apply {
     if (call != null && callback == null) {
       combine(requireNotNull(call), action)
     }
     request()
+  }
+
+  /** joins onto [CompositeDisposable] as a disposable. must be called before [request]. */
+  override fun joinDisposable(disposable: CompositeDisposable) = apply {
+    this.compositeDisposable = disposable
   }
 
   /** invalidate a cached data and re-fetching the API request. */
@@ -199,7 +211,7 @@ class ResponseDataSource<T> : DataSource<T> {
   /** enqueue a callback to call and cache the [ApiResponse] data. */
   private fun enqueue() {
     val call = call?.clone() ?: return
-    if (!call.isExecuted) {
+    if (!call.isExecuted && compositeDisposable?.disposed == false) {
       val callback = object : Callback<T> {
         override fun onResponse(call: Call<T>, response: Response<T>) {
           callback?.onResponse(call, response)
@@ -213,6 +225,7 @@ class ResponseDataSource<T> : DataSource<T> {
           call.cancel()
         }
       }
+      compositeDisposable?.add(call.disposable())
       call.enqueue(callback)
     }
   }
@@ -244,6 +257,7 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** observes a [ApiResponse] value from the API call request. */
+  @JvmSynthetic
   inline fun observeResponse(crossinline action: (ApiResponse<T>) -> Unit) =
     observeResponse(ResponseObserver<T> { response -> action(response) })
 }

@@ -22,7 +22,8 @@ package com.skydoves.sandwich.disposable
 class CompositeDisposable {
 
   @Volatile
-  private var disposed: Boolean = false
+  var disposed: Boolean = false
+    private set
 
   private var disposables: MutableSet<Disposable>? = hashSetOf()
 

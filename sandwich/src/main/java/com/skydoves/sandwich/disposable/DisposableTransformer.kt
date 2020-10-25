@@ -23,13 +23,11 @@ fun <T> Call<T>.disposable(): Disposable {
   val call = this
   return object : Disposable {
     override fun dispose() {
-      if (call.isExecuted && !call.isCanceled) {
+      if (call.isExecuted && !isDisposed()) {
         call.cancel()
       }
     }
 
-    override fun isDisposed(): Boolean {
-      return call.isCanceled
-    }
+    override fun isDisposed() = call.isCanceled
   }
 }

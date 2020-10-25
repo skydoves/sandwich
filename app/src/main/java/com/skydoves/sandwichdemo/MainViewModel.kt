@@ -21,6 +21,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.skydoves.sandwich.DataRetainPolicy
 import com.skydoves.sandwich.StatusCode
+import com.skydoves.sandwich.disposable.CompositeDisposable
 import com.skydoves.sandwich.map
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onError
@@ -36,6 +37,7 @@ class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
 
   val posterListLiveData: LiveData<List<Poster>>
   val toastLiveData = MutableLiveData<String>()
+  private val disposable = CompositeDisposable()
 
   init {
     Timber.d("initialized MainViewModel.")
@@ -43,8 +45,10 @@ class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
     posterListLiveData = disneyService.fetchDisneyPosterList().toResponseDataSource()
       // retry fetching data 3 times with 5000L interval when the request gets failure.
       .retry(3, 5000L)
-      // a retain policy for retaining data on the internal storage
+      // a retain policy for retaining data on the internal storage.
       .dataRetainPolicy(DataRetainPolicy.RETAIN)
+      // joins onto CompositeDisposable as a disposable and dispose onCleared().
+      .joinDisposable(disposable)
       // request API network call asynchronously.
       // if the request is successful, the data source will hold the success data.
       // in the next request after success, returns the temporarily cached API response.
@@ -78,5 +82,12 @@ class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
             toastLiveData.postValue(message())
           }
       }.asLiveData()
+  }
+
+  override fun onCleared() {
+    super.onCleared()
+    if (!disposable.disposed) {
+      disposable.clear()
+    }
   }
 }
