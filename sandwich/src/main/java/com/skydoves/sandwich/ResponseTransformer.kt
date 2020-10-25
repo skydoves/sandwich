@@ -31,7 +31,7 @@ import retrofit2.Callback
 @JvmSynthetic
 inline fun <T> Call<T>.request(
   crossinline onResult: (response: ApiResponse<T>) -> Unit
-) {
+) = apply {
   enqueue(getCallbackFromOnResult(onResult))
 }
 
