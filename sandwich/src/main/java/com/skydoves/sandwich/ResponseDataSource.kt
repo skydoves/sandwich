@@ -20,6 +20,8 @@ package com.skydoves.sandwich
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.skydoves.sandwich.disposable.CompositeDisposable
+import com.skydoves.sandwich.disposable.disposable
 import com.skydoves.sandwich.executors.ArchTaskExecutor
 import retrofit2.Call
 import retrofit2.Callback
@@ -63,6 +65,9 @@ class ResponseDataSource<T> : DataSource<T> {
     }
   }
 
+  // a disposable container that can hold onto multiple other disposables.
+  private var compositeDisposable: CompositeDisposable? = null
+
   // a policy for retaining data on the internal storage or not.
   private var dataRetainPolicy = DataRetainPolicy.NO_RETAIN
 
@@ -102,7 +107,7 @@ class ResponseDataSource<T> : DataSource<T> {
   private var liveData: MutableLiveData<T>? = null
 
   // a concat unit for executing after request success.
-  private var concat: () -> Unit = { }
+  private var concat: (() -> Unit)? = null
 
   // a strategy for determining to request continuously or stop when the first request got failed.
   var concatStrategy = DataSource.ConcatStrategy.CONTINUOUS
@@ -132,6 +137,7 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** combine a call and callback instances for caching data. */
+  @JvmSynthetic
   inline fun combine(call: Call<T>, crossinline onResult: (response: ApiResponse<T>) -> Unit) =
     combine(call, getCallbackFromOnResult(onResult))
 
@@ -164,11 +170,17 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** extension method for requesting and observing response at once. */
+  @JvmSynthetic
   inline fun request(crossinline action: (ApiResponse<T>).() -> Unit) = apply {
     if (call != null && callback == null) {
       combine(requireNotNull(call), action)
     }
     request()
+  }
+
+  /** joins onto [CompositeDisposable] as a disposable. must be called before [request]. */
+  override fun joinDisposable(disposable: CompositeDisposable) = apply {
+    this.compositeDisposable = disposable
   }
 
   /** invalidate a cached data and re-fetching the API request. */
@@ -185,7 +197,8 @@ class ResponseDataSource<T> : DataSource<T> {
    */
   @Suppress("UNCHECKED_CAST")
   fun asLiveData(): LiveData<T> {
-    liveData = MutableLiveData<T>().apply {
+    return MutableLiveData<T>().apply {
+      liveData = this
       if (data != empty) {
         val data = data as ApiResponse<T>
         if (data is ApiResponse.Success<T>) {
@@ -193,13 +206,12 @@ class ResponseDataSource<T> : DataSource<T> {
         }
       }
     }
-    return requireNotNull(liveData)
   }
 
   /** enqueue a callback to call and cache the [ApiResponse] data. */
   private fun enqueue() {
     val call = call?.clone() ?: return
-    if (!call.isExecuted) {
+    if (!call.isExecuted && compositeDisposable?.disposed == false) {
       val callback = object : Callback<T> {
         override fun onResponse(call: Call<T>, response: Response<T>) {
           callback?.onResponse(call, response)
@@ -213,6 +225,7 @@ class ResponseDataSource<T> : DataSource<T> {
           call.cancel()
         }
       }
+      compositeDisposable?.add(call.disposable())
       call.enqueue(callback)
     }
   }
@@ -223,9 +236,9 @@ class ResponseDataSource<T> : DataSource<T> {
     if (data != empty && (data as ApiResponse<T>) is ApiResponse.Success<T>) {
       this.responseObserver?.observe(data as ApiResponse<T>)
       this.liveData?.postValue((data as ApiResponse.Success<T>).data)
-      this.concat()
+      this.concat?.invoke()
     } else if (concatStrategy == DataSource.ConcatStrategy.CONTINUOUS) {
-      this.concat()
+      this.concat?.invoke()
     }
   }
 
@@ -244,6 +257,7 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** observes a [ApiResponse] value from the API call request. */
+  @JvmSynthetic
   inline fun observeResponse(crossinline action: (ApiResponse<T>) -> Unit) =
     observeResponse(ResponseObserver<T> { response -> action(response) })
 }

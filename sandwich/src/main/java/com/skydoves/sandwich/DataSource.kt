@@ -16,6 +16,7 @@
 
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.disposable.CompositeDisposable
 import retrofit2.Call
 import retrofit2.Callback
 
@@ -40,6 +41,9 @@ interface DataSource<T> {
   /** request API call and response to the callback. */
   fun request(): DataSource<T>
 
+  /** joins onto [CompositeDisposable] as a disposable. */
+  fun joinDisposable(disposable: CompositeDisposable): DataSource<T>
+
   /** invalidate cached data and retry counts, request again API call. */
   fun invalidate()
 
@@ -47,6 +51,7 @@ interface DataSource<T> {
   enum class ConcatStrategy {
     // request next call continuously.
     CONTINUOUS,
+
     // break requesting chain when the previous request got failed.
     BREAK
   }
