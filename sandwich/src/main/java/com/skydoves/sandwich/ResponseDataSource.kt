@@ -102,7 +102,7 @@ class ResponseDataSource<T> : DataSource<T> {
   private var liveData: MutableLiveData<T>? = null
 
   // a concat unit for executing after request success.
-  private var concat: () -> Unit = { }
+  private var concat: (() -> Unit)? = null
 
   // a strategy for determining to request continuously or stop when the first request got failed.
   var concatStrategy = DataSource.ConcatStrategy.CONTINUOUS
@@ -185,7 +185,8 @@ class ResponseDataSource<T> : DataSource<T> {
    */
   @Suppress("UNCHECKED_CAST")
   fun asLiveData(): LiveData<T> {
-    liveData = MutableLiveData<T>().apply {
+    return MutableLiveData<T>().apply {
+      liveData = this
       if (data != empty) {
         val data = data as ApiResponse<T>
         if (data is ApiResponse.Success<T>) {
@@ -193,7 +194,6 @@ class ResponseDataSource<T> : DataSource<T> {
         }
       }
     }
-    return requireNotNull(liveData)
   }
 
   /** enqueue a callback to call and cache the [ApiResponse] data. */
@@ -223,9 +223,9 @@ class ResponseDataSource<T> : DataSource<T> {
     if (data != empty && (data as ApiResponse<T>) is ApiResponse.Success<T>) {
       this.responseObserver?.observe(data as ApiResponse<T>)
       this.liveData?.postValue((data as ApiResponse.Success<T>).data)
-      this.concat()
+      this.concat?.invoke()
     } else if (concatStrategy == DataSource.ConcatStrategy.CONTINUOUS) {
-      this.concat()
+      this.concat?.invoke()
     }
   }
 
