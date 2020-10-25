@@ -192,6 +192,41 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
 }
 ```
 
+### Disposable
+We can cancel the executing works using a `disposable()` extension.
+```kotlin
+val disposable = call.request { response ->
+  // skip handling a response //
+}.disposable()
+
+// dispose the executing works
+disposable.dispose()
+```
+And we can use `CompositeDisposable` for canceling multiple resources at once.
+```kotlin
+class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
+
+  private val disposables = CompositeDisposable()
+
+  init {
+    disneyService.fetchDisneyPosterList()
+      .joinDisposable(disposables) // joins onto [CompositeDisposable] as a disposable.
+      .request {response ->
+      // skip handling a response //
+    }
+  }
+
+  override fun onCleared() {
+    super.onCleared()
+    if (!disposables.disposed) {
+      disposables.clear()
+    }
+  }
+}
+
+```
+
+
 ### ResponseDataSource
 ResponseDataSource is an implementation of the `DataSource` interface. <br>
  * Asynchronously send requests.
@@ -199,6 +234,7 @@ ResponseDataSource is an implementation of the `DataSource` interface. <br>
  * Observable for every response.
  * Retry fetching data when the request gets failure.
  * Concat another `DataSource` and request sequentially.
+ * Disposable of executing works.
 
  #### Combine
 Combine a `Call` and lambda scope for constructing the DataSource.
@@ -277,8 +313,32 @@ init {
       .retry(3, 5000L)
       .dataRetainPolicy(DataRetainPolicy.RETAIN)
       .request {
-        // ...
+        // ... //
       }.asLiveData()
+}
+```
+
+#### Disposable
+We can make it joins onto `CompositeDisposable` as a disposable using the `joinDisposable` function. It must be called before `request()` method. The below example is using in ViewModel. We can clear the `CompositeDisposable` in the `onCleared()` override method.
+```kotlin
+private val disposable = CompositeDisposable()
+
+init {
+    disneyService.fetchDisneyPosterList().toResponseDataSource()
+      // retry fetching data 3 times with 5000L interval when the request gets failure.
+      .retry(3, 5000L)
+      // joins onto CompositeDisposable as a disposable and dispose onCleared().
+      .joinDisposable(disposable)
+      .request {
+        // ... //
+      }
+}
+
+override fun onCleared() {
+    super.onCleared()
+    if (!disposable.disposed) {
+      disposable.clear()
+    }
   }
 ```
 
@@ -293,12 +353,15 @@ class MainViewModel constructor(
 
   val posterListLiveData = MutableLiveData<List<Poster>>()
   val toastLiveData = MutableLiveData<String>()
+  private val disposable = CompositeDisposable()
 
   /** fetch poster list data from the network. */
   fun fetchDisneyPosters() {
     dataSource
       // retry fetching data 3 times with 5000 time interval when the request gets failure.
       .retry(3, 5000L)
+      // joins onto CompositeDisposable as a disposable and dispose onCleared().
+      .joinDisposable(disposable)
       // combine network service to the data source.
       .combine(disneyService.fetchDisneyPosterList()) { response ->
         // handle the case when the API request gets a success response.
@@ -339,6 +402,13 @@ class MainViewModel constructor(
       // in the next request after success, returns the cached API response.
       // if you want to fetch a new response data, use invalidate().
       .request()
+  }
+
+  override fun onCleared() {
+    super.onCleared()
+    if (!disposable.disposed) {
+      disposable.clear()
+    }
   }
 }
 ```
