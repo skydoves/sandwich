@@ -28,6 +28,7 @@ import retrofit2.Callback
  * Asynchronously send the request and notify [ApiResponse] of its response or if an error
  * occurred talking to the server, creating the request, or processing the response.
  */
+@JvmSynthetic
 inline fun <T> Call<T>.request(
   crossinline onResult: (response: ApiResponse<T>) -> Unit
 ) {
@@ -37,6 +38,7 @@ inline fun <T> Call<T>.request(
 /**
  * combine a [DataSource] to the call for processing response data more handy.
  */
+@JvmSynthetic
 inline fun <T> Call<T>.combineDataSource(
   dataSource: DataSource<T>,
   crossinline onResult: (response: ApiResponse<T>) -> Unit
@@ -46,6 +48,7 @@ inline fun <T> Call<T>.combineDataSource(
 }
 
 /** get a response callback from onResult unit. */
+@JvmSynthetic
 inline fun <T> getCallbackFromOnResult(
   crossinline onResult: (response: ApiResponse<T>) -> Unit
 ): Callback<T> {
@@ -64,6 +67,7 @@ inline fun <T> getCallbackFromOnResult(
  * A scope function for handling success response [ApiResponse.Success] a unit
  * block of code within the context of the response.
  */
+@JvmSynthetic
 fun <T> ApiResponse<T>.onSuccess(onResult: ApiResponse.Success<T>.() -> Unit): ApiResponse<T> {
   if (this is ApiResponse.Success) {
     onResult(this)
@@ -75,6 +79,7 @@ fun <T> ApiResponse<T>.onSuccess(onResult: ApiResponse.Success<T>.() -> Unit): A
  * A suspend scope function for handling success response [ApiResponse.Success] a unit
  * block of code within the context of the response.
  */
+@JvmSynthetic
 @SuspensionFunction
 suspend fun <T> ApiResponse<T>.suspendOnSuccess(
   onResult: suspend ApiResponse.Success<T>.() -> Unit
@@ -89,6 +94,7 @@ suspend fun <T> ApiResponse<T>.suspendOnSuccess(
  * A scope function for handling failure response [ApiResponse.Failure] a unit
  * block of code within the context of the response.
  */
+@JvmSynthetic
 fun <T> ApiResponse<T>.onFailure(onResult: ApiResponse.Failure<*>.() -> Unit): ApiResponse<T> {
   if (this is ApiResponse.Failure<*>) {
     onResult(this)
@@ -100,6 +106,7 @@ fun <T> ApiResponse<T>.onFailure(onResult: ApiResponse.Failure<*>.() -> Unit): A
  * A suspend scope function for handling failure response [ApiResponse.Failure] a unit
  * block of code within the context of the response.
  */
+@JvmSynthetic
 @SuspensionFunction
 suspend fun <T> ApiResponse<T>.suspendOnFailure(
   onResult: suspend ApiResponse.Failure<*>.() -> Unit
@@ -114,6 +121,7 @@ suspend fun <T> ApiResponse<T>.suspendOnFailure(
  * A scope function for handling error response [ApiResponse.Failure.Error] a unit
  * block of code within the context of the response.
  */
+@JvmSynthetic
 fun <T> ApiResponse<T>.onError(onResult: ApiResponse.Failure.Error<T>.() -> Unit): ApiResponse<T> {
   if (this is ApiResponse.Failure.Error) {
     onResult(this)
@@ -125,6 +133,7 @@ fun <T> ApiResponse<T>.onError(onResult: ApiResponse.Failure.Error<T>.() -> Unit
  * A suspend scope function for handling error response [ApiResponse.Failure.Error] a unit
  * block of code within the context of the response.
  */
+@JvmSynthetic
 @SuspensionFunction
 suspend fun <T> ApiResponse<T>.suspendOnError(
   onResult: suspend ApiResponse.Failure.Error<T>.() -> Unit
@@ -139,6 +148,7 @@ suspend fun <T> ApiResponse<T>.suspendOnError(
  * A scope function for handling exception response [ApiResponse.Failure.Exception] a unit
  * block of code within the context of the response.
  */
+@JvmSynthetic
 fun <T> ApiResponse<T>.onException(onResult: ApiResponse.Failure.Exception<T>.() -> Unit): ApiResponse<T> {
   if (this is ApiResponse.Failure.Exception) {
     onResult(this)
@@ -150,6 +160,7 @@ fun <T> ApiResponse<T>.onException(onResult: ApiResponse.Failure.Exception<T>.()
  * A suspend scope function for handling exception response [ApiResponse.Failure.Exception] a unit
  * block of code within the context of the response.
  */
+@JvmSynthetic
 @SuspensionFunction
 suspend fun <T> ApiResponse<T>.suspendOnException(
   onResult: suspend ApiResponse.Failure.Exception<T>.() -> Unit
@@ -175,6 +186,7 @@ fun <T, V> ApiResponse.Failure.Error<T>.map(converter: ApiErrorModelMapper<V>): 
 }
 
 /** Map [ApiResponse.Failure.Error] to a customized error response model. */
+@JvmSynthetic
 fun <T, V> ApiResponse.Failure.Error<T>.map(
   converter: ApiErrorModelMapper<V>,
   onResult: V.() -> Unit

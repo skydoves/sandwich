@@ -82,6 +82,7 @@ sealed class ApiResponse<out T> {
      * If [retrofit2.Response] has errors, it creates [ApiResponse.Failure.Error].
      * If [retrofit2.Response] has occurred exceptions, it creates [ApiResponse.Failure.Exception].
      */
+    @JvmSynthetic
     fun <T> of(
       successCodeRange: IntRange = SandwichInitializer.successCodeRange,
       f: () -> Response<T>

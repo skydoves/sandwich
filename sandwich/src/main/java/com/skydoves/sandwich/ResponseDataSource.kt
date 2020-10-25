@@ -66,8 +66,7 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   // a disposable container that can hold onto multiple other disposables.
-  var compositeDisposable: CompositeDisposable? = null
-    private set
+  private var compositeDisposable: CompositeDisposable? = null
 
   // a policy for retaining data on the internal storage or not.
   private var dataRetainPolicy = DataRetainPolicy.NO_RETAIN
@@ -138,6 +137,7 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** combine a call and callback instances for caching data. */
+  @JvmSynthetic
   inline fun combine(call: Call<T>, crossinline onResult: (response: ApiResponse<T>) -> Unit) =
     combine(call, getCallbackFromOnResult(onResult))
 
