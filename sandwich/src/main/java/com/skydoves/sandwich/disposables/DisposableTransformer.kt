@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.disposable
+package com.skydoves.sandwich.disposables
 
 import retrofit2.Call
 

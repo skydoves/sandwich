@@ -18,6 +18,8 @@ package com.skydoves.sandwich
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
+import com.skydoves.sandwich.disposables.CompositeDisposable
+import com.skydoves.sandwich.disposables.disposable
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.instanceOf
@@ -214,5 +216,42 @@ class ApiResponseTest : ApiAbstract<DisneyService>() {
       assertThat(message, `is`("foo"))
       assertThat(toString(), `is`("[ApiResponse.Failure.Exception](message=foo)"))
     }
+  }
+
+  @Test
+  fun disposeRequest() {
+    enqueueResponse("/DisneyPosters.json")
+
+    val requestCall = service.fetchDisneyPosterList()
+    val disposable = requestCall.disposable()
+
+    // execute network request call.
+    requestCall.execute()
+
+    assertThat(disposable.isDisposed(), `is`(false))
+
+    // dispose the request call.
+    disposable.dispose()
+
+    assertThat(disposable.isDisposed(), `is`(true))
+  }
+
+  @Test
+  fun compositeDisposableRequest() {
+    enqueueResponse("/DisneyPosters.json")
+
+    val requestCall = service.fetchDisneyPosterList()
+    val compositeDisposable = CompositeDisposable()
+    compositeDisposable.add(requestCall.disposable())
+
+    // execute network request call.
+    requestCall.execute()
+
+    assertThat(compositeDisposable.disposed, `is`(false))
+
+    // clear and dispose all the request calls.
+    compositeDisposable.clear()
+
+    assertThat(compositeDisposable.disposed, `is`(true))
   }
 }

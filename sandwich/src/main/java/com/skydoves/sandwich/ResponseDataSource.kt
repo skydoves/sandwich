@@ -20,8 +20,8 @@ package com.skydoves.sandwich
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.skydoves.sandwich.disposable.CompositeDisposable
-import com.skydoves.sandwich.disposable.disposable
+import com.skydoves.sandwich.disposables.CompositeDisposable
+import com.skydoves.sandwich.disposables.disposable
 import com.skydoves.sandwich.executors.ArchTaskExecutor
 import retrofit2.Call
 import retrofit2.Callback

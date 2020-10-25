@@ -23,7 +23,7 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.skydoves.sandwich.DataRetainPolicy
 import com.skydoves.sandwich.StatusCode
-import com.skydoves.sandwich.disposable.CompositeDisposable
+import com.skydoves.sandwich.disposables.CompositeDisposable
 import com.skydoves.sandwich.map
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onError

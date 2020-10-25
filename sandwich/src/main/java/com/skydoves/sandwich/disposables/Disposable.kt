@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.disposable
+package com.skydoves.sandwich.disposables
 
 /** A definition for canceling when works should be disposed. */
 interface Disposable {

@@ -16,7 +16,7 @@
 
 package com.skydoves.sandwich
 
-import com.skydoves.sandwich.disposable.CompositeDisposable
+import com.skydoves.sandwich.disposables.CompositeDisposable
 import retrofit2.Call
 import retrofit2.Callback
 

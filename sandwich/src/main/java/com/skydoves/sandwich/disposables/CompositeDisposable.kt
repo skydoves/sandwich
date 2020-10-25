@@ -16,7 +16,7 @@
 
 @file:Suppress("unused")
 
-package com.skydoves.sandwich.disposable
+package com.skydoves.sandwich.disposables
 
 /** A disposable container that can hold onto multiple other disposables. */
 class CompositeDisposable {
@@ -37,7 +37,7 @@ class CompositeDisposable {
       synchronized(this) {
         if (!disposed) {
           disposables?.add(disposable)
-          return@synchronized
+          return
         }
       }
     }
@@ -48,7 +48,7 @@ class CompositeDisposable {
     if (!disposed) {
       synchronized(this) {
         if (disposed || disposables?.remove(disposable) == false) {
-          return@synchronized
+          return
         }
       }
       disposable.dispose()
