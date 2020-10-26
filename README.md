@@ -20,7 +20,8 @@
 </p>
 
 ## Download
-[![Download](https://api.bintray.com/packages/devmagician/maven/sandwich/images/download.svg) ](https://bintray.com/devmagician/maven/sandwich/_latestVersion)
+[![Download](https://api.bintray.com/packages/devmagician/maven/sandwich/images/download.svg)](https://bintray.com/devmagician/maven/sandwich/_latestVersion)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
 [![Jitpack](https://jitpack.io/v/skydoves/Sandwich.svg)](https://jitpack.io/#skydoves/Sandwich)
 ### Gradle
 Add a dependency code to your **module**'s `build.gradle` file.
