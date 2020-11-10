@@ -48,8 +48,9 @@ inline fun <T> Call<T>.combineDataSource(
 }
 
 /** get a response callback from onResult unit. */
+@PublishedApi
 @JvmSynthetic
-inline fun <T> getCallbackFromOnResult(
+internal inline fun <T> getCallbackFromOnResult(
   crossinline onResult: (response: ApiResponse<T>) -> Unit
 ): Callback<T> {
   return object : Callback<T> {
