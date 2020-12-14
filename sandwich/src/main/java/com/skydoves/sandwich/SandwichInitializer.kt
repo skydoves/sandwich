@@ -24,8 +24,8 @@ object SandwichInitializer {
    * if a network request is successful and the response code is in the [successCodeRange],
    * its response will be a [ApiResponse.Success].
    *
-   * if a network request is successful and the response code is out of the [successCodeRange],
-   * its response will be a [ApiResponse.Failure.Error].
+   * if a network request is successful but out of the [successCodeRange] or failure,
+   * the response will be a [ApiResponse.Failure.Error].
    * */
   @JvmStatic
   var successCodeRange: IntRange = 200..299

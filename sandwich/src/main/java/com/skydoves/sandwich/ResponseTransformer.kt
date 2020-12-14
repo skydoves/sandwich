@@ -69,7 +69,9 @@ internal inline fun <T> getCallbackFromOnResult(
  * block of code within the context of the response.
  */
 @JvmSynthetic
-fun <T> ApiResponse<T>.onSuccess(onResult: ApiResponse.Success<T>.() -> Unit): ApiResponse<T> {
+inline fun <T> ApiResponse<T>.onSuccess(
+  crossinline onResult: ApiResponse.Success<T>.() -> Unit
+): ApiResponse<T> {
   if (this is ApiResponse.Success) {
     onResult(this)
   }
@@ -82,8 +84,8 @@ fun <T> ApiResponse<T>.onSuccess(onResult: ApiResponse.Success<T>.() -> Unit): A
  */
 @JvmSynthetic
 @SuspensionFunction
-suspend fun <T> ApiResponse<T>.suspendOnSuccess(
-  onResult: suspend ApiResponse.Success<T>.() -> Unit
+suspend inline fun <T> ApiResponse<T>.suspendOnSuccess(
+  crossinline onResult: suspend ApiResponse.Success<T>.() -> Unit
 ): ApiResponse<T> {
   if (this is ApiResponse.Success) {
     onResult(this)
@@ -96,7 +98,9 @@ suspend fun <T> ApiResponse<T>.suspendOnSuccess(
  * block of code within the context of the response.
  */
 @JvmSynthetic
-fun <T> ApiResponse<T>.onFailure(onResult: ApiResponse.Failure<*>.() -> Unit): ApiResponse<T> {
+inline fun <T> ApiResponse<T>.onFailure(
+  crossinline onResult: ApiResponse.Failure<*>.() -> Unit
+): ApiResponse<T> {
   if (this is ApiResponse.Failure<*>) {
     onResult(this)
   }
@@ -109,8 +113,8 @@ fun <T> ApiResponse<T>.onFailure(onResult: ApiResponse.Failure<*>.() -> Unit): A
  */
 @JvmSynthetic
 @SuspensionFunction
-suspend fun <T> ApiResponse<T>.suspendOnFailure(
-  onResult: suspend ApiResponse.Failure<*>.() -> Unit
+suspend inline fun <T> ApiResponse<T>.suspendOnFailure(
+  crossinline onResult: suspend ApiResponse.Failure<*>.() -> Unit
 ): ApiResponse<T> {
   if (this is ApiResponse.Failure<*>) {
     onResult(this)
@@ -123,7 +127,9 @@ suspend fun <T> ApiResponse<T>.suspendOnFailure(
  * block of code within the context of the response.
  */
 @JvmSynthetic
-fun <T> ApiResponse<T>.onError(onResult: ApiResponse.Failure.Error<T>.() -> Unit): ApiResponse<T> {
+inline fun <T> ApiResponse<T>.onError(
+  crossinline onResult: ApiResponse.Failure.Error<T>.() -> Unit
+): ApiResponse<T> {
   if (this is ApiResponse.Failure.Error) {
     onResult(this)
   }
@@ -136,8 +142,8 @@ fun <T> ApiResponse<T>.onError(onResult: ApiResponse.Failure.Error<T>.() -> Unit
  */
 @JvmSynthetic
 @SuspensionFunction
-suspend fun <T> ApiResponse<T>.suspendOnError(
-  onResult: suspend ApiResponse.Failure.Error<T>.() -> Unit
+suspend inline fun <T> ApiResponse<T>.suspendOnError(
+  crossinline onResult: suspend ApiResponse.Failure.Error<T>.() -> Unit
 ): ApiResponse<T> {
   if (this is ApiResponse.Failure.Error) {
     onResult(this)
@@ -150,7 +156,9 @@ suspend fun <T> ApiResponse<T>.suspendOnError(
  * block of code within the context of the response.
  */
 @JvmSynthetic
-fun <T> ApiResponse<T>.onException(onResult: ApiResponse.Failure.Exception<T>.() -> Unit): ApiResponse<T> {
+inline fun <T> ApiResponse<T>.onException(
+  crossinline onResult: ApiResponse.Failure.Exception<T>.() -> Unit
+): ApiResponse<T> {
   if (this is ApiResponse.Failure.Exception) {
     onResult(this)
   }
@@ -163,8 +171,8 @@ fun <T> ApiResponse<T>.onException(onResult: ApiResponse.Failure.Exception<T>.()
  */
 @JvmSynthetic
 @SuspensionFunction
-suspend fun <T> ApiResponse<T>.suspendOnException(
-  onResult: suspend ApiResponse.Failure.Exception<T>.() -> Unit
+suspend inline fun <T> ApiResponse<T>.suspendOnException(
+  crossinline onResult: suspend ApiResponse.Failure.Exception<T>.() -> Unit
 ): ApiResponse<T> {
   if (this is ApiResponse.Failure.Exception) {
     onResult(this)
@@ -188,9 +196,9 @@ fun <T, V> ApiResponse.Failure.Error<T>.map(converter: ApiErrorModelMapper<V>): 
 
 /** Map [ApiResponse.Failure.Error] to a customized error response model. */
 @JvmSynthetic
-fun <T, V> ApiResponse.Failure.Error<T>.map(
+inline fun <T, V> ApiResponse.Failure.Error<T>.map(
   converter: ApiErrorModelMapper<V>,
-  onResult: V.() -> Unit
+  crossinline onResult: V.() -> Unit
 ) {
   onResult(converter.map(this))
 }
