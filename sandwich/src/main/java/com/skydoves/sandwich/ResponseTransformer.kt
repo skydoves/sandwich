@@ -226,30 +226,57 @@ fun <T> ApiResponse<T>.toLiveData(): LiveData<T> {
 }
 
 /**
- * Maps [ApiResponse.Failure.Error] to a customized error response model.
+ * Maps [ApiResponse.Success] to a customized success response model.
  *
- * @param converter A mapper interface for mapping [ApiResponse.Failure.Error] response as custom [V] instance model.
+ * @param mapper A mapper interface for mapping [ApiResponse.Success] response as a custom [V] instance model.
  *
  * @return A mapped custom [V] error response model.
  */
-fun <T, V> ApiResponse.Failure.Error<T>.map(converter: ApiErrorModelMapper<V>): V {
-  return converter.map(this)
+fun <T, V> ApiResponse.Success<T>.map(mapper: ApiSuccessModelMapper<V>): V {
+  return mapper.map(this)
+}
+
+/**
+ * Maps [ApiResponse.Success] to a customized error response model with a receiver scope lambda.
+ *
+ * @param mapper A mapper interface for mapping [ApiResponse.Success] response as a custom [V] instance model.
+ * @param onResult A receiver scope lambda of the mapped custom [V] success response model.
+ *
+ * @return A mapped custom [V] success response model.
+ */
+@JvmSynthetic
+inline fun <T, V> ApiResponse.Success<T>.map(
+  mapper: ApiSuccessModelMapper<V>,
+  crossinline onResult: V.() -> Unit
+) {
+  onResult(mapper.map(this))
+}
+
+/**
+ * Maps [ApiResponse.Failure.Error] to a customized error response model.
+ *
+ * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
+ *
+ * @return A mapped custom [V] error response model.
+ */
+fun <T, V> ApiResponse.Failure.Error<T>.map(mapper: ApiErrorModelMapper<V>): V {
+  return mapper.map(this)
 }
 
 /**
  * Maps [ApiResponse.Failure.Error] to a customized error response model with a receiver scope lambda.
  *
- * @param converter A mapper interface for mapping [ApiResponse.Failure.Error] response as custom [V] instance model.
+ * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
  * @param onResult A receiver scope lambda of the mapped custom [V] error response model.
  *
  * @return A mapped custom [V] error response model.
  */
 @JvmSynthetic
 inline fun <T, V> ApiResponse.Failure.Error<T>.map(
-  converter: ApiErrorModelMapper<V>,
+  mapper: ApiErrorModelMapper<V>,
   crossinline onResult: V.() -> Unit
 ) {
-  onResult(converter.map(this))
+  onResult(mapper.map(this))
 }
 
 /**
