@@ -15,6 +15,8 @@
  */
 
 @file:Suppress("unused")
+@file:JvmName("ResponseTransformer")
+@file:JvmMultifileClass
 
 package com.skydoves.sandwich
 

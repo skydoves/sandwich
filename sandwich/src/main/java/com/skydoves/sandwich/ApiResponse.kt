@@ -23,7 +23,7 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 
 /**
- * ApiResponse is an interface for building specific response cases from the retrofit response.
+ * ApiResponse is an interface for constructing standard responses from the retrofit call.
  */
 sealed class ApiResponse<out T> {
 
@@ -45,11 +45,11 @@ sealed class ApiResponse<out T> {
    *
    * ## API format error case.
    * API communication conventions do not match or applications need to handle errors.
-   * e.g. internal server error.
+   * e.g., internal server error.
    *
    * ## API Exception error case.
    * Gets called when an unexpected exception occurs while creating the request or processing the response in client.
-   * e.g. network connection error.
+   * e.g., network connection error.
    */
   sealed class Failure<T> {
     data class Error<T>(val response: Response<T>) : ApiResponse<T>() {
@@ -68,24 +68,29 @@ sealed class ApiResponse<out T> {
 
   companion object {
     /**
-     * ApiResponse error Factory.
-     *
      * [Failure] factory function. Only receives [Throwable] as an argument.
+     *
+     * @param ex A throwable.
+     *
+     * @return A [ApiResponse.Failure.Exception] based on the throwable.
      */
     fun <T> error(ex: Throwable) = Failure.Exception<T>(ex)
 
     /**
      * ApiResponse Factory.
      *
-     * [f] Create [ApiResponse] from [retrofit2.Response] returning from the block.
+     * @param successCodeRange A success code range for determining the response is successful or failure.
+     * @param [f] Create [ApiResponse] from [retrofit2.Response] returning from the block.
      * If [retrofit2.Response] has no errors, it creates [ApiResponse.Success].
      * If [retrofit2.Response] has errors, it creates [ApiResponse.Failure.Error].
      * If [retrofit2.Response] has occurred exceptions, it creates [ApiResponse.Failure.Exception].
+     *
+     * @return An [ApiResponse] model which holds information about the response.
      */
     @JvmSynthetic
-    fun <T> of(
+    inline fun <T> of(
       successCodeRange: IntRange = SandwichInitializer.successCodeRange,
-      f: () -> Response<T>
+      crossinline f: () -> Response<T>
     ): ApiResponse<T> = try {
       val response = f()
       if (response.raw().code in successCodeRange) {
@@ -97,7 +102,13 @@ sealed class ApiResponse<out T> {
       Failure.Exception(ex)
     }
 
-    /** returns a status code from the [Response]. */
+    /**
+     * Returns a status code from the [Response].
+     *
+     * @param response A network callback response.
+     *
+     * @return A [StatusCode] from the network callback response.
+     */
     fun <T> getStatusCodeFromResponse(response: Response<T>): StatusCode {
       return StatusCode.values().find { it.code == response.code() }
         ?: StatusCode.Unknown

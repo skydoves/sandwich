@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@file:JvmName("DataSourceTransformer")
+@file:JvmMultifileClass
+
 package com.skydoves.sandwich
 
 /** changes an instance of the [DataSource] interface to the [ResponseDataSource]. */
