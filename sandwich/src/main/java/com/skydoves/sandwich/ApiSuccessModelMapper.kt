@@ -17,17 +17,17 @@
 package com.skydoves.sandwich
 
 /**
- * A mapper interface for mapping [ApiResponse.Failure.Error] response as custom [V] instance model.
+ * A mapper interface for mapping [ApiResponse.Success] response as custom [V] instance model.
  *
- * @see [ApiErrorModelMapper](https://github.com/skydoves/sandwich#apierrormodelmapper)
+ * @see [ApiSuccessModelMapper](https://github.com/skydoves/sandwich#apierrormodelmapper)
  */
-fun interface ApiErrorModelMapper<V> {
+fun interface ApiSuccessModelMapper<V> {
 
   /**
-   * maps the [ApiResponse.Failure.Error] to the [V] using the mapper.
+   * maps the [ApiResponse.Success] to the [V] using the mapper.
    *
-   * @param apiErrorResponse The [ApiResponse.Failure.Error] error response from the network request.
-   * @return A custom [V] error response model.
+   * @param apiErrorResponse The [ApiResponse.Success] error response from the network request.
+   * @return A custom [V] success response model.
    */
-  fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): V
+  fun map(apiErrorResponse: ApiResponse.Success<*>): V
 }
