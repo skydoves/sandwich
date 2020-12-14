@@ -16,9 +16,18 @@
 
 package com.skydoves.sandwich
 
-/** An interface for mapping [ApiResponse.Failure.Error] to custom error response model. */
+/**
+ * A mapper interface for mapping [ApiResponse.Failure.Error] response as custom [V] instance.
+ *
+ * @see [ApiErrorModelMapper](https://github.com/skydoves/sandwich#apierrormodelmapper)
+ */
 fun interface ApiErrorModelMapper<V> {
 
-  /** maps [ApiResponse.Failure.Error] to another model. */
+  /**
+   * maps the [ApiResponse.Failure.Error] to the [V] using the mapper.
+   *
+   * @param apiErrorResponse The [ApiResponse.Failure.Error] error response from the network request.
+   * @return A customized [V] error response.
+   */
   fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): V
 }
