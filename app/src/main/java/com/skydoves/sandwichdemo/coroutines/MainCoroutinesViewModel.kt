@@ -32,6 +32,7 @@ import com.skydoves.sandwich.onSuccess
 import com.skydoves.sandwich.toResponseDataSource
 import com.skydoves.sandwichdemo.model.Poster
 import com.skydoves.sandwichdemo.network.ErrorEnvelopeMapper
+import com.skydoves.sandwichdemo.network.SuccessPosterMapper
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 
@@ -61,6 +62,10 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
             // handle the case when the API request gets a success response.
             onSuccess {
               Timber.d("$data")
+
+              map(SuccessPosterMapper) {
+                Timber.d("The first post is: \n$this")
+              }
             }
               // handle the case when the API request gets a error response.
               // e.g. internal server error.

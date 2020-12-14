@@ -232,7 +232,7 @@ fun <T> ApiResponse<T>.toLiveData(): LiveData<T> {
  *
  * @return A mapped custom [V] error response model.
  */
-fun <T, V> ApiResponse.Success<T>.map(mapper: ApiSuccessModelMapper<V>): V {
+fun <T, V> ApiResponse.Success<T>.map(mapper: ApiSuccessModelMapper<T, V>): V {
   return mapper.map(this)
 }
 
@@ -246,7 +246,7 @@ fun <T, V> ApiResponse.Success<T>.map(mapper: ApiSuccessModelMapper<V>): V {
  */
 @JvmSynthetic
 inline fun <T, V> ApiResponse.Success<T>.map(
-  mapper: ApiSuccessModelMapper<V>,
+  mapper: ApiSuccessModelMapper<T, V>,
   crossinline onResult: V.() -> Unit
 ) {
   onResult(mapper.map(this))

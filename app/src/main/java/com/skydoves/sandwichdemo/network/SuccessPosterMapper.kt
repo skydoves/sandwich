@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich
+package com.skydoves.sandwichdemo.network
 
-/**
- * A mapper interface for mapping [ApiResponse.Success] response as a custom [V] instance model.
- *
- * @see [ApiSuccessModelMapper](https://github.com/skydoves/sandwich#apierrormodelmapper)
- */
-fun interface ApiSuccessModelMapper<T, V> {
+import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.ApiSuccessModelMapper
+import com.skydoves.sandwichdemo.model.Poster
 
-  /**
-   * maps the [ApiResponse.Success] to the [V] using the mapper.
-   *
-   * @param apiErrorResponse The [ApiResponse.Success] error response from the network request.
-   * @return A custom [V] success response model.
-   */
-  fun map(apiErrorResponse: ApiResponse.Success<T>): V
+object SuccessPosterMapper : ApiSuccessModelMapper<List<Poster>, Poster?> {
+
+  override fun map(apiErrorResponse: ApiResponse.Success<List<Poster>>): Poster? {
+    return apiErrorResponse.data?.first()
+  }
 }
