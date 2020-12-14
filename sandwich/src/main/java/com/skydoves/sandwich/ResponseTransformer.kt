@@ -25,13 +25,16 @@ import retrofit2.Call
 import retrofit2.Callback
 
 /**
- * Asynchronously send the request and notify [ApiResponse] of its response or if an error
- * occurred talking to the server, creating the request, or processing the response.
+ * Requests asynchronously and executes the lambda that receives [ApiResponse] as a result.
+ *
+ * @param onResult An lambda that receives [ApiResponse] as a result.
+ *
+ * @return The original [Call].
  */
 @JvmSynthetic
 inline fun <T> Call<T>.request(
   crossinline onResult: (response: ApiResponse<T>) -> Unit
-) = apply {
+): Call<T> = apply {
   enqueue(getCallbackFromOnResult(onResult))
 }
 
@@ -42,12 +45,15 @@ inline fun <T> Call<T>.request(
 inline fun <T> Call<T>.combineDataSource(
   dataSource: DataSource<T>,
   crossinline onResult: (response: ApiResponse<T>) -> Unit
-): DataSource<T> {
-  dataSource.combine(this, getCallbackFromOnResult(onResult))
-  return dataSource
-}
+): DataSource<T> = dataSource.combine(this, getCallbackFromOnResult(onResult))
 
-/** get a response callback from onResult unit. */
+/**
+ * Returns a response callback from an onResult lambda.
+ *
+ * @param onResult A lambda that would be executed when the request finished.
+ *
+ * @return A [Callback] will be executed.
+ */
 @PublishedApi
 @JvmSynthetic
 internal inline fun <T> getCallbackFromOnResult(
@@ -65,8 +71,11 @@ internal inline fun <T> getCallbackFromOnResult(
 }
 
 /**
- * A scope function for handling success response [ApiResponse.Success] a unit
- * block of code within the context of the response.
+ * A function that would be executed for handling successful responses if the request succeeds.
+ *
+ * @param onResult The receiver function that receiving [ApiResponse.Success] if the request succeeds.
+ *
+ * @return The original [ApiResponse].
  */
 @JvmSynthetic
 inline fun <T> ApiResponse<T>.onSuccess(
@@ -79,8 +88,11 @@ inline fun <T> ApiResponse<T>.onSuccess(
 }
 
 /**
- * A suspend scope function for handling success response [ApiResponse.Success] a unit
- * block of code within the context of the response.
+ * A suspension function that would be executed for handling successful responses if the request succeeds.
+ *
+ * @param onResult The receiver function that receiving [ApiResponse.Success] if the request succeeds.
+ *
+ * @return The original [ApiResponse].
  */
 @JvmSynthetic
 @SuspensionFunction
@@ -94,8 +106,11 @@ suspend inline fun <T> ApiResponse<T>.suspendOnSuccess(
 }
 
 /**
- * A scope function for handling failure response [ApiResponse.Failure] a unit
- * block of code within the context of the response.
+ * A function that would be executed for handling error responses if the request failed or get an exception.
+ *
+ * @param onResult The receiver function that receiving [ApiResponse.Failure] if the request failed or get an exception.
+ *
+ * @return The original [ApiResponse].
  */
 @JvmSynthetic
 inline fun <T> ApiResponse<T>.onFailure(
@@ -108,8 +123,11 @@ inline fun <T> ApiResponse<T>.onFailure(
 }
 
 /**
- * A suspend scope function for handling failure response [ApiResponse.Failure] a unit
- * block of code within the context of the response.
+ * A suspension function that would be executed for handling error responses if the request failed or get an exception.
+ *
+ * @param onResult The receiver function that receiving [ApiResponse.Failure] if the request failed or get an exception.
+ *
+ * @return The original [ApiResponse].
  */
 @JvmSynthetic
 @SuspensionFunction
@@ -123,8 +141,11 @@ suspend inline fun <T> ApiResponse<T>.suspendOnFailure(
 }
 
 /**
- * A scope function for handling error response [ApiResponse.Failure.Error] a unit
- * block of code within the context of the response.
+ * A scope function that would be executed for handling error responses if the request failed.
+ *
+ * @param onResult The receiver function that receiving [ApiResponse.Failure.Exception] if the request failed.
+ *
+ * @return The original [ApiResponse].
  */
 @JvmSynthetic
 inline fun <T> ApiResponse<T>.onError(
@@ -137,8 +158,11 @@ inline fun <T> ApiResponse<T>.onError(
 }
 
 /**
- * A suspend scope function for handling error response [ApiResponse.Failure.Error] a unit
- * block of code within the context of the response.
+ * A suspension scope function that would be executed for handling error responses if the request failed.
+ *
+ * @param onResult The receiver function that receiving [ApiResponse.Failure.Exception] if the request failed.
+ *
+ * @return The original [ApiResponse].
  */
 @JvmSynthetic
 @SuspensionFunction
@@ -152,8 +176,11 @@ suspend inline fun <T> ApiResponse<T>.suspendOnError(
 }
 
 /**
- * A scope function for handling exception response [ApiResponse.Failure.Exception] a unit
- * block of code within the context of the response.
+ * A scope function that would be executed for handling exception responses if the request get an exception.
+ *
+ * @param onResult The receiver function that receiving [ApiResponse.Failure.Exception] if the request get an exception.
+ *
+ * @return The original [ApiResponse].
  */
 @JvmSynthetic
 inline fun <T> ApiResponse<T>.onException(
@@ -166,8 +193,11 @@ inline fun <T> ApiResponse<T>.onException(
 }
 
 /**
- * A suspend scope function for handling exception response [ApiResponse.Failure.Exception] a unit
- * block of code within the context of the response.
+ * A suspension scope function that would be executed for handling exception responses if the request get an exception.
+ *
+ * @param onResult The receiver function that receiving [ApiResponse.Failure.Exception] if the request get an exception.
+ *
+ * @return The original [ApiResponse].
  */
 @JvmSynthetic
 @SuspensionFunction
@@ -180,7 +210,11 @@ suspend inline fun <T> ApiResponse<T>.suspendOnException(
   return this
 }
 
-/** Returns a [LiveData] contains data if the response is a success.*/
+/**
+ * Returns a [LiveData] which contains successful data if the response is a [ApiResponse.Success].
+ *
+ * @return An observable [LiveData] which contains successful data.
+ */
 fun <T> ApiResponse<T>.toLiveData(): LiveData<T> {
   val liveData = MutableLiveData<T>()
   if (this is ApiResponse.Success) {
@@ -189,12 +223,25 @@ fun <T> ApiResponse<T>.toLiveData(): LiveData<T> {
   return liveData
 }
 
-/** Map [ApiResponse.Failure.Error] to a customized error response model. */
+/**
+ * Maps [ApiResponse.Failure.Error] to a customized error response model.
+ *
+ * @param converter A mapper interface for mapping [ApiResponse.Failure.Error] response as custom [V] instance model.
+ *
+ * @return A mapped custom [V] error response model.
+ */
 fun <T, V> ApiResponse.Failure.Error<T>.map(converter: ApiErrorModelMapper<V>): V {
   return converter.map(this)
 }
 
-/** Map [ApiResponse.Failure.Error] to a customized error response model. */
+/**
+ * Maps [ApiResponse.Failure.Error] to a customized error response model with a receiver scope lambda.
+ *
+ * @param converter A mapper interface for mapping [ApiResponse.Failure.Error] response as custom [V] instance model.
+ * @param onResult A receiver scope lambda of the mapped custom [V] error response model.
+ *
+ * @return A mapped custom [V] error response model.
+ */
 @JvmSynthetic
 inline fun <T, V> ApiResponse.Failure.Error<T>.map(
   converter: ApiErrorModelMapper<V>,
@@ -203,8 +250,16 @@ inline fun <T, V> ApiResponse.Failure.Error<T>.map(
   onResult(converter.map(this))
 }
 
-/** A message from the [ApiResponse.Failure.Error]. */
+/**
+ * Returns an error message from the [ApiResponse.Failure.Error] that consists of the status and error response.
+ *
+ * @return An error message from the [ApiResponse.Failure.Error].
+ */
 fun <T> ApiResponse.Failure.Error<T>.message(): String = toString()
 
-/** A message from the [ApiResponse.Failure.Exception]. */
+/**
+ * Returns an error message from the [ApiResponse.Failure.Exception] that consists of the localized message.
+ *
+ * @return An error message from the [ApiResponse.Failure.Exception].
+ */
 fun <T> ApiResponse.Failure.Exception<T>.message(): String = toString()
