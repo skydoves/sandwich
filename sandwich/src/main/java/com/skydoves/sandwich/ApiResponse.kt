@@ -28,9 +28,15 @@ import retrofit2.Response
 sealed class ApiResponse<out T> {
 
   /**
-   * API Success response class from retrofit.
+   * API Success response class from OkHttp request call.
+   * The [data] is a nullable generic type. (A response without data)
    *
-   * [data] is optional. (There are responses without data)
+   * @param response A response from OkHttp request call.
+   *
+   * @property statusCode [StatusCode] is Hypertext Transfer Protocol (HTTP) response status codes.
+   * @property headers The header fields of a single HTTP message.
+   * @property raw The raw response from the HTTP client.
+   * @property data The de-serialized response body of a successful data.
    */
   data class Success<T>(val response: Response<T>) : ApiResponse<T>() {
     val statusCode: StatusCode = getStatusCodeFromResponse(response)
@@ -41,17 +47,22 @@ sealed class ApiResponse<out T> {
   }
 
   /**
-   * API Failure response class.
-   *
-   * ## API format error case.
-   * API communication conventions do not match or applications need to handle errors.
-   * e.g., internal server error.
-   *
-   * ## API Exception error case.
-   * Gets called when an unexpected exception occurs while creating the request or processing the response in client.
-   * e.g., network connection error.
+   * API Failure response class from OkHttp request call.
+   * There are two subtypes: [ApiResponse.Failure.Error] and [ApiResponse.Failure.Exception].
    */
   sealed class Failure<T> {
+    /**
+     * API response error case.
+     * API communication conventions do not match or applications need to handle errors.
+     * e.g., internal server error.
+     *
+     * @param response A response from OkHttp request call.
+     *
+     * @property statusCode [StatusCode] is Hypertext Transfer Protocol (HTTP) response status codes.
+     * @property headers The header fields of a single HTTP message.
+     * @property raw The raw response from the HTTP client.
+     * @property errorBody The [ResponseBody] can be consumed only once.
+     */
     data class Error<T>(val response: Response<T>) : ApiResponse<T>() {
       val statusCode: StatusCode = getStatusCodeFromResponse(response)
       val headers: Headers = response.headers()
@@ -60,6 +71,15 @@ sealed class ApiResponse<out T> {
       override fun toString(): String = "[ApiResponse.Failure.Error-$statusCode](errorResponse=$response)"
     }
 
+    /**
+     * API request Exception case.
+     * An unexpected exception occurs while creating requests or processing an response in the client side.
+     * e.g., network connection error.
+     *
+     * @param exception An throwable exception.
+     *
+     * @property message The localized message from the exception.
+     */
     data class Exception<T>(val exception: Throwable) : ApiResponse<T>() {
       val message: String? = exception.localizedMessage
       override fun toString(): String = "[ApiResponse.Failure.Exception](message=$message)"
