@@ -16,7 +16,7 @@
 
 package com.skydoves.sandwichdemo.network
 
-import com.skydoves.sandwich.coroutines.CoroutinesDataSourceCallAdapterFactory
+import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
 import com.skydoves.sandwichdemo.coroutines.DisneyCoroutinesService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -40,8 +40,8 @@ object NetworkModule {
     // .addCallAdapterFactory(DataSourceCallAdapterFactory())
 
     /* coroutines supports */
-    // addCallAdapterFactory(CoroutinesResponseCallAdapterFactory())
-    .addCallAdapterFactory(CoroutinesDataSourceCallAdapterFactory())
+    .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory())
+//    .addCallAdapterFactory(CoroutinesDataSourceCallAdapterFactory())
     .build()
 
   val disneyService: DisneyService = retrofit.create(DisneyService::class.java)

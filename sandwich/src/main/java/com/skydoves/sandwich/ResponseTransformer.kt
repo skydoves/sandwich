@@ -23,8 +23,10 @@ package com.skydoves.sandwich
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.skydoves.sandwich.coroutines.SuspensionFunction
+import okhttp3.Headers
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * Requests asynchronously and executes the lambda that receives [ApiResponse] as a result.
@@ -277,6 +279,42 @@ inline fun <T, V> ApiResponse.Failure.Error<T>.map(
   crossinline onResult: V.() -> Unit
 ) {
   onResult(mapper.map(this))
+}
+
+/**
+ * Merges multiple [ApiResponse]s as one [ApiResponse] depending on the policy, [ApiResponseMergePolicy].
+ * The default policy is [ApiResponseMergePolicy.IGNORE_FAILURE].
+ *
+ * @param responses Responses for merging as one [ApiResponse].
+ * @param mergePolicy A policy for merging response data depend on the success or not.
+ *
+ * @return [ApiResponse] that depends on the [ApiResponseMergePolicy].
+ */
+@JvmSynthetic
+fun <T> ApiResponse<List<T>>.merge(
+  vararg responses: ApiResponse<List<T>>,
+  mergePolicy: ApiResponseMergePolicy = ApiResponseMergePolicy.IGNORE_FAILURE
+): ApiResponse<List<T>> {
+  val apiResponses = responses.toList().toMutableList()
+  apiResponses.add(0, this)
+
+  var apiResponse: ApiResponse.Success<List<T>> =
+    ApiResponse.Success(Response.success(mutableListOf(), Headers.headersOf()))
+
+  val data: MutableList<T> = mutableListOf()
+
+  for (response in apiResponses) {
+    if (response is ApiResponse.Success) {
+      response.data?.let { data.addAll(it) }
+      apiResponse = ApiResponse.Success(
+        Response.success(data, response.headers)
+      )
+    } else if (mergePolicy === ApiResponseMergePolicy.PREFERRED_FAILURE) {
+      return response
+    }
+  }
+
+  return apiResponse
 }
 
 /**
