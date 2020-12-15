@@ -33,7 +33,7 @@ ext.versions = [
     okhttpVersion    : '4.9.0',
 
     // coroutines
-    coroutinesVersion: '1.4.0',
+    coroutinesVersion: '1.4.1',
 
     // unit test
     junit            : '4.13.1',
