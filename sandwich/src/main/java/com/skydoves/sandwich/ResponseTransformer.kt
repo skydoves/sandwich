@@ -64,7 +64,7 @@ internal inline fun <T> getCallbackFromOnResult(
   crossinline onResult: (response: ApiResponse<T>) -> Unit
 ): Callback<T> {
   return object : Callback<T> {
-    override fun onResponse(call: Call<T>, response: retrofit2.Response<T>) {
+    override fun onResponse(call: Call<T>, response: Response<T>) {
       onResult(ApiResponse.of { response })
     }
 
