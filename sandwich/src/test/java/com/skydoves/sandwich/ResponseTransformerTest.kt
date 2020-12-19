@@ -154,4 +154,77 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
 
     verify(observer).onChanged("foo")
   }
+
+  @Test
+  fun mapOnSuccessTest() {
+    var poster: Poster? = null
+    val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
+    val apiResponse = ApiResponse.of { response }
+
+    apiResponse.onSuccess {
+      poster = map(SuccessPosterMapper)
+    }
+
+    assertThat(poster, `is`(Poster.create()))
+  }
+
+  @Test
+  fun mapOnSuccessWithLambdaTest() {
+    var poster: Poster? = null
+    val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
+    val apiResponse = ApiResponse.of { response }
+
+    apiResponse.onSuccess {
+      map(SuccessPosterMapper) {
+        poster = this
+      }
+    }
+
+    assertThat(poster, `is`(Poster.create()))
+  }
+
+  @Test
+  fun mapOnErrorTest() {
+    var onResult: String? = null
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+
+    apiResponse.onError {
+      val errorEnvelope = map(ErrorEnvelopeMapper)
+      onResult = errorEnvelope.code.toString()
+    }
+
+    assertThat(onResult, `is`("404"))
+  }
+
+  @Test
+  fun mapOnErrorWithLambdaTest() {
+    var onResult: String? = null
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+
+    apiResponse.onError {
+      map(ErrorEnvelopeMapper) {
+        onResult = code.toString()
+      }
+    }
+
+    assertThat(onResult, `is`("404"))
+  }
 }
