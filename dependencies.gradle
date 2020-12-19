@@ -39,6 +39,7 @@ ext.versions = [
     junit            : '4.13.1',
     runner           : '1.2.0',
     junitExt         : '1.1.1',
+    archCore         : '2.0.0',
     mockito          : '3.5.13',
     mockitoKotlin    : '2.2.0',
     robolectric      : '4.4',

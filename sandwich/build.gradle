@@ -47,6 +47,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$versions.mockito"
     testImplementation "org.mockito:mockito-inline:$versions.mockito"
     testImplementation "org.robolectric:robolectric:$versions.robolectric"
+    testImplementation "androidx.arch.core:core-testing:$versions.archCore"
     testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttpVersion"
     testImplementation "com.squareup.retrofit2:converter-gson:$versions.retrofitVersion"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockitoKotlin"

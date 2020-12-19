@@ -16,6 +16,9 @@
 
 package com.skydoves.sandwich
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
+import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
@@ -23,15 +26,20 @@ import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.mockito.Mockito.verify
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @RunWith(JUnit4::class)
 class ResponseTransformerTest : ApiAbstract<DisneyService>() {
+
+  @get:Rule
+  var instantExecutorRule = InstantTaskExecutorRule()
 
   private lateinit var service: DisneyService
 
@@ -133,5 +141,17 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     }.collect {
       assertThat(it, `is`(true))
     }
+  }
+
+  @Test
+  @Suppress("UNCHECKED_CAST")
+  fun toLiveDataTest() {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.of { response }
+    val observer = mock<Observer<String>>()
+
+    apiResponse.toLiveData().observeForever(observer)
+
+    verify(observer).onChanged("foo")
   }
 }
