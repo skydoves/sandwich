@@ -32,20 +32,21 @@
 Add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.0.6"
+    implementation "com.github.skydoves:sandwich:1.0.7"
 }
 ```
 
 ## Usecase
 You can reference the use cases of this library in the below repositories.
+- [Pokedex](https://github.com/skydoves/pokedex) - 🗡️ Android Pokedex using Hilt, Motion, Coroutines, Flow, Jetpack (Room, ViewModel, LiveData) based on MVVM architecture.
 - [DisneyMotions](https://github.com/skydoves/DisneyMotions) - 🦁 A Disney app using transformation motions based on MVVM (ViewModel, Coroutines, LiveData, Room, Repository, Koin) architecture.
 - [MarvelHeroes](https://github.com/skydoves/marvelheroes) - ❤️ A sample Marvel heroes application based on MVVM (ViewModel, Coroutines, LiveData, Room, Repository, Koin)  architecture.
 - [TheMovies2](https://github.com/skydoves/TheMovies2) - 🎬 A demo project using The Movie DB based on Kotlin MVVM architecture and material design & animations.
 
 ## Usage
 ### ApiResponse
-`ApiResponse` is an interface of the retrofit response for handling data and error response with useful extensions. <br>
-We can get `ApiResponse` using the scope extension `request` from the `Call`.
+`ApiResponse` is an interface for constructing standard responses from the response of the retrofit call. It provides useful extensions for handling data from the successful and error response. <br>
+We can get `ApiResponse` using the scope extension `request` from the `Call`. The below example is the basic of getting an `ApiResponse` from an instance of the `Call`.
 
 ```kotlin
 interface DisneyService {
@@ -54,7 +55,7 @@ interface DisneyService {
 }
 
 val disneyService = retrofit.create(DisneyService::class.java)
-// Asynchronously request REST call and get an ApiResponse model.
+// Request REST call asynchronously and get an ApiResponse model.
 disneyService.fetchDisneyPosterList().request { response ->
       when (response) {
         is ApiResponse.Success -> {
@@ -79,8 +80,8 @@ disneyService.fetchDisneyPosterList().request { response ->
     }
 ```
 #### ApiResponse.Success
-API success response class from retrofit. <br>
-We can get the response body data, `StatusCode`, `Headers` and etc from the `ApiResponse.Success`.
+A standard API Success response class from OkHttp request calls.<br>
+We can get the body data of the response, `StatusCode`, `Headers` and etc from the `ApiResponse.Success`.
 
 ```kotlin
 val data: List<Poster>? = response.data
@@ -90,7 +91,7 @@ val headers: Headers = response.headers
 
 #### ApiResponse.Failure.Error
 API format does not match or applications need to handle errors.
-e.g. Internal server error.
+e.g., Internal server error.
 
 ```kotlin
 val errorBody: ResponseBody? = response.errorBody
@@ -99,13 +100,13 @@ val headers: Headers = response.headers
 ```
 
 #### ApiResponse.Failure.Exception 
-Gets called when an unexpected exception occurs while creating the request or processing <br>the response in client. e.g. Network connection error.
+An unexpected exception occurs while creating the request or processing the response in the client. e.g., Network connection error.
 
 ### ApiResponse Extensions
-We can handle response cases more handy using extensions.
+We can handle response cases conveniently using extensions.
 
 #### onSuccess, onError, onException
-We can use these scope functions to the `ApiResponse`, it reduces the usage of the if/when clause.
+We can use these scope functions to the `ApiResponse`, we can reduce the usage of the if/when clause.
 ```kotlin
 disneyService.fetchDisneyPosterList().request { response ->
       response.onSuccess {
@@ -120,8 +121,8 @@ disneyService.fetchDisneyPosterList().request { response ->
 ```
 
 #### suspendOnSuccess, suspendOnError, suspendOnException
-We can use suspension extensions for using suspend functions inside the lambda.<br>
-In this case, we should use with [CoroutinesResponseCallAdapterFactory](https://github.com/skydoves/sandwich#apiresponse-with-coroutines).
+We can use suspension extensions for using suspend functions inside the scope.<br>
+In this case, we can use with [CoroutinesResponseCallAdapterFactory](https://github.com/skydoves/sandwich#apiresponse-with-coroutines).
 ```kotlin
 flow {
   val response = disneyService.fetchDisneyPosterList()
@@ -135,9 +136,32 @@ flow {
 }.flowOn()
 ```
 
+### Mapper
+Mapper can be used useful if we want to map the `ApiResponse.Success` or `ApiResponse.Failure.Error` to our custom model in our `ApiResponse` extension scopes.
 
-### ApiErrorModelMapper
-We can map `ApiResponse.Failure.Error` model to our customized error model using the mapper.
+#### ApiSuccessModelMapper
+We can map the `ApiResponse.Success` model to our custom model using the mapper extension.
+```kotlin
+object SuccessPosterMapper : ApiSuccessModelMapper<List<Poster>, Poster?> {
+
+  override fun map(apiErrorResponse: ApiResponse.Success<List<Poster>>): Poster? {
+    return apiErrorResponse.data?.first()
+  }
+}
+
+// Maps the success response data.
+val poster: Poster? = map(SuccessPosterMapper)
+
+or
+
+// Maps the success response data using a lambda.
+map(SuccessPosterMapper) { poster ->
+  livedata.post(poster) // we can use the `this` keyword instead.
+}
+```
+
+#### ApiErrorModelMapper
+We can map the `ApiResponse.Failure.Error` model to our custom error model using the mapper extension.
 
 ```kotlin
 data class ErrorEnvelope(
@@ -152,9 +176,9 @@ object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorEnvelope> {
   }
 }
 
-// hadling the error response case.
+// Maps the error response.
 response.onError {
-  // map the ApiResponse.Failure.Error to a customized error model using the mapper.
+  // Maps the ApiResponse.Failure.Error to a custom error model using the mapper.
   map(ErrorEnvelopeMapper) {
      val code = this.code
      val message = this.message
@@ -229,9 +253,28 @@ class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
     }
   }
 }
-
 ```
 
+### Merge
+We can merge multiple `ApiResponse`s as one `ApiResponse` depending on the policy.<br>
+The below example is merging three `ApiResponse` as one if every three `ApiResponse`s are successful.
+
+```kotlin
+disneyService.fetchDisneyPosterList(page = 0).merge(
+   disneyService.fetchDisneyPosterList(page = 1),
+   disneyService.fetchDisneyPosterList(page = 2),
+   mergePolicy = ApiResponseMergePolicy.PREFERRED_FAILURE
+).onSuccess { 
+  // handle response data..
+}.onError { 
+  // handle error..
+}
+```
+
+#### ApiResponseMergePolicy
+`ApiResponseMergePolicy` is a policy for merging response data depend on the success or not.
+- IGNORE_FAILURE: Regardless of the merging order, ignores failure responses in the responses.
+- PREFERRED_FAILURE (default): Regardless of the merging order, prefers failure responses in the responses.
 
 ### ResponseDataSource
 ResponseDataSource is an implementation of the `DataSource` interface. <br>
