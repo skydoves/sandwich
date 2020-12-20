@@ -184,6 +184,22 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
+  fun mapSuspendSuccessWithLambdaTest() = runBlocking {
+    val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
+    val apiResponse = ApiResponse.of { response }
+
+    flow {
+      apiResponse.suspendOnSuccess {
+        suspendMap(SuccessPosterMapper) {
+          emit(this)
+        }
+      }
+    }.collect {
+      assertThat(it, `is`(Poster.create()))
+    }
+  }
+
+  @Test
   fun mapOnErrorTest() {
     var onResult: String? = null
     val retrofit: Retrofit = Retrofit.Builder()
@@ -226,5 +242,29 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     }
 
     assertThat(onResult, `is`("404"))
+  }
+
+  @Test
+  fun mapSuspendErrorWithLambdaTest() = runBlocking {
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+
+    flow {
+      apiResponse.suspendOnError {
+        suspendMap(ErrorEnvelopeMapper) {
+          emit(code.toString())
+        }
+      }
+    }.collect {
+      assertThat(it, `is`("404"))
+    }
   }
 }
