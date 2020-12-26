@@ -24,7 +24,7 @@ import com.skydoves.sandwich.ApiResponse
  * [ApiResponse.suspendOnError], [ApiResponse.suspendOnException] transformers.
  * This operator can be applied globally as a singleton instance, or on each [ApiResponse] one by one.
  */
-abstract class ApiResponseSuspendOperator<T> {
+abstract class ApiResponseSuspendOperator<T> : SandwichOperator {
 
   /**
    * Operates the [ApiResponse.Success] for handling successful responses if the request succeeds.
