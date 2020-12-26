@@ -20,7 +20,7 @@ package com.skydoves.sandwich
  * ApiResponseOperator operates on an [ApiResponse] and return an [ApiResponse].
  * This allows you to handle success and error response instead of the [ApiResponse.onSuccess],
  * [ApiResponse.onError], [ApiResponse.onException] transformers.
- * This operator can be applied Globally as a singleton instance, or on each [ApiResponse] one by one.
+ * This operator can be applied globally as a singleton instance, or on each [ApiResponse] one by one.
  */
 abstract class ApiResponseOperator<T> {
 

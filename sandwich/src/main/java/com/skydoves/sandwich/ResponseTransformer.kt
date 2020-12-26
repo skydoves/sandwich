@@ -364,3 +364,36 @@ fun <T> ApiResponse.Failure.Error<T>.message(): String = toString()
  * @return An error message from the [ApiResponse.Failure.Exception].
  */
 fun <T> ApiResponse.Failure.Exception<T>.message(): String = toString()
+
+/**
+ * Operates on an [ApiResponse] and return an [ApiResponse].
+ * This allows you to handle success and error response instead of the [ApiResponse.onSuccess],
+ * [ApiResponse.onError], [ApiResponse.onException] transformers.
+ */
+@JvmSynthetic
+inline fun <reified T, V : ApiResponseOperator<T>> ApiResponse<T>.operator(
+  apiResponseOperator: V
+): ApiResponse<T> = apply {
+  when (this) {
+    is ApiResponse.Success -> apiResponseOperator.onSuccess(this)
+    is ApiResponse.Failure.Error -> apiResponseOperator.onError(this)
+    is ApiResponse.Failure.Exception -> apiResponseOperator.onException(this)
+  }
+}
+
+/**
+ * Operates on an [ApiResponse] and return an [ApiResponse] which should be handled in the suspension scope.
+ * This allows you to handle success and error response instead of the [ApiResponse.onSuccess],
+ * [ApiResponse.onError], [ApiResponse.onException] transformers.
+ */
+@JvmSynthetic
+@SuspensionFunction
+suspend inline fun <reified T, V : ApiResponseSuspendOperator<T>> ApiResponse<T>.suspendOperator(
+  apiResponseOperator: V
+): ApiResponse<T> = apply {
+  when (this) {
+    is ApiResponse.Success -> apiResponseOperator.onSuccess(this)
+    is ApiResponse.Failure.Error -> apiResponseOperator.onError(this)
+    is ApiResponse.Failure.Exception -> apiResponseOperator.onException(this)
+  }
+}
