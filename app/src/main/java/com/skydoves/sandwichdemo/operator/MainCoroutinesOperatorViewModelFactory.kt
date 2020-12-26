@@ -14,28 +14,19 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+package com.skydoves.sandwichdemo.operator
 
-package com.skydoves.sandwichdemo
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.skydoves.sandwichdemo.network.NetworkModule
 
-import android.app.Application
-import timber.log.Timber
+@Suppress("UNCHECKED_CAST")
+class MainCoroutinesOperatorViewModelFactory : ViewModelProvider.Factory {
 
-class SandwichDemoApp : Application() {
-
-  override fun onCreate() {
-    super.onCreate()
-
-    sandwichApp = this
-
-    if (BuildConfig.DEBUG) {
-      Timber.plant(Timber.DebugTree())
+  override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    if (modelClass.isAssignableFrom(MainCoroutinesOperatorViewModel::class.java)) {
+      return MainCoroutinesOperatorViewModel(NetworkModule.disneyCoroutinesService) as T
     }
-  }
-
-  companion object {
-    @JvmStatic
-    lateinit var sandwichApp: Application
-      private set
+    throw IllegalArgumentException("Unknown ViewModel class.")
   }
 }

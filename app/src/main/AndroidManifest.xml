@@ -15,6 +15,7 @@
     android:theme="@style/AppTheme"
     tools:ignore="AllowBackup">
     <activity android:name=".MainActivity" />
+    <activity android:name=".operator.MainCoroutinesOperatorActivity" />
     <activity android:name=".coroutines.MainCoroutinesActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
