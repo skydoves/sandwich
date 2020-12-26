@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich
+package com.skydoves.sandwich.operators
+
+import com.skydoves.sandwich.ApiResponse
 
 /**
  * ApiResponseOperator operates on an [ApiResponse] and return an [ApiResponse].

@@ -19,10 +19,10 @@ package com.skydoves.sandwichdemo.operator
 import android.app.Application
 import android.widget.Toast
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.ApiResponseSuspendOperator
 import com.skydoves.sandwich.StatusCode
 import com.skydoves.sandwich.map
 import com.skydoves.sandwich.message
+import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
 import com.skydoves.sandwichdemo.network.ErrorEnvelopeMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

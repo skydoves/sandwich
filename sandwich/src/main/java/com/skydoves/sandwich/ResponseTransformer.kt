@@ -23,6 +23,8 @@ package com.skydoves.sandwich
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.skydoves.sandwich.coroutines.SuspensionFunction
+import com.skydoves.sandwich.operators.ApiResponseOperator
+import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
 import okhttp3.Headers
 import retrofit2.Call
 import retrofit2.Callback
@@ -383,8 +385,8 @@ inline fun <reified T, V : ApiResponseOperator<T>> ApiResponse<T>.operator(
 
 /**
  * Operates on an [ApiResponse] and return an [ApiResponse] which should be handled in the suspension scope.
- * This allows you to handle success and error response instead of the [ApiResponse.onSuccess],
- * [ApiResponse.onError], [ApiResponse.onException] transformers.
+ * This allows you to handle success and error response instead of the [ApiResponse.suspendOnSuccess],
+ * [ApiResponse.suspendOnError], [ApiResponse.suspendOnException] transformers.
  */
 @JvmSynthetic
 @SuspensionFunction
