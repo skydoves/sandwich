@@ -18,6 +18,11 @@
 
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.operators.ApiResponseOperator
+import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import okhttp3.Headers
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -94,7 +99,7 @@ sealed class ApiResponse<out T> {
      *
      * @return A [ApiResponse.Failure.Exception] based on the throwable.
      */
-    fun <T> error(ex: Throwable) = Failure.Exception<T>(ex)
+    fun <T> error(ex: Throwable) = Failure.Exception<T>(ex).operate()
 
     /**
      * ApiResponse Factory.
@@ -120,6 +125,25 @@ sealed class ApiResponse<out T> {
       }
     } catch (ex: Exception) {
       Failure.Exception(ex)
+    }.operate()
+
+    /**
+     * Operates if there is a global [SandwichOperator] which operates on [ApiResponse]s globally on each response
+     * and returns the target [ApiResponse].
+     *
+     * @return [ApiResponse] A target [ApiResponse].
+     */
+    @PublishedApi
+    @Suppress("UNCHECKED_CAST")
+    internal fun <T> ApiResponse<T>.operate() = apply {
+      val globalOperator = SandwichInitializer.sandwichOperator ?: return@apply
+      if (globalOperator is ApiResponseOperator<*>) {
+        operator(globalOperator as ApiResponseOperator<T>)
+      } else if (globalOperator is ApiResponseSuspendOperator<*>) {
+        GlobalScope.launch(Dispatchers.IO) {
+          suspendOperator(globalOperator as ApiResponseSuspendOperator<T>)
+        }
+      }
     }
 
     /**

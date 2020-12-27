@@ -373,7 +373,7 @@ fun <T> ApiResponse.Failure.Exception<T>.message(): String = toString()
  * [ApiResponse.onError], [ApiResponse.onException] transformers.
  */
 @JvmSynthetic
-inline fun <reified T, V : ApiResponseOperator<T>> ApiResponse<T>.operator(
+fun <T, V : ApiResponseOperator<T>> ApiResponse<T>.operator(
   apiResponseOperator: V
 ): ApiResponse<T> = apply {
   when (this) {
@@ -390,7 +390,7 @@ inline fun <reified T, V : ApiResponseOperator<T>> ApiResponse<T>.operator(
  */
 @JvmSynthetic
 @SuspensionFunction
-suspend inline fun <reified T, V : ApiResponseSuspendOperator<T>> ApiResponse<T>.suspendOperator(
+suspend fun <T, V : ApiResponseSuspendOperator<T>> ApiResponse<T>.suspendOperator(
   apiResponseOperator: V
 ): ApiResponse<T> = apply {
   when (this) {
