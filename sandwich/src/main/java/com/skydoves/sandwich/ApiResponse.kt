@@ -99,7 +99,7 @@ sealed class ApiResponse<out T> {
      *
      * @return A [ApiResponse.Failure.Exception] based on the throwable.
      */
-    fun <T> error(ex: Throwable) = Failure.Exception<T>(ex).operate()
+    fun <T> error(ex: Throwable) = Failure.Exception<T>(ex).apply { operate() }
 
     /**
      * ApiResponse Factory.
