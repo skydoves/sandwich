@@ -16,11 +16,14 @@
 
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.operators.SandwichOperator
+
 /** SandwichInitializer is a rules and strategies initializer of the network response. */
 object SandwichInitializer {
 
   /**
    * determines the success code range of network responses.
+   *
    * if a network request is successful and the response code is in the [successCodeRange],
    * its response will be a [ApiResponse.Success].
    *
@@ -29,4 +32,16 @@ object SandwichInitializer {
    * */
   @JvmStatic
   var successCodeRange: IntRange = 200..299
+
+  /**
+   * A global Operator that operates on [ApiResponse]s globally on each response.
+   *
+   * [ApiResponseOperator] which allows you to handle success and error response instead of
+   * the [ApiResponse.onSuccess], [ApiResponse.onError], [ApiResponse.onException] transformers.
+   * [ApiResponseSuspendOperator] can be used for suspension scope.
+   *
+   * Via setting a [sandwichOperator], we don't need to set operator for every [ApiResponse].
+   */
+  @JvmStatic
+  var sandwichOperator: SandwichOperator? = null
 }
