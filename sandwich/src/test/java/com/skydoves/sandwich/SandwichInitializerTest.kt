@@ -17,7 +17,8 @@
 package com.skydoves.sandwich
 
 import org.hamcrest.CoreMatchers
-import org.hamcrest.MatcherAssert
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.Is.`is`
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -45,17 +46,41 @@ class SandwichInitializerTest {
     val successResponse = Response.success("foo")
     val apiResponse =
       ApiResponse.of { successResponse }
-    MatcherAssert.assertThat(
+    assertThat(
       apiResponse,
       CoreMatchers.instanceOf(ApiResponse.Failure.Error::class.java)
     )
 
     val errorResponse = apiResponse as ApiResponse.Failure.Error
-    MatcherAssert.assertThat(
+    assertThat(
       errorResponse.message(),
       CoreMatchers.`is`(
         "[ApiResponse.Failure.Error-${errorResponse.statusCode}](errorResponse=${errorResponse.response})"
       )
     )
+  }
+
+  @Test
+  fun globalOperatorTest() {
+    var onSuccess = false
+    var onError = false
+    var onException = false
+
+    SandwichInitializer.sandwichOperator = TestApiResponseOperator<Any>(
+      onSuccess = { onSuccess = true },
+      onError = { onError = true },
+      onException = { onException = true }
+    )
+
+    val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
+    ApiResponse.of(200..299) { response }
+    assertThat(onSuccess, `is`(true))
+
+    val successResponse = Response.success("foo")
+    ApiResponse.of { successResponse }
+    assertThat(onError, `is`(true))
+
+    ApiResponse.error<Poster>(Throwable())
+    assertThat(onException, `is`(true))
   }
 }
