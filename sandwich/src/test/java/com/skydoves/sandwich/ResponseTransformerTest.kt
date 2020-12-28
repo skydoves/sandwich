@@ -267,4 +267,106 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       assertThat(it, `is`("404"))
     }
   }
+
+  @Test
+  fun operatorTest() {
+    var onSuccess = false
+    val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
+    val apiResponse = ApiResponse.of { response }
+    apiResponse.operator(
+      TestApiResponseOperator(
+        onSuccess = { onSuccess = true },
+        onError = {},
+        onException = {}
+      )
+    )
+
+    assertThat(onSuccess, `is`(true))
+
+    var onError = false
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiError = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    apiError.operator(
+      TestApiResponseOperator(
+        onSuccess = {},
+        onError = { onError = true },
+        onException = {}
+      )
+    )
+
+    assertThat(onError, `is`(true))
+
+    var onException = false
+    val apiException = ApiResponse.error<Poster>(Throwable())
+    apiException.operator(
+      TestApiResponseOperator(
+        onSuccess = {},
+        onError = {},
+        onException = { onException = true }
+      )
+    )
+
+    assertThat(onException, `is`(true))
+  }
+
+  @Test
+  fun suspendOperatorTest() = runBlocking {
+    val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
+    val apiResponse = ApiResponse.of { response }
+
+    flow {
+      apiResponse.suspendOperator(
+        TestApiResponseSuspendOperator(
+          onSuccess = { emit("100") },
+          onError = {},
+          onException = {}
+        )
+      )
+    }.collect {
+      assertThat(it, `is`("100"))
+    }
+
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiError = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    flow {
+      apiError.suspendOperator(
+        TestApiResponseSuspendOperator(
+          onSuccess = {},
+          onError = { emit("404") },
+          onException = {}
+        )
+      )
+    }.collect {
+      assertThat(it, `is`("404"))
+    }
+
+    val apiException = ApiResponse.error<Poster>(Throwable())
+    flow {
+      apiException.suspendOperator(
+        TestApiResponseSuspendOperator(
+          onSuccess = {},
+          onError = {},
+          onException = { emit("201") }
+        )
+      )
+    }.collect {
+      assertThat(it, `is`("201"))
+    }
+  }
 }
