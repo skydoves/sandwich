@@ -329,7 +329,7 @@ class SandwichDemoApp : Application() {
 ```
 
 #### GlobalResponseOperator
-The `GlobalResponseOperator` can extends any operator (`ApiResponseSuspendOperator` or `ApiResponseOperator`)
+The `GlobalResponseOperator` can extend any operator (`ApiResponseSuspendOperator` or `ApiResponseOperator`)
 ```kotlin
 class GlobalResponseOperator<T> constructor(
   private val application: Application
