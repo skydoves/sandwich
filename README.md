@@ -222,14 +222,181 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
 }
 ```
 
+### Operator
+We can delegate the `onSuccess`, `onError`, `onException` using the `operator` extension and `ApiResponseOperator`. Operator is very useful if we want to handle `ApiResponse`s standardly or reduce the role of the `ViewModel` and `Repository`. Here is an example of standardized error and exception handing.
+
+#### ViewModel
+We can delegate and operate the `CommonResponseOperator` using the `operate` extension.
+```kotlin
+disneyService.fetchDisneyPosterList().operator(
+      CommonResponseOperator(
+        success = { success ->
+          success.data?.let {
+            posterListLiveData.postValue(it)
+          }
+          Timber.d("$success.data")
+        },
+        application = getApplication()
+      )
+    )
+```
+
+#### CommonResponseOperator
+The `CommonResponseOperator` extends `ApiResponseOperator` with the `onSuccess`, `onError`, `onException` override methods. They will be executed depending on the type of the `ApiResponse`.
+```kotlin
+/** A common response operator for handling [ApiResponse]s regardless of its type. */
+class CommonResponseOperator<T> constructor(
+  private val success: suspend (ApiResponse.Success<T>) -> Unit,
+  private val application: Application
+) : ApiResponseOperator<T>() {
+
+  // handle the case when the API request gets a success response.
+  override fun onSuccess(apiResponse: ApiResponse.Success<T>) = success(apiResponse)
+
+  // handle the case when the API request gets a error response.
+  // e.g., internal server error.
+  override fun onError(apiResponse: ApiResponse.Failure.Error<T>) {
+    apiResponse.run {
+      Timber.d(message())
+      
+      // map the ApiResponse.Failure.Error to a customized error model using the mapper.
+      map(ErrorEnvelopeMapper) {
+        Timber.d("[Code: $code]: $message")
+      }
+    }
+  }
+
+  // handle the case when the API request gets a exception response.
+  // e.g., network connection error.
+  override fun onException(apiResponse: ApiResponse.Failure.Exception<T>) {
+    apiResponse.run {
+      Timber.d(message())
+      toast(message())
+    }
+  }
+}
+```
+
+### Operator with coroutines
+If we want to operate and delegate a suspending lambda to the operator, we can use the `suspendOperator` extension and `ApiResponseSuspendOperator` class.
+
+#### ViewModel
+We can use suspending function like `emit` in the `success` lambda.
+```kotlin
+flow {
+  disneyService.fetchDisneyPosterList().suspendOperator(
+      CommonResponseOperator(
+        success = { success ->
+          success.data?.let { emit(it) }
+          Timber.d("$success.data")
+        },
+        application = getApplication()
+      )
+    )
+}.flowOn(Dispatchers.IO).asLiveData()
+```
+
+#### CommonResponseOperator
+The `CommonResponseOperator` extends `ApiResponseSuspendOperator` with suspend override methods.
+```kotlin
+class CommonResponseOperator<T> constructor(
+  private val success: suspend (ApiResponse.Success<T>) -> Unit,
+  private val application: Application
+) : ApiResponseSuspendOperator<T>() {
+
+  // handle the case when the API request gets a success response.
+  override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) = success(apiResponse)
+
+  // skip //
+```
+
+### Global operator
+We can operate an operator globally on each `ApiResponse` using the `SandwichInitializer`. So we don't need to create every instance of the Operators or use dependency injection for handling common operations. Here is an example of handling globally about the `ApiResponse.Failure.Error` and `ApiResponse.Failure.Exception`. We will handle `ApiResponse.Success` manually.
+
+#### Application class
+We can initialize the global operator on the `SandwichInitializer.sandwichOperator`. It is recommended to initialize it in the Application class.
+```kotlin
+class SandwichDemoApp : Application() {
+
+  override fun onCreate() {
+    super.onCreate()
+    
+    // We will handle only the error and exception cases, 
+    // so we don't need to mind the generic type of the operator.
+    SandwichInitializer.sandwichOperator = GlobalResponseOperator<Any>(this)
+
+    // skipp //
+```
+
+#### GlobalResponseOperator
+The `GlobalResponseOperator` can extends any operator (`ApiResponseSuspendOperator` or `ApiResponseOperator`)
+```kotlin
+class GlobalResponseOperator<T> constructor(
+  private val application: Application
+) : ApiResponseSuspendOperator<T>() {
+
+  // The body is empty, because we will handle the success case manually.
+  override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) { }
+
+  // handle the case when the API request gets a error response.
+  // e.g., internal server error.
+  override suspend fun onError(apiResponse: ApiResponse.Failure.Error<T>) {
+    withContext(Dispatchers.Main) {
+      apiResponse.run {
+        Timber.d(message())
+
+        // handling error based on status code.
+        when (statusCode) {
+          StatusCode.InternalServerError -> toast("InternalServerError")
+          StatusCode.BadGateway -> toast("BadGateway")
+          else -> toast("$statusCode(${statusCode.code}): ${message()}")
+        }
+
+        // map the ApiResponse.Failure.Error to a customized error model using the mapper.
+        map(ErrorEnvelopeMapper) {
+          Timber.d("[Code: $code]: $message")
+        }
+      }
+    }
+  }
+
+  // handle the case when the API request gets a exception response.
+  // e.g., network connection error.
+  override suspend fun onException(apiResponse: ApiResponse.Failure.Exception<T>) {
+    withContext(Dispatchers.Main) {
+      apiResponse.run {
+        Timber.d(message())
+        toast(message())
+      }
+    }
+  }
+
+  private fun toast(message: String) {
+    Toast.makeText(application, message, Toast.LENGTH_SHORT).show()
+  }
+}
+```
+
+#### ViewModel
+We don't need to use the `operator` expression. The global operator will be operated automatically, so we should handle only the  `ApiResponse.Success`.
+```kotlin
+flow {
+  disneyService.fetchDisneyPosterList().
+    suspendOnSuccess {
+      data?.let { emit(it) }
+    }
+}.flowOn(Dispatchers.IO).asLiveData()
+```
+
+
 ### Disposable
-We can cancel the executing works using a `disposable()` extension.
+We can cancel executing works using a `disposable()` extension.
 ```kotlin
 val disposable = call.request { response ->
   // skip handling a response //
 }.disposable()
 
-// dispose the executing works
+// dispose executing works
 disposable.dispose()
 ```
 And we can use `CompositeDisposable` for canceling multiple resources at once.

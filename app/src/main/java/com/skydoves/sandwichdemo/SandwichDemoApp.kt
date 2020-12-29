@@ -28,6 +28,8 @@ class SandwichDemoApp : Application() {
 
     sandwichApp = this
 
+//    SandwichInitializer.sandwichOperator = GlobalResponseOperator<Any>(this)
+
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
     }
