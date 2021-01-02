@@ -24,9 +24,9 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
 [![Jitpack](https://jitpack.io/v/skydoves/Sandwich.svg)](https://jitpack.io/#skydoves/Sandwich)
 
-🥪 Sandwich has been downloaded in more than __30k__ Android projects all over the world! <br>
+🥪 Sandwich has been downloaded in more than __40k__ Android projects all over the world! <br>
 
-![screenshot122228908](https://user-images.githubusercontent.com/24237865/101451534-a0641a00-396f-11eb-88a6-e6611319a01d.png)
+<img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224"/>
 
 ### Gradle
 Add a dependency code to your **module**'s `build.gradle` file.
