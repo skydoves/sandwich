@@ -164,6 +164,26 @@ inline fun <T> ApiResponse<T>.onError(
 }
 
 /**
+ * A scope function that would be executed for handling error responses if the request failed with a [ApiErrorModelMapper].
+ * This function receives a [ApiErrorModelMapper] and returns the mapped result into the scope.
+ *
+ * @param mapper The [ApiErrorModelMapper] for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
+ * @param onResult The receiver function that receiving [ApiResponse.Failure.Exception] if the request failed.
+ *
+ * @return The original [ApiResponse].
+ */
+@JvmSynthetic
+inline fun <T, V> ApiResponse<T>.onError(
+  mapper: ApiErrorModelMapper<V>,
+  crossinline onResult: V.() -> Unit
+): ApiResponse<T> {
+  if (this is ApiResponse.Failure.Error) {
+    onResult(map(mapper))
+  }
+  return this
+}
+
+/**
  * A suspension scope function that would be executed for handling error responses if the request failed.
  *
  * @param onResult The receiver function that receiving [ApiResponse.Failure.Exception] if the request failed.
@@ -177,6 +197,27 @@ suspend inline fun <T> ApiResponse<T>.suspendOnError(
 ): ApiResponse<T> {
   if (this is ApiResponse.Failure.Error) {
     onResult(this)
+  }
+  return this
+}
+
+/**
+ * A suspension scope function that would be executed for handling error responses if the request failed with a [ApiErrorModelMapper].
+ * This function receives a [ApiErrorModelMapper] and returns the mapped result into the scope.
+ *
+ * @param mapper The [ApiErrorModelMapper] for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
+ * @param onResult The receiver function that receiving [ApiResponse.Failure.Exception] if the request failed.
+ *
+ * @return The original [ApiResponse].
+ */
+@JvmSynthetic
+@SuspensionFunction
+suspend inline fun <T, V> ApiResponse<T>.suspendOnError(
+  mapper: ApiErrorModelMapper<V>,
+  crossinline onResult: suspend V.() -> Unit
+): ApiResponse<T> {
+  if (this is ApiResponse.Failure.Error) {
+    onResult(map(mapper))
   }
   return this
 }

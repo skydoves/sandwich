@@ -222,6 +222,27 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
+  fun mapOnErrorWithParameterTest() {
+    var onResult: String? = null
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+
+    apiResponse.onError(ErrorEnvelopeMapper) {
+      onResult = code.toString()
+    }
+
+    assertThat(onResult, `is`("404"))
+  }
+
+  @Test
   fun mapOnErrorWithLambdaTest() {
     var onResult: String? = null
     val retrofit: Retrofit = Retrofit.Builder()
@@ -239,6 +260,27 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       map(ErrorEnvelopeMapper) {
         onResult = code.toString()
       }
+    }
+
+    assertThat(onResult, `is`("404"))
+  }
+
+  @Test
+  fun mapOnErrorWithLambdaWithParameterTest() {
+    var onResult: String? = null
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+
+    apiResponse.onError(ErrorEnvelopeMapper) {
+      onResult = code.toString()
     }
 
     assertThat(onResult, `is`("404"))
