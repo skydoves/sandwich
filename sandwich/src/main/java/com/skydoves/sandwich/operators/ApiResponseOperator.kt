@@ -20,8 +20,8 @@ import com.skydoves.sandwich.ApiResponse
 
 /**
  * ApiResponseOperator operates on an [ApiResponse] and return an [ApiResponse].
- * This allows you to handle success and error response instead of the [ApiResponse.onSuccess],
- * [ApiResponse.onError], [ApiResponse.onException] transformers.
+ * This allows you to handle success and error response instead of the [com.skydoves.sandwich.onSuccess],
+ * [com.skydoves.sandwich.onError], [com.skydoves.sandwich.onException] transformers.
  * This operator can be applied globally as a singleton instance, or on each [ApiResponse] one by one.
  */
 abstract class ApiResponseOperator<T> : SandwichOperator {

@@ -128,8 +128,8 @@ sealed class ApiResponse<out T> {
     }.operate()
 
     /**
-     * Operates if there is a global [SandwichOperator] which operates on [ApiResponse]s globally on each response
-     * and returns the target [ApiResponse].
+     * Operates if there is a global [com.skydoves.sandwich.operators.SandwichOperator]
+     * which operates on [ApiResponse]s globally on each response and returns the target [ApiResponse].
      *
      * @return [ApiResponse] A target [ApiResponse].
      */

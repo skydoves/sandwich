@@ -20,8 +20,8 @@ import com.skydoves.sandwich.ApiResponse
 
 /**
  * ApiResponseSuspendOperator operates on an [ApiResponse] which should be handled in the suspension scope.
- * This allows you to handle success and error response instead of the [ApiResponse.suspendOnSuccess],
- * [ApiResponse.suspendOnError], [ApiResponse.suspendOnException] transformers.
+ * This allows you to handle success and error response instead of the [com.skydoves.sandwich.suspendOnSuccess],
+ * [com.skydoves.sandwich.suspendOnError], [com.skydoves.sandwich.suspendOnException] transformers.
  * This operator can be applied globally as a singleton instance, or on each [ApiResponse] one by one.
  */
 abstract class ApiResponseSuspendOperator<T> : SandwichOperator {

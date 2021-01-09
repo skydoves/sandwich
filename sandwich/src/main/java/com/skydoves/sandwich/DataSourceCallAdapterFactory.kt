@@ -37,7 +37,7 @@ class DataSourceCallAdapterFactory : CallAdapter.Factory() {
     returnType: Type,
     annotations: Array<Annotation>,
     retrofit: Retrofit
-  ): CallAdapter<*, *>? {
+  ): CallAdapter<*, *> {
     val enclosingType = returnType as ParameterizedType
     val actualType = enclosingType.actualTypeArguments[0]
     return DataSourceCallAdapter<Type>(actualType)

@@ -36,9 +36,9 @@ object SandwichInitializer {
   /**
    * A global Operator that operates on [ApiResponse]s globally on each response.
    *
-   * [ApiResponseOperator] which allows you to handle success and error response instead of
+   * [com.skydoves.sandwich.operators.ApiResponseOperator] which allows you to handle success and error response instead of
    * the [ApiResponse.onSuccess], [ApiResponse.onError], [ApiResponse.onException] transformers.
-   * [ApiResponseSuspendOperator] can be used for suspension scope.
+   * [com.skydoves.sandwich.operators.ApiResponseSuspendOperator] can be used for suspension scope.
    *
    * Via setting a [sandwichOperator], we don't need to set operator for every [ApiResponse].
    */
