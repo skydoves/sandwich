@@ -77,7 +77,7 @@ internal inline fun <T> getCallbackFromOnResult(
 }
 
 /**
- * A function that would be executed for handling successful responses if the request succeeds.
+ * A scope function that would be executed for handling successful responses if the request succeeds.
  *
  * @param onResult The receiver function that receiving [ApiResponse.Success] if the request succeeds.
  *
@@ -94,7 +94,26 @@ inline fun <T> ApiResponse<T>.onSuccess(
 }
 
 /**
- * A suspension function that would be executed for handling successful responses if the request succeeds.
+ * A scope function that would be executed for handling successful responses if the request succeeds with a [ApiSuccessModelMapper].
+ *
+ * @param mapper The [ApiSuccessModelMapper] for mapping [ApiResponse.Success] response as a custom [V] instance model.
+ * @param onResult The receiver function that receiving [ApiResponse.Success] if the request succeeds.
+ *
+ * @return The original [ApiResponse].
+ */
+@JvmSynthetic
+inline fun <T, V> ApiResponse<T>.onSuccess(
+  mapper: ApiSuccessModelMapper<T, V>,
+  crossinline onResult: V.() -> Unit
+): ApiResponse<T> {
+  if (this is ApiResponse.Success) {
+    onResult(map(mapper))
+  }
+  return this
+}
+
+/**
+ * A suspension scope function that would be executed for handling successful responses if the request succeeds.
  *
  * @param onResult The receiver function that receiving [ApiResponse.Success] if the request succeeds.
  *
@@ -107,6 +126,25 @@ suspend inline fun <T> ApiResponse<T>.suspendOnSuccess(
 ): ApiResponse<T> {
   if (this is ApiResponse.Success) {
     onResult(this)
+  }
+  return this
+}
+
+/**
+ * A suspension scope function that would be executed for handling successful responses if the request succeeds with a [ApiSuccessModelMapper].
+ *
+ * @param mapper The [ApiSuccessModelMapper] for mapping [ApiResponse.Success] response as a custom [V] instance model.
+ * @param onResult The receiver function that receiving [ApiResponse.Success] if the request succeeds.
+ *
+ * @return The original [ApiResponse].
+ */
+@JvmSynthetic
+suspend inline fun <T, V> ApiResponse<T>.suspendOnSuccess(
+  mapper: ApiSuccessModelMapper<T, V>,
+  crossinline onResult: suspend V.() -> Unit
+): ApiResponse<T> {
+  if (this is ApiResponse.Success) {
+    onResult(map(mapper))
   }
   return this
 }
