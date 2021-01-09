@@ -308,9 +308,9 @@ suspend inline fun <T> ApiResponse<T>.suspendOnException(
  */
 @JvmSynthetic
 inline fun <T> ApiResponse<T>.onProcedure(
-  crossinline onSuccess: ApiResponse.Success<T>.() -> Unit = {},
-  crossinline onError: ApiResponse.Failure.Error<T>.() -> Unit = {},
-  crossinline onException: ApiResponse.Failure.Exception<T>.() -> Unit = {}
+  crossinline onSuccess: ApiResponse.Success<T>.() -> Unit,
+  crossinline onError: ApiResponse.Failure.Error<T>.() -> Unit,
+  crossinline onException: ApiResponse.Failure.Exception<T>.() -> Unit
 ): ApiResponse<T> = apply {
   this.onSuccess(onSuccess)
   this.onError(onError)

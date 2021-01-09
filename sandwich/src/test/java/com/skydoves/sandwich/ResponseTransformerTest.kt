@@ -62,6 +62,27 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
+  fun onSuccessInProcedureTest() {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.of { response }
+    var onResult = false
+
+    apiResponse.onProcedure(
+      onSuccess = {
+        onResult = true
+      },
+      onException = {
+        onResult = false
+      },
+      onError = {
+        onResult = false
+      }
+    )
+
+    assertThat(onResult, `is`(true))
+  }
+
+  @Test
   fun suspendOnSuccessTest() = runBlocking {
     val response = Response.success("foo")
     val apiResponse = ApiResponse.of { response }
@@ -70,6 +91,28 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       apiResponse.suspendOnSuccess {
         emit(true)
       }
+    }.collect {
+      assertThat(it, `is`(true))
+    }
+  }
+
+  @Test
+  fun suspendOnSuccessInProcedureTest() = runBlocking {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.of { response }
+
+    flow {
+      apiResponse.suspendOnProcedure(
+        onSuccess = {
+          emit(true)
+        },
+        onError = {
+          emit(false)
+        },
+        onException = {
+          emit(false)
+        }
+      )
     }.collect {
       assertThat(it, `is`(true))
     }
@@ -97,6 +140,34 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
+  fun onErrorInProcedureTest() {
+    var onResult = false
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+
+    apiResponse.onProcedure(
+      onSuccess = {
+        onResult = false
+      },
+      onError = {
+        onResult = true
+      },
+      onException = {
+        onResult = false
+      }
+    )
+    assertThat(onResult, `is`(true))
+  }
+
+  @Test
   fun onSuspendErrorTest() = runBlocking {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
@@ -119,6 +190,36 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
+  fun onSuspendErrorInProcedureTest() = runBlocking {
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+
+    flow {
+      apiResponse.suspendOnProcedure(
+        onSuccess = {
+          emit(false)
+        },
+        onError = {
+          emit(true)
+        },
+        onException = {
+          emit(false)
+        }
+      )
+    }.collect {
+      assertThat(it, `is`(true))
+    }
+  }
+
+  @Test
   fun onExceptionTest() {
     var onResult = false
     val apiResponse = ApiResponse.error<Poster>(Throwable())
@@ -131,6 +232,26 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
+  fun onExceptionInProcedureTest() {
+    var onResult = false
+    val apiResponse = ApiResponse.error<Poster>(Throwable())
+
+    apiResponse.onProcedure(
+      onSuccess = {
+        onResult = false
+      },
+      onError = {
+        onResult = false
+      },
+      onException = {
+        onResult = true
+      }
+    )
+
+    assertThat(onResult, `is`(true))
+  }
+
+  @Test
   fun suspendOnExceptionTest() = runBlocking {
     val apiResponse = ApiResponse.error<Poster>(Throwable())
 
@@ -138,6 +259,27 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       apiResponse.suspendOnException {
         emit(true)
       }
+    }.collect {
+      assertThat(it, `is`(true))
+    }
+  }
+
+  @Test
+  fun suspendOnExceptionInProcedureTest() = runBlocking {
+    val apiResponse = ApiResponse.error<Poster>(Throwable())
+
+    flow {
+      apiResponse.suspendOnProcedure(
+        onSuccess = {
+          emit(false)
+        },
+        onError = {
+          emit(false)
+        },
+        onException = {
+          emit(true)
+        }
+      )
     }.collect {
       assertThat(it, `is`(true))
     }
