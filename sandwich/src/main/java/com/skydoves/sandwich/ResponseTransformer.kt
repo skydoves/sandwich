@@ -296,6 +296,51 @@ suspend inline fun <T> ApiResponse<T>.suspendOnException(
 }
 
 /**
+ * A scope function that will be executed for handling successful, error, exception responses.
+ *  This function receives and handles [ApiResponse.onSuccess], [ApiResponse.onError],
+ *  and [ApiResponse.onException] in one scope.
+ *
+ * @param onSuccess A scope function that would be executed for handling successful responses if the request succeeds.
+ * @param onError A scope function that would be executed for handling error responses if the request failed.
+ * @param onException A scope function that would be executed for handling exception responses if the request get an exception.
+ *
+ *  @return The original [ApiResponse].
+ */
+@JvmSynthetic
+inline fun <T> ApiResponse<T>.onProcedure(
+  crossinline onSuccess: ApiResponse.Success<T>.() -> Unit = {},
+  crossinline onError: ApiResponse.Failure.Error<T>.() -> Unit = {},
+  crossinline onException: ApiResponse.Failure.Exception<T>.() -> Unit = {}
+): ApiResponse<T> = apply {
+  this.onSuccess(onSuccess)
+  this.onError(onError)
+  this.onException(onException)
+}
+
+/**
+ * A suspension scope function that will be executed for handling successful, error, exception responses.
+ *  This function receives and handles [ApiResponse.onSuccess], [ApiResponse.onError],
+ *  and [ApiResponse.onException] in one scope.
+ *
+ * @param onSuccess A suspension scope function that would be executed for handling successful responses if the request succeeds.
+ * @param onError A suspension scope function that would be executed for handling error responses if the request failed.
+ * @param onException A suspension scope function that would be executed for handling exception responses if the request get an exception.
+ *
+ *  @return The original [ApiResponse].
+ */
+@JvmSynthetic
+@SuspensionFunction
+suspend inline fun <T> ApiResponse<T>.suspendOnProcedure(
+  crossinline onSuccess: suspend ApiResponse.Success<T>.() -> Unit,
+  crossinline onError: suspend ApiResponse.Failure.Error<T>.() -> Unit,
+  crossinline onException: suspend ApiResponse.Failure.Exception<T>.() -> Unit
+): ApiResponse<T> = apply {
+  this.suspendOnSuccess(onSuccess)
+  this.suspendOnError(onError)
+  this.suspendOnException(onException)
+}
+
+/**
  * Returns a [LiveData] which contains successful data if the response is a [ApiResponse.Success].
  *
  * @return An observable [LiveData] which contains successful data.

@@ -25,9 +25,7 @@ import androidx.lifecycle.viewModelScope
 import com.skydoves.sandwich.StatusCode
 import com.skydoves.sandwich.map
 import com.skydoves.sandwich.message
-import com.skydoves.sandwich.onError
-import com.skydoves.sandwich.onException
-import com.skydoves.sandwich.suspendOnSuccess
+import com.skydoves.sandwich.suspendOnProcedure
 import com.skydoves.sandwichdemo.mapper.ErrorEnvelopeMapper
 import com.skydoves.sandwichdemo.model.Poster
 import kotlinx.coroutines.Dispatchers
@@ -47,35 +45,37 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
       emitSource(
         flow {
           disneyService.fetchDisneyPosterList()
-            // handle the case when the API request gets a success response.
-            .suspendOnSuccess {
-              Timber.d("$data")
+            .suspendOnProcedure(
+              // handle the case when the API request gets a success response.
+              onSuccess = {
+                Timber.d("$data")
 
-              data?.let { emit(it) }
-            }
-            // handle the case when the API request gets a error response.
-            // e.g., internal server error.
-            .onError {
-              Timber.d(message())
+                data?.let { emit(it) }
+              },
+              // handle the case when the API request gets a error response.
+              // e.g., internal server error.
+              onError = {
+                Timber.d(message())
 
-              // handling error based on status code.
-              when (statusCode) {
-                StatusCode.InternalServerError -> toastLiveData.postValue("InternalServerError")
-                StatusCode.BadGateway -> toastLiveData.postValue("BadGateway")
-                else -> toastLiveData.postValue("$statusCode(${statusCode.code}): ${message()}")
+                // handling error based on status code.
+                when (statusCode) {
+                  StatusCode.InternalServerError -> toastLiveData.postValue("InternalServerError")
+                  StatusCode.BadGateway -> toastLiveData.postValue("BadGateway")
+                  else -> toastLiveData.postValue("$statusCode(${statusCode.code}): ${message()}")
+                }
+
+                // map the ApiResponse.Failure.Error to a customized error model using the mapper.
+                map(ErrorEnvelopeMapper) {
+                  Timber.d("[Code: $code]: $message")
+                }
+              },
+              // handle the case when the API request gets a exception response.
+              // e.g., network connection error.
+              onException = {
+                Timber.d(message())
+                toastLiveData.postValue(message())
               }
-
-              // map the ApiResponse.Failure.Error to a customized error model using the mapper.
-              map(ErrorEnvelopeMapper) {
-                Timber.d("[Code: $code]: $message")
-              }
-            }
-            // handle the case when the API request gets a exception response.
-            // e.g., network connection error.
-            .onException {
-              Timber.d(message())
-              toastLiveData.postValue(message())
-            }
+            )
         }.flowOn(Dispatchers.IO).asLiveData()
       )
     }
