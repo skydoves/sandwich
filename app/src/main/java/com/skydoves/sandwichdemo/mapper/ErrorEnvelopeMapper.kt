@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwichdemo.network
+package com.skydoves.sandwichdemo.mapper
 
 import com.skydoves.sandwich.ApiErrorModelMapper
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.message
 import com.skydoves.sandwichdemo.model.ErrorEnvelope
 
+/**
+ * A mapper object for mapping [ApiResponse.Failure.Error] response as a custom [ErrorEnvelope] model.
+ *
+ * @see [ApiErrorModelMapper](https://github.com/skydoves/sandwich#apierrormodelmapper)
+ */
 object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorEnvelope> {
 
   override fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): ErrorEnvelope {

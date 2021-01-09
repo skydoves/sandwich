@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwichdemo.network
+package com.skydoves.sandwichdemo.mapper
 
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ApiSuccessModelMapper
 import com.skydoves.sandwichdemo.model.Poster
 
+/**
+ * A mapper object for mapping [ApiResponse.Success] response data as [Poster] model.
+ *
+ * @see [ApiSuccessModelMapper](https://github.com/skydoves/sandwich#apierrormodelmapper)
+ */
 object SuccessPosterMapper : ApiSuccessModelMapper<List<Poster>, Poster?> {
 
   override fun map(apiErrorResponse: ApiResponse.Success<List<Poster>>): Poster? {

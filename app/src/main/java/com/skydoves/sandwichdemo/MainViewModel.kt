@@ -28,9 +28,9 @@ import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.onSuccess
 import com.skydoves.sandwich.toResponseDataSource
+import com.skydoves.sandwichdemo.mapper.ErrorEnvelopeMapper
 import com.skydoves.sandwichdemo.model.Poster
 import com.skydoves.sandwichdemo.network.DisneyService
-import com.skydoves.sandwichdemo.network.ErrorEnvelopeMapper
 import timber.log.Timber
 
 class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
