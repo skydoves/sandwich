@@ -455,7 +455,7 @@ fun <T> ApiResponse<List<T>>.merge(
   vararg responses: ApiResponse<List<T>>,
   mergePolicy: ApiResponseMergePolicy = ApiResponseMergePolicy.IGNORE_FAILURE
 ): ApiResponse<List<T>> {
-  val apiResponses = responses.toList().toMutableList()
+  val apiResponses = responses.toMutableList()
   apiResponses.add(0, this)
 
   var apiResponse: ApiResponse.Success<List<T>> =
