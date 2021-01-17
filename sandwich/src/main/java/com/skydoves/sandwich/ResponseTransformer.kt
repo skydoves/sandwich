@@ -142,6 +142,7 @@ suspend inline fun <T> ApiResponse<T>.suspendOnSuccess(
  * @return The original [ApiResponse].
  */
 @JvmSynthetic
+@SuspensionFunction
 suspend inline fun <T, V> ApiResponse<T>.suspendOnSuccess(
   mapper: ApiSuccessModelMapper<T, V>,
   crossinline onResult: suspend V.() -> Unit
