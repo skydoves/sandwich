@@ -528,6 +528,21 @@ fun <T> ApiResponse<T>.toLiveData(): LiveData<T> {
 }
 
 /**
+ * Returns a [LiveData] which contains successful data if the response is a [ApiResponse.Success].
+ *
+ * @return An observable [LiveData] which contains successful data.
+ */
+inline fun <T, R> ApiResponse<T>.toLiveData(
+  crossinline transformer: T.() -> R
+): LiveData<R> {
+  val liveData = MutableLiveData<R>()
+  if (this is ApiResponse.Success) {
+    liveData.postValue(data?.transformer())
+  }
+  return liveData
+}
+
+/**
  * Returns a [Flow] which emits successful data if the response is a [ApiResponse.Success] and the data is not null.
  *
  * @return A coroutines [Flow] which emits successful data.

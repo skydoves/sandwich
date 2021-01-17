@@ -582,6 +582,19 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
+  fun toLiveDataWithLambdaTest() {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.of { response }
+    val observer = mock<Observer<String>>()
+
+    apiResponse.toLiveData {
+      "hello, $this"
+    }.observeForever(observer)
+
+    verify(observer).onChanged("hello, foo")
+  }
+
+  @Test
   fun toFlowTest() = runBlocking {
     val response = Response.success("foo")
     val apiResponse = ApiResponse.of { response }
