@@ -595,6 +595,19 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
+  fun toLiveDataWithSuspendTransformerTest() = runBlocking {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.of { response }
+    val observer = mock<Observer<String>>()
+
+    apiResponse.toSuspendLiveData {
+      "hello, $this"
+    }.observeForever(observer)
+
+    verify(observer).onChanged("hello, foo")
+  }
+
+  @Test
   fun toFlowTest() = runBlocking {
     val response = Response.success("foo")
     val apiResponse = ApiResponse.of { response }
@@ -610,6 +623,18 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     val apiResponse = ApiResponse.of { response }
 
     apiResponse.toFlow {
+      "hello, $this"
+    }.collect {
+      assertThat(it, `is`("hello, foo"))
+    }
+  }
+
+  @Test
+  fun toFlowWithSuspendTransformerTest() = runBlocking {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.of { response }
+
+    apiResponse.toSuspendFlow {
       "hello, $this"
     }.collect {
       assertThat(it, `is`("hello, foo"))

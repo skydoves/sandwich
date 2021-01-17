@@ -535,8 +535,28 @@ fun <T> ApiResponse<T>.toLiveData(): LiveData<T> {
  *
  * @return An observable [LiveData] which contains successful data.
  */
+@JvmSynthetic
 inline fun <T, R> ApiResponse<T>.toLiveData(
   crossinline transformer: T.() -> R
+): LiveData<R> {
+  val liveData = MutableLiveData<R>()
+  if (this is ApiResponse.Success) {
+    liveData.postValue(data?.transformer())
+  }
+  return liveData
+}
+
+/**
+ * Returns a [LiveData] which contains transformed data using successful data if the response is a [ApiResponse.Success].
+ *
+ * @param transformer A suspension transformer lambda receives successful data and returns anything.
+ *
+ * @return An observable [LiveData] which contains successful data.
+ */
+@JvmSynthetic
+@SuspensionFunction
+suspend inline fun <T, R> ApiResponse<T>.toSuspendLiveData(
+  crossinline transformer: suspend T.() -> R
 ): LiveData<R> {
   val liveData = MutableLiveData<R>()
   if (this is ApiResponse.Success) {
@@ -566,8 +586,29 @@ fun <T> ApiResponse<T>.toFlow(): Flow<T> {
  *
  * @return A coroutines [Flow] which emits successful data.
  */
+@JvmSynthetic
 inline fun <T, R> ApiResponse<T>.toFlow(
   crossinline transformer: T.() -> R
+): Flow<R> {
+  return if (this is ApiResponse.Success && this.data != null) {
+    flowOf(data.transformer())
+  } else {
+    emptyFlow()
+  }
+}
+
+/**
+ * Returns a [Flow] which contains transformed data using successful data
+ * if the response is a [ApiResponse.Success] and the data is not null.
+ *
+ * @param transformer A suspension transformer lambda receives successful data and returns anything.
+ *
+ * @return A coroutines [Flow] which emits successful data.
+ */
+@JvmSynthetic
+@SuspensionFunction
+suspend inline fun <T, R> ApiResponse<T>.toSuspendFlow(
+  crossinline transformer: suspend T.() -> R
 ): Flow<R> {
   return if (this is ApiResponse.Success && this.data != null) {
     flowOf(data.transformer())
