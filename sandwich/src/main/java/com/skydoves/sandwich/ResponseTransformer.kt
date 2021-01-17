@@ -528,7 +528,9 @@ fun <T> ApiResponse<T>.toLiveData(): LiveData<T> {
 }
 
 /**
- * Returns a [LiveData] which contains successful data if the response is a [ApiResponse.Success].
+ * Returns a [LiveData] which contains transformed data using successful data if the response is a [ApiResponse.Success].
+ *
+ * @param transformer A transformer lambda receives successful data and returns anything.
  *
  * @return An observable [LiveData] which contains successful data.
  */
@@ -550,6 +552,24 @@ inline fun <T, R> ApiResponse<T>.toLiveData(
 fun <T> ApiResponse<T>.toFlow(): Flow<T> {
   return if (this is ApiResponse.Success && this.data != null) {
     flowOf(data)
+  } else {
+    emptyFlow()
+  }
+}
+
+/**
+ * Returns a [Flow] which contains transformed data using successful data
+ * if the response is a [ApiResponse.Success] and the data is not null.
+ *
+ * @param transformer A transformer lambda receives successful data and returns anything.
+ *
+ * @return A coroutines [Flow] which emits successful data.
+ */
+inline fun <T, R> ApiResponse<T>.toFlow(
+  crossinline transformer: T.() -> R
+): Flow<R> {
+  return if (this is ApiResponse.Success && this.data != null) {
+    flowOf(data.transformer())
   } else {
     emptyFlow()
   }

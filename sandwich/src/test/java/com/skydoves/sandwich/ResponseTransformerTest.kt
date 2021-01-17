@@ -582,7 +582,7 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun toLiveDataWithLambdaTest() {
+  fun toLiveDataWithTransformerTest() {
     val response = Response.success("foo")
     val apiResponse = ApiResponse.of { response }
     val observer = mock<Observer<String>>()
@@ -601,6 +601,18 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
 
     apiResponse.toFlow().collect {
       assertThat(it, `is`("foo"))
+    }
+  }
+
+  @Test
+  fun toFlowWithTransformerTest() = runBlocking {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.of { response }
+
+    apiResponse.toFlow {
+      "hello, $this"
+    }.collect {
+      assertThat(it, `is`("hello, foo"))
     }
   }
 }
