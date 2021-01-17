@@ -25,6 +25,9 @@ import androidx.lifecycle.MutableLiveData
 import com.skydoves.sandwich.coroutines.SuspensionFunction
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flowOf
 import okhttp3.Headers
 import retrofit2.Call
 import retrofit2.Callback
@@ -341,19 +344,6 @@ suspend inline fun <T> ApiResponse<T>.suspendOnProcedure(
 }
 
 /**
- * Returns a [LiveData] which contains successful data if the response is a [ApiResponse.Success].
- *
- * @return An observable [LiveData] which contains successful data.
- */
-fun <T> ApiResponse<T>.toLiveData(): LiveData<T> {
-  val liveData = MutableLiveData<T>()
-  if (this is ApiResponse.Success) {
-    liveData.postValue(data)
-  }
-  return liveData
-}
-
-/**
  * Maps [ApiResponse.Success] to a customized success response model.
  *
  * @param mapper A mapper interface for mapping [ApiResponse.Success] response as a custom [V] instance model.
@@ -521,5 +511,31 @@ suspend fun <T, V : ApiResponseSuspendOperator<T>> ApiResponse<T>.suspendOperato
     is ApiResponse.Success -> apiResponseOperator.onSuccess(this)
     is ApiResponse.Failure.Error -> apiResponseOperator.onError(this)
     is ApiResponse.Failure.Exception -> apiResponseOperator.onException(this)
+  }
+}
+
+/**
+ * Returns a [LiveData] which contains successful data if the response is a [ApiResponse.Success].
+ *
+ * @return An observable [LiveData] which contains successful data.
+ */
+fun <T> ApiResponse<T>.toLiveData(): LiveData<T> {
+  val liveData = MutableLiveData<T>()
+  if (this is ApiResponse.Success) {
+    liveData.postValue(data)
+  }
+  return liveData
+}
+
+/**
+ * Returns a [Flow] which emits successful data if the response is a [ApiResponse.Success] and the data is not null.
+ *
+ * @return A coroutines [Flow] which emits successful data.
+ */
+fun <T> ApiResponse<T>.toFlow(): Flow<T> {
+  return if (this is ApiResponse.Success && this.data != null) {
+    flowOf(data)
+  } else {
+    emptyFlow()
   }
 }

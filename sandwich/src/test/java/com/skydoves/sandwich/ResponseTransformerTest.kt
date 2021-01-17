@@ -286,18 +286,6 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  @Suppress("UNCHECKED_CAST")
-  fun toLiveDataTest() {
-    val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
-    val observer = mock<Observer<String>>()
-
-    apiResponse.toLiveData().observeForever(observer)
-
-    verify(observer).onChanged("foo")
-  }
-
-  @Test
   fun mapOnSuccessTest() {
     var poster: Poster? = null
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
@@ -579,6 +567,27 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       )
     }.collect {
       assertThat(it, `is`("201"))
+    }
+  }
+
+  @Test
+  fun toLiveDataTest() {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.of { response }
+    val observer = mock<Observer<String>>()
+
+    apiResponse.toLiveData().observeForever(observer)
+
+    verify(observer).onChanged("foo")
+  }
+
+  @Test
+  fun toFlowTest() = runBlocking {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.of { response }
+
+    apiResponse.toFlow().collect {
+      assertThat(it, `is`("foo"))
     }
   }
 }
