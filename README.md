@@ -217,7 +217,7 @@ map(SuccessPosterMapper) { poster ->
   emit(poster) // we can use the `this` keyword instead of the poster.
 }
 ```
-If we want to get the transformed data from the start in the lambda, we can give the mapper as a parameter for the ``onSuccess` or `suspendOnSuccess`.
+If we want to get the transformed data from the start in the lambda, we can give the mapper as a parameter for the `onSuccess` or `suspendOnSuccess`.
 ```kotlin
 .suspendOnSuccess(SuccessPosterMapper) {
     val poster = this
@@ -285,10 +285,10 @@ class CommonResponseOperator<T> constructor(
   private val application: Application
 ) : ApiResponseOperator<T>() {
 
-  // handle the case when the API request gets a success response.
+  // handles error cases when the API request gets an error response.
   override fun onSuccess(apiResponse: ApiResponse.Success<T>) = success(apiResponse)
 
-  // handle the case when the API request gets a error response.
+  // handles error cases depending on the status code.
   // e.g., internal server error.
   override fun onError(apiResponse: ApiResponse.Failure.Error<T>) {
     apiResponse.run {
@@ -301,7 +301,7 @@ class CommonResponseOperator<T> constructor(
     }
   }
 
-  // handle the case when the API request gets a exception response.
+  // handles exceptional cases when the API request gets an exception response.
   // e.g., network connection error.
   override fun onException(apiResponse: ApiResponse.Failure.Exception<T>) {
     apiResponse.run {
@@ -339,7 +339,7 @@ class CommonResponseOperator<T> constructor(
   private val application: Application
 ) : ApiResponseSuspendOperator<T>() {
 
-  // handle the case when the API request gets a success response.
+  // handles the success case when the API request gets a successful response.
   override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) = success(apiResponse)
 
   // ... //
@@ -356,7 +356,7 @@ class SandwichDemoApp : Application() {
   override fun onCreate() {
     super.onCreate()
     
-    // We will handle only the error and exception cases, 
+    // We will handle only the error and exceptional cases,
     // so we don't need to mind the generic type of the operator.
     SandwichInitializer.sandwichOperator = GlobalResponseOperator<Any>(this)
 
@@ -373,7 +373,7 @@ class GlobalResponseOperator<T> constructor(
   // The body is empty, because we will handle the success case manually.
   override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) { }
 
-  // handle the case when the API request gets a error response.
+  // handles error cases when the API request gets an error response.
   // e.g., internal server error.
   override suspend fun onError(apiResponse: ApiResponse.Failure.Error<T>) {
     withContext(Dispatchers.Main) {
@@ -395,7 +395,7 @@ class GlobalResponseOperator<T> constructor(
     }
   }
 
-  // handle the case when the API request gets a exception response.
+  // handles exceptional cases when the API request gets an exception response.
   // e.g., network connection error.
   override suspend fun onException(apiResponse: ApiResponse.Failure.Exception<T>) {
     withContext(Dispatchers.Main) {
@@ -433,9 +433,9 @@ disneyService.fetchDisneyPosterList(page = 0).merge(
    disneyService.fetchDisneyPosterList(page = 2),
    mergePolicy = ApiResponseMergePolicy.PREFERRED_FAILURE
 ).onSuccess { 
-  // handles response data.
+  // handles the success case when the API request gets a successful response.
 }.onError { 
-  // handles error.
+  // handles error cases when the API request gets an error response.
 }
 ```
 
@@ -451,9 +451,9 @@ posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) 
   emitSource(
     disneyService.fetchDisneyPosterList()
      .onError {
-      // handle the error case
+      // handles error cases when the API request gets an error response.
      }.onException {
-      // handle the exception case
+      // handles exceptional cases when the API request gets an exception response.
      }.toLiveData()) // returns an observable LiveData
 }
 ```
@@ -463,9 +463,9 @@ posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) 
   emitSource(
    disneyService.fetchDisneyPosterList()
     .onError {
-      // handle the error case
+      // handles error cases when the API request gets an error response.
     }.onException {
-      // handle the exception case
+      // handles exceptional cases when the API request gets an exception response.
     }.toLiveData {
       this.onEach { poster -> poster.date = SystemClock.currentThreadTimeMillis() }
     }) // returns an observable LiveData
@@ -476,9 +476,9 @@ We can get a `Flow` that emits successful data if the response is an `ApiRespons
 ```kotlin
 disneyService.fetchDisneyPosterList()
   .onError {
-    // stub error case
+    // handles error cases when the API request gets an error response.
   }.onException {
-    // stub exception case
+    // handles exceptional cases when the API request gets an exception response.
   }.toFlow() // returns a coroutines flow
   .flowOn(Dispatchers.IO)
 ```
@@ -629,12 +629,12 @@ class MainViewModel constructor(
       .joinDisposable(disposable)
       // combine network service to the data source.
       .combine(disneyService.fetchDisneyPosterList()) { response ->
-        // handle the case when the API request gets a success response.
+        // handles the success case when the API request gets a successful response.
         response.onSuccess {
           Timber.d("$data")
           posterListLiveData.postValue(data)
         }
-          // handle the case when the API request gets a error response.
+          // handles error cases when the API request gets an error response.
           // e.g. internal server error.
           .onError {
             Timber.d(message())
@@ -651,7 +651,7 @@ class MainViewModel constructor(
               Timber.d(this.toString())
             }
           }
-          // handle the case when the API request gets a exception response.
+          // handles exceptional cases when the API request gets an exception response.
           // e.g. network connection error.
           .onException {
             Timber.d(message())
