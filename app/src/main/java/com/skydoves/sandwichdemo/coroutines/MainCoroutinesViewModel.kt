@@ -46,30 +46,30 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
         flow {
           disneyService.fetchDisneyPosterList()
             .suspendOnProcedure(
-              // handle the case when the API request gets a success response.
+              // handles the success case when the API request gets a successful response.
               onSuccess = {
                 Timber.d("$data")
 
                 data?.let { emit(it) }
               },
-              // handle the case when the API request gets a error response.
+              // handles error cases when the API request gets an error response.
               // e.g., internal server error.
               onError = {
                 Timber.d(message())
 
-                // handling error based on status code.
+                // handles error cases depending on the status code.
                 when (statusCode) {
                   StatusCode.InternalServerError -> toastLiveData.postValue("InternalServerError")
                   StatusCode.BadGateway -> toastLiveData.postValue("BadGateway")
                   else -> toastLiveData.postValue("$statusCode(${statusCode.code}): ${message()}")
                 }
 
-                // map the ApiResponse.Failure.Error to a customized error model using the mapper.
+                // map the ApiResponse.Failure.Error to our custom error model using the mapper.
                 map(ErrorEnvelopeMapper) {
                   Timber.d("[Code: $code]: $message")
                 }
               },
-              // handle the case when the API request gets a exception response.
+              // handles exceptional cases when the API request gets an exception response.
               // e.g., network connection error.
               onException = {
                 Timber.d(message())

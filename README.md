@@ -71,11 +71,12 @@ val disneyService = retrofit.create(DisneyService::class.java)
 // fetches a model list from the network and getting [ApiResponse] asynchronously.
 disneyService.fetchDisneyPosterList().request { response ->
       when (response) {
+        // handles the success case when the API request gets a successful response.
         is ApiResponse.Success -> {
-          // stub success case
+          posterDao.insertPosterList(response.data)
           livedata.post(response.data)
         }
-        // handles the case when the API request gets an error response.
+        // handles error cases when the API request gets an error response.
         // e.g., internal server error.
         is ApiResponse.Failure.Error -> {
           // stub error case
@@ -88,7 +89,7 @@ disneyService.fetchDisneyPosterList().request { response ->
             else -> toastLiveData.postValue("$statusCode(${statusCode.code}): ${message()}")
           }
         }
-        // handles the case when the API request gets an exception response.
+        // handles exceptional cases when the API request gets an exception response.
         // e.g., network connection error.
         is ApiResponse.Failure.Exception -> {
           // stub exception case
@@ -164,12 +165,13 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
   init {
      val response = disneyService.fetchDisneyPosterList()
      response.onSuccess {
-       // handle the success case
+       // handles the success case when the API request gets a successful response.
+       posterDao.insertPosterList(data)
        posterListLiveData.post(data)
       }.onError {
-       // handle the error case
+       // handles error cases when the API request gets an error response.
       }.onException {
-       // handle the exception case
+       // handles exceptional cases when the API request gets an exception response.
       }
     }
   }
@@ -182,11 +184,12 @@ Generally, we can use this way on the [repository pattern](https://github.com/sk
 flow {
   val response = disneyService.fetchDisneyPosterList()
   response.suspendOnSuccess {
+    posterDao.insertPosterList(data)
     emit(data)
   }.suspendOnError {
-    // stub error case
+    // handles error cases
   }.suspendOnFailure {
-    // stub exception case
+    // handles exceptional cases
   }
 }.flowOn(Dispatchers.IO)
 ```
@@ -214,7 +217,7 @@ map(SuccessPosterMapper) { poster ->
   emit(poster) // we can use the `this` keyword instead of the poster.
 }
 ```
-If we want to get the transformed data from the start in the lambda, we can pass the mapper as a parameter for the `suspendOnSuccess`.
+If we want to get the transformed data from the start in the lambda, we can give the mapper as a parameter for the ``onSuccess` or `suspendOnSuccess`.
 ```kotlin
 .suspendOnSuccess(SuccessPosterMapper) {
     val poster = this
@@ -240,13 +243,19 @@ object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorEnvelope> {
   }
 }
 
-// Maps the error response.
+// Maps an error response.
 response.onError {
-  // Maps the ApiResponse.Failure.Error to a custom error model using the mapper.
+  // Maps an ApiResponse.Failure.Error to a custom error model using the mapper.
   map(ErrorEnvelopeMapper) {
      val code = this.code
      val message = this.message
   }
+}
+```
+If we want to get the transformed data from the start in the lambda, we can give the mapper as a parameter for the `onError` or `suspendOnError`.
+```kotlin
+.suspendOnError(ErrorEnvelopeMapper) {
+    val message = this.message
 }
 ```
 
@@ -424,9 +433,9 @@ disneyService.fetchDisneyPosterList(page = 0).merge(
    disneyService.fetchDisneyPosterList(page = 2),
    mergePolicy = ApiResponseMergePolicy.PREFERRED_FAILURE
 ).onSuccess { 
-  // handle response data..
+  // handles response data.
 }.onError { 
-  // handle error..
+  // handles error.
 }
 ```
 
@@ -436,7 +445,7 @@ disneyService.fetchDisneyPosterList(page = 0).merge(
 - PREFERRED_FAILURE (default): Regardless of the merging order, prefers failure responses in the responses.
 
 ### toLivaData
-We can get a `LivaData` which contains successful data if the response is a `ApiResponse.Success`. If our goal is only getting a LiveData that holds successful data, we can emit the `onSuccess` extension.
+We can get a `LivaData` that contains successful data if the response is an `ApiResponse.Success`. If our goal is only getting a LiveData that holds successful data, we can emit the `onSuccess` extension.
 ```kotlin
 posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
   emitSource(
@@ -448,7 +457,7 @@ posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) 
      }.toLiveData()) // returns an observable LiveData
 }
 ```
-If we want to transform the original data and get a `LiveData` which contains transformed data using successful data if the response is a `ApiResponse.Success`.
+If we want to transform the original data and get a `LiveData` that contains transformed data using successful data if the response is an `ApiResponse.Success`.
 ```kotlin
 posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
   emitSource(
@@ -463,7 +472,7 @@ posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) 
     }
 ```
 ### toFlow
-We can get a `Flow` which emits successful data if the response is a `ApiResponse.Success` and the data is not null.
+We can get a `Flow` that emits successful data if the response is an `ApiResponse.Success` and the data is not null.
 ```kotlin
 disneyService.fetchDisneyPosterList()
   .onError {
@@ -473,7 +482,7 @@ disneyService.fetchDisneyPosterList()
   }.toFlow() // returns a coroutines flow
   .flowOn(Dispatchers.IO)
 ```
-If we want tranform the original data and get a `flow` which contains transformed data using successful data if the response is a `ApiResponse.Success` and the data is not null.
+If we want to transform the original data and get a `flow` that contains transformed data using successful data if the response is an `ApiResponse.Success` and the data is not null.
 ```kotlin
 val response = pokedexClient.fetchPokemonList(page = page)
 response.toFlow { pokemons ->
