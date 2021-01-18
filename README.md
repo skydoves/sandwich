@@ -50,7 +50,7 @@ You can reference the good use cases of this library in the below repositories.
 - [ApiResponse](https://github.com/skydoves/sandwich#apiresponse)
 - [onSuccess, onError, onException](https://github.com/skydoves/sandwich#apiresponse-extensions)
 - [ApiResponse for coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines)
-- [suspendOnSuccess. suspendOnError, suspendOnException](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception)
+- [suspendOnSuccess, suspendOnError, suspendOnException](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception)
 - [Mapper](https://github.com/skydoves/sandwich#mapper)
 - [Operator](https://github.com/skydoves/sandwich#operator), [Operator for coroutines](https://github.com/skydoves/sandwich#operator-with-coroutines), [Global Operator](https://github.com/skydoves/sandwich#global-operator)
 - [Merge](https://github.com/skydoves/sandwich#merge)
