@@ -19,6 +19,9 @@
 <img src="https://user-images.githubusercontent.com/24237865/104847167-deb30880-5921-11eb-8313-e634058b370b.png" width="783" height="406"/>
 </p>
 
+## Why Sandwich?
+Sandwich was invented for constructing the standardized response interface from the network response. We can handle successful data, error response, and an exceptional case intuitively using useful extensions of the interface. So we don't need to design and implement wrapper classes like `Resource` or `Result`, and it helps to reduce our work time and makes focus on only business codes. Sandwich supports [handling error responses globally](https://github.com/skydoves/sandwich#global-operator), [Mapper](https://github.com/skydoves/sandwich#mapper), [Operator](https://github.com/skydoves/sandwich#commonresponseoperator), and great compatibilities like [toLiveData](https://github.com/skydoves/sandwich#tolivadata) or [toFlow](https://github.com/skydoves/sandwich#toflow). Also, we can implement great harmony with [coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines) and [flow](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception) in our projects using this library.
+
 ## Download
 [![Download](https://api.bintray.com/packages/devmagician/maven/sandwich/images/download.svg)](https://bintray.com/devmagician/maven/sandwich/_latestVersion)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
