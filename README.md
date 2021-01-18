@@ -35,7 +35,7 @@ Sandwich was invented for constructing the standardized response interface from 
 Add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.0.8"
+    implementation "com.github.skydoves:sandwich:1.0.9"
 }
 ```
 
