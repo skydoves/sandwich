@@ -46,6 +46,17 @@ You can reference the good use cases of this library in the below repositories.
 - [MarvelHeroes](https://github.com/skydoves/marvelheroes) - ❤️ A sample Marvel heroes application based on MVVM (ViewModel, Coroutines, LiveData, Room, Repository, Koin)  architecture.
 - [TheMovies2](https://github.com/skydoves/TheMovies2) - 🎬 A demo project using The Movie DB based on Kotlin MVVM architecture and material design & animations.
 
+## Table of contents
+- [ApiResponse](https://github.com/skydoves/sandwich#apiresponse)
+- [onSuccess, onError, onException](https://github.com/skydoves/sandwich#apiresponse-extensions)
+- [ApiResponse for coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines)
+- [suspendOnSuccess. suspendOnError, suspendOnException](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception)
+- [Mapper](https://github.com/skydoves/sandwich#mapper)
+- [Operator](https://github.com/skydoves/sandwich#operator), [Operator for coroutines](https://github.com/skydoves/sandwich#operator-with-coroutines), [Global Operator](https://github.com/skydoves/sandwich#global-operator)
+- [Merge](https://github.com/skydoves/sandwich#merge)
+- [toLiveData](https://github.com/skydoves/sandwich#tolivadata). [toFlow](https://github.com/skydoves/sandwich#toflow)
+- [ResponseDataSource](https://github.com/skydoves/sandwich#responsedatasource)
+
 ## Usage
 ### ApiResponse
 `ApiResponse` is an interface for constructing standard responses from the response of the retrofit call. It provides useful extensions for handling successful data and error responses. We can get `ApiResponse` using the scope extension `request` from the `Call`. The below example is the basic of getting an `ApiResponse` from an instance of the `Call`.
@@ -292,7 +303,7 @@ class CommonResponseOperator<T> constructor(
 }
 ```
 
-### Operator with coroutines
+### Operator for coroutines
 If we want to operate and delegate a suspension lambda to the operator, we can use the `suspendOperator` extension and `ApiResponseSuspendOperator` class.
 
 #### ViewModel
