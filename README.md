@@ -20,7 +20,7 @@
 </p>
 
 ## Why Sandwich?
-Sandwich was invented for constructing the standardized response interface from the network response. We can handle successful data, error response, and an exceptional case intuitively using useful extensions of the interface. So we don't need to design and implement wrapper classes like `Resource` or `Result`, and it helps to reduce our work time and makes focus on only business codes. Sandwich supports [handling error responses globally](https://github.com/skydoves/sandwich#global-operator), [Mapper](https://github.com/skydoves/sandwich#mapper), [Operator](https://github.com/skydoves/sandwich#operator), and great compatibilities like [toLiveData](https://github.com/skydoves/sandwich#tolivadata) or [toFlow](https://github.com/skydoves/sandwich#toflow). Also, we can implement great harmony with [coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines) and [flow](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception) in our projects using this library.
+Sandwich was invented for constructing the standardized response interface from the network response. We can handle successful data, error response, and an exceptional case intuitively using useful extensions of the interface. So we don't need to design and implement wrapper classes like `Resource` or `Result`, and it helps to reduce our work time and makes focus on only business codes. Sandwich supports [handling error responses globally](https://github.com/skydoves/sandwich#global-operator), [Mapper](https://github.com/skydoves/sandwich#mapper), [Operator](https://github.com/skydoves/sandwich#operator), and great compatibilities like [toLiveData](https://github.com/skydoves/sandwich#tolivedata) or [toFlow](https://github.com/skydoves/sandwich#toflow). Also, we can implement great harmony with [coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines) and [flow](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception) in our projects using this library.
 
 ## Download
 [![Download](https://api.bintray.com/packages/devmagician/maven/sandwich/images/download.svg)](https://bintray.com/devmagician/maven/sandwich/_latestVersion)
@@ -54,7 +54,7 @@ You can reference the good use cases of this library in the below repositories.
 - [Mapper](https://github.com/skydoves/sandwich#mapper)
 - [Operator](https://github.com/skydoves/sandwich#operator), [Operator for coroutines](https://github.com/skydoves/sandwich#operator-with-coroutines), [Global Operator](https://github.com/skydoves/sandwich#global-operator)
 - [Merge](https://github.com/skydoves/sandwich#merge)
-- [toLiveData](https://github.com/skydoves/sandwich#tolivadata). [toFlow](https://github.com/skydoves/sandwich#toflow)
+- [toLiveData](https://github.com/skydoves/sandwich#tolivedata). [toFlow](https://github.com/skydoves/sandwich#toflow)
 - [ResponseDataSource](https://github.com/skydoves/sandwich#responsedatasource)
 
 ## Usage
@@ -444,8 +444,8 @@ disneyService.fetchDisneyPosterList(page = 0).merge(
 - IGNORE_FAILURE: Regardless of the merging order, ignores failure responses in the responses.
 - PREFERRED_FAILURE (default): Regardless of the merging order, prefers failure responses in the responses.
 
-### toLivaData
-We can get a `LivaData` that contains successful data if the response is an `ApiResponse.Success`. If our goal is only getting a LiveData that holds successful data, we can emit the `onSuccess` extension.
+### toLiveData
+We can get a `LiveData` that contains successful data if the response is an `ApiResponse.Success`. If our goal is only getting a LiveData that holds successful data, we can emit the `onSuccess` extension.
 ```kotlin
 posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
   emitSource(
