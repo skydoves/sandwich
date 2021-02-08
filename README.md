@@ -11,7 +11,7 @@
   <a href="https://android-arsenal.com/api?level=16"><img alt="API" src="https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat"/></a>
   <a href="https://github.com/skydoves/Sandwich/actions"><img alt="Build Status" src="https://github.com/skydoves/Sandwich/workflows/Android%20CI/badge.svg"/></a>
   <a href="https://skydoves.github.io/libraries/sandwich/javadoc/sandwich/com.skydoves.sandwich/index.html"><img alt="Javadoc" src="https://skydoves.github.io/badges/javadoc-sandwich.svg"/></a>
-  <a href="https://proandroiddev.com/handling-network-http-response-of-success-data-and-failure-for-your-android-project-using-sandwich-36db824bd82d"><img alt="Medium" src="https://skydoves.github.io/badges/Story-Medium.svg"/></a>
+  <a href="https://skydoves.medium.com/handling-success-data-and-error-callback-responses-from-a-network-for-android-projects-using-b53a26214cef"><img alt="Medium" src="https://skydoves.github.io/badges/Story-Medium.svg"/></a>
   <a href="https://github.com/skydoves"><img alt="Profile" src="https://skydoves.github.io/badges/skydoves.svg"/></a>
 </p>
 
@@ -20,7 +20,7 @@
 </p>
 
 ## Why Sandwich?
-Sandwich was invented for constructing the standardized response interface from the network response. We can handle successful data, error response, and an exceptional case intuitively using useful extensions of the interface. So we don't need to design and implement wrapper classes like `Resource` or `Result`, and it helps to reduce our work time and makes focus on only business codes. Sandwich supports [handling error responses globally](https://github.com/skydoves/sandwich#global-operator), [Mapper](https://github.com/skydoves/sandwich#mapper), [Operator](https://github.com/skydoves/sandwich#operator), and great compatibilities like [toLiveData](https://github.com/skydoves/sandwich#tolivadata) or [toFlow](https://github.com/skydoves/sandwich#toflow). Also, we can implement great harmony with [coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines) and [flow](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception) in our projects using this library.
+Sandwich was invented for constructing the standardized response interface from the network response. We can handle successful data, error response, and an exceptional case intuitively using useful extensions of the interface. So we don't need to design and implement wrapper classes like `Resource` or `Result`, and it helps to reduce our work time and makes focus on only business codes. Sandwich supports [handling error responses globally](https://github.com/skydoves/sandwich#global-operator), [Mapper](https://github.com/skydoves/sandwich#mapper), [Operator](https://github.com/skydoves/sandwich#operator), and great compatibilities like [toLiveData](https://github.com/skydoves/sandwich#tolivedata) or [toFlow](https://github.com/skydoves/sandwich#toflow). Also, we can implement great harmony with [coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines) and [flow](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception) in our projects using this library.
 
 ## Download
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
@@ -61,7 +61,7 @@ You can reference the good use cases of this library in the below repositories.
 - [Mapper](https://github.com/skydoves/sandwich#mapper)
 - [Operator](https://github.com/skydoves/sandwich#operator), [Operator for coroutines](https://github.com/skydoves/sandwich#operator-with-coroutines), [Global Operator](https://github.com/skydoves/sandwich#global-operator)
 - [Merge](https://github.com/skydoves/sandwich#merge)
-- [toLiveData](https://github.com/skydoves/sandwich#tolivadata). [toFlow](https://github.com/skydoves/sandwich#toflow)
+- [toLiveData](https://github.com/skydoves/sandwich#tolivedata). [toFlow](https://github.com/skydoves/sandwich#toflow)
 - [ResponseDataSource](https://github.com/skydoves/sandwich#responsedatasource)
 
 ## Usage
@@ -451,8 +451,8 @@ disneyService.fetchDisneyPosterList(page = 0).merge(
 - IGNORE_FAILURE: Regardless of the merging order, ignores failure responses in the responses.
 - PREFERRED_FAILURE (default): Regardless of the merging order, prefers failure responses in the responses.
 
-### toLivaData
-We can get a `LivaData` that contains successful data if the response is an `ApiResponse.Success`. If our goal is only getting a LiveData that holds successful data, we can emit the `onSuccess` extension.
+### toLiveData
+We can get a `LiveData` that contains successful data if the response is an `ApiResponse.Success`. If our goal is only getting a LiveData that holds successful data, we can emit the `onSuccess` extension.
 ```kotlin
 posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
   emitSource(
