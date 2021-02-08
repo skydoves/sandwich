@@ -17,7 +17,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'org.jetbrains.dokka'
 
 apply from: "$rootDir/dependencies.gradle"
-apply from: "$rootDir/publish.gradle"
 
 android {
     compileSdkVersion versions.compileSdk
@@ -53,17 +52,5 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockitoKotlin"
 }
 
-dokkaHtml.configure {
-    dokkaSourceSets {
-        named("main") {
-            noAndroidSdkLink.set(false)
-        }
-    }
-}
-
-tasks.withType(Javadoc) {
-    excludes = ['**/*.kt']
-    options.addBooleanOption('Xdoclint:none', true)
-}
-
-apply from: "$rootDir/spotless.gradle"
+apply plugin: "com.vanniktech.maven.publish"
+apply from: '../spotless.gradle'

@@ -19,10 +19,10 @@ ext.versions = [
     versionName      : '1.0.9',
 
     gradleBuildTool  : '4.1.1',
-    spotlessGradle   : '5.8.2',
-    ktlintGradle     : '0.39.0',
-    dokkaGradle      : '1.4.10.2',
-    bintrayPlugin    : '1.8.5',
+    spotlessGradle   : '5.9.0',
+    ktlintGradle     : '0.40.0',
+    dokkaGradle      : '1.4.20',
+    mavenPublish     : '0.13.0',
 
     kotlin           : '1.4.20',
     androidxAppcompat: '1.2.0',
@@ -45,7 +45,7 @@ ext.versions = [
     robolectric      : '4.4',
 
     // for demo
-    googleMaterial   : '1.3.0-alpha03',
+    googleMaterial   : '1.3.0',
     constraintVersion: '2.0.2',
     glideVersion     : '4.11.0',
     baseAdapter      : '0.1.3',
