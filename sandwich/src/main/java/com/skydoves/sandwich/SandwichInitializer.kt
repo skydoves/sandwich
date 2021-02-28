@@ -17,6 +17,7 @@
 package com.skydoves.sandwich
 
 import com.skydoves.sandwich.operators.SandwichOperator
+import okio.Timeout
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -26,6 +27,8 @@ import com.skydoves.sandwich.operators.SandwichOperator
 object SandwichInitializer {
 
   /**
+   * @author skydoves (Jaewoong Eum)
+   *
    * determines the success code range of network responses.
    *
    * if a network request is successful and the response code is in the [successCodeRange],
@@ -38,6 +41,8 @@ object SandwichInitializer {
   var successCodeRange: IntRange = 200..299
 
   /**
+   * @author skydoves (Jaewoong Eum)
+   *
    * A global Operator that operates on [ApiResponse]s globally on each response.
    *
    * [com.skydoves.sandwich.operators.ApiResponseOperator] which allows you to handle success and error response instead of
@@ -48,4 +53,17 @@ object SandwichInitializer {
    */
   @JvmStatic
   var sandwichOperator: SandwichOperator? = null
+
+  /**
+   * @author skydoves (Jaewoong Eum)
+   *
+   * A global [Timeout] for operating the [com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory]
+   * or [com.skydoves.sandwich.coroutines.CoroutinesDataSourceCallAdapterFactory] when API requests.
+   *
+   * Returns a timeout that spans the entire call: resolving DNS, connecting, writing the request
+   * body, server processing, and reading the response body. If the call requires redirects or
+   * retries all must complete within one timeout period.
+   */
+  @JvmStatic
+  var sandwichTimeout: Timeout = Timeout.NONE
 }
