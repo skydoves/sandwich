@@ -76,7 +76,7 @@ class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
             }
           }
           // handle the case when the API request gets a exception response.
-          // e.g. network connection error.
+          // e.g. network connection error, timeout.
           .onException {
             Timber.d(message())
             toastLiveData.postValue(message())

@@ -70,7 +70,7 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
                 }
               },
               // handles exceptional cases when the API request gets an exception response.
-              // e.g., network connection error.
+              // e.g., network connection error, timeout.
               onException = {
                 Timber.d(message())
                 toastLiveData.postValue(message())

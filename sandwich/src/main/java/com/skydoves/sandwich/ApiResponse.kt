@@ -87,7 +87,7 @@ sealed class ApiResponse<out T> {
      *
      * API request Exception case.
      * An unexpected exception occurs while creating requests or processing an response in the client side.
-     * e.g., network connection error.
+     * e.g., network connection error, timeout.
      *
      * @param exception An throwable exception.
      *

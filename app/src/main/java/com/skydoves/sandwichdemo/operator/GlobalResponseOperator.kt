@@ -61,7 +61,7 @@ class GlobalResponseOperator<T> constructor(
   }
 
   // handle the case when the API request gets a exception response.
-  // e.g., network connection error.
+  // e.g., network connection error, timeout.
   override suspend fun onException(apiResponse: ApiResponse.Failure.Exception<T>) {
     withContext(Dispatchers.Main.immediate) {
       apiResponse.run {

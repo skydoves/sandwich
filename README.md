@@ -97,7 +97,7 @@ disneyService.fetchDisneyPosterList().request { response ->
           }
         }
         // handles exceptional cases when the API request gets an exception response.
-        // e.g., network connection error.
+        // e.g., network connection error, timeout.
         is ApiResponse.Failure.Exception -> {
           // stub exception case
         }
@@ -309,7 +309,7 @@ class CommonResponseOperator<T> constructor(
   }
 
   // handles exceptional cases when the API request gets an exception response.
-  // e.g., network connection error.
+  // e.g., network connection error, timeout.
   override fun onException(apiResponse: ApiResponse.Failure.Exception<T>) {
     apiResponse.run {
       Timber.d(message())
@@ -403,7 +403,7 @@ class GlobalResponseOperator<T> constructor(
   }
 
   // handles exceptional cases when the API request gets an exception response.
-  // e.g., network connection error.
+  // e.g., network connection error, timeout.
   override suspend fun onException(apiResponse: ApiResponse.Failure.Exception<T>) {
     withContext(Dispatchers.Main) {
       apiResponse.run {
@@ -659,7 +659,7 @@ class MainViewModel constructor(
             }
           }
           // handles exceptional cases when the API request gets an exception response.
-          // e.g. network connection error.
+          // e.g. network connection error, timeout.
           .onException {
             Timber.d(message())
             toastLiveData.postValue(message())
