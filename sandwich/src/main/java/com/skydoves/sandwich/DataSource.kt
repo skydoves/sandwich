@@ -20,7 +20,11 @@ import com.skydoves.sandwich.disposables.CompositeDisposable
 import retrofit2.Call
 import retrofit2.Callback
 
-/** An abstract interface design for data sources. */
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * An abstract interface design for data sources.
+ */
 interface DataSource<T> {
 
   /** combine a call and a callback to the DataSource. */

@@ -17,6 +17,8 @@
 package com.skydoves.sandwich
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * [ApiResponseMergePolicy] is a policy for merging response data depend on the success or not.
  */
 enum class ApiResponseMergePolicy {

@@ -17,6 +17,8 @@
 package com.skydoves.sandwich
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * [DataRetainPolicy] is a policy for retaining data on the internal storage
  * when the same request is called from [ResponseDataSource].
  */

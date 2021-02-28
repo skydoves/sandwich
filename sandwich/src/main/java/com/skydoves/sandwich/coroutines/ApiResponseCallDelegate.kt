@@ -22,6 +22,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * ApiResponseCallDelegate is a delegate [Call] proxy for handling and transforming normal generic type [T]
+ * as [ApiResponse] that wrapping [T] data from the network responses.
+ */
 internal class ApiResponseCallDelegate<T>(proxy: Call<T>) : CallDelegate<T, ApiResponse<T>>(proxy) {
 
   override fun enqueueImpl(callback: Callback<ApiResponse<T>>) = proxy.enqueue(

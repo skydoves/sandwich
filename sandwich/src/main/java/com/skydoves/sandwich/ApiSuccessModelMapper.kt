@@ -17,6 +17,8 @@
 package com.skydoves.sandwich
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A mapper interface for mapping [ApiResponse.Success] response as a custom [V] instance model.
  *
  * @see [ApiSuccessModelMapper](https://github.com/skydoves/sandwich#apierrormodelmapper)

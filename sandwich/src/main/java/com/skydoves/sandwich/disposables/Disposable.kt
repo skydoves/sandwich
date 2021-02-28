@@ -16,7 +16,11 @@
 
 package com.skydoves.sandwich.disposables
 
-/** A definition for canceling when works should be disposed. */
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * A definition for canceling when works should be disposed.
+ */
 interface Disposable {
 
   /** dispose the resource. */

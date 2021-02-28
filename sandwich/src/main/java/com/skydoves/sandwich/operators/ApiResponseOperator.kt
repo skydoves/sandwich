@@ -19,6 +19,8 @@ package com.skydoves.sandwich.operators
 import com.skydoves.sandwich.ApiResponse
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * ApiResponseOperator operates on an [ApiResponse] and return an [ApiResponse].
  * This allows you to handle success and error response instead of the [com.skydoves.sandwich.onSuccess],
  * [com.skydoves.sandwich.onError], [com.skydoves.sandwich.onException] transformers.

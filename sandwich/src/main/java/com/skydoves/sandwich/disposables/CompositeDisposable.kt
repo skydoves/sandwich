@@ -18,7 +18,11 @@
 
 package com.skydoves.sandwich.disposables
 
-/** A disposable container that can hold onto multiple other disposables. */
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * A disposable container that can hold onto multiple other disposables.
+ */
 class CompositeDisposable {
 
   @Volatile

@@ -28,6 +28,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * ResponseDataSource is an implementation of the [DataSource] interface.
  *
  * Asynchronously send requests and A response data holder from the REST API call.

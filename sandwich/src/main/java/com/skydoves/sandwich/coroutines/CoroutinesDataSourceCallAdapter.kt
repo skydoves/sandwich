@@ -22,6 +22,8 @@ import retrofit2.CallAdapter
 import java.lang.reflect.Type
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * CoroutinesDataSourceCallAdapter is an coroutines call adapter for creating [DataSource] from service method.
  *
  * request API network call asynchronously and returns [DataSource].

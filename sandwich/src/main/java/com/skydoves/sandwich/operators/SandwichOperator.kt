@@ -19,6 +19,8 @@ package com.skydoves.sandwich.operators
 import com.skydoves.sandwich.ApiResponse
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * An interface of Operator which operates on an [ApiResponse] which should be handled.
  */
 interface SandwichOperator

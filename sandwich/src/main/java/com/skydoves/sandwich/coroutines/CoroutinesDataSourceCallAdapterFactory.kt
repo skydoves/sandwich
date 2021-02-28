@@ -24,6 +24,8 @@ import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * CoroutinesDataSourceCallAdapterFactory is an coroutines call adapter factory for creating [DataSource].
  *
  * Adding this class to [Retrofit] allows you to return on [DataSource] from service method.

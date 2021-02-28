@@ -34,6 +34,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Requests asynchronously and executes the lambda that receives [ApiResponse] as a result.
  *
  * @param onResult An lambda that receives [ApiResponse] as a result.
@@ -48,7 +50,9 @@ inline fun <T> Call<T>.request(
 }
 
 /**
- * combine a [DataSource] to the call for processing response data more handy.
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Combines a [DataSource] to the call for processing response data more handy.
  */
 @JvmSynthetic
 inline fun <T> Call<T>.combineDataSource(
@@ -57,6 +61,8 @@ inline fun <T> Call<T>.combineDataSource(
 ): DataSource<T> = dataSource.combine(this, getCallbackFromOnResult(onResult))
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Returns a response callback from an onResult lambda.
  *
  * @param onResult A lambda that would be executed when the request finished.
@@ -80,6 +86,8 @@ internal inline fun <T> getCallbackFromOnResult(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A scope function that would be executed for handling successful responses if the request succeeds.
  *
  * @param onResult The receiver function that receiving [ApiResponse.Success] if the request succeeds.
@@ -97,6 +105,8 @@ inline fun <T> ApiResponse<T>.onSuccess(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A scope function that would be executed for handling successful responses if the request succeeds with a [ApiSuccessModelMapper].
  *
  * @param mapper The [ApiSuccessModelMapper] for mapping [ApiResponse.Success] response as a custom [V] instance model.
@@ -116,6 +126,8 @@ inline fun <T, V> ApiResponse<T>.onSuccess(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A suspension scope function that would be executed for handling successful responses if the request succeeds.
  *
  * @param onResult The receiver function that receiving [ApiResponse.Success] if the request succeeds.
@@ -134,6 +146,8 @@ suspend inline fun <T> ApiResponse<T>.suspendOnSuccess(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A suspension scope function that would be executed for handling successful responses if the request succeeds with a [ApiSuccessModelMapper].
  *
  * @param mapper The [ApiSuccessModelMapper] for mapping [ApiResponse.Success] response as a custom [V] instance model.
@@ -154,6 +168,8 @@ suspend inline fun <T, V> ApiResponse<T>.suspendOnSuccess(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A function that would be executed for handling error responses if the request failed or get an exception.
  *
  * @param onResult The receiver function that receiving [ApiResponse.Failure] if the request failed or get an exception.
@@ -171,6 +187,8 @@ inline fun <T> ApiResponse<T>.onFailure(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A suspension function that would be executed for handling error responses if the request failed or get an exception.
  *
  * @param onResult The receiver function that receiving [ApiResponse.Failure] if the request failed or get an exception.
@@ -189,6 +207,8 @@ suspend inline fun <T> ApiResponse<T>.suspendOnFailure(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A scope function that would be executed for handling error responses if the request failed.
  *
  * @param onResult The receiver function that receiving [ApiResponse.Failure.Exception] if the request failed.
@@ -206,6 +226,8 @@ inline fun <T> ApiResponse<T>.onError(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A scope function that would be executed for handling error responses if the request failed with a [ApiErrorModelMapper].
  * This function receives a [ApiErrorModelMapper] and returns the mapped result into the scope.
  *
@@ -226,6 +248,8 @@ inline fun <T, V> ApiResponse<T>.onError(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A suspension scope function that would be executed for handling error responses if the request failed.
  *
  * @param onResult The receiver function that receiving [ApiResponse.Failure.Exception] if the request failed.
@@ -244,6 +268,8 @@ suspend inline fun <T> ApiResponse<T>.suspendOnError(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A suspension scope function that would be executed for handling error responses if the request failed with a [ApiErrorModelMapper].
  * This function receives a [ApiErrorModelMapper] and returns the mapped result into the scope.
  *
@@ -265,6 +291,8 @@ suspend inline fun <T, V> ApiResponse<T>.suspendOnError(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A scope function that would be executed for handling exception responses if the request get an exception.
  *
  * @param onResult The receiver function that receiving [ApiResponse.Failure.Exception] if the request get an exception.
@@ -282,6 +310,8 @@ inline fun <T> ApiResponse<T>.onException(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A suspension scope function that would be executed for handling exception responses if the request get an exception.
  *
  * @param onResult The receiver function that receiving [ApiResponse.Failure.Exception] if the request get an exception.
@@ -300,6 +330,8 @@ suspend inline fun <T> ApiResponse<T>.suspendOnException(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A scope function that will be executed for handling successful, error, exception responses.
  *  This function receives and handles [ApiResponse.onSuccess], [ApiResponse.onError],
  *  and [ApiResponse.onException] in one scope.
@@ -322,6 +354,8 @@ inline fun <T> ApiResponse<T>.onProcedure(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A suspension scope function that will be executed for handling successful, error, exception responses.
  *  This function receives and handles [ApiResponse.onSuccess], [ApiResponse.onError],
  *  and [ApiResponse.onException] in one scope.
@@ -345,6 +379,8 @@ suspend inline fun <T> ApiResponse<T>.suspendOnProcedure(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Maps [ApiResponse.Success] to a customized success response model.
  *
  * @param mapper A mapper interface for mapping [ApiResponse.Success] response as a custom [V] instance model.
@@ -356,6 +392,8 @@ fun <T, V> ApiResponse.Success<T>.map(mapper: ApiSuccessModelMapper<T, V>): V {
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Maps [ApiResponse.Success] to a customized error response model with a receiver scope lambda.
  *
  * @param mapper A mapper interface for mapping [ApiResponse.Success] response as a custom [V] instance model.
@@ -372,6 +410,8 @@ inline fun <T, V> ApiResponse.Success<T>.map(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Maps [ApiResponse.Success] to a customized error response model with a suspension receiver scope lambda.
  *
  * @param mapper A mapper interface for mapping [ApiResponse.Success] response as a custom [V] instance model.
@@ -389,6 +429,8 @@ suspend inline fun <T, V> ApiResponse.Success<T>.suspendMap(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Maps [ApiResponse.Failure.Error] to a customized error response model.
  *
  * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
@@ -400,6 +442,8 @@ fun <T, V> ApiResponse.Failure.Error<T>.map(mapper: ApiErrorModelMapper<V>): V {
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Maps [ApiResponse.Failure.Error] to a customized error response model with a receiver scope lambda.
  *
  * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
@@ -416,6 +460,8 @@ inline fun <T, V> ApiResponse.Failure.Error<T>.map(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Maps [ApiResponse.Failure.Error] to a customized error response model with a suspension receiver scope lambda.
  *
  * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
@@ -433,6 +479,8 @@ suspend inline fun <T, V> ApiResponse.Failure.Error<T>.suspendMap(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Merges multiple [ApiResponse]s as one [ApiResponse] depending on the policy, [ApiResponseMergePolicy].
  * The default policy is [ApiResponseMergePolicy.IGNORE_FAILURE].
  *
@@ -469,6 +517,8 @@ fun <T> ApiResponse<List<T>>.merge(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Returns an error message from the [ApiResponse.Failure.Error] that consists of the status and error response.
  *
  * @return An error message from the [ApiResponse.Failure.Error].
@@ -483,6 +533,8 @@ fun <T> ApiResponse.Failure.Error<T>.message(): String = toString()
 fun <T> ApiResponse.Failure.Exception<T>.message(): String = toString()
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Operates on an [ApiResponse] and return an [ApiResponse].
  * This allows you to handle success and error response instead of the [ApiResponse.onSuccess],
  * [ApiResponse.onError], [ApiResponse.onException] transformers.
@@ -499,6 +551,8 @@ fun <T, V : ApiResponseOperator<T>> ApiResponse<T>.operator(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Operates on an [ApiResponse] and return an [ApiResponse] which should be handled in the suspension scope.
  * This allows you to handle success and error response instead of the [ApiResponse.suspendOnSuccess],
  * [ApiResponse.suspendOnError], [ApiResponse.suspendOnException] transformers.
@@ -516,6 +570,8 @@ suspend fun <T, V : ApiResponseSuspendOperator<T>> ApiResponse<T>.suspendOperato
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Returns a [LiveData] which contains successful data if the response is a [ApiResponse.Success].
  *
  * @return An observable [LiveData] which contains successful data.
@@ -529,6 +585,8 @@ fun <T> ApiResponse<T>.toLiveData(): LiveData<T> {
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Returns a [LiveData] which contains transformed data using successful data if the response is a [ApiResponse.Success].
  *
  * @param transformer A transformer lambda receives successful data and returns anything.
@@ -547,6 +605,8 @@ inline fun <T, R> ApiResponse<T>.toLiveData(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Returns a [LiveData] which contains transformed data using successful data if the response is a [ApiResponse.Success].
  *
  * @param transformer A suspension transformer lambda receives successful data and returns anything.
@@ -566,6 +626,8 @@ suspend inline fun <T, R> ApiResponse<T>.toSuspendLiveData(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Returns a [Flow] which emits successful data if the response is a [ApiResponse.Success] and the data is not null.
  *
  * @return A coroutines [Flow] which emits successful data.
@@ -579,6 +641,8 @@ fun <T> ApiResponse<T>.toFlow(): Flow<T> {
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Returns a [Flow] which contains transformed data using successful data
  * if the response is a [ApiResponse.Success] and the data is not null.
  *
@@ -598,6 +662,8 @@ inline fun <T, R> ApiResponse<T>.toFlow(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Returns a [Flow] which contains transformed data using successful data
  * if the response is a [ApiResponse.Success] and the data is not null.
  *

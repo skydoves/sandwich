@@ -16,7 +16,11 @@
 
 package com.skydoves.sandwich
 
-/** A callback interface for observing [ApiResponse] value updating. */
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * A callback interface for observing [ApiResponse] value updating.
+ */
 fun interface ResponseObserver<T> {
 
   /** observes a new [ApiResponse] value. */

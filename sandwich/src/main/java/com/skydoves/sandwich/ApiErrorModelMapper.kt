@@ -17,6 +17,8 @@
 package com.skydoves.sandwich
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
  *
  * @see [ApiErrorModelMapper](https://github.com/skydoves/sandwich#apierrormodelmapper)

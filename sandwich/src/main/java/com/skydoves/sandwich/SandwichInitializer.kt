@@ -18,7 +18,11 @@ package com.skydoves.sandwich
 
 import com.skydoves.sandwich.operators.SandwichOperator
 
-/** SandwichInitializer is a rules and strategies initializer of the network response. */
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * SandwichInitializer is a rules and strategies initializer of the network response.
+ */
 object SandwichInitializer {
 
   /**

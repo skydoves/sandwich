@@ -21,6 +21,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * CallDelegate is a delegate [Call] proxy for handling and transforming one to another generic types
+ * between the two different types of [Call] requests.
+ */
 internal abstract class CallDelegate<TIn, TOut>(
   protected val proxy: Call<TIn>
 ) : Call<TOut> {

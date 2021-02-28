@@ -28,11 +28,15 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * ApiResponse is an interface for constructing standard responses from the retrofit call.
  */
 sealed class ApiResponse<out T> {
 
   /**
+   * @author skydoves (Jaewoong Eum)
+   *
    * API Success response class from OkHttp request call.
    * The [data] is a nullable generic type. (A response without data)
    *
@@ -52,6 +56,8 @@ sealed class ApiResponse<out T> {
   }
 
   /**
+   * @author skydoves (Jaewoong Eum)
+   *
    * API Failure response class from OkHttp request call.
    * There are two subtypes: [ApiResponse.Failure.Error] and [ApiResponse.Failure.Exception].
    */
@@ -77,6 +83,8 @@ sealed class ApiResponse<out T> {
     }
 
     /**
+     * @author skydoves (Jaewoong Eum)
+     *
      * API request Exception case.
      * An unexpected exception occurs while creating requests or processing an response in the client side.
      * e.g., network connection error.
@@ -93,6 +101,8 @@ sealed class ApiResponse<out T> {
 
   companion object {
     /**
+     * @author skydoves (Jaewoong Eum)
+     *
      * [Failure] factory function. Only receives [Throwable] as an argument.
      *
      * @param ex A throwable.
@@ -102,6 +112,8 @@ sealed class ApiResponse<out T> {
     fun <T> error(ex: Throwable) = Failure.Exception<T>(ex).apply { operate() }
 
     /**
+     * @author skydoves (Jaewoong Eum)
+     *
      * ApiResponse Factory.
      *
      * @param successCodeRange A success code range for determining the response is successful or failure.
@@ -128,6 +140,8 @@ sealed class ApiResponse<out T> {
     }.operate()
 
     /**
+     * @author skydoves (Jaewoong Eum)
+     *
      * Operates if there is a global [com.skydoves.sandwich.operators.SandwichOperator]
      * which operates on [ApiResponse]s globally on each response and returns the target [ApiResponse].
      *
@@ -147,6 +161,8 @@ sealed class ApiResponse<out T> {
     }
 
     /**
+     * @author skydoves (Jaewoong Eum)
+     *
      * Returns a status code from the [Response].
      *
      * @param response A network callback response.

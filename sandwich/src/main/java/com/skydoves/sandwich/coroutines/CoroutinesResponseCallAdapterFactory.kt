@@ -26,6 +26,8 @@ import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * CoroutinesResponseCallAdapterFactory is an coroutines call adapter factory for creating [ApiResponse].
  *
  * Adding this class to [Retrofit] allows you to return on [ApiResponse] from service method.

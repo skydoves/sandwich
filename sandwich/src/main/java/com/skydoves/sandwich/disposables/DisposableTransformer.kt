@@ -15,13 +15,19 @@
  */
 
 @file:Suppress("unused")
+@file:JvmName("DisposableTransformer")
+@file:JvmMultifileClass
 
 package com.skydoves.sandwich.disposables
 
 import com.skydoves.sandwich.request
 import retrofit2.Call
 
-/** returns an instance of [Disposable] from a [Call]. */
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Returns an instance of [Disposable] from a [Call].
+ */
 fun <T> Call<T>.disposable(): Disposable {
   val call = this
   return object : Disposable {
@@ -35,7 +41,11 @@ fun <T> Call<T>.disposable(): Disposable {
   }
 }
 
-/** joins onto [CompositeDisposable] as a disposable. must be called before [request]. */
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Joins onto [CompositeDisposable] as a disposable. must be called before [request].
+ */
 fun <T> Call<T>.joinDisposable(compositeDisposable: CompositeDisposable) = apply {
   compositeDisposable.add(disposable())
 }

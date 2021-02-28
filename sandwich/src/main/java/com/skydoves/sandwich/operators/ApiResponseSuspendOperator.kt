@@ -19,6 +19,8 @@ package com.skydoves.sandwich.operators
 import com.skydoves.sandwich.ApiResponse
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
  * ApiResponseSuspendOperator operates on an [ApiResponse] which should be handled in the suspension scope.
  * This allows you to handle success and error response instead of the [com.skydoves.sandwich.suspendOnSuccess],
  * [com.skydoves.sandwich.suspendOnError], [com.skydoves.sandwich.suspendOnException] transformers.

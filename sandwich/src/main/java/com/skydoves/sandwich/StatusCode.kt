@@ -18,7 +18,11 @@
 
 package com.skydoves.sandwich
 
-/** This is a list of Hypertext Transfer Protocol (HTTP) response status codes.  */
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * This is a list of Hypertext Transfer Protocol (HTTP) response status codes.
+ */
 enum class StatusCode(val code: Int) {
   Unknown(0),
 
