@@ -17,8 +17,6 @@
 package com.skydoves.sandwich.coroutines
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.SandwichInitializer
-import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,8 +41,6 @@ internal class ApiResponseCallDelegate<T>(proxy: Call<T>) : CallDelegate<T, ApiR
       }
     }
   )
-
-  override fun timeout(): Timeout = SandwichInitializer.sandwichTimeout
 
   override fun cloneImpl() = ApiResponseCallDelegate(proxy.clone())
 }

@@ -18,8 +18,6 @@ package com.skydoves.sandwich.coroutines
 
 import com.skydoves.sandwich.DataSource
 import com.skydoves.sandwich.ResponseDataSource
-import com.skydoves.sandwich.SandwichInitializer
-import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,8 +34,6 @@ internal class DataSourceCallDelegate<T>(proxy: Call<T>) : CallDelegate<T, DataS
     val responseDataSource = ResponseDataSource<T>().combine(proxy, null)
     callback.onResponse(this@DataSourceCallDelegate, Response.success(responseDataSource))
   }
-
-  override fun timeout(): Timeout = SandwichInitializer.sandwichTimeout
 
   override fun cloneImpl() = DataSourceCallDelegate(proxy.clone())
 }

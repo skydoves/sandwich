@@ -65,5 +65,5 @@ object SandwichInitializer {
    * retries all must complete within one timeout period.
    */
   @JvmStatic
-  var sandwichTimeout: Timeout = Timeout.NONE
+  var sandwichTimeout: Timeout? = null
 }

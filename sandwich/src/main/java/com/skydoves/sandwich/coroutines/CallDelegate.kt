@@ -16,7 +16,9 @@
 
 package com.skydoves.sandwich.coroutines
 
+import com.skydoves.sandwich.SandwichInitializer
 import okhttp3.Request
+import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,6 +40,7 @@ internal abstract class CallDelegate<TIn, TOut>(
   override fun request(): Request = proxy.request()
   override fun isExecuted() = proxy.isExecuted
   override fun isCanceled() = proxy.isCanceled
+  override fun timeout(): Timeout = SandwichInitializer.sandwichTimeout ?: proxy.timeout()
 
   abstract fun enqueueImpl(callback: Callback<TOut>)
   abstract fun cloneImpl(): Call<TOut>
