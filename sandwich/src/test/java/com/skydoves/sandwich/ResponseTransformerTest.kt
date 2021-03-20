@@ -49,6 +49,37 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
+  fun getOrThrowOnSuccessTest() {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.of { response }
+    val data = apiResponse.getOrThrow()
+
+    assertThat(data, `is`("foo"))
+  }
+
+  @Test(expected = RuntimeException::class)
+  fun getOrThrowOnErrorTest() {
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    apiResponse.getOrThrow()
+  }
+
+  @Test(expected = IllegalArgumentException::class)
+  fun getOrThrowOnExceptionTest() {
+    val exception = IllegalArgumentException("foo")
+    val apiResponse = ApiResponse.error<String>(exception)
+    apiResponse.getOrThrow()
+  }
+
+  @Test
   fun onSuccessTest() {
     val response = Response.success("foo")
     val apiResponse = ApiResponse.of { response }
