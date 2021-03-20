@@ -651,6 +651,7 @@ suspend inline fun <T, R> ApiResponse<T>.toSuspendLiveData(
  *
  * @return A coroutines [Flow] which emits successful data.
  */
+@JvmSynthetic
 fun <T> ApiResponse<T>.toFlow(): Flow<T> {
   return if (this is ApiResponse.Success && this.data != null) {
     flowOf(data)
