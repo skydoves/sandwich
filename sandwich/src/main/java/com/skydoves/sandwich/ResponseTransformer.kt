@@ -88,6 +88,25 @@ internal inline fun <T> getCallbackFromOnResult(
 /**
  * @author skydoves (Jaewoong Eum)
  *
+ * Returns the encapsulated data if this instance represents [ApiResponse.Success] or
+ * throws the encapsulated Throwable exception if it is [ApiResponse.Failure.Error] or [ApiResponse.Failure.Exception].
+ *
+ * @throws RuntimeException if it is [ApiResponse.Failure.Error] or
+ * the encapsulated Throwable exception if it is [ApiResponse.Failure.Exception.exception]
+ *
+ * @return The encapsulated data.
+ */
+fun <T> ApiResponse<T>.getOrThrow(): T? {
+  when (this) {
+    is ApiResponse.Success -> return data
+    is ApiResponse.Failure.Error -> throw RuntimeException(message())
+    is ApiResponse.Failure.Exception -> throw exception
+  }
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A scope function that would be executed for handling successful responses if the request succeeds.
  *
  * @param onResult The receiver function that receiving [ApiResponse.Success] if the request succeeds.
