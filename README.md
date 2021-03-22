@@ -46,6 +46,15 @@ dependencies {
 }
 ```
 
+## SNAPSHOT 
+[![Sandwich](https://img.shields.io/static/v1?label=snapshot&message=sandwich&logo=apache%20maven&color=C71A36)](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/sandwich/) <br>
+Snapshots of the current development version of Sandwich are available, which track [the latest versions](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/sandwich/).
+```Gradle
+repositories {
+   maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+}
+```
+
 ## Usecase
 You can reference the good use cases of this library in the below repositories.
 - [Pokedex](https://github.com/skydoves/pokedex) - 🗡️ Android Pokedex using Hilt, Motion, Coroutines, Flow, Jetpack (Room, ViewModel, LiveData) based on MVVM architecture.
