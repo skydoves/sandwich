@@ -89,6 +89,22 @@ internal inline fun <T> getCallbackFromOnResult(
  * @author skydoves (Jaewoong Eum)
  *
  * Returns the encapsulated data if this instance represents [ApiResponse.Success] or
+ * returns null if it is [ApiResponse.Failure.Error] or [ApiResponse.Failure.Exception].
+ *
+ * @return The encapsulated data or null.
+ */
+fun <T> ApiResponse<T>.getOrNull(): T? {
+  return when (this) {
+    is ApiResponse.Success -> data
+    is ApiResponse.Failure.Error -> null
+    is ApiResponse.Failure.Exception -> null
+  }
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Returns the encapsulated data if this instance represents [ApiResponse.Success] or
  * returns the [defaultValue] if it is [ApiResponse.Failure.Error] or [ApiResponse.Failure.Exception].
  *
  * @return The encapsulated data or [defaultValue].
