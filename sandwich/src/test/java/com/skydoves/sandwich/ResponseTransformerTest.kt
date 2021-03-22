@@ -25,6 +25,7 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -46,6 +47,41 @@ class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Before
   fun initService() {
     service = createService(DisneyService::class.java)
+  }
+
+  @Test
+  fun getOrNullOnSuccessTest() {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.of { response }
+    val data = apiResponse.getOrElse("bar")
+
+    assertThat(data, `is`("foo"))
+  }
+
+  @Test
+  fun getOrNullOnErrorTest() {
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val data = apiResponse.getOrNull()
+
+    assertNull(data)
+  }
+
+  @Test
+  fun getOrNullOnExceptionTest() {
+    val exception = IllegalArgumentException("foo")
+    val apiResponse = ApiResponse.error<String>(exception)
+    val data = apiResponse.getOrNull()
+
+    assertNull(data)
   }
 
   @Test
