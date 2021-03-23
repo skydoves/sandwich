@@ -10,7 +10,7 @@
   <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
   <a href="https://android-arsenal.com/api?level=16"><img alt="API" src="https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat"/></a>
   <a href="https://github.com/skydoves/Sandwich/actions"><img alt="Build Status" src="https://github.com/skydoves/Sandwich/workflows/Android%20CI/badge.svg"/></a>
-  <a href="https://skydoves.github.io/libraries/sandwich/javadoc/sandwich/com.skydoves.sandwich/index.html"><img alt="Javadoc" src="https://skydoves.github.io/badges/javadoc-sandwich.svg"/></a>
+  <a href="https://skydoves.github.io/libraries/sandwich/html/sandwich/com.skydoves.sandwich/index.html"><img alt="Javadoc" src="https://skydoves.github.io/badges/javadoc-sandwich.svg"/></a>
   <a href="https://skydoves.medium.com/handling-success-data-and-error-callback-responses-from-a-network-for-android-projects-using-b53a26214cef"><img alt="Medium" src="https://skydoves.github.io/badges/Story-Medium.svg"/></a>
   <a href="https://github.com/skydoves"><img alt="Profile" src="https://skydoves.github.io/badges/skydoves.svg"/></a>
 </p>
@@ -67,6 +67,7 @@ You can reference the good use cases of this library in the below repositories.
 - [onSuccess, onError, onException](https://github.com/skydoves/sandwich#apiresponse-extensions)
 - [ApiResponse for coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines)
 - [suspendOnSuccess, suspendOnError, suspendOnException](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception)
+- [Retrieve success data](https://github.com/skydoves/sandwich#retrieve-success-data)
 - [Mapper](https://github.com/skydoves/sandwich#mapper)
 - [Operator](https://github.com/skydoves/sandwich#operator), [Operator for coroutines](https://github.com/skydoves/sandwich#operator-with-coroutines), [Global Operator](https://github.com/skydoves/sandwich#global-operator)
 - [Merge](https://github.com/skydoves/sandwich#merge)
