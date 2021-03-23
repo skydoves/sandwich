@@ -42,7 +42,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.0.9"
+    implementation "com.github.skydoves:sandwich:1.1.0"
 }
 ```
 
@@ -208,6 +208,34 @@ flow {
     // handles exceptional cases
   }
 }.flowOn(Dispatchers.IO)
+```
+
+### Retrieve success data
+If we want to retrieve the encapsulated success data from the `ApiResponse` directly, we can use the below functionalities.
+
+#### getOrNull
+Returns the encapsulated data if this instance represents `ApiResponse.Success` or returns null if this is failed.
+
+```kotlin
+val data: List<Poster>? = disneyService.fetchDisneyPosterList().getOrNull()
+```
+
+#### getOrElse
+Returns the encapsulated data if this instance represents `ApiResponse.Success` or returns a default value if this is failed.
+
+```kotlin
+val data: List<Poster>? = disneyService.fetchDisneyPosterList().getOrElse(emptyList())
+```
+
+#### getOrThrow
+Returns the encapsulated data if this instance represents `ApiResponse.Success` or throws the encapsulated `Throwable` exception if this is failed.
+
+```kotlin
+try {
+  val data: List<Poster>? = disneyService.fetchDisneyPosterList().getOrThrow()
+} catch (e: Exception) {
+  e.printStackTrace()
+}
 ```
 
 ### Mapper
