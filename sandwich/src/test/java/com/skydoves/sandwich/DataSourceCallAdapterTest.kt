@@ -31,7 +31,7 @@ class DataSourceCallAdapterTest : ApiAbstract<DisneyService>() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
       .addConverterFactory(GsonConverterFactory.create())
-      .addCallAdapterFactory(DataSourceCallAdapterFactory())
+      .addCallAdapterFactory(DataSourceCallAdapterFactory.create())
       .build()
 
     val service = retrofit.create(DisneyDataSourceService::class.java)

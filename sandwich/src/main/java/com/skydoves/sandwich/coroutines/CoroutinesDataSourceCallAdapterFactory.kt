@@ -57,6 +57,6 @@ class CoroutinesDataSourceCallAdapterFactory private constructor() : CallAdapter
 
   companion object {
     @JvmStatic
-    fun create() = CoroutinesDataSourceCallAdapterFactory
+    fun create() = CoroutinesDataSourceCallAdapterFactory()
   }
 }
