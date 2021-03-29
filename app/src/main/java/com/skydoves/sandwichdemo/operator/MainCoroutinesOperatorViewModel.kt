@@ -18,7 +18,6 @@ package com.skydoves.sandwichdemo.operator
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.skydoves.sandwich.suspendOperator
@@ -26,8 +25,6 @@ import com.skydoves.sandwichdemo.SandwichDemoApp
 import com.skydoves.sandwichdemo.coroutines.DisneyCoroutinesService
 import com.skydoves.sandwichdemo.model.Poster
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import timber.log.Timber
 
 class MainCoroutinesOperatorViewModel constructor(
@@ -40,18 +37,14 @@ class MainCoroutinesOperatorViewModel constructor(
     Timber.d("initialized MainViewModel.")
 
     posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
-      emitSource(
-        flow {
-          disneyService.fetchDisneyPosterList().suspendOperator(
-            CommonResponseOperator(
-              success = { success ->
-                success.data?.let { emit(it) }
-                Timber.d("$success.data")
-              },
-              application = getApplication()
-            )
-          )
-        }.flowOn(Dispatchers.IO).asLiveData()
+      disneyService.fetchDisneyPosterList().suspendOperator(
+        CommonResponseOperator(
+          success = { success ->
+            success.data?.let { emit(it) }
+            Timber.d("$success.data")
+          },
+          application = getApplication()
+        )
       )
     }
   }
