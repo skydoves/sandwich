@@ -37,11 +37,11 @@ object NetworkModule {
     .addConverterFactory(GsonConverterFactory.create())
 
     /* asynchronous supports */
-    // .addCallAdapterFactory(DataSourceCallAdapterFactory())
+    // .addCallAdapterFactory(DataSourceCallAdapterFactory.create())
 
     /* coroutines supports */
-    .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory())
-//    .addCallAdapterFactory(CoroutinesDataSourceCallAdapterFactory())
+    .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory.create())
+//    .addCallAdapterFactory(CoroutinesDataSourceCallAdapterFactory.create())
     .build()
 
   val disneyService: DisneyService = retrofit.create(DisneyService::class.java)

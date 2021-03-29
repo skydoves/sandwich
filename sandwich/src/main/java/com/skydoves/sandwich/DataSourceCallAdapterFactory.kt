@@ -33,7 +33,7 @@ import java.lang.reflect.Type
  * fun fetchDisneyPosterList(): DataSource<List<Poster>>
  * ```
  */
-class DataSourceCallAdapterFactory : CallAdapter.Factory() {
+class DataSourceCallAdapterFactory private constructor() : CallAdapter.Factory() {
 
   override fun get(
     returnType: Type,
@@ -43,5 +43,10 @@ class DataSourceCallAdapterFactory : CallAdapter.Factory() {
     val enclosingType = returnType as ParameterizedType
     val actualType = enclosingType.actualTypeArguments[0]
     return DataSourceCallAdapter<Type>(actualType)
+  }
+
+  companion object {
+    @JvmStatic
+    fun create() = DataSourceCallAdapterFactory()
   }
 }

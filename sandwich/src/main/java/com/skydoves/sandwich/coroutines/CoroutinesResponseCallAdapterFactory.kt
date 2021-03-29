@@ -37,7 +37,7 @@ import java.lang.reflect.Type
  * suspend fun fetchDisneyPosterList(): ApiResponse<List<Poster>>
  * ```
  */
-class CoroutinesResponseCallAdapterFactory : CallAdapter.Factory() {
+class CoroutinesResponseCallAdapterFactory private constructor() : CallAdapter.Factory() {
 
   override fun get(
     returnType: Type,
@@ -55,5 +55,10 @@ class CoroutinesResponseCallAdapterFactory : CallAdapter.Factory() {
       }
     }
     else -> null
+  }
+
+  companion object {
+    @JvmStatic
+    fun create() = CoroutinesResponseCallAdapterFactory()
   }
 }

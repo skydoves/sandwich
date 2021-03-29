@@ -35,7 +35,7 @@ import java.lang.reflect.Type
  * suspend fun fetchDisneyPosterList(): DataSource<List<Poster>>
  * ```
  */
-class CoroutinesDataSourceCallAdapterFactory : CallAdapter.Factory() {
+class CoroutinesDataSourceCallAdapterFactory private constructor() : CallAdapter.Factory() {
 
   override fun get(
     returnType: Type,
@@ -53,5 +53,10 @@ class CoroutinesDataSourceCallAdapterFactory : CallAdapter.Factory() {
       }
     }
     else -> null
+  }
+
+  companion object {
+    @JvmStatic
+    fun create() = CoroutinesDataSourceCallAdapterFactory
   }
 }
