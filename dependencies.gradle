@@ -22,7 +22,7 @@ ext.versions = [
     spotlessGradle   : '5.9.0',
     ktlintGradle     : '0.41.0',
     dokkaGradle      : '1.4.30',
-    mavenPublish     : '0.14.2',
+    mavenPublish     : '0.15.1',
 
     kotlin           : '1.4.31',
     androidxAppcompat: '1.2.0',
