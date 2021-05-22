@@ -121,6 +121,22 @@ fun <T> ApiResponse<T>.getOrElse(defaultValue: T): T? {
  * @author skydoves (Jaewoong Eum)
  *
  * Returns the encapsulated data if this instance represents [ApiResponse.Success] or
+ * invokes the lambda [defaultValue] that returns [T] if it is [ApiResponse.Failure.Error] or [ApiResponse.Failure.Exception].
+ *
+ * @return The encapsulated data or [defaultValue].
+ */
+inline fun <T> ApiResponse<T>.getOrElse(defaultValue: () -> T): T? {
+  return when (this) {
+    is ApiResponse.Success -> data
+    is ApiResponse.Failure.Error -> defaultValue()
+    is ApiResponse.Failure.Exception -> defaultValue()
+  }
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Returns the encapsulated data if this instance represents [ApiResponse.Success] or
  * throws the encapsulated Throwable exception if it is [ApiResponse.Failure.Error] or [ApiResponse.Failure.Exception].
  *
  * @throws RuntimeException if it is [ApiResponse.Failure.Error] or
