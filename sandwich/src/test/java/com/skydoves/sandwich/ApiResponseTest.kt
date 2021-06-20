@@ -95,7 +95,7 @@ class ApiResponseTest : ApiAbstract<DisneyService>() {
       assertThat(it, instanceOf(ApiResponse.Success::class.java))
       val response = requireNotNull((it as ApiResponse.Success))
       response.onSuccess {
-        val first = data?.firstOrNull()
+        val first = data.firstOrNull()
         assertThat(first?.id, `is`(0L))
         assertThat(first?.name, `is`("Frozen II"))
         assertThat(first?.release, `is`("2019"))

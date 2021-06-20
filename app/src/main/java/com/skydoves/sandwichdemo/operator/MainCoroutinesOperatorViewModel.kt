@@ -40,7 +40,7 @@ class MainCoroutinesOperatorViewModel constructor(
       disneyService.fetchDisneyPosterList().suspendOperator(
         CommonResponseOperator(
           success = { success ->
-            success.data?.let { emit(it) }
+            emit(success.data)
             Timber.d("$success.data")
           },
           application = getApplication()
