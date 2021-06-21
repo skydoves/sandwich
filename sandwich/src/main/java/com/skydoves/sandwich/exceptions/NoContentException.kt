@@ -26,7 +26,7 @@ package com.skydoves.sandwich.exceptions
  * and that there is no additional content to send in the response payload body.
  *
  * If we want to handle empty body instead of throwing [NoContentException] for the 204 and 205 request case,
- * use the [com.skydoves.sandwich.interceptor.EmptyBodyInterceptor] for your interceptor.
+ * use the [com.skydoves.sandwich.interceptors.EmptyBodyInterceptor] for your interceptor.
  *
  * ```
  * OkHttpClient.Builder()

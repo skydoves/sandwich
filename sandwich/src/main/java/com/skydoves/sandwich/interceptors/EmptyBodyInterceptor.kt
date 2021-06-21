@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.interceptor
+package com.skydoves.sandwich.interceptors
 
 import com.skydoves.sandwich.StatusCode
 import okhttp3.Interceptor
