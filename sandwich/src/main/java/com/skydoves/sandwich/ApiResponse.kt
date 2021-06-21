@@ -18,6 +18,7 @@
 
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.exceptions.NoContentException
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
 import kotlinx.coroutines.Dispatchers
@@ -51,7 +52,7 @@ sealed class ApiResponse<out T> {
     val statusCode: StatusCode = getStatusCodeFromResponse(response)
     val headers: Headers = response.headers()
     val raw: okhttp3.Response = response.raw()
-    val data: T? = response.body()
+    val data: T = response.body() ?: throw NoContentException(statusCode.code)
     override fun toString() = "[ApiResponse.Success](data=$data)"
   }
 

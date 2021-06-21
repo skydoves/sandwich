@@ -50,7 +50,7 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
               onSuccess = {
                 Timber.d("$data")
 
-                data?.let { emit(it) }
+                emit(data)
               },
               // handles error cases when the API request gets an error response.
               // e.g., internal server error.

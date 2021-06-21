@@ -571,7 +571,7 @@ fun <T> ApiResponse<List<T>>.merge(
 
   for (response in apiResponses) {
     if (response is ApiResponse.Success) {
-      response.data?.let { data.addAll(it) }
+      data.addAll(response.data)
       apiResponse = ApiResponse.Success(
         Response.success(data, response.headers)
       )
@@ -666,7 +666,7 @@ inline fun <T, R> ApiResponse<T>.toLiveData(
 ): LiveData<R> {
   val liveData = MutableLiveData<R>()
   if (this is ApiResponse.Success) {
-    liveData.postValue(data?.transformer())
+    liveData.postValue(data.transformer())
   }
   return liveData
 }
@@ -687,7 +687,7 @@ suspend inline fun <T, R> ApiResponse<T>.toSuspendLiveData(
 ): LiveData<R> {
   val liveData = MutableLiveData<R>()
   if (this is ApiResponse.Success) {
-    liveData.postValue(data?.transformer())
+    liveData.postValue(data.transformer())
   }
   return liveData
 }
@@ -701,7 +701,7 @@ suspend inline fun <T, R> ApiResponse<T>.toSuspendLiveData(
  */
 @JvmSynthetic
 fun <T> ApiResponse<T>.toFlow(): Flow<T> {
-  return if (this is ApiResponse.Success && this.data != null) {
+  return if (this is ApiResponse.Success) {
     flowOf(data)
   } else {
     emptyFlow()
@@ -722,7 +722,7 @@ fun <T> ApiResponse<T>.toFlow(): Flow<T> {
 inline fun <T, R> ApiResponse<T>.toFlow(
   crossinline transformer: T.() -> R
 ): Flow<R> {
-  return if (this is ApiResponse.Success && this.data != null) {
+  return if (this is ApiResponse.Success) {
     flowOf(data.transformer())
   } else {
     emptyFlow()
@@ -744,7 +744,7 @@ inline fun <T, R> ApiResponse<T>.toFlow(
 suspend inline fun <T, R> ApiResponse<T>.toSuspendFlow(
   crossinline transformer: suspend T.() -> R
 ): Flow<R> {
-  return if (this is ApiResponse.Success && this.data != null) {
+  return if (this is ApiResponse.Success) {
     flowOf(data.transformer())
   } else {
     emptyFlow()
