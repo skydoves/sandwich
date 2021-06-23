@@ -28,8 +28,20 @@ import retrofit2.Response
 @RunWith(JUnit4::class)
 class NoContentExceptionTest {
 
+  @Test
+  fun throwNoContentExceptionWhenBodyIsNullWithOutAccessingDataProperty() {
+    val response = Response.success<String?>(204, null)
+    val apiResponse = ApiResponse.of { response }
+    assertThat(apiResponse, instanceOf(ApiResponse.Success::class.java))
+
+    val success = apiResponse as ApiResponse.Success<String>
+    assertThat(success.statusCode.code, `is`(204))
+    assertThat(success.raw, `is`(response.raw()))
+    assertThat(success.headers, `is`(response.headers()))
+  }
+
   @Test(expected = NoContentException::class)
-  fun throwNoContentExceptionWhenBodyIsNull() {
+  fun throwNoContentExceptionWhenBodyIsNullWithAccessingDataProperty() {
     val response = Response.success<String?>(204, null)
     val apiResponse = ApiResponse.of { response }
     assertThat(apiResponse, instanceOf(ApiResponse.Success::class.java))
