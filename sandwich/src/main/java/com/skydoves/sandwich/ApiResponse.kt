@@ -52,7 +52,7 @@ sealed class ApiResponse<out T> {
     val statusCode: StatusCode = getStatusCodeFromResponse(response)
     val headers: Headers = response.headers()
     val raw: okhttp3.Response = response.raw()
-    val data: T = response.body() ?: throw NoContentException(statusCode.code)
+    val data: T by lazy { response.body() ?: throw NoContentException(statusCode.code) }
     override fun toString() = "[ApiResponse.Success](data=$data)"
   }
 
