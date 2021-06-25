@@ -109,7 +109,7 @@ fun <T> ApiResponse<T>.getOrNull(): T? {
  *
  * @return The encapsulated data or [defaultValue].
  */
-fun <T> ApiResponse<T>.getOrElse(defaultValue: T): T? {
+fun <T> ApiResponse<T>.getOrElse(defaultValue: T): T {
   return when (this) {
     is ApiResponse.Success -> data
     is ApiResponse.Failure.Error -> defaultValue
@@ -125,7 +125,7 @@ fun <T> ApiResponse<T>.getOrElse(defaultValue: T): T? {
  *
  * @return The encapsulated data or [defaultValue].
  */
-inline fun <T> ApiResponse<T>.getOrElse(defaultValue: () -> T): T? {
+inline fun <T> ApiResponse<T>.getOrElse(defaultValue: () -> T): T {
   return when (this) {
     is ApiResponse.Success -> data
     is ApiResponse.Failure.Error -> defaultValue()
@@ -144,7 +144,7 @@ inline fun <T> ApiResponse<T>.getOrElse(defaultValue: () -> T): T? {
  *
  * @return The encapsulated data.
  */
-fun <T> ApiResponse<T>.getOrThrow(): T? {
+fun <T> ApiResponse<T>.getOrThrow(): T {
   when (this) {
     is ApiResponse.Success -> return data
     is ApiResponse.Failure.Error -> throw RuntimeException(message())
