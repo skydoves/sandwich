@@ -42,7 +42,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.1.0"
+    implementation "com.github.skydoves:sandwich:1.2.0"
 }
 ```
 
@@ -163,7 +163,7 @@ disneyService.fetchDisneyPosterList().request { response ->
 We can use the `suspend` keyword in our Retrofit services and gets `ApiResponse<*>` as a response type.<br>
 Build your Retrofit using the `CoroutinesResponseCallAdapterFactory` call adapter factory.
 ```kotlin
-.addCallAdapterFactory(CoroutinesResponseCallAdapterFactory())
+.addCallAdapterFactory(CoroutinesResponseCallAdapterFactory.create())
 ```
 We should make normal service functions as suspension functions using the `suspend` keyword. And we can get the `ApiResponse<*>` as a response type. So we can get the `ApiResponse` from the Retrofit service call, and handle them right away using extensions.
 ```kotlin
@@ -248,7 +248,7 @@ We can map the `ApiResponse.Success` model to our custom model using the `Succes
 object SuccessPosterMapper : ApiSuccessModelMapper<List<Poster>, Poster?> {
 
   override fun map(apiErrorResponse: ApiResponse.Success<List<Poster>>): Poster? {
-    return apiErrorResponse.data?.first()
+    return apiErrorResponse.data.first()
   }
 }
 
@@ -313,8 +313,8 @@ We can delegate and operate the `CommonResponseOperator` using the `operate` ext
 disneyService.fetchDisneyPosterList().operator(
       CommonResponseOperator(
         success = {
-          data?.let { emit(it) }
-          Timber.d("$success.data")
+          emit(data)
+          Timber.d("success data: $data")
         },
         application = getApplication()
       )
@@ -367,8 +367,8 @@ flow {
   disneyService.fetchDisneyPosterList().suspendOperator(
       CommonResponseOperator(
         success = {
-          data?.let { emit(it) }
-          Timber.d("$success.data")
+          emit(data)
+          Timber.d("success data: $data")
         },
         application = getApplication()
       )
@@ -463,7 +463,7 @@ We don't need to use the `operator` expression. The global operator will be oper
 flow {
   disneyService.fetchDisneyPosterList().
     suspendOnSuccess {
-      data?.let { emit(it) }
+      emit(data)
     }
 }.flowOn(Dispatchers.IO).asLiveData()
 ```
@@ -730,7 +730,7 @@ And change the return type of your service `Call` to `DataSource`.
 ```kotlin
 Retrofit.Builder()
     ...
-    .addCallAdapterFactory(DataSourceCallAdapterFactory())
+    .addCallAdapterFactory(DataSourceCallAdapterFactory.create())
     .build()
 
 interface DisneyService {
@@ -768,7 +768,7 @@ We can get the `DataSource` directly from the Retrofit service using with `suspe
 ```kotlin
 Retrofit.Builder()
     ...
-    .addCallAdapterFactory(CoroutinesDataSourceCallAdapterFactory())
+    .addCallAdapterFactory(CoroutinesDataSourceCallAdapterFactory.create())
     .build()
 
 interface DisneyService {
