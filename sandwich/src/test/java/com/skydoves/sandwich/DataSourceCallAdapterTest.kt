@@ -24,7 +24,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @RunWith(JUnit4::class)
-class DataSourceCallAdapterTest : ApiAbstract<DisneyService>() {
+internal class DataSourceCallAdapterTest : ApiAbstract<DisneyService>() {
 
   @Test
   fun fetchDataSourceTypeResponse() {

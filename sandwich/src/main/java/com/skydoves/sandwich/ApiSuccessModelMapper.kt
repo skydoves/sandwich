@@ -23,7 +23,7 @@ package com.skydoves.sandwich
  *
  * @see [ApiSuccessModelMapper](https://github.com/skydoves/sandwich#apierrormodelmapper)
  */
-fun interface ApiSuccessModelMapper<T, V> {
+public fun interface ApiSuccessModelMapper<T, V> {
 
   /**
    * maps the [ApiResponse.Success] to the [V] using the mapper.
@@ -31,5 +31,5 @@ fun interface ApiSuccessModelMapper<T, V> {
    * @param apiErrorResponse The [ApiResponse.Success] error response from the network request.
    * @return A custom [V] success response model.
    */
-  fun map(apiErrorResponse: ApiResponse.Success<T>): V
+  public fun map(apiErrorResponse: ApiResponse.Success<T>): V
 }

@@ -36,13 +36,13 @@ import retrofit2.Response
  * Support observer for the every request responses, concat another [DataSource],
  * Retry fetching data when the request gets failure.
  */
-class ResponseDataSource<T> : DataSource<T> {
+public class ResponseDataSource<T> : DataSource<T> {
 
   // retrofit call from the retrofit service.
-  var call: Call<T>? = null
+  public var call: Call<T>? = null
 
   // response callback for handling success and failure cases.
-  var callback: Callback<T>? = null
+  public var callback: Callback<T>? = null
 
   private val dataLock = Any()
   private val empty = Any()
@@ -55,7 +55,7 @@ class ResponseDataSource<T> : DataSource<T> {
   // retain the fetched data on the memory storage temporarily.
   // this data can be changed internally and observable.
   @Volatile
-  var data: Any = empty
+  public var data: Any = empty
     private set
 
   // runnable for emit response data from disk thread.
@@ -112,10 +112,10 @@ class ResponseDataSource<T> : DataSource<T> {
   private var concat: (() -> Unit)? = null
 
   // a strategy for determining to request continuously or stop when the first request got failed.
-  var concatStrategy = DataSource.ConcatStrategy.CONTINUOUS
+  public var concatStrategy: DataSource.ConcatStrategy = DataSource.ConcatStrategy.CONTINUOUS
 
   /** sets value on the worker thread and post the value to the main thread. */
-  fun postValue(value: ApiResponse<T>) {
+  public fun postValue(value: ApiResponse<T>) {
     val postTask: Boolean
     synchronized(dataLock) {
       postTask = pending === empty
@@ -128,23 +128,26 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** sets [DataRetainPolicy] for limiting retaining data. */
-  fun dataRetainPolicy(dataRetainPolicy: DataRetainPolicy) = apply {
+  public fun dataRetainPolicy(dataRetainPolicy: DataRetainPolicy): ResponseDataSource<T> = apply {
     this.dataRetainPolicy = dataRetainPolicy
   }
 
   /** combine a call and callback instances for caching data. */
-  override fun combine(call: Call<T>, callback: Callback<T>?) = apply {
+  public override fun combine(call: Call<T>, callback: Callback<T>?): ResponseDataSource<T> = apply {
     this.call = call
     this.callback = callback
   }
 
   /** combine a call and callback instances for caching data. */
   @JvmSynthetic
-  inline fun combine(call: Call<T>, crossinline onResult: (response: ApiResponse<T>) -> Unit) =
+  public inline fun combine(
+    call: Call<T>,
+    crossinline onResult: (response: ApiResponse<T>) -> Unit
+  ): ResponseDataSource<T> =
     combine(call, getCallbackFromOnResult(onResult))
 
   /** Retry requesting API call when the request gets failure. */
-  override fun retry(retryCount: Int, interval: Long) = apply {
+  public override fun retry(retryCount: Int, interval: Long): ResponseDataSource<T> = apply {
     this.retryCount = retryCount
     this.retryTimeInterval = interval
   }
@@ -156,7 +159,7 @@ class ResponseDataSource<T> : DataSource<T> {
    * if you need to fetch a new response data or refresh, use invalidate().
    */
   @Suppress("UNCHECKED_CAST")
-  override fun request() = apply {
+  public override fun request(): ResponseDataSource<T> = apply {
     val call = this.call ?: return this
     if (data === empty || dataRetainPolicy == DataRetainPolicy.NO_RETAIN) {
       enqueue()
@@ -173,7 +176,7 @@ class ResponseDataSource<T> : DataSource<T> {
 
   /** extension method for requesting and observing response at once. */
   @JvmSynthetic
-  inline fun request(crossinline action: (ApiResponse<T>).() -> Unit) = apply {
+  public inline fun request(crossinline action: (ApiResponse<T>).() -> Unit): ResponseDataSource<T> = apply {
     if (call != null && callback == null) {
       combine(requireNotNull(call), action)
     }
@@ -181,7 +184,7 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** joins onto [CompositeDisposable] as a disposable. must be called before [request]. */
-  override fun joinDisposable(disposable: CompositeDisposable) = apply {
+  public override fun joinDisposable(disposable: CompositeDisposable): ResponseDataSource<T> = apply {
     this.compositeDisposable = disposable
   }
 
@@ -198,7 +201,7 @@ class ResponseDataSource<T> : DataSource<T> {
    * this live data can be observable from the network requests.
    */
   @Suppress("UNCHECKED_CAST")
-  fun asLiveData(): LiveData<T> {
+  public fun asLiveData(): LiveData<T> {
     return MutableLiveData<T>().apply {
       liveData = this
       if (data != empty) {
@@ -254,12 +257,12 @@ class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** observes a [ApiResponse] value from the API call request. */
-  override fun observeResponse(observer: ResponseObserver<T>) = apply {
+  public override fun observeResponse(observer: ResponseObserver<T>): ResponseDataSource<T> = apply {
     this.responseObserver = observer
   }
 
   /** observes a [ApiResponse] value from the API call request. */
   @JvmSynthetic
-  inline fun observeResponse(crossinline action: (ApiResponse<T>) -> Unit) =
+  public inline fun observeResponse(crossinline action: (ApiResponse<T>) -> Unit): ResponseDataSource<T> =
     observeResponse(ResponseObserver<T> { response -> action(response) })
 }

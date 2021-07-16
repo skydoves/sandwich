@@ -18,7 +18,7 @@ package com.skydoves.sandwich
 
 import com.skydoves.sandwich.operators.ApiResponseOperator
 
-class TestApiResponseOperator<T> constructor(
+internal class TestApiResponseOperator<T> constructor(
   private val onSuccess: () -> Unit,
   private val onError: () -> Unit,
   private val onException: () -> Unit

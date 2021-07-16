@@ -18,7 +18,7 @@ package com.skydoves.sandwich
 
 import retrofit2.http.GET
 
-interface DisneyDataSourceService {
+internal interface DisneyDataSourceService {
 
   @GET("DisneyPosters.json")
   fun fetchDisneyPosterList(): DataSource<List<Poster>>

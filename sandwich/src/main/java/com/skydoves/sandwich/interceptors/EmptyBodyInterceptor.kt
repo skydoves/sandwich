@@ -30,7 +30,7 @@ import okhttp3.ResponseBody.Companion.toResponseBody
  * and that there is no additional content to send in the response payload body.
  * e.g., 204 (NoContent), 205 (ResetContent).
  */
-object EmptyBodyInterceptor : Interceptor {
+public object EmptyBodyInterceptor : Interceptor {
 
   override fun intercept(chain: Interceptor.Chain): Response {
     val response = chain.proceed(chain.request())

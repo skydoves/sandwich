@@ -37,7 +37,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @RunWith(JUnit4::class)
-class ResponseTransformerTest : ApiAbstract<DisneyService>() {
+internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
 
   @get:Rule
   var instantExecutorRule = InstantTaskExecutorRule()

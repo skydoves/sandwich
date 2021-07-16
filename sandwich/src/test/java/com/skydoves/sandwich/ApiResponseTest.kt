@@ -34,7 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
 @RunWith(JUnit4::class)
-class ApiResponseTest : ApiAbstract<DisneyService>() {
+internal class ApiResponseTest : ApiAbstract<DisneyService>() {
 
   private lateinit var service: DisneyService
   private val client: DisneyClient = mock()

@@ -37,13 +37,13 @@ import java.lang.reflect.Type
  * suspend fun fetchDisneyPosterList(): ApiResponse<List<Poster>>
  * ```
  */
-class CoroutinesResponseCallAdapterFactory private constructor() : CallAdapter.Factory() {
+public class CoroutinesResponseCallAdapterFactory private constructor() : CallAdapter.Factory() {
 
   override fun get(
     returnType: Type,
     annotations: Array<Annotation>,
     retrofit: Retrofit
-  ) = when (getRawType(returnType)) {
+  ): CoroutinesResponseCallAdapter? = when (getRawType(returnType)) {
     Call::class.java -> {
       val callType = getParameterUpperBound(0, returnType as ParameterizedType)
       when (getRawType(callType)) {
@@ -57,8 +57,8 @@ class CoroutinesResponseCallAdapterFactory private constructor() : CallAdapter.F
     else -> null
   }
 
-  companion object {
+  public companion object {
     @JvmStatic
-    fun create() = CoroutinesResponseCallAdapterFactory()
+    public fun create(): CoroutinesResponseCallAdapterFactory = CoroutinesResponseCallAdapterFactory()
   }
 }

@@ -21,7 +21,7 @@ package com.skydoves.sandwich
  *
  * [ApiResponseMergePolicy] is a policy for merging response data depend on the success or not.
  */
-enum class ApiResponseMergePolicy {
+public enum class ApiResponseMergePolicy {
   /**
    * Regardless of the order, ignores failure responses in the responses.
    * if there are three responses (success, success, failure) or (success, failure, success),

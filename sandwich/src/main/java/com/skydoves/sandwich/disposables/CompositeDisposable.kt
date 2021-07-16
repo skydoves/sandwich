@@ -23,16 +23,16 @@ package com.skydoves.sandwich.disposables
  *
  * A disposable container that can hold onto multiple other disposables.
  */
-class CompositeDisposable {
+public class CompositeDisposable {
 
   @Volatile
-  var disposed: Boolean = false
+  public var disposed: Boolean = false
     private set
 
   private var disposables: MutableSet<Disposable>? = hashSetOf()
 
   /** adds a new [Disposable] to this [CompositeDisposable] if not yet disposed. */
-  fun add(disposable: Disposable) {
+  public fun add(disposable: Disposable) {
     if (disposable.isDisposed()) {
       return
     }
@@ -48,7 +48,7 @@ class CompositeDisposable {
   }
 
   /** removes a [Disposable] from this [CompositeDisposable] and dispose the target. */
-  fun remove(disposable: Disposable) {
+  public fun remove(disposable: Disposable) {
     if (!disposed) {
       synchronized(this) {
         if (disposed || disposables?.remove(disposable) == false) {
@@ -60,7 +60,7 @@ class CompositeDisposable {
   }
 
   /** disposes all disposables that are currently part of this [CompositeDisposable]. */
-  fun clear() {
+  public fun clear() {
     if (!disposed) {
       var mutableCollection: MutableCollection<Disposable>?
       synchronized(this) {

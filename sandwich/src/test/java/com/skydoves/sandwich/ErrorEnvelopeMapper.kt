@@ -16,7 +16,7 @@
 
 package com.skydoves.sandwich
 
-object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorEnvelope> {
+internal object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorEnvelope> {
 
   override fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): ErrorEnvelope {
     return ErrorEnvelope(apiErrorResponse.statusCode.code, apiErrorResponse.message())

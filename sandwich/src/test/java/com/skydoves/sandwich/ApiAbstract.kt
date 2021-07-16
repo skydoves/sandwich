@@ -30,7 +30,7 @@ import java.io.IOException
 import java.nio.charset.StandardCharsets
 
 @RunWith(JUnit4::class)
-abstract class ApiAbstract<T> {
+internal abstract class ApiAbstract<T> {
 
   lateinit var mockWebServer: MockWebServer
 

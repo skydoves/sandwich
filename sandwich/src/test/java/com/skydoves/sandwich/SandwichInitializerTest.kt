@@ -28,7 +28,7 @@ import retrofit2.Response
 import java.io.IOException
 
 @RunWith(JUnit4::class)
-class SandwichInitializerTest {
+internal class SandwichInitializerTest {
 
   @Before
   fun initSuccessCodeRange() {
