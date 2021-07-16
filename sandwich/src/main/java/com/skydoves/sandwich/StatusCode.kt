@@ -23,7 +23,7 @@ package com.skydoves.sandwich
  *
  * This is a list of Hypertext Transfer Protocol (HTTP) response status codes.
  */
-enum class StatusCode(val code: Int) {
+public enum class StatusCode(public val code: Int) {
   Unknown(0),
 
   Continue(100),

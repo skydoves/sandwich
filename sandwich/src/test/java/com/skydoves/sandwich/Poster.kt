@@ -16,7 +16,7 @@
 
 package com.skydoves.sandwich
 
-data class Poster(
+internal data class Poster(
   val id: Long,
   val name: String,
   val release: String,

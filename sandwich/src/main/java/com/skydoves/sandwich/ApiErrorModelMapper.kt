@@ -23,7 +23,7 @@ package com.skydoves.sandwich
  *
  * @see [ApiErrorModelMapper](https://github.com/skydoves/sandwich#apierrormodelmapper)
  */
-fun interface ApiErrorModelMapper<V> {
+public fun interface ApiErrorModelMapper<V> {
 
   /**
    * maps the [ApiResponse.Failure.Error] to the [V] using the mapper.
@@ -31,5 +31,5 @@ fun interface ApiErrorModelMapper<V> {
    * @param apiErrorResponse The [ApiResponse.Failure.Error] error response from the network request.
    * @return A custom [V] error response model.
    */
-  fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): V
+  public fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): V
 }

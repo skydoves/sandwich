@@ -26,7 +26,7 @@ import org.junit.runners.JUnit4
 import retrofit2.Response
 
 @RunWith(JUnit4::class)
-class NoContentExceptionTest {
+internal class NoContentExceptionTest {
 
   @Test
   fun `throw NoContentException when body is null without accessing data property`() {

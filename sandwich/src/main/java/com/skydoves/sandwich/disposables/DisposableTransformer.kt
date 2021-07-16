@@ -28,7 +28,7 @@ import retrofit2.Call
  *
  * Returns an instance of [Disposable] from a [Call].
  */
-fun <T> Call<T>.disposable(): Disposable {
+public fun <T> Call<T>.disposable(): Disposable {
   val call = this
   return object : Disposable {
     override fun dispose() {
@@ -46,6 +46,6 @@ fun <T> Call<T>.disposable(): Disposable {
  *
  * Joins onto [CompositeDisposable] as a disposable. must be called before [request].
  */
-fun <T> Call<T>.joinDisposable(compositeDisposable: CompositeDisposable) = apply {
+public fun <T> Call<T>.joinDisposable(compositeDisposable: CompositeDisposable): Call<T> = apply {
   compositeDisposable.add(disposable())
 }

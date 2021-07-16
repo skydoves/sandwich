@@ -16,7 +16,7 @@
 
 package com.skydoves.sandwich
 
-class DisneyClient constructor(
+internal class DisneyClient constructor(
   private val disneyService: DisneyService,
   private val dataSource: ResponseDataSource<List<Poster>>
 ) {

@@ -21,11 +21,11 @@ package com.skydoves.sandwich.disposables
  *
  * A definition for canceling when works should be disposed.
  */
-interface Disposable {
+public interface Disposable {
 
   /** dispose the resource. */
-  fun dispose()
+  public fun dispose()
 
   /** returns true if this resource has been disposed. */
-  fun isDisposed(): Boolean
+  public fun isDisposed(): Boolean
 }

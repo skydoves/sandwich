@@ -18,7 +18,7 @@ package com.skydoves.sandwich
 
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
 
-class TestApiResponseSuspendOperator<T> constructor(
+internal class TestApiResponseSuspendOperator<T> constructor(
   private val onSuccess: suspend () -> Unit,
   private val onError: suspend () -> Unit,
   private val onException: suspend () -> Unit

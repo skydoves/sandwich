@@ -35,13 +35,13 @@ import java.lang.reflect.Type
  * suspend fun fetchDisneyPosterList(): DataSource<List<Poster>>
  * ```
  */
-class CoroutinesDataSourceCallAdapterFactory private constructor() : CallAdapter.Factory() {
+public class CoroutinesDataSourceCallAdapterFactory private constructor() : CallAdapter.Factory() {
 
   override fun get(
     returnType: Type,
     annotations: Array<Annotation>,
     retrofit: Retrofit
-  ) = when (getRawType(returnType)) {
+  ): CoroutinesDataSourceCallAdapter? = when (getRawType(returnType)) {
     Call::class.java -> {
       val callType = getParameterUpperBound(0, returnType as ParameterizedType)
       when (getRawType(callType)) {
@@ -55,8 +55,8 @@ class CoroutinesDataSourceCallAdapterFactory private constructor() : CallAdapter
     else -> null
   }
 
-  companion object {
+  public companion object {
     @JvmStatic
-    fun create() = CoroutinesDataSourceCallAdapterFactory()
+    public fun create(): CoroutinesDataSourceCallAdapterFactory = CoroutinesDataSourceCallAdapterFactory()
   }
 }

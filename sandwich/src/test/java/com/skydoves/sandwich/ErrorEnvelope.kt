@@ -16,7 +16,7 @@
 
 package com.skydoves.sandwich
 
-data class ErrorEnvelope(
+internal data class ErrorEnvelope(
   val code: Int,
   val message: String
 )

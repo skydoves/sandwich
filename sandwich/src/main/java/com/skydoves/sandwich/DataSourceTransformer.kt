@@ -24,7 +24,7 @@ package com.skydoves.sandwich
  *
  * Changes an instance of the [DataSource] interface to the [ResponseDataSource].
  */
-fun <T> DataSource<T>.toResponseDataSource(): ResponseDataSource<T> {
+public fun <T> DataSource<T>.toResponseDataSource(): ResponseDataSource<T> {
   requireNotNull(this is ResponseDataSource)
   return this as ResponseDataSource<T>
 }

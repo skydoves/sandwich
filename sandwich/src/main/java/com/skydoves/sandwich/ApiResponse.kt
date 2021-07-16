@@ -34,7 +34,7 @@ import retrofit2.Response
  *
  * ApiResponse is an interface for constructing standard responses from the retrofit call.
  */
-sealed class ApiResponse<out T> {
+public sealed class ApiResponse<out T> {
 
   /**
    * @author skydoves (Jaewoong Eum)
@@ -49,12 +49,12 @@ sealed class ApiResponse<out T> {
    * @property raw The raw response from the HTTP client.
    * @property data The de-serialized response body of a successful data.
    */
-  data class Success<T>(val response: Response<T>) : ApiResponse<T>() {
+  public data class Success<T>(val response: Response<T>) : ApiResponse<T>() {
     val statusCode: StatusCode = getStatusCodeFromResponse(response)
     val headers: Headers = response.headers()
     val raw: okhttp3.Response = response.raw()
     val data: T by lazy { response.body() ?: throw NoContentException(statusCode.code) }
-    override fun toString() = "[ApiResponse.Success](data=$data)"
+    override fun toString(): String = "[ApiResponse.Success](data=$data)"
   }
 
   /**
@@ -63,7 +63,7 @@ sealed class ApiResponse<out T> {
    * API Failure response class from OkHttp request call.
    * There are two subtypes: [ApiResponse.Failure.Error] and [ApiResponse.Failure.Exception].
    */
-  sealed class Failure<T> {
+  public sealed class Failure<T> {
     /**
      * API response error case.
      * API communication conventions do not match or applications need to handle errors.
@@ -76,7 +76,7 @@ sealed class ApiResponse<out T> {
      * @property raw The raw response from the HTTP client.
      * @property errorBody The [ResponseBody] can be consumed only once.
      */
-    data class Error<T>(val response: Response<T>) : ApiResponse<T>() {
+    public data class Error<T>(val response: Response<T>) : ApiResponse<T>() {
       val statusCode: StatusCode = getStatusCodeFromResponse(response)
       val headers: Headers = response.headers()
       val raw: okhttp3.Response = response.raw()
@@ -95,13 +95,13 @@ sealed class ApiResponse<out T> {
      *
      * @property message The localized message from the exception.
      */
-    data class Exception<T>(val exception: Throwable) : ApiResponse<T>() {
+    public data class Exception<T>(val exception: Throwable) : ApiResponse<T>() {
       val message: String? = exception.localizedMessage
       override fun toString(): String = "[ApiResponse.Failure.Exception](message=$message)"
     }
   }
 
-  companion object {
+  public companion object {
     /**
      * @author skydoves (Jaewoong Eum)
      *
@@ -111,7 +111,7 @@ sealed class ApiResponse<out T> {
      *
      * @return A [ApiResponse.Failure.Exception] based on the throwable.
      */
-    fun <T> error(ex: Throwable) = Failure.Exception<T>(ex).apply { operate() }
+    public fun <T> error(ex: Throwable): Failure.Exception<T> = Failure.Exception<T>(ex).apply { operate() }
 
     /**
      * @author skydoves (Jaewoong Eum)
@@ -127,7 +127,7 @@ sealed class ApiResponse<out T> {
      * @return An [ApiResponse] model which holds information about the response.
      */
     @JvmSynthetic
-    inline fun <T> of(
+    public inline fun <T> of(
       successCodeRange: IntRange = SandwichInitializer.successCodeRange,
       crossinline f: () -> Response<T>
     ): ApiResponse<T> = try {
@@ -152,7 +152,7 @@ sealed class ApiResponse<out T> {
     @PublishedApi
     @Suppress("UNCHECKED_CAST")
     @OptIn(DelicateCoroutinesApi::class)
-    internal fun <T> ApiResponse<T>.operate() = apply {
+    internal fun <T> ApiResponse<T>.operate(): ApiResponse<T> = apply {
       val globalOperator = SandwichInitializer.sandwichOperator ?: return@apply
       if (globalOperator is ApiResponseOperator<*>) {
         operator(globalOperator as ApiResponseOperator<T>)
@@ -172,7 +172,7 @@ sealed class ApiResponse<out T> {
      *
      * @return A [StatusCode] from the network callback response.
      */
-    fun <T> getStatusCodeFromResponse(response: Response<T>): StatusCode {
+    public fun <T> getStatusCodeFromResponse(response: Response<T>): StatusCode {
       return StatusCode.values().find { it.code == response.code() }
         ?: StatusCode.Unknown
     }

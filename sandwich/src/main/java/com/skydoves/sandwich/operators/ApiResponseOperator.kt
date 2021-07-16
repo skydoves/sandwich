@@ -26,26 +26,26 @@ import com.skydoves.sandwich.ApiResponse
  * [com.skydoves.sandwich.onError], [com.skydoves.sandwich.onException] transformers.
  * This operator can be applied globally as a singleton instance, or on each [ApiResponse] one by one.
  */
-abstract class ApiResponseOperator<T> : SandwichOperator {
+public abstract class ApiResponseOperator<T> : SandwichOperator {
 
   /**
    * Operates the [ApiResponse.Success] for handling successful responses if the request succeeds.
    *
    * @param apiResponse The successful response.
    */
-  abstract fun onSuccess(apiResponse: ApiResponse.Success<T>)
+  public abstract fun onSuccess(apiResponse: ApiResponse.Success<T>)
 
   /**
    * Operates the [ApiResponse.Failure.Error] for handling error responses if the request failed.
    *
    * @param apiResponse The failed response.
    */
-  abstract fun onError(apiResponse: ApiResponse.Failure.Error<T>)
+  public abstract fun onError(apiResponse: ApiResponse.Failure.Error<T>)
 
   /**
    * Operates the [ApiResponse.Failure.Exception] for handling exception responses if the request get an exception.
    *
    * @param apiResponse The exception response.
    */
-  abstract fun onException(apiResponse: ApiResponse.Failure.Exception<T>)
+  public abstract fun onException(apiResponse: ApiResponse.Failure.Exception<T>)
 }

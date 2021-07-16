@@ -19,7 +19,7 @@ package com.skydoves.sandwich
 import retrofit2.Call
 import retrofit2.http.GET
 
-interface DisneyService {
+internal interface DisneyService {
 
   @GET("DisneyPosters.json")
   fun fetchDisneyPosterList(): Call<List<Poster>>

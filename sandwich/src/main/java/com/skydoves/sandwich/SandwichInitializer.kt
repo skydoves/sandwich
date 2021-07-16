@@ -24,7 +24,7 @@ import okio.Timeout
  *
  * SandwichInitializer is a rules and strategies initializer of the network response.
  */
-object SandwichInitializer {
+public object SandwichInitializer {
 
   /**
    * @author skydoves (Jaewoong Eum)
@@ -38,7 +38,7 @@ object SandwichInitializer {
    * the response will be a [ApiResponse.Failure.Error].
    * */
   @JvmStatic
-  var successCodeRange: IntRange = 200..299
+  public var successCodeRange: IntRange = 200..299
 
   /**
    * @author skydoves (Jaewoong Eum)
@@ -52,7 +52,7 @@ object SandwichInitializer {
    * Via setting a [sandwichOperator], we don't need to set operator for every [ApiResponse].
    */
   @JvmStatic
-  var sandwichOperator: SandwichOperator? = null
+  public var sandwichOperator: SandwichOperator? = null
 
   /**
    * @author skydoves (Jaewoong Eum)
@@ -65,5 +65,5 @@ object SandwichInitializer {
    * retries all must complete within one timeout period.
    */
   @JvmStatic
-  var sandwichTimeout: Timeout? = null
+  public var sandwichTimeout: Timeout? = null
 }
