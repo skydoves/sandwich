@@ -14,7 +14,7 @@
 
 ext.versions = [
     minSdk           : 16,
-    compileSdk       : 30,
+    compileSdk       : 31,
     versionCode      : 12,
     versionName      : '1.2.0',
 
@@ -45,7 +45,7 @@ ext.versions = [
     robolectric      : '4.4',
 
     // for demo
-    googleMaterial   : '1.3.0',
+    googleMaterial   : '1.4.0',
     constraintVersion: '2.0.4',
     glideVersion     : '4.12.0',
     baseAdapter      : '1.0.4',
