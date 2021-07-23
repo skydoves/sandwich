@@ -461,6 +461,19 @@ public fun <T, V> ApiResponse.Success<T>.map(mapper: ApiSuccessModelMapper<T, V>
 /**
  * @author skydoves (Jaewoong Eum)
  *
+ * Maps [ApiResponse.Success] to a customized success response model.
+ *
+ * @param mapper An executable lambda for mapping [ApiResponse.Success] response as a custom [V] instance model.
+ *
+ * @return A mapped custom [V] error response model.
+ */
+public fun <T, V> ApiResponse.Success<T>.map(mapper: (ApiResponse.Success<T>) -> V): V {
+  return mapper(this)
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Maps [ApiResponse.Success] to a customized error response model with a receiver scope lambda.
  *
  * @param mapper A mapper interface for mapping [ApiResponse.Success] response as a custom [V] instance model.
@@ -498,6 +511,23 @@ public suspend inline fun <T, V> ApiResponse.Success<T>.suspendMap(
 /**
  * @author skydoves (Jaewoong Eum)
  *
+ * Maps [ApiResponse.Success] to a customized error response model with a suspension receiver scope lambda.
+ *
+ * @param mapper An executable lambda for mapping [ApiResponse.Success] response as a custom [V] instance model.
+ *
+ * @return A mapped custom [V] success response model.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T, V> ApiResponse.Success<T>.suspendMap(
+  crossinline mapper: suspend (ApiResponse.Success<T>) -> V
+): V {
+  return mapper(this)
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Maps [ApiResponse.Failure.Error] to a customized error response model.
  *
  * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
@@ -506,6 +536,19 @@ public suspend inline fun <T, V> ApiResponse.Success<T>.suspendMap(
  */
 public fun <T, V> ApiResponse.Failure.Error<T>.map(mapper: ApiErrorModelMapper<V>): V {
   return mapper.map(this)
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps [ApiResponse.Failure.Error] to a customized error response model.
+ *
+ * @param mapper An executable lambda for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
+ *
+ * @return A mapped custom [V] error response model.
+ */
+public fun <T, V> ApiResponse.Failure.Error<T>.map(mapper: (ApiResponse.Failure.Error<T>) -> V): V {
+  return mapper(this)
 }
 
 /**
@@ -543,6 +586,23 @@ public suspend inline fun <T, V> ApiResponse.Failure.Error<T>.suspendMap(
   crossinline onResult: suspend V.() -> Unit
 ) {
   onResult(mapper.map(this))
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps [ApiResponse.Failure.Error] to a customized error response model with a suspension receiver scope lambda.
+ *
+ * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
+ *
+ * @return A mapped custom [V] error response model.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T, V> ApiResponse.Failure.Error<T>.suspendMap(
+  crossinline mapper: suspend (ApiResponse.Failure.Error<T>) -> V
+): V {
+  return mapper(this)
 }
 
 /**
