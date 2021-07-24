@@ -156,7 +156,7 @@ public class ResponseDataSource<T> : DataSource<T> {
     coroutineScope: CoroutineScope,
     crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
   ): ResponseDataSource<T> =
-    combine(call, getCallbackFromOnResultOnCoroutinesScope(onResult, coroutineScope))
+    combine(call, getCallbackFromOnResultOnCoroutinesScope(coroutineScope, onResult))
 
   /** Retry requesting API call when the request gets failure. */
   public override fun retry(retryCount: Int, interval: Long): ResponseDataSource<T> = apply {

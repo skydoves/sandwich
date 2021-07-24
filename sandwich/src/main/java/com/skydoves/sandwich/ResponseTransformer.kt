@@ -65,6 +65,19 @@ public inline fun <T> Call<T>.combineDataSource(
 /**
  * @author skydoves (Jaewoong Eum)
  *
+ * Combines a [DataSource] to the call for processing response data more handy.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public inline fun <T> Call<T>.suspendCombineDataSource(
+  dataSource: DataSource<T>,
+  coroutineScope: CoroutineScope,
+  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
+): DataSource<T> = dataSource.combine(this, getCallbackFromOnResultOnCoroutinesScope(coroutineScope, onResult))
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Returns a response callback from an onResult lambda.
  *
  * @param onResult A lambda that would be executed when the request finished.
@@ -99,8 +112,8 @@ internal inline fun <T> getCallbackFromOnResult(
 @PublishedApi
 @JvmSynthetic
 internal inline fun <T> getCallbackFromOnResultOnCoroutinesScope(
-  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
-  coroutineScope: CoroutineScope
+  coroutineScope: CoroutineScope,
+  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
 ): Callback<T> {
   return object : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
