@@ -20,12 +20,16 @@ package com.skydoves.sandwich
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.skydoves.sandwich.coroutines.SuspensionFunction
 import com.skydoves.sandwich.disposables.CompositeDisposable
 import com.skydoves.sandwich.disposables.disposable
 import com.skydoves.sandwich.executors.ArchTaskExecutor
+import kotlinx.coroutines.CoroutineScope
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -146,6 +150,26 @@ public class ResponseDataSource<T> : DataSource<T> {
   ): ResponseDataSource<T> =
     combine(call, getCallbackFromOnResult(onResult))
 
+  /** combine a call and callback instances for caching data on a [CoroutineScope]. */
+  @JvmSynthetic
+  @SuspensionFunction
+  public inline fun suspendCombine(
+    call: Call<T>,
+    coroutineScope: CoroutineScope,
+    crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
+  ): ResponseDataSource<T> =
+    combine(call, getCallbackFromOnResultOnCoroutinesScope(coroutineScope, onResult))
+
+  /** combine a call and callback instances for caching data on a [CoroutineContext]. */
+  @JvmSynthetic
+  @SuspensionFunction
+  public inline fun suspendCombine(
+    call: Call<T>,
+    context: CoroutineContext = EmptyCoroutineContext,
+    crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
+  ): ResponseDataSource<T> =
+    combine(call, getCallbackFromOnResultWithContext(context, onResult))
+
   /** Retry requesting API call when the request gets failure. */
   public override fun retry(retryCount: Int, interval: Long): ResponseDataSource<T> = apply {
     this.retryCount = retryCount
@@ -179,6 +203,32 @@ public class ResponseDataSource<T> : DataSource<T> {
   public inline fun request(crossinline action: (ApiResponse<T>).() -> Unit): ResponseDataSource<T> = apply {
     if (call != null && callback == null) {
       combine(requireNotNull(call), action)
+    }
+    request()
+  }
+
+  /** extension method for requesting and observing response at once on a [CoroutineScope]. */
+  @JvmSynthetic
+  @SuspensionFunction
+  public inline fun suspendRequest(
+    coroutineScope: CoroutineScope,
+    crossinline action: suspend (ApiResponse<T>).() -> Unit
+  ): ResponseDataSource<T> = apply {
+    if (call != null && callback == null) {
+      suspendCombine(requireNotNull(call), coroutineScope, action)
+    }
+    request()
+  }
+
+  /** extension method for requesting and observing response at once with a [CoroutineContext]. */
+  @JvmSynthetic
+  @SuspensionFunction
+  public inline fun suspendRequest(
+    context: CoroutineContext = EmptyCoroutineContext,
+    crossinline action: suspend (ApiResponse<T>).() -> Unit
+  ): ResponseDataSource<T> = apply {
+    if (call != null && callback == null) {
+      suspendCombine(requireNotNull(call), context, action)
     }
     request()
   }
