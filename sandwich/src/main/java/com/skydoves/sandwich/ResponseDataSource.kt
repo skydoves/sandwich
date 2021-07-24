@@ -207,7 +207,7 @@ public class ResponseDataSource<T> : DataSource<T> {
     request()
   }
 
-  /** extension method for requesting and observing response at once. */
+  /** extension method for requesting and observing response at once on a [CoroutineScope]. */
   @JvmSynthetic
   @SuspensionFunction
   public inline fun suspendRequest(
@@ -216,6 +216,19 @@ public class ResponseDataSource<T> : DataSource<T> {
   ): ResponseDataSource<T> = apply {
     if (call != null && callback == null) {
       suspendCombine(requireNotNull(call), coroutineScope, action)
+    }
+    request()
+  }
+
+  /** extension method for requesting and observing response at once with a [CoroutineContext]. */
+  @JvmSynthetic
+  @SuspensionFunction
+  public inline fun suspendRequest(
+    context: CoroutineContext = EmptyCoroutineContext,
+    crossinline action: suspend (ApiResponse<T>).() -> Unit
+  ): ResponseDataSource<T> = apply {
+    if (call != null && callback == null) {
+      suspendCombine(requireNotNull(call), context, action)
     }
     request()
   }
