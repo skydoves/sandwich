@@ -25,9 +25,11 @@ import androidx.lifecycle.MutableLiveData
 import com.skydoves.sandwich.coroutines.SuspensionFunction
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import okhttp3.Headers
 import retrofit2.Call
 import retrofit2.Callback
@@ -81,6 +83,36 @@ internal inline fun <T> getCallbackFromOnResult(
 
     override fun onFailure(call: Call<T>, throwable: Throwable) {
       onResult(ApiResponse.error(throwable))
+    }
+  }
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Returns a response callback from an onResult lambda.
+ *
+ * @param onResult A lambda that would be executed when the request finished.
+ *
+ * @return A [Callback] will be executed.
+ */
+@PublishedApi
+@JvmSynthetic
+internal inline fun <T> getCallbackFromOnResultOnCoroutinesScope(
+  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
+  coroutineScope: CoroutineScope
+): Callback<T> {
+  return object : Callback<T> {
+    override fun onResponse(call: Call<T>, response: Response<T>) {
+      coroutineScope.launch {
+        onResult(ApiResponse.of { response })
+      }
+    }
+
+    override fun onFailure(call: Call<T>, throwable: Throwable) {
+      coroutineScope.launch {
+        onResult(ApiResponse.error(throwable))
+      }
     }
   }
 }
