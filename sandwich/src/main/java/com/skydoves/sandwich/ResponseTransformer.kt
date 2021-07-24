@@ -26,6 +26,8 @@ import com.skydoves.sandwich.coroutines.SuspensionFunction
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
@@ -34,6 +36,8 @@ import okhttp3.Headers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -74,6 +78,19 @@ public inline fun <T> Call<T>.suspendCombineDataSource(
   coroutineScope: CoroutineScope,
   crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
 ): DataSource<T> = dataSource.combine(this, getCallbackFromOnResultOnCoroutinesScope(coroutineScope, onResult))
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Combines a [DataSource] to the call for processing response data more handy.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public inline fun <T> Call<T>.suspendCombineDataSource(
+  dataSource: DataSource<T>,
+  context: CoroutineContext = EmptyCoroutineContext,
+  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
+): DataSource<T> = dataSource.combine(this, getCallbackFromOnResultWithContext(context, onResult))
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -124,6 +141,38 @@ internal inline fun <T> getCallbackFromOnResultOnCoroutinesScope(
 
     override fun onFailure(call: Call<T>, throwable: Throwable) {
       coroutineScope.launch {
+        onResult(ApiResponse.error(throwable))
+      }
+    }
+  }
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Returns a response callback from an onResult lambda.
+ *
+ * @param onResult A lambda that would be executed when the request finished.
+ *
+ * @return A [Callback] will be executed.
+ */
+@PublishedApi
+@JvmSynthetic
+internal inline fun <T> getCallbackFromOnResultWithContext(
+  context: CoroutineContext = EmptyCoroutineContext,
+  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
+): Callback<T> {
+  return object : Callback<T> {
+    val supervisorJob = SupervisorJob(context[Job])
+    val scope = CoroutineScope(context + supervisorJob)
+    override fun onResponse(call: Call<T>, response: Response<T>) {
+      scope.launch {
+        onResult(ApiResponse.of { response })
+      }
+    }
+
+    override fun onFailure(call: Call<T>, throwable: Throwable) {
+      scope.launch {
         onResult(ApiResponse.error(throwable))
       }
     }
