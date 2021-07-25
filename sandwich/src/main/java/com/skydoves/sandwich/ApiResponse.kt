@@ -21,9 +21,9 @@ package com.skydoves.sandwich
 import com.skydoves.sandwich.exceptions.NoContentException
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import okhttp3.Headers
 import okhttp3.ResponseBody
@@ -151,13 +151,15 @@ public sealed class ApiResponse<out T> {
      */
     @PublishedApi
     @Suppress("UNCHECKED_CAST")
-    @OptIn(DelicateCoroutinesApi::class)
     internal fun <T> ApiResponse<T>.operate(): ApiResponse<T> = apply {
       val globalOperator = SandwichInitializer.sandwichOperator ?: return@apply
       if (globalOperator is ApiResponseOperator<*>) {
         operator(globalOperator as ApiResponseOperator<T>)
       } else if (globalOperator is ApiResponseSuspendOperator<*>) {
-        GlobalScope.launch(Dispatchers.IO) {
+        val context = SandwichInitializer.sandwichOperatorContext
+        val supervisorJob = SupervisorJob(context[Job])
+        val scope = CoroutineScope(context + supervisorJob)
+        scope.launch {
           suspendOperator(globalOperator as ApiResponseSuspendOperator<T>)
         }
       }

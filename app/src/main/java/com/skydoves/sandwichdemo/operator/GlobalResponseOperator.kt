@@ -36,7 +36,9 @@ class GlobalResponseOperator<T> constructor(
 ) : ApiResponseSuspendOperator<T>() {
 
   // handle the case when the API request gets a success response.
-  override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) {}
+  override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) {
+    Timber.d("$apiResponse")
+  }
 
   // handle the case when the API request gets a error response.
   // e.g., internal server error.
