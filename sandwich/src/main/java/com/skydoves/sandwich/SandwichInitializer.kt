@@ -17,7 +17,11 @@
 package com.skydoves.sandwich
 
 import com.skydoves.sandwich.operators.SandwichOperator
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import okio.Timeout
+import kotlin.coroutines.CoroutineContext
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -53,6 +57,16 @@ public object SandwichInitializer {
    */
   @JvmStatic
   public var sandwichOperator: SandwichOperator? = null
+
+  /**
+   * @author skydoves (Jaewoong Eum)
+   *
+   * A [CoroutineContext] for operating the [sandwichOperator] when it extends
+   * the [com.skydoves.sandwich.operators.ApiResponseSuspendOperator].
+   */
+  @JvmSynthetic
+  @OptIn(DelicateCoroutinesApi::class)
+  public var sandwichOperatorContext: CoroutineContext = Dispatchers.IO + GlobalScope.coroutineContext
 
   /**
    * @author skydoves (Jaewoong Eum)
