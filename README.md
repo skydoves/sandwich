@@ -1,10 +1,5 @@
 
-<h1 align="center">Sandwich</h1></br>
-
-<p align="center"> 
-🥪 A lightweight and standardized Android network response interface for handling successful data and error responses.
-</p>
-</br>
+![sandwich](https://user-images.githubusercontent.com/24237865/127761867-1ebffff6-6a6b-487e-9000-0369b964075e.png)<br>
 
 <p align="center">
   <a href="https://devlibrary.withgoogle.com/products/android/repos/skydoves-Sandwich"><img alt="Google" src="https://skydoves.github.io/badges/google-devlib.svg"/></a><br>
@@ -14,10 +9,6 @@
   <a href="https://skydoves.github.io/libraries/sandwich/html/sandwich/com.skydoves.sandwich/index.html"><img alt="Javadoc" src="https://skydoves.github.io/badges/javadoc-sandwich.svg"/></a>
   <a href="https://skydoves.medium.com/handling-success-data-and-error-callback-responses-from-a-network-for-android-projects-using-b53a26214cef"><img alt="Medium" src="https://skydoves.github.io/badges/Story-Medium.svg"/></a>
   <a href="https://github.com/skydoves"><img alt="Profile" src="https://skydoves.github.io/badges/skydoves.svg"/></a>
-</p>
-
-<p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/104847167-deb30880-5921-11eb-8313-e634058b370b.png" width="783" height="406"/>
 </p>
 
 ## Why Sandwich?
