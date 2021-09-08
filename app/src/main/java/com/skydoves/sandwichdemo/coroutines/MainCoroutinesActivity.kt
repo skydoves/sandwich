@@ -34,7 +34,7 @@ class MainCoroutinesActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    DataBindingUtil.setContentView<ActivityMainCoroutinesBinding>(this, R.layout.activity_main_coroutines).apply {
+    DataBindingUtil.setContentView<>(this, R.layout.activity_main_coroutines).apply {
       lifecycleOwner = this@MainCoroutinesActivity
       viewModel = this@MainCoroutinesActivity.viewModel
       adapter = PosterAdapter()
