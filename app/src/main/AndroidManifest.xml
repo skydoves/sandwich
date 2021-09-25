@@ -16,7 +16,9 @@
     tools:ignore="AllowBackup">
     <activity android:name=".MainActivity" />
     <activity android:name=".operator.MainCoroutinesOperatorActivity" />
-    <activity android:name=".coroutines.MainCoroutinesActivity">
+    <activity
+      android:name=".coroutines.MainCoroutinesActivity"
+      android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
