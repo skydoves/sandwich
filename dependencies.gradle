@@ -15,8 +15,8 @@
 ext.versions = [
     minSdk           : 16,
     compileSdk       : 31,
-    versionCode      : 12,
-    versionName      : '1.2.0',
+    versionCode      : 13,
+    versionName      : '1.2.1',
 
     gradleBuildTool  : '7.0.2',
     spotlessGradle   : '5.15.0',
@@ -34,7 +34,7 @@ ext.versions = [
     okhttpVersion    : '4.9.0',
 
     // coroutines
-    coroutinesVersion: '1.5.0',
+    coroutinesVersion: '1.5.2',
 
     // unit test
     junit            : '4.13.1',
