@@ -19,16 +19,16 @@ package com.skydoves.sandwichdemo.operator
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import com.skydoves.sandwichdemo.R
 import com.skydoves.sandwichdemo.adapter.PosterAdapter
 import com.skydoves.sandwichdemo.databinding.ActivityMainCoroutinesOperatorBinding
 
 class MainCoroutinesOperatorActivity : AppCompatActivity() {
 
-  private val viewModelFactory: MainCoroutinesOperatorViewModelFactory = MainCoroutinesOperatorViewModelFactory()
+  private val viewModelFactory: MainCoroutinesOperatorViewModelFactory =
+    MainCoroutinesOperatorViewModelFactory()
   private val viewModel: MainCoroutinesOperatorViewModel by lazy {
-    ViewModelProvider(this, viewModelFactory).get(MainCoroutinesOperatorViewModel::class.java)
+    viewModelFactory.create(MainCoroutinesOperatorViewModel::class.java)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {

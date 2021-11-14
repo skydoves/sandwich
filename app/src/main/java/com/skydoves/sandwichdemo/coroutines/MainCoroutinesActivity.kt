@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import com.skydoves.sandwichdemo.R
 import com.skydoves.sandwichdemo.adapter.PosterAdapter
 import com.skydoves.sandwichdemo.databinding.ActivityMainCoroutinesBinding
@@ -29,12 +28,15 @@ class MainCoroutinesActivity : AppCompatActivity() {
 
   private val viewModelFactory: MainCoroutinesViewModelFactory = MainCoroutinesViewModelFactory()
   private val viewModel: MainCoroutinesViewModel by lazy {
-    ViewModelProvider(this, viewModelFactory).get(MainCoroutinesViewModel::class.java)
+    viewModelFactory.create(MainCoroutinesViewModel::class.java)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    DataBindingUtil.setContentView<ActivityMainCoroutinesBinding>(this, R.layout.activity_main_coroutines).apply {
+    DataBindingUtil.setContentView<ActivityMainCoroutinesBinding>(
+      this,
+      R.layout.activity_main_coroutines
+    ).apply {
       lifecycleOwner = this@MainCoroutinesActivity
       viewModel = this@MainCoroutinesActivity.viewModel
       adapter = PosterAdapter()
