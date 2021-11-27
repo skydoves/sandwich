@@ -25,7 +25,8 @@ Sandwich was invented for constructing the standardized response interface from 
 ### Gradle
 Add below codes to your **root** `build.gradle` file (not your module build.gradle file).
 ```gradle
-allprojects {
+allprojects {![127761867-1ebffff6-6a6b-487e-9000-0369b964075e](https://user-images.githubusercontent.com/24237865/143687850-e819bbf1-fbe3-445a-89df-3141ca8bdcba.png)
+
     repositories {
         mavenCentral()
     }
@@ -52,6 +53,7 @@ You can reference the good use cases of this library in the below repositories.
 - [Pokedex](https://github.com/skydoves/pokedex) - 🗡️ Android Pokedex using Hilt, Motion, Coroutines, Flow, Jetpack (Room, ViewModel, LiveData) based on MVVM architecture.
 - [DisneyMotions](https://github.com/skydoves/DisneyMotions) - 🦁 A Disney app using transformation motions based on MVVM (ViewModel, Coroutines, LiveData, Room, Repository, Koin) architecture.
 - [MarvelHeroes](https://github.com/skydoves/marvelheroes) - ❤️ A sample Marvel heroes application based on MVVM (ViewModel, Coroutines, LiveData, Room, Repository, Koin)  architecture.
+- [Neko](https://github.com/CarlosEsco/Neko) - Free, open source, unofficial MangaDex reader for Android.
 - [TheMovies2](https://github.com/skydoves/TheMovies2) - 🎬 A demo project using The Movie DB based on Kotlin MVVM architecture and material design & animations.
 
 ## Table of contents
