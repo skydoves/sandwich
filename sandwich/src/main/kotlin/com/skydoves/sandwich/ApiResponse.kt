@@ -81,7 +81,8 @@ public sealed class ApiResponse<out T> {
       val headers: Headers = response.headers()
       val raw: okhttp3.Response = response.raw()
       val errorBody: ResponseBody? = response.errorBody()
-      override fun toString(): String = "[ApiResponse.Failure.Error-$statusCode](errorResponse=$response)"
+      override fun toString(): String =
+        "[ApiResponse.Failure.Error-$statusCode](errorResponse=$response)"
     }
 
     /**
@@ -111,7 +112,8 @@ public sealed class ApiResponse<out T> {
      *
      * @return A [ApiResponse.Failure.Exception] based on the throwable.
      */
-    public fun <T> error(ex: Throwable): Failure.Exception<T> = Failure.Exception<T>(ex).apply { operate() }
+    public fun <T> error(ex: Throwable): Failure.Exception<T> =
+      Failure.Exception<T>(ex).apply { operate() }
 
     /**
      * @author skydoves (Jaewoong Eum)

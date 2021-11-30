@@ -77,7 +77,8 @@ public inline fun <T> Call<T>.suspendCombineDataSource(
   dataSource: DataSource<T>,
   coroutineScope: CoroutineScope,
   crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
-): DataSource<T> = dataSource.combine(this, getCallbackFromOnResultOnCoroutinesScope(coroutineScope, onResult))
+): DataSource<T> =
+  dataSource.combine(this, getCallbackFromOnResultOnCoroutinesScope(coroutineScope, onResult))
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -339,11 +340,10 @@ public suspend inline fun <T, V> ApiResponse<T>.suspendOnSuccess(
  */
 @JvmSynthetic
 public inline fun <T> ApiResponse<T>.onFailure(
-  crossinline onResult: ApiResponse.Failure<*>.() -> Unit
+  crossinline onResult: String.() -> Unit
 ): ApiResponse<T> {
-  if (this is ApiResponse.Failure<*>) {
-    onResult(this)
-  }
+  onError { onResult(message()) }
+  onException { onResult(message()) }
   return this
 }
 
@@ -359,11 +359,10 @@ public inline fun <T> ApiResponse<T>.onFailure(
 @JvmSynthetic
 @SuspensionFunction
 public suspend inline fun <T> ApiResponse<T>.suspendOnFailure(
-  crossinline onResult: suspend ApiResponse.Failure<*>.() -> Unit
+  crossinline onResult: suspend String.() -> Unit
 ): ApiResponse<T> {
-  if (this is ApiResponse.Failure<*>) {
-    onResult(this)
-  }
+  suspendOnError { onResult(message()) }
+  suspendOnException { onResult(message()) }
   return this
 }
 
