@@ -339,10 +339,13 @@ public suspend inline fun <T, V> ApiResponse<T>.suspendOnSuccess(
  */
 @JvmSynthetic
 public inline fun <T> ApiResponse<T>.onFailure(
-  crossinline onResult: ApiResponse.Failure<*>.() -> Unit
+  crossinline onResult: String.() -> Unit
 ): ApiResponse<T> {
-  if (this is ApiResponse.Failure<*>) {
-    onResult(this)
+  if (this is ApiResponse.Failure.Error) {
+    onResult(message())
+  }
+  if (this is ApiResponse.Failure.Exception) {
+    onResult(message())
   }
   return this
 }
@@ -359,10 +362,13 @@ public inline fun <T> ApiResponse<T>.onFailure(
 @JvmSynthetic
 @SuspensionFunction
 public suspend inline fun <T> ApiResponse<T>.suspendOnFailure(
-  crossinline onResult: suspend ApiResponse.Failure<*>.() -> Unit
+  crossinline onResult: suspend String.() -> Unit
 ): ApiResponse<T> {
-  if (this is ApiResponse.Failure<*>) {
-    onResult(this)
+  if (this is ApiResponse.Failure.Error) {
+    onResult(message())
+  }
+  if (this is ApiResponse.Failure.Exception) {
+    onResult(message())
   }
   return this
 }
