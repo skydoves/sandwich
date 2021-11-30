@@ -341,12 +341,8 @@ public suspend inline fun <T, V> ApiResponse<T>.suspendOnSuccess(
 public inline fun <T> ApiResponse<T>.onFailure(
   crossinline onResult: String.() -> Unit
 ): ApiResponse<T> {
-  if (this is ApiResponse.Failure.Error) {
-    onResult(message())
-  }
-  if (this is ApiResponse.Failure.Exception) {
-    onResult(message())
-  }
+  onError { onResult(message()) }
+  onException { onResult(message()) }
   return this
 }
 
@@ -364,12 +360,8 @@ public inline fun <T> ApiResponse<T>.onFailure(
 public suspend inline fun <T> ApiResponse<T>.suspendOnFailure(
   crossinline onResult: suspend String.() -> Unit
 ): ApiResponse<T> {
-  if (this is ApiResponse.Failure.Error) {
-    onResult(message())
-  }
-  if (this is ApiResponse.Failure.Exception) {
-    onResult(message())
-  }
+  suspendOnError { onResult(message()) }
+  suspendOnException { onResult(message()) }
   return this
 }
 
