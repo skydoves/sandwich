@@ -77,7 +77,8 @@ public inline fun <T> Call<T>.suspendCombineDataSource(
   dataSource: DataSource<T>,
   coroutineScope: CoroutineScope,
   crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
-): DataSource<T> = dataSource.combine(this, getCallbackFromOnResultOnCoroutinesScope(coroutineScope, onResult))
+): DataSource<T> =
+  dataSource.combine(this, getCallbackFromOnResultOnCoroutinesScope(coroutineScope, onResult))
 
 /**
  * @author skydoves (Jaewoong Eum)

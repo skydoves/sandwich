@@ -137,10 +137,11 @@ public class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** combine a call and callback instances for caching data. */
-  public override fun combine(call: Call<T>, callback: Callback<T>?): ResponseDataSource<T> = apply {
-    this.call = call
-    this.callback = callback
-  }
+  public override fun combine(call: Call<T>, callback: Callback<T>?): ResponseDataSource<T> =
+    apply {
+      this.call = call
+      this.callback = callback
+    }
 
   /** combine a call and callback instances for caching data. */
   @JvmSynthetic
@@ -200,12 +201,13 @@ public class ResponseDataSource<T> : DataSource<T> {
 
   /** extension method for requesting and observing response at once. */
   @JvmSynthetic
-  public inline fun request(crossinline action: (ApiResponse<T>).() -> Unit): ResponseDataSource<T> = apply {
-    if (call != null && callback == null) {
-      combine(requireNotNull(call), action)
+  public inline fun request(crossinline action: (ApiResponse<T>).() -> Unit): ResponseDataSource<T> =
+    apply {
+      if (call != null && callback == null) {
+        combine(requireNotNull(call), action)
+      }
+      request()
     }
-    request()
-  }
 
   /** extension method for requesting and observing response at once on a [CoroutineScope]. */
   @JvmSynthetic
@@ -234,9 +236,10 @@ public class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** joins onto [CompositeDisposable] as a disposable. must be called before [request]. */
-  public override fun joinDisposable(disposable: CompositeDisposable): ResponseDataSource<T> = apply {
-    this.compositeDisposable = disposable
-  }
+  public override fun joinDisposable(disposable: CompositeDisposable): ResponseDataSource<T> =
+    apply {
+      this.compositeDisposable = disposable
+    }
 
   /** invalidate a cached data and re-fetching the API request. */
   override fun invalidate() {
@@ -307,9 +310,10 @@ public class ResponseDataSource<T> : DataSource<T> {
   }
 
   /** observes a [ApiResponse] value from the API call request. */
-  public override fun observeResponse(observer: ResponseObserver<T>): ResponseDataSource<T> = apply {
-    this.responseObserver = observer
-  }
+  public override fun observeResponse(observer: ResponseObserver<T>): ResponseDataSource<T> =
+    apply {
+      this.responseObserver = observer
+    }
 
   /** observes a [ApiResponse] value from the API call request. */
   @JvmSynthetic
