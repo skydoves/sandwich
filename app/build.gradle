@@ -57,7 +57,6 @@ dependencies {
 
     // glide
     implementation "com.github.bumptech.glide:glide:$versions.glideVersion"
-    kapt "com.github.bumptech.glide:compiler:$versions.glideVersion"
 
     // adapter
     implementation "com.github.skydoves:baserecyclerviewadapter:$versions.baseAdapter"

@@ -27,11 +27,10 @@ ext.versions = [
 
     kotlin           : '1.5.31',
     androidxAppcompat: '1.2.0',
-    lifecycleVersion : '2.3.1',
 
     // network
     retrofitVersion  : '2.9.0',
-    okhttpVersion    : '4.9.0',
+    okhttpVersion    : '4.9.3',
 
     // coroutines
     coroutinesVersion: '1.5.2',
@@ -50,5 +49,6 @@ ext.versions = [
     constraintVersion: '2.0.4',
     glideVersion     : '4.12.0',
     baseAdapter      : '1.0.4',
+    lifecycleVersion : '2.3.1',
     timberVersion    : '4.7.1'
 ]

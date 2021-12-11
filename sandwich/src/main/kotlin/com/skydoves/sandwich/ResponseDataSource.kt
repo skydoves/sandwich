@@ -314,5 +314,5 @@ public class ResponseDataSource<T> : DataSource<T> {
   /** observes a [ApiResponse] value from the API call request. */
   @JvmSynthetic
   public inline fun observeResponse(crossinline action: (ApiResponse<T>) -> Unit): ResponseDataSource<T> =
-    observeResponse(ResponseObserver<T> { response -> action(response) })
+    observeResponse(ResponseObserver { response -> action(response) })
 }
