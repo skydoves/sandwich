@@ -18,14 +18,14 @@ Sandwich was invented for constructing the standardized response interface from 
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
 [![Jitpack](https://jitpack.io/v/skydoves/Sandwich.svg)](https://jitpack.io/#skydoves/Sandwich)
 
-🥪 Sandwich has been downloaded in more than __70k__ Android projects all over the world! <br>
+🥪 Sandwich has been downloaded in more than __120k__ Android projects all over the world! <br>
 
 <img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224"/>
 
 ### Gradle
 Add below codes to your **root** `build.gradle` file (not your module build.gradle file).
 ```gradle
-allprojects {![127761867-1ebffff6-6a6b-487e-9000-0369b964075e](https://user-images.githubusercontent.com/24237865/143687850-e819bbf1-fbe3-445a-89df-3141ca8bdcba.png)
+allprojects {
 
     repositories {
         mavenCentral()
@@ -35,7 +35,7 @@ allprojects {![127761867-1ebffff6-6a6b-487e-9000-0369b964075e](https://user-imag
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.2.1"
+    implementation "com.github.skydoves:sandwich:1.2.2"
 }
 ```
 

@@ -59,6 +59,7 @@ public class CoroutinesResponseCallAdapterFactory private constructor() : CallAd
 
   public companion object {
     @JvmStatic
-    public fun create(): CoroutinesResponseCallAdapterFactory = CoroutinesResponseCallAdapterFactory()
+    public fun create(): CoroutinesResponseCallAdapterFactory =
+      CoroutinesResponseCallAdapterFactory()
   }
 }

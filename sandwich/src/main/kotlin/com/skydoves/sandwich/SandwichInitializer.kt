@@ -66,7 +66,8 @@ public object SandwichInitializer {
    */
   @JvmSynthetic
   @OptIn(DelicateCoroutinesApi::class)
-  public var sandwichOperatorContext: CoroutineContext = Dispatchers.IO + GlobalScope.coroutineContext
+  public var sandwichOperatorContext: CoroutineContext =
+    Dispatchers.IO + GlobalScope.coroutineContext
 
   /**
    * @author skydoves (Jaewoong Eum)
