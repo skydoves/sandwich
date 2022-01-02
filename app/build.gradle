@@ -44,7 +44,6 @@ android {
 dependencies {
     // android supports
     implementation "com.google.android.material:material:$versions.googleMaterial"
-    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycleVersion"
 
