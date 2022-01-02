@@ -23,7 +23,7 @@ import com.skydoves.sandwichdemo.network.NetworkModule
 @Suppress("UNCHECKED_CAST")
 class MainCoroutinesViewModelFactory : ViewModelProvider.Factory {
 
-  override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+  override fun <T : ViewModel> create(modelClass: Class<T>): T {
     if (modelClass.isAssignableFrom(MainCoroutinesViewModel::class.java)) {
       return MainCoroutinesViewModel(NetworkModule.disneyCoroutinesService) as T
     }
