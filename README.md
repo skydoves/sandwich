@@ -23,16 +23,15 @@ Sandwich was invented for constructing the standardized response interface from 
 <img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224"/>
 
 ### Gradle
-Add below codes to your **root** `build.gradle` file (not your module build.gradle file).
+Add the below codes to your **root** `build.gradle` file (not your module build.gradle file).
 ```gradle
 allprojects {
-
     repositories {
         mavenCentral()
     }
 }
 ```
-And add a dependency code to your **module**'s `build.gradle` file.
+Next, add the below dependency to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
     implementation "com.github.skydoves:sandwich:1.2.2"
@@ -41,12 +40,28 @@ dependencies {
 
 ## SNAPSHOT 
 [![Sandwich](https://img.shields.io/static/v1?label=snapshot&message=sandwich&logo=apache%20maven&color=C71A36)](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/sandwich/) <br>
+
+<details>
+ <summary>See how to import the snapshot</summary>
+
+### Including the SNAPSHOT
 Snapshots of the current development version of Sandwich are available, which track [the latest versions](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/sandwich/).
+
+To import snapshot versions on your project, add the code snippet below on your gradle file:
 ```Gradle
 repositories {
    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 ```
+
+Next, add the dependency below to your **module**'s `build.gradle` file:
+```gradle
+dependencies {
+    implementation "com.github.skydoves:sandwich:1.2.3-SNAPSHOT"
+}
+```
+
+</details>
 
 ## Usecase
 You can reference the good use cases of this library in the below repositories.
