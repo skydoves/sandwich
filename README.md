@@ -6,9 +6,9 @@
   <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
   <a href="https://android-arsenal.com/api?level=16"><img alt="API" src="https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat"/></a>
   <a href="https://github.com/skydoves/Sandwich/actions"><img alt="Build Status" src="https://github.com/skydoves/Sandwich/workflows/Android%20CI/badge.svg"/></a>
-  <a href="https://skydoves.github.io/libraries/sandwich/html/sandwich/com.skydoves.sandwich/index.html"><img alt="Javadoc" src="https://skydoves.github.io/badges/javadoc-sandwich.svg"/></a>
   <a href="https://skydoves.medium.com/handling-success-data-and-error-callback-responses-from-a-network-for-android-projects-using-b53a26214cef"><img alt="Medium" src="https://skydoves.github.io/badges/Story-Medium.svg"/></a>
   <a href="https://github.com/skydoves"><img alt="Profile" src="https://skydoves.github.io/badges/skydoves.svg"/></a>
+  <a href="https://skydoves.github.io/libraries/sandwich/html/sandwich/com.skydoves.sandwich/index.html"><img alt="Dokka" src="https://skydoves.github.io/badges/dokka-sandwich.svg"/></a>
 </p>
 
 ## Why Sandwich?
@@ -16,14 +16,13 @@ Sandwich was invented for constructing the standardized response interface from 
 
 ## Download
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
-[![Jitpack](https://jitpack.io/v/skydoves/Sandwich.svg)](https://jitpack.io/#skydoves/Sandwich)
 
 🥪 Sandwich has been downloaded in more than __120k__ Android projects all over the world! <br>
 
 <img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224"/>
 
 ### Gradle
-Add the below codes to your **root** `build.gradle` file (not your module build.gradle file).
+Add the code below to your **root** `build.gradle` file:
 ```gradle
 allprojects {
     repositories {
@@ -31,7 +30,7 @@ allprojects {
     }
 }
 ```
-Next, add the below dependency to your **module**'s `build.gradle` file.
+Next, add the dependency below to your **module**'s `build.gradle` file:
 ```gradle
 dependencies {
     implementation "com.github.skydoves:sandwich:1.2.2"
