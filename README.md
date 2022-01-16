@@ -33,7 +33,7 @@ allprojects {
 Next, add the dependency below to your **module**'s `build.gradle` file:
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.2.2"
+    implementation "com.github.skydoves:sandwich:1.2.3"
 }
 ```
 > Note: Sandwich uses [Retrofit](https://github.com/skydoves/Sandwich/blob/main/dependencies.gradle#L32) and [OkHttp](https://github.com/skydoves/Sandwich/blob/main/dependencies.gradle#L33) internally, so please make sure your project uses the same versions.
