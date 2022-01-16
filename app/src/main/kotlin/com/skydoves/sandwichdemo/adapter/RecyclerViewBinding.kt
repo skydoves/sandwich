@@ -23,21 +23,27 @@ import com.bumptech.glide.Glide
 import com.skydoves.baserecyclerviewadapter.BaseAdapter
 import com.skydoves.sandwichdemo.model.Poster
 
-@BindingAdapter("adapter")
-fun bindAdapter(view: RecyclerView, baseAdapter: BaseAdapter) {
-  view.adapter = baseAdapter
-}
+object RecyclerViewBinding {
 
-@BindingAdapter("adapterPosterList")
-fun bindAdapterPosterList(view: RecyclerView, posters: List<Poster>?) {
-  if (!posters.isNullOrEmpty()) {
-    (view.adapter as? PosterAdapter)?.addPosterList(posters)
+  @JvmStatic
+  @BindingAdapter("adapter")
+  fun bindAdapter(view: RecyclerView, baseAdapter: BaseAdapter) {
+    view.adapter = baseAdapter
   }
-}
 
-@BindingAdapter("loadImage")
-fun bindLoadImage(view: AppCompatImageView, url: String) {
-  Glide.with(view.context)
-    .load(url)
-    .into(view)
+  @JvmStatic
+  @BindingAdapter("adapterPosterList")
+  fun bindAdapterPosterList(view: RecyclerView, posters: List<Poster>?) {
+    if (!posters.isNullOrEmpty()) {
+      (view.adapter as? PosterAdapter)?.addPosterList(posters)
+    }
+  }
+
+  @JvmStatic
+  @BindingAdapter("loadImage")
+  fun bindLoadImage(view: AppCompatImageView, url: String) {
+    Glide.with(view.context)
+      .load(url)
+      .into(view)
+  }
 }

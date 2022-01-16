@@ -43,10 +43,9 @@ class MainCoroutinesActivity : AppCompatActivity() {
     }
 
     viewModel.toastLiveData.observe(
-      this,
-      {
-        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-      }
-    )
+      this
+    ) {
+      Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+    }
   }
 }
