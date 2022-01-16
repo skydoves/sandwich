@@ -206,8 +206,7 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
       }.onException {
        // handles exceptional cases when the API request gets an exception response.
       }
-    }
-  }
+   }
 }
 ```
 
