@@ -18,14 +18,14 @@ ext.versions = [
     versionCode      : 13,
     versionName      : '1.2.1',
 
-    gradleBuildTool  : '7.0.2',
-    spotlessGradle   : '6.1.0',
+    gradleBuildTool  : '7.1.0',
+    spotlessGradle   : '6.2.1',
     ktlintGradle     : '0.41.0',
     dokkaGradle      : '1.4.32',
     binaryValidator  : '0.8.0',
     mavenPublish     : '0.18.0',
 
-    kotlin           : '1.5.31',
+    kotlin           : '1.5.32',
     androidxAppcompat: '1.4.0',
 
     // network
@@ -33,7 +33,7 @@ ext.versions = [
     okhttpVersion    : '4.9.3',
 
     // coroutines
-    coroutinesVersion: '1.5.2',
+    coroutinesVersion: '1.6.0',
 
     // unit test
     junit            : '4.13.1',
@@ -45,9 +45,9 @@ ext.versions = [
     robolectric      : '4.4',
 
     // for demo
-    googleMaterial   : '1.4.0',
-    glideVersion     : '4.12.0',
+    googleMaterial   : '1.5.0',
+    glideVersion     : '4.13.0',
     baseAdapter      : '1.0.4',
-    lifecycleVersion : '2.4.0',
+    lifecycleVersion : '2.4.1',
     timberVersion    : '4.7.1'
 ]
