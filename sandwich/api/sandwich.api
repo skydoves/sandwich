@@ -154,6 +154,11 @@ public abstract interface class com/skydoves/sandwich/ResponseObserver {
 	public abstract fun observe (Lcom/skydoves/sandwich/ApiResponse;)V
 }
 
+public final class com/skydoves/sandwich/ResponseRetryKt {
+	public static final fun retry (IJLkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun retry$default (IJLkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
 public final class com/skydoves/sandwich/ResponseTransformer {
 	public static final synthetic fun combineDataSource (Lretrofit2/Call;Lcom/skydoves/sandwich/DataSource;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/DataSource;
 	public static final synthetic fun getCallbackFromOnResult (Lkotlin/jvm/functions/Function1;)Lretrofit2/Callback;
