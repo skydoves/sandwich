@@ -20,7 +20,7 @@ package com.skydoves.sandwich
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.skydoves.sandwich.adapters.SuspensionFunction
+import com.skydoves.sandwich.annotations.SuspensionFunction
 import com.skydoves.sandwich.disposables.CompositeDisposable
 import com.skydoves.sandwich.disposables.disposable
 import com.skydoves.sandwich.executors.ArchTaskExecutor

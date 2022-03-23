@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.adapters
+package com.skydoves.sandwich.annotations
 
 /**
  * @author skydoves (Jaewoong Eum)
