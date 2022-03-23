@@ -72,7 +72,7 @@ public object SandwichInitializer {
   /**
    * @author skydoves (Jaewoong Eum)
    *
-   * A global [Timeout] for operating the [com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory]
+   * A global [Timeout] for operating the [com.skydoves.sandwich.coroutines.ApiResponseCallAdapterFactory]
    * or [com.skydoves.sandwich.coroutines.CoroutinesDataSourceCallAdapterFactory] when API requests.
    *
    * Returns a timeout that spans the entire call: resolving DNS, connecting, writing the request

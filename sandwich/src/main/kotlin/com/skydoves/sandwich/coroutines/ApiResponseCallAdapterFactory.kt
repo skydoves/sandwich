@@ -19,6 +19,7 @@
 package com.skydoves.sandwich.coroutines
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.DataSource
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
@@ -37,29 +38,29 @@ import java.lang.reflect.Type
  * suspend fun fetchDisneyPosterList(): ApiResponse<List<Poster>>
  * ```
  */
-public class CoroutinesResponseCallAdapterFactory private constructor() : CallAdapter.Factory() {
+public class ApiResponseCallAdapterFactory private constructor() : CallAdapter.Factory() {
 
   override fun get(
     returnType: Type,
     annotations: Array<Annotation>,
     retrofit: Retrofit
-  ): CoroutinesResponseCallAdapter? {
+  ): CallAdapter<*, *>? {
     if (getRawType(returnType) != Call::class.java) {
       return null
     }
 
     val callType = getParameterUpperBound(0, returnType as ParameterizedType)
-    if (getRawType(callType) != ApiResponse::class.java) {
-      return null
-    }
-
     val resultType = getParameterUpperBound(0, callType as ParameterizedType)
-    return CoroutinesResponseCallAdapter(resultType)
+    return when (getRawType(callType)) {
+      ApiResponse::class.java -> ApiResponseCallAdapter(resultType)
+      DataSource::class.java -> DataSourceCallAdapter(resultType)
+      else -> null
+    }
   }
 
   public companion object {
     @JvmStatic
-    public fun create(): CoroutinesResponseCallAdapterFactory =
-      CoroutinesResponseCallAdapterFactory()
+    public fun create(): ApiResponseCallAdapterFactory =
+      ApiResponseCallAdapterFactory()
   }
 }
