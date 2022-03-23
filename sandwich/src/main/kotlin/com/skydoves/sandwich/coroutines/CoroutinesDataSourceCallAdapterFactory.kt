@@ -41,18 +41,18 @@ public class CoroutinesDataSourceCallAdapterFactory private constructor() : Call
     returnType: Type,
     annotations: Array<Annotation>,
     retrofit: Retrofit
-  ): CoroutinesDataSourceCallAdapter? = when (getRawType(returnType)) {
-    Call::class.java -> {
-      val callType = getParameterUpperBound(0, returnType as ParameterizedType)
-      when (getRawType(callType)) {
-        DataSource::class.java -> {
-          val resultType = getParameterUpperBound(0, callType as ParameterizedType)
-          CoroutinesDataSourceCallAdapter(resultType)
-        }
-        else -> null
-      }
+  ): CoroutinesDataSourceCallAdapter? {
+    if (getRawType(returnType) != Call::class.java) {
+      return null
     }
-    else -> null
+
+    val callType = getParameterUpperBound(0, returnType as ParameterizedType)
+    if (getRawType(callType) != DataSource::class.java) {
+      return null
+    }
+
+    val resultType = getParameterUpperBound(0, callType as ParameterizedType)
+    return CoroutinesDataSourceCallAdapter(resultType)
   }
 
   public companion object {

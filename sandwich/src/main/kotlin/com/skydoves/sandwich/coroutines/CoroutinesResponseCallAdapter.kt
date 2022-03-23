@@ -29,14 +29,10 @@ import java.lang.reflect.Type
  * request API network call asynchronously and returns [ApiResponse].
  */
 public class CoroutinesResponseCallAdapter constructor(
-  private val resultType: Type
+  private val responseType: Type
 ) : CallAdapter<Type, Call<ApiResponse<Type>>> {
 
-  override fun responseType(): Type {
-    return resultType
-  }
+  override fun responseType(): Type = responseType
 
-  override fun adapt(call: Call<Type>): Call<ApiResponse<Type>> {
-    return ApiResponseCallDelegate(call)
-  }
+  override fun adapt(call: Call<Type>): Call<ApiResponse<Type>> = ApiResponseCallDelegate(call)
 }
