@@ -14,12 +14,25 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.coroutines
+package com.skydoves.sandwich.adapters
+
+import com.skydoves.sandwich.DataSource
+import retrofit2.Call
+import retrofit2.CallAdapter
+import java.lang.reflect.Type
 
 /**
  * @author skydoves (Jaewoong Eum)
  *
- * Specifies that this annotation should be used to mark suspension functions.
+ * CoroutinesDataSourceCallAdapter is an coroutines call adapter for creating [DataSource] from service method.
+ *
+ * request API network call asynchronously and returns [DataSource].
  */
-@DslMarker
-internal annotation class SuspensionFunction
+internal class DataSourceCallAdapter constructor(
+  private val responseType: Type
+) : CallAdapter<Type, Call<DataSource<Type>>> {
+
+  override fun responseType(): Type = responseType
+
+  override fun adapt(call: Call<Type>): Call<DataSource<Type>> = DataSourceCallDelegate(call)
+}

@@ -14,25 +14,12 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.coroutines
-
-import com.skydoves.sandwich.ApiResponse
-import retrofit2.Call
-import retrofit2.CallAdapter
-import java.lang.reflect.Type
+package com.skydoves.sandwich.adapters
 
 /**
  * @author skydoves (Jaewoong Eum)
  *
- * CoroutinesResponseCallAdapter is an coroutines call adapter for creating [ApiResponse] from service method.
- *
- * request API network call asynchronously and returns [ApiResponse].
+ * Specifies that this annotation should be used to mark suspension functions.
  */
-internal class ApiResponseCallAdapter constructor(
-  private val responseType: Type
-) : CallAdapter<Type, Call<ApiResponse<Type>>> {
-
-  override fun responseType(): Type = responseType
-
-  override fun adapt(call: Call<Type>): Call<ApiResponse<Type>> = ApiResponseCallDelegate(call)
-}
+@DslMarker
+internal annotation class SuspensionFunction

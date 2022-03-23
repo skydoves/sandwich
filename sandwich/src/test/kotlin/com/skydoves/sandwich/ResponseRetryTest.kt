@@ -16,7 +16,7 @@
 
 package com.skydoves.sandwich
 
-import com.skydoves.sandwich.coroutines.ApiResponseCallAdapterFactory
+import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.CoreMatchers.`is`

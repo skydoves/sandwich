@@ -22,7 +22,7 @@ package com.skydoves.sandwich
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.skydoves.sandwich.coroutines.SuspensionFunction
+import com.skydoves.sandwich.adapters.SuspensionFunction
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
 import kotlinx.coroutines.CoroutineScope

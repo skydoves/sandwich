@@ -16,7 +16,7 @@
 
 @file:Suppress("unused")
 
-package com.skydoves.sandwich.coroutines
+package com.skydoves.sandwich.adapters
 
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.DataSource

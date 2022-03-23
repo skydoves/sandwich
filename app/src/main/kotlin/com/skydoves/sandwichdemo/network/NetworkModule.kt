@@ -16,7 +16,7 @@
 
 package com.skydoves.sandwichdemo.network
 
-import com.skydoves.sandwich.coroutines.ApiResponseCallAdapterFactory
+import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import com.skydoves.sandwichdemo.coroutines.DisneyCoroutinesService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
