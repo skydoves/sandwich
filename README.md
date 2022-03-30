@@ -75,12 +75,12 @@ You can also check out nice use cases of this library in the repositories below:
 - [ApiResponse](https://github.com/skydoves/sandwich#apiresponse)
 - [onSuccess, onError, onException](https://github.com/skydoves/sandwich#apiresponse-extensions)
 - [ApiResponse for coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines)
-- [suspendOnSuccess, suspendOnError, suspendOnException](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception)
+- [ApiResponse Extensions for Coroutines](https://github.com/skydoves/sandwich#apiresponse-extensions-for-coroutines)
 - [Retrieve success data](https://github.com/skydoves/sandwich#retrieve-success-data)
 - [Mapper](https://github.com/skydoves/sandwich#mapper)
 - [Operator](https://github.com/skydoves/sandwich#operator), [Operator for coroutines](https://github.com/skydoves/sandwich#operator-with-coroutines), [Global Operator](https://github.com/skydoves/sandwich#global-operator)
 - [Merge](https://github.com/skydoves/sandwich#merge)
-- [toLiveData](https://github.com/skydoves/sandwich#tolivedata). [toFlow](https://github.com/skydoves/sandwich#toflow)
+- [toLiveData](https://github.com/skydoves/sandwich#tolivedata), [toFlow](https://github.com/skydoves/sandwich#toflow)
 - [ResponseDataSource](https://github.com/skydoves/sandwich#responsedatasource)
 
 ## Usage
