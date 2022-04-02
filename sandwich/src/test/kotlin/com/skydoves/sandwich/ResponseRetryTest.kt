@@ -17,7 +17,7 @@
 package com.skydoves.sandwich
 
 import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
@@ -40,7 +40,7 @@ internal class ResponseRetryTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun `Retry Test`() = runBlocking {
+  fun `Retry Test`() = runTest {
     var retryTick = 0
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
