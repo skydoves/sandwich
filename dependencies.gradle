@@ -49,5 +49,5 @@ ext.versions = [
     glideVersion     : '4.13.0',
     baseAdapter      : '1.0.4',
     lifecycleVersion : '2.4.1',
-    timberVersion    : '5.0.2'
+    timberVersion    : '5.0.1'
 ]
