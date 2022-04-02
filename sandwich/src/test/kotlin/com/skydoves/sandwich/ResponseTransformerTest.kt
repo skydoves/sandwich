@@ -19,9 +19,9 @@ package com.skydoves.sandwich
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.mock
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
@@ -220,7 +220,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun suspendOnSuccessTest() = runBlocking {
+  fun suspendOnSuccessTest() = runTest {
     val response = Response.success("foo")
     val apiResponse = ApiResponse.of { response }
 
@@ -234,7 +234,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun suspendOnSuccessInProcedureTest() = runBlocking {
+  fun suspendOnSuccessInProcedureTest() = runTest {
     val response = Response.success("foo")
     val apiResponse = ApiResponse.of { response }
 
@@ -389,7 +389,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun suspendOnExceptionTest() = runBlocking {
+  fun suspendOnExceptionTest() = runTest {
     val apiResponse = ApiResponse.error<Poster>(Throwable())
 
     flow {
@@ -402,7 +402,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun suspendOnExceptionInProcedureTest() = runBlocking {
+  fun suspendOnExceptionInProcedureTest() = runTest {
     val apiResponse = ApiResponse.error<Poster>(Throwable())
 
     flow {
@@ -479,7 +479,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun mapSuspendSuccessWithLambdaTest() = runBlocking {
+  fun mapSuspendSuccessWithLambdaTest() = runTest {
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
     val apiResponse = ApiResponse.of { response }
 
@@ -495,7 +495,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun mapSuspendSuccessWitExecutableLambdaTest() = runBlocking {
+  fun mapSuspendSuccessWitExecutableLambdaTest() = runTest {
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
     val apiResponse = ApiResponse.of { response }
 
@@ -511,7 +511,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun mapSuspendSuccessWithParameterTest() = runBlocking {
+  fun mapSuspendSuccessWithParameterTest() = runTest {
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
     val apiResponse = ApiResponse.of { response }
 
@@ -810,7 +810,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun toLiveDataWithSuspendTransformerTest() = runBlocking {
+  fun toLiveDataWithSuspendTransformerTest() = runTest {
     val response = Response.success("foo")
     val apiResponse = ApiResponse.of { response }
     val observer = mock<Observer<String>>()
@@ -823,7 +823,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun toFlowTest() = runBlocking {
+  fun toFlowTest() = runTest {
     val response = Response.success("foo")
     val apiResponse = ApiResponse.of { response }
 
@@ -833,7 +833,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun toFlowWithTransformerTest() = runBlocking {
+  fun toFlowWithTransformerTest() = runTest {
     val response = Response.success("foo")
     val apiResponse = ApiResponse.of { response }
 
@@ -845,7 +845,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun toFlowWithSuspendTransformerTest() = runBlocking {
+  fun toFlowWithSuspendTransformerTest() = runTest {
     val response = Response.success("foo")
     val apiResponse = ApiResponse.of { response }
 

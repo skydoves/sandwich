@@ -20,50 +20,52 @@ apply plugin: 'binary-compatibility-validator'
 apply from: "$rootDir/dependencies.gradle"
 
 android {
-    compileSdkVersion versions.compileSdk
-    defaultConfig {
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.compileSdk
-        versionCode versions.versionCode
-        versionName versions.versionName
-    }
-    buildFeatures {
-        buildConfig false
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    lintOptions {
-        abortOnError false
-    }
+  compileSdkVersion versions.compileSdk
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.compileSdk
+    versionCode versions.versionCode
+    versionName versions.versionName
+  }
+  buildFeatures {
+    buildConfig false
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+  lintOptions {
+    abortOnError false
+  }
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions.freeCompilerArgs += [
-        "-Xopt-in=kotlin.RequiresOptIn",
-        "-Xexplicit-api=strict"
-    ]
+  kotlinOptions.freeCompilerArgs += [
+    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+    "-Xopt-in=kotlin.RequiresOptIn",
+    "-Xexplicit-api=strict"
+  ]
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:$versions.androidxAppcompat"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutinesVersion"
-    api "com.squareup.retrofit2:retrofit:$versions.retrofitVersion"
-    api "com.squareup.okhttp3:okhttp:$versions.okhttpVersion"
+  implementation "androidx.appcompat:appcompat:$versions.androidxAppcompat"
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutinesVersion"
+  api "com.squareup.retrofit2:retrofit:$versions.retrofitVersion"
+  api "com.squareup.okhttp3:okhttp:$versions.okhttpVersion"
 
-    // unit test
-    testImplementation "junit:junit:$versions.junit"
-    testImplementation "org.mockito:mockito-core:$versions.mockito"
-    testImplementation "org.mockito:mockito-inline:$versions.mockito"
-    testImplementation "org.robolectric:robolectric:$versions.robolectric"
-    testImplementation "androidx.arch.core:core-testing:$versions.archCore"
-    testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttpVersion"
-    testImplementation "com.squareup.retrofit2:converter-gson:$versions.retrofitVersion"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockitoKotlin"
+  // unit test
+  testImplementation "junit:junit:$versions.junit"
+  testImplementation "org.mockito:mockito-core:$versions.mockito"
+  testImplementation "org.mockito:mockito-inline:$versions.mockito"
+  testImplementation "org.robolectric:robolectric:$versions.robolectric"
+  testImplementation "androidx.arch.core:core-testing:$versions.archCore"
+  testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttpVersion"
+  testImplementation "com.squareup.retrofit2:converter-gson:$versions.retrofitVersion"
+  testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockitoKotlin"
+  testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutinesVersion"
 }
 
 apply plugin: "com.vanniktech.maven.publish"
