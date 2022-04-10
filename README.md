@@ -1,5 +1,4 @@
-
-![sandwich](https://user-images.githubusercontent.com/24237865/149626897-37248e9c-178c-46d9-abac-7258844543f8.png)<br>
+![sandwich](https://user-images.githubusercontent.com/24237865/162602054-2010d249-8a81-4673-b9ae-1edff1080ab7.png)<br>
 
 <p align="center">
   <a href="https://devlibrary.withgoogle.com/products/android/repos/skydoves-Sandwich"><img alt="Google" src="https://skydoves.github.io/badges/google-devlib.svg"/></a><br>
