@@ -21,8 +21,8 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.skydoves.sandwich.disposables.CompositeDisposable
 import com.skydoves.sandwich.disposables.disposable
 import okhttp3.mockwebserver.MockResponse
-import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.instanceOf
+import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test

@@ -12,56 +12,65 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply from: "$rootDir/dependencies.gradle"
+
+import com.github.skydoves.sandwich.Configuration
+import com.github.skydoves.sandwich.Dependencies
+
+plugins {
+  id 'com.android.application'
+  id 'kotlin-android'
+  id 'kotlin-kapt'
+}
 
 android {
-    compileSdkVersion versions.compileSdk
-    defaultConfig {
-        applicationId "com.skydoves.sandwichdemo"
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.compileSdk
-        versionCode versions.versionCode
-        versionName versions.versionName
-    }
-    buildFeatures {
-        dataBinding true
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    lintOptions {
-        abortOnError false
-    }
+  compileSdkVersion Configuration.compileSdk
+  defaultConfig {
+    applicationId "com.skydoves.sandwichdemo"
+    minSdkVersion Configuration.minSdk
+    targetSdkVersion Configuration.targetSdk
+    versionCode Configuration.versionCode
+    versionName Configuration.versionName
+  }
+
+  buildFeatures {
+    dataBinding true
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_11
+    targetCompatibility JavaVersion.VERSION_11
+  }
+
+  kotlinOptions {
+    jvmTarget = "11"
+  }
+
+  lintOptions {
+    abortOnError false
+  }
 }
 
 dependencies {
-    // android supports
-    implementation "com.google.android.material:material:$versions.googleMaterial"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycleVersion"
+  // android supports
+  implementation Dependencies.material
+  implementation Dependencies.liveDataKTX
+  implementation Dependencies.viewModelKTX
 
-    // network
-    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofitVersion"
-    implementation project(":sandwich")
+  // network
+  implementation Dependencies.retrofitGson
+  implementation project(":sandwich")
 
-    // coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutinesVersion"
+  // coroutines
+  implementation Dependencies.coroutines
 
-    // glide
-    implementation "com.github.bumptech.glide:glide:$versions.glideVersion"
+  // glide
+  implementation Dependencies.glide
 
-    // adapter
-    implementation "com.github.skydoves:baserecyclerviewadapter:$versions.baseAdapter"
+  // adapter
+  implementation Dependencies.baseRecyclerViewAdapter
 
-    // logging
-    implementation "com.jakewharton.timber:timber:$versions.timberVersion"
+  // logging
+  implementation Dependencies.timber
 }
 
 apply from: "$rootDir/spotless.gradle"

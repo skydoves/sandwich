@@ -4,7 +4,7 @@ object Versions {
   internal const val ANDROID_GRADLE_PLUGIN = "7.1.2"
   internal const val ANDROID_GRADLE_SPOTLESS = "6.3.0"
   internal const val GRADLE_NEXUS_PUBLISH_PLUGIN = "1.1.0"
-  internal const val KOTLIN = "1.6.10"
+  internal const val KOTLIN = "1.5.32"
   internal const val KOTLIN_GRADLE_DOKKA = "1.6.10"
   internal const val KOTLIN_BINARY_VALIDATOR = "0.8.0"
 
@@ -14,10 +14,9 @@ object Versions {
 
   internal const val APPCOMPAT = "1.4.1"
   internal const val MATERIAL = "1.5.0"
-  internal const val GLIDE = "1.5.1"
+  internal const val GLIDE = "4.13.1"
   internal const val BASE_ADAPTER = "1.0.4"
   internal const val LIFECYCLE = "2.4.1"
-  internal const val MOSHI = "1.13.0"
   internal const val TIMBER = "5.0.1"
 
   internal const val JUNIT = "4.13.1"
@@ -54,9 +53,7 @@ object Dependencies {
   const val material = "com.google.android.material:material:${Versions.MATERIAL}"
   const val liveDataKTX = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.LIFECYCLE}"
   const val viewModelKTX = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.LIFECYCLE}"
-  const val moshi = "com.squareup.moshi:moshi-kotlin:${Versions.MOSHI}"
-  const val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.MOSHI}"
-  const val retrofitMoshi = "com.squareup.retrofit2:converter-moshi:${Versions.RETROFIT}"
+  const val retrofitGson = "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT}"
   const val glide = "com.github.bumptech.glide:glide:${Versions.GLIDE}"
   const val baseRecyclerViewAdapter = "com.github.skydoves:baserecyclerviewadapter:${Versions.BASE_ADAPTER}"
   const val timber = "com.jakewharton.timber:timber:${Versions.TIMBER}"
