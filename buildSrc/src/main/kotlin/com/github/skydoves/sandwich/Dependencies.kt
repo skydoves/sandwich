@@ -58,6 +58,5 @@ object Dependencies {
   const val liveDataKTX = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.LIFECYCLE}"
   const val viewModelKTX = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.LIFECYCLE}"
   const val glide = "com.github.bumptech.glide:glide:${Versions.GLIDE}"
-  const val baseRecyclerViewAdapter = "com.github.skydoves:baserecyclerviewadapter:${Versions.BASE_ADAPTER}"
   const val timber = "com.jakewharton.timber:timber:${Versions.TIMBER}"
 }

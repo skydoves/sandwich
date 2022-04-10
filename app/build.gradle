@@ -64,7 +64,6 @@ dependencies {
   kapt Dependencies.moshiGen
 
   implementation Dependencies.glide
-  implementation Dependencies.baseRecyclerViewAdapter
   implementation Dependencies.timber
 }
 
