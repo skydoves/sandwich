@@ -42,7 +42,6 @@ ext.versions = [
     archCore         : '2.1.0',
     mockito          : '3.5.13',
     mockitoKotlin    : '2.2.0',
-    robolectric      : '4.4',
 
     // for demo
     googleMaterial   : '1.5.0',
