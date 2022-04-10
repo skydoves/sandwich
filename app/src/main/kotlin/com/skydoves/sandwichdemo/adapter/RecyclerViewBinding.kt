@@ -20,15 +20,14 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.skydoves.baserecyclerviewadapter.BaseAdapter
 import com.skydoves.sandwichdemo.model.Poster
 
 object RecyclerViewBinding {
 
   @JvmStatic
   @BindingAdapter("adapter")
-  fun bindAdapter(view: RecyclerView, baseAdapter: BaseAdapter) {
-    view.adapter = baseAdapter
+  fun bindAdapter(view: RecyclerView, posterAdapter: PosterAdapter) {
+    view.adapter = posterAdapter
   }
 
   @JvmStatic
