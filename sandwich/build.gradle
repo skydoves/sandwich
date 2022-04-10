@@ -78,7 +78,6 @@ dependencies {
   testImplementation Dependencies.mockitoKotlin
   testImplementation Dependencies.archTest
   testImplementation Dependencies.mockWebServer
-  testImplementation Dependencies.moshi
   testImplementation Dependencies.retrofitMoshi
   testImplementation Dependencies.mockitoKotlin
   testImplementation Dependencies.coroutinesTest
