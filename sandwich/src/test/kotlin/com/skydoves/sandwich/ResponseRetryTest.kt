@@ -27,7 +27,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 @RunWith(JUnit4::class)
 internal class ResponseRetryTest : ApiAbstract<DisneyService>() {
@@ -44,7 +44,7 @@ internal class ResponseRetryTest : ApiAbstract<DisneyService>() {
     var retryTick = 0
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(GsonConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create())
       .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory.create())
       .build()
 

@@ -21,7 +21,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 @RunWith(JUnit4::class)
 internal class DataSourceCallAdapterTest : ApiAbstract<DisneyService>() {
@@ -30,7 +30,7 @@ internal class DataSourceCallAdapterTest : ApiAbstract<DisneyService>() {
   fun fetchDataSourceTypeResponse() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(GsonConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create())
       .addCallAdapterFactory(DataSourceCallAdapterFactory.create())
       .build()
 

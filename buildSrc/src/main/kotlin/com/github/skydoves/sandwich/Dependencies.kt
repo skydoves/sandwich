@@ -11,6 +11,7 @@ object Versions {
   internal const val RETROFIT = "2.9.0"
   internal const val OKHTTP = "4.9.3"
   internal const val COROUTINES = "1.6.0"
+  internal const val MOSHI = "1.13.0"
 
   internal const val APPCOMPAT = "1.4.1"
   internal const val MATERIAL = "1.5.0"
@@ -38,8 +39,11 @@ object Dependencies {
     "org.jetbrains.kotlinx:binary-compatibility-validator:${Versions.KOTLIN_BINARY_VALIDATOR}"
 
   const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT}"
+  const val retrofitMoshi = "com.squareup.retrofit2:converter-moshi:${Versions.RETROFIT}"
   const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.OKHTTP}"
   const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}"
+  const val moshi = "com.squareup.moshi:moshi-kotlin:${Versions.MOSHI}"
+  const val moshiGen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.MOSHI}"
 
   const val junit = "junit:junit:${Versions.JUNIT}"
   const val mockitoCore = "org.mockito:mockito-core:${Versions.MOCKITO}"
@@ -53,7 +57,6 @@ object Dependencies {
   const val material = "com.google.android.material:material:${Versions.MATERIAL}"
   const val liveDataKTX = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.LIFECYCLE}"
   const val viewModelKTX = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.LIFECYCLE}"
-  const val retrofitGson = "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT}"
   const val glide = "com.github.bumptech.glide:glide:${Versions.GLIDE}"
   const val baseRecyclerViewAdapter = "com.github.skydoves:baserecyclerviewadapter:${Versions.BASE_ADAPTER}"
   const val timber = "com.jakewharton.timber:timber:${Versions.TIMBER}"

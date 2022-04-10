@@ -51,25 +51,20 @@ android {
 }
 
 dependencies {
+  implementation Dependencies.retrofitMoshi
+  implementation project(":sandwich")
+
   // android supports
   implementation Dependencies.material
   implementation Dependencies.liveDataKTX
   implementation Dependencies.viewModelKTX
 
-  // network
-  implementation Dependencies.retrofitGson
-  implementation project(":sandwich")
-
-  // coroutines
   implementation Dependencies.coroutines
+  implementation Dependencies.moshi
+  kapt Dependencies.moshiGen
 
-  // glide
   implementation Dependencies.glide
-
-  // adapter
   implementation Dependencies.baseRecyclerViewAdapter
-
-  // logging
   implementation Dependencies.timber
 }
 
