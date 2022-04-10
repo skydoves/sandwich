@@ -17,8 +17,8 @@
 package com.skydoves.sandwich
 
 import com.skydoves.sandwich.exceptions.NoContentException
-import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.instanceOf
+import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith

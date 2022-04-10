@@ -16,6 +16,9 @@
 
 package com.skydoves.sandwich
 
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = false)
 internal data class Poster(
   val id: Long,
   val name: String,

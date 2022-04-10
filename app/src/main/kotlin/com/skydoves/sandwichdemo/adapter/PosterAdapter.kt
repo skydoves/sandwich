@@ -16,27 +16,40 @@
 
 package com.skydoves.sandwichdemo.adapter
 
-import android.view.View
-import com.skydoves.baserecyclerviewadapter.BaseAdapter
-import com.skydoves.baserecyclerviewadapter.SectionRow
-import com.skydoves.sandwichdemo.R
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.RecyclerView
+import com.skydoves.sandwichdemo.databinding.ItemPosterBinding
 import com.skydoves.sandwichdemo.model.Poster
 
-class PosterAdapter : BaseAdapter() {
+class PosterAdapter : RecyclerView.Adapter<PosterAdapter.PosterViewHolder>() {
 
-  init {
-    addSection(arrayListOf<Poster>())
-  }
+  private val items = mutableListOf<Poster>()
 
   fun addPosterList(posters: List<Poster>) {
-    sections().first().run {
-      clear()
-      addAll(posters)
-      notifyDataSetChanged()
+    items.clear()
+    items.addAll(posters)
+    notifyDataSetChanged()
+  }
+
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PosterViewHolder {
+    val binding = ItemPosterBinding.inflate(LayoutInflater.from(parent.context))
+    return PosterViewHolder(binding)
+  }
+
+  override fun onBindViewHolder(holder: PosterViewHolder, position: Int) {
+    val item = items[position]
+    with(holder.binding) {
+      poster = item
+      ViewCompat.setTransitionName(itemContainer, item.name)
+      executePendingBindings()
     }
   }
 
-  override fun layout(sectionRow: SectionRow) = R.layout.item_poster
+  override fun getItemCount(): Int = items.size
 
-  override fun viewHolder(layout: Int, view: View) = PosterViewHolder(view)
+  class PosterViewHolder(
+    val binding: ItemPosterBinding
+  ) : RecyclerView.ViewHolder(binding.root)
 }

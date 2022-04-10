@@ -12,31 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'org.jetbrains.dokka'
-apply plugin: 'binary-compatibility-validator'
+import com.github.skydoves.sandwich.Configuration
+import com.github.skydoves.sandwich.Dependencies
 
-apply from: "$rootDir/dependencies.gradle"
+plugins {
+  id 'com.android.library'
+  id 'org.jetbrains.kotlin.android'
+  id 'org.jetbrains.dokka'
+  id 'binary-compatibility-validator'
+}
+
+ext {
+  PUBLISH_GROUP_ID = Configuration.artifactGroup
+  PUBLISH_ARTIFACT_ID = 'sandwich'
+  PUBLISH_VERSION = rootVersionName
+}
+
+apply from: "${rootDir}/scripts/publish-module.gradle"
 
 android {
-  compileSdkVersion versions.compileSdk
+  compileSdkVersion Configuration.compileSdk
   defaultConfig {
-    minSdkVersion versions.minSdk
-    targetSdkVersion versions.compileSdk
-    versionCode versions.versionCode
-    versionName versions.versionName
+    minSdkVersion Configuration.minSdk
+    targetSdkVersion Configuration.targetSdk
+    versionCode Configuration.versionCode
+    versionName Configuration.versionName
   }
+
   buildFeatures {
     buildConfig false
   }
+
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
+
   kotlinOptions {
     jvmTarget = "1.8"
   }
+
   lintOptions {
     abortOnError false
   }
@@ -51,22 +66,21 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 dependencies {
-  implementation "androidx.appcompat:appcompat:$versions.androidxAppcompat"
-  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutinesVersion"
-  api "com.squareup.retrofit2:retrofit:$versions.retrofitVersion"
-  api "com.squareup.okhttp3:okhttp:$versions.okhttpVersion"
+  implementation Dependencies.appcompat
+  implementation Dependencies.coroutines
+  api Dependencies.retrofit
+  api Dependencies.okHttp
 
   // unit test
-  testImplementation "junit:junit:$versions.junit"
-  testImplementation "org.mockito:mockito-core:$versions.mockito"
-  testImplementation "org.mockito:mockito-inline:$versions.mockito"
-  testImplementation "org.robolectric:robolectric:$versions.robolectric"
-  testImplementation "androidx.arch.core:core-testing:$versions.archCore"
-  testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttpVersion"
-  testImplementation "com.squareup.retrofit2:converter-gson:$versions.retrofitVersion"
-  testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockitoKotlin"
-  testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutinesVersion"
+  testImplementation Dependencies.junit
+  testImplementation Dependencies.mockitoCore
+  testImplementation Dependencies.mockitoInline
+  testImplementation Dependencies.mockitoKotlin
+  testImplementation Dependencies.archTest
+  testImplementation Dependencies.mockWebServer
+  testImplementation Dependencies.retrofitMoshi
+  testImplementation Dependencies.mockitoKotlin
+  testImplementation Dependencies.coroutinesTest
 }
 
-apply plugin: "com.vanniktech.maven.publish"
-apply from: '../spotless.gradle'
+apply from: "$rootDir/spotless.gradle"

@@ -21,8 +21,8 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.skydoves.sandwich.disposables.CompositeDisposable
 import com.skydoves.sandwich.disposables.disposable
 import okhttp3.mockwebserver.MockResponse
-import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.instanceOf
+import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -30,7 +30,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.IOException
 
 @RunWith(JUnit4::class)
@@ -113,7 +113,7 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
   fun error() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(GsonConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create())
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -129,7 +129,7 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
   fun errorFromRequest() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(GsonConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create())
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -165,7 +165,7 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
   fun errorExtensionFromRequest() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(GsonConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create())
       .build()
 
     val service = retrofit.create(DisneyService::class.java)

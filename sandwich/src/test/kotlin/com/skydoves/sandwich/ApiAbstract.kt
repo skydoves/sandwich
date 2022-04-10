@@ -25,7 +25,7 @@ import org.junit.Before
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 
@@ -66,7 +66,7 @@ internal abstract class ApiAbstract<T> {
   fun createService(clazz: Class<T>): T {
     return Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(GsonConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create())
       .build()
       .create(clazz)
   }
