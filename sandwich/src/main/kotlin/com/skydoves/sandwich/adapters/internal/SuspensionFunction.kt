@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.coroutines
+package com.skydoves.sandwich.adapters.internal
 
 /**
  * @author skydoves (Jaewoong Eum)

@@ -290,6 +290,24 @@ public final class com/skydoves/sandwich/StatusCode : java/lang/Enum {
 	public static fun values ()[Lcom/skydoves/sandwich/StatusCode;
 }
 
+public final class com/skydoves/sandwich/adapters/ApiResponseCallAdapter : retrofit2/CallAdapter {
+	public fun <init> (Ljava/lang/reflect/Type;)V
+	public synthetic fun adapt (Lretrofit2/Call;)Ljava/lang/Object;
+	public fun adapt (Lretrofit2/Call;)Lretrofit2/Call;
+	public fun responseType ()Ljava/lang/reflect/Type;
+}
+
+public final class com/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory : retrofit2/CallAdapter$Factory {
+	public static final field Companion Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory$Companion;
+	public static final fun create ()Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory;
+	public fun get (Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapter;
+	public synthetic fun get (Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lretrofit2/CallAdapter;
+}
+
+public final class com/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory$Companion {
+	public final fun create ()Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory;
+}
+
 public final class com/skydoves/sandwich/coroutines/CoroutinesDataSourceCallAdapter : retrofit2/CallAdapter {
 	public fun <init> (Ljava/lang/reflect/Type;)V
 	public synthetic fun adapt (Lretrofit2/Call;)Ljava/lang/Object;

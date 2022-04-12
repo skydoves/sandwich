@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.coroutines
+package com.skydoves.sandwich.adapters
 
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.adapters.internal.ApiResponseCallDelegate
@@ -29,7 +29,7 @@ import java.lang.reflect.Type
  *
  * request API network call asynchronously and returns [ApiResponse].
  */
-public class CoroutinesResponseCallAdapter constructor(
+public class ApiResponseCallAdapter constructor(
   private val resultType: Type
 ) : CallAdapter<Type, Call<ApiResponse<Type>>> {
 

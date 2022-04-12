@@ -16,7 +16,7 @@
 
 package com.skydoves.sandwich
 
-import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
+import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.CoreMatchers.`is`
@@ -45,7 +45,7 @@ internal class ResponseRetryTest : ApiAbstract<DisneyService>() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
       .addConverterFactory(MoshiConverterFactory.create())
-      .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory.create())
+      .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
       .build()
 
     val service = retrofit.create(DisneyCoroutinesService::class.java)

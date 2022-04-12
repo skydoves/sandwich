@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.coroutines
+package com.skydoves.sandwich.adapters.internal
 
 import com.skydoves.sandwich.DataSource
 import com.skydoves.sandwich.ResponseDataSource
