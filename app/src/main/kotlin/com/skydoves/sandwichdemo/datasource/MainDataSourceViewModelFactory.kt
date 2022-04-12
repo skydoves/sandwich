@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwichdemo.operator
+package com.skydoves.sandwichdemo.datasource
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.skydoves.sandwichdemo.network.NetworkModule
 
 @Suppress("UNCHECKED_CAST")
-class MainCoroutinesOperatorViewModelFactory : ViewModelProvider.Factory {
+class MainDataSourceViewModelFactory : ViewModelProvider.Factory {
 
   override fun <T : ViewModel> create(modelClass: Class<T>): T {
-    if (modelClass.isAssignableFrom(MainCoroutinesOperatorViewModel::class.java)) {
-      return MainCoroutinesOperatorViewModel(NetworkModule.disneyCoroutinesService) as T
+    if (modelClass.isAssignableFrom(MainDataSourceViewModel::class.java)) {
+      return MainDataSourceViewModel(NetworkModule.disneyDataSourceService) as T
     }
     throw IllegalArgumentException("Unknown ViewModel class.")
   }

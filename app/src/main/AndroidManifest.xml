@@ -14,10 +14,8 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     tools:ignore="AllowBackup">
-    <activity android:name=".MainActivity" />
-    <activity android:name=".operator.MainCoroutinesOperatorActivity" />
     <activity
-      android:name=".coroutines.MainCoroutinesActivity"
+      android:name=".MainActivity"
       android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -25,6 +23,8 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+    <activity android:name=".datasource.MainDataSourceActivity" />
+    <activity android:name=".operator.MainOperatorActivity" />
   </application>
 
 </manifest>

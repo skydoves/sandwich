@@ -7,7 +7,7 @@
 
     <variable
       name="viewModel"
-      type="com.skydoves.sandwichdemo.MainViewModel" />
+      type="com.skydoves.sandwichdemo.datasource.MainDataSourceViewModel" />
 
     <variable
       name="adapter"

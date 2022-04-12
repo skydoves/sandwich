@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.coroutines
+package com.skydoves.sandwich.adapters.internal
 
 import com.skydoves.sandwich.SandwichInitializer
 import okhttp3.Request
@@ -32,8 +32,8 @@ import retrofit2.Response
 internal abstract class CallDelegate<TIn, TOut>(
   protected val proxy: Call<TIn>
 ) : Call<TOut> {
-  override fun execute(): Response<TOut> = throw NotImplementedError()
   final override fun enqueue(callback: Callback<TOut>) = enqueueImpl(callback)
+  final override fun execute(): Response<TOut> = executeImpl()
   final override fun clone(): Call<TOut> = cloneImpl()
 
   override fun cancel() = proxy.cancel()
@@ -43,5 +43,6 @@ internal abstract class CallDelegate<TIn, TOut>(
   override fun timeout(): Timeout = SandwichInitializer.sandwichTimeout ?: proxy.timeout()
 
   abstract fun enqueueImpl(callback: Callback<TOut>)
+  abstract fun executeImpl(): Response<TOut>
   abstract fun cloneImpl(): Call<TOut>
 }

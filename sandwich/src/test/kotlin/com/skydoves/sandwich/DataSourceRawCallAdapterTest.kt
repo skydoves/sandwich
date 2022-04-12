@@ -16,6 +16,7 @@
 
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.adapters.DataSourceCallAdapterFactory
 import junit.framework.TestCase.assertNotNull
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,7 +25,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 @RunWith(JUnit4::class)
-internal class DataSourceCallAdapterTest : ApiAbstract<DisneyService>() {
+internal class DataSourceRawCallAdapterTest : ApiAbstract<DisneyService>() {
 
   @Test
   fun fetchDataSourceTypeResponse() {

@@ -25,7 +25,8 @@ class MainViewModelFactory : ViewModelProvider.Factory {
 
   override fun <T : ViewModel> create(modelClass: Class<T>): T {
     if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-      return MainViewModel(NetworkModule.disneyService) as T
+      val mainRepository = MainRepository(NetworkModule.disneyService)
+      return MainViewModel(mainRepository) as T
     }
     throw IllegalArgumentException("Unknown ViewModel class.")
   }

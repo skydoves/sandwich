@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.coroutines
+package com.skydoves.sandwich.adapters.internal
 
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.Call
@@ -41,6 +41,12 @@ internal class ApiResponseCallDelegate<T>(proxy: Call<T>) : CallDelegate<T, ApiR
       }
     }
   )
+
+  override fun executeImpl(): Response<ApiResponse<T>> {
+    val response = proxy.execute()
+    val apiResponse = ApiResponse.of { response }
+    return Response.success(apiResponse)
+  }
 
   override fun cloneImpl() = ApiResponseCallDelegate(proxy.clone())
 }

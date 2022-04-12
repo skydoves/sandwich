@@ -16,78 +16,59 @@
 
 package com.skydoves.sandwichdemo
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.skydoves.sandwich.DataRetainPolicy
+import androidx.lifecycle.viewModelScope
 import com.skydoves.sandwich.StatusCode
-import com.skydoves.sandwich.disposables.CompositeDisposable
 import com.skydoves.sandwich.map
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
-import com.skydoves.sandwich.onSuccess
-import com.skydoves.sandwich.toResponseDataSource
+import com.skydoves.sandwich.suspendOnSuccess
 import com.skydoves.sandwichdemo.mapper.ErrorEnvelopeMapper
 import com.skydoves.sandwichdemo.model.Poster
-import com.skydoves.sandwichdemo.network.DisneyService
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
+class MainViewModel constructor(mainRepository: MainRepository) : ViewModel() {
 
-  val posterListLiveData: LiveData<List<Poster>>
+  private val _posterListFlow = MutableStateFlow<List<Poster>?>(emptyList())
+  val posterListFlow: StateFlow<List<Poster>?> = _posterListFlow
+
   val toastLiveData = MutableLiveData<String>()
-  private val disposable = CompositeDisposable()
 
   init {
     Timber.d("initialized MainViewModel.")
 
-    posterListLiveData = disneyService.fetchDisneyPosterList().toResponseDataSource()
-      // retry fetching data 3 times with 5000L interval when the request gets failure.
-      .retry(3, 5000L)
-      // a retain policy for retaining data on the internal storage.
-      .dataRetainPolicy(DataRetainPolicy.RETAIN)
-      // joins onto CompositeDisposable as a disposable and dispose onCleared().
-      .joinDisposable(disposable)
-      // request API network call asynchronously.
-      // if the request is successful, the data source will hold the success data.
-      // in the next request after success, returns the temporarily cached API response.
-      // if you want to fetch a new response data, use NO_RETAIN policy or invalidate().
-      .request {
-        // handle the case when the API request gets a success response.
-        onSuccess {
-          Timber.d("$data")
+    viewModelScope.launch {
+      mainRepository.fetchPosters()
+        // handles the success scenario when the API request succeeds.
+        .suspendOnSuccess {
+          _posterListFlow.emit(data)
         }
-          // handle the case when the API request gets a error response.
-          // e.g. internal server error.
-          .onError {
-            Timber.d(message())
-
-            // handling error based on status code.
-            when (statusCode) {
-              StatusCode.InternalServerError -> toastLiveData.postValue("InternalServerError")
-              StatusCode.BadGateway -> toastLiveData.postValue("BadGateway")
-              else -> toastLiveData.postValue("$statusCode(${statusCode.code}): ${message()}")
-            }
-
-            // map the ApiResponse.Failure.Error to a customized error model using the mapper.
-            map(ErrorEnvelopeMapper) {
-              Timber.d(this.toString())
-            }
+        // handles the error scenario when the API request fail.
+        // e.g., internal server error.
+        .onError {
+          // handles error cases depending on the status code.
+          val message = when (statusCode) {
+            StatusCode.InternalServerError -> "InternalServerError"
+            StatusCode.BadGateway -> "BadGateway"
+            else -> "$statusCode(${statusCode.code}): ${message()}"
           }
-          // handle the case when the API request gets a exception response.
-          // e.g. network connection error, timeout.
-          .onException {
-            Timber.d(message())
-            toastLiveData.postValue(message())
-          }
-      }.asLiveData()
-  }
+          toastLiveData.postValue(message)
 
-  override fun onCleared() {
-    super.onCleared()
-    if (!disposable.disposed) {
-      disposable.clear()
+          // map the ApiResponse.Failure.Error to our custom error model using the mapper.
+          map(ErrorEnvelopeMapper) {
+            Timber.d("[Code: $code]: $message")
+          }
+        }
+        // handles the error scenario when an unexpected exception happens.
+        // e.g., network connection error, timeout.
+        .onException {
+          toastLiveData.postValue(message)
+        }
     }
   }
 }

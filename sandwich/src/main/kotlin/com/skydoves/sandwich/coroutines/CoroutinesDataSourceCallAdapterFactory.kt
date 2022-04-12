@@ -35,13 +35,18 @@ import java.lang.reflect.Type
  * suspend fun fetchDisneyPosterList(): DataSource<List<Poster>>
  * ```
  */
+@Deprecated(
+  message = "CoroutinesDataSourceCallAdapterFactory has been deprecated. Use `DataSourceCallAdapterFactory` instead.",
+  replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.DataSourceCallAdapterFactory"),
+  level = DeprecationLevel.WARNING
+)
 public class CoroutinesDataSourceCallAdapterFactory private constructor() : CallAdapter.Factory() {
 
   override fun get(
     returnType: Type,
     annotations: Array<Annotation>,
     retrofit: Retrofit
-  ): CoroutinesDataSourceCallAdapter? = when (getRawType(returnType)) {
+  ): CallAdapter<*, *>? = when (getRawType(returnType)) {
     Call::class.java -> {
       val callType = getParameterUpperBound(0, returnType as ParameterizedType)
       when (getRawType(callType)) {

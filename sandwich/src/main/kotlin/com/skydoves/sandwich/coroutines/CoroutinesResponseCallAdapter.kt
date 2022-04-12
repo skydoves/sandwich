@@ -17,6 +17,7 @@
 package com.skydoves.sandwich.coroutines
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.adapters.internal.ApiResponseCallDelegate
 import retrofit2.Call
 import retrofit2.CallAdapter
 import java.lang.reflect.Type
@@ -28,7 +29,12 @@ import java.lang.reflect.Type
  *
  * request API network call asynchronously and returns [ApiResponse].
  */
-public class CoroutinesResponseCallAdapter constructor(
+@Deprecated(
+  message = "CoroutinesResponseCallAdapter has been deprecated. Use `ApiResponseCallAdapter` instead.",
+  replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.ApiResponseCallAdapter"),
+  level = DeprecationLevel.WARNING
+)
+internal class CoroutinesResponseCallAdapter constructor(
   private val resultType: Type
 ) : CallAdapter<Type, Call<ApiResponse<Type>>> {
 

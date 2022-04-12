@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwichdemo.coroutines
+package com.skydoves.sandwich.adapters.internal
 
-import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwichdemo.model.Poster
-import retrofit2.http.GET
-
-interface DisneyCoroutinesService {
-
-  @GET("DisneyPosters.json")
-  suspend fun fetchDisneyPosterList(): ApiResponse<List<Poster>>
-}
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Specifies that this annotation should be used to mark suspension functions.
+ */
+@DslMarker
+internal annotation class SuspensionFunction

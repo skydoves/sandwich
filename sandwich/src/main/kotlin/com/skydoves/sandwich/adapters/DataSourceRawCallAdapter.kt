@@ -14,26 +14,31 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.coroutines
+package com.skydoves.sandwich.adapters
 
 import com.skydoves.sandwich.DataSource
 import com.skydoves.sandwich.ResponseDataSource
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import retrofit2.CallAdapter
+import java.lang.reflect.Type
 
 /**
  * @author skydoves (Jaewoong Eum)
  *
- * DataSourceCallDelegate is a delegate [Call] proxy for handling and transforming normal generic type [T]
- * as [DataSource] that wrapping [T] data from the network responses.
+ * DataSourceCallAdapter is an call adapter for creating [DataSource] from service method.
+ *
+ * request API network call asynchronously and returns [DataSource].
  */
-internal class DataSourceCallDelegate<T>(proxy: Call<T>) : CallDelegate<T, DataSource<T>>(proxy) {
+internal class DataSourceRawCallAdapter<R> constructor(
+  private val responseType: Type
+) : CallAdapter<R, DataSource<R>> {
 
-  override fun enqueueImpl(callback: Callback<DataSource<T>>) {
-    val responseDataSource = ResponseDataSource<T>().combine(proxy, null)
-    callback.onResponse(this@DataSourceCallDelegate, Response.success(responseDataSource))
+  override fun responseType(): Type {
+    return responseType
   }
 
-  override fun cloneImpl() = DataSourceCallDelegate(proxy.clone())
+  override fun adapt(call: Call<R>): DataSource<R> {
+    val responseDataSource: ResponseDataSource<R> = ResponseDataSource()
+    return responseDataSource.combine(call, null)
+  }
 }

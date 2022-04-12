@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.coroutines
+package com.skydoves.sandwichdemo
 
-/**
- * @author skydoves (Jaewoong Eum)
- *
- * Specifies that this annotation should be used to mark suspension functions.
- */
-@DslMarker
-internal annotation class SuspensionFunction
+import com.skydoves.sandwichdemo.network.DisneyService
+
+class MainRepository constructor(
+  private val disneyService: DisneyService
+) {
+
+  suspend fun fetchPosters() = disneyService.fetchDisneyPosterList()
+}

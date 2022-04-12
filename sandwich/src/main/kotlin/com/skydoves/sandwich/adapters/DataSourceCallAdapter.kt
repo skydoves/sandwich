@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.coroutines
+package com.skydoves.sandwich.adapters
 
 import com.skydoves.sandwich.DataSource
 import com.skydoves.sandwich.adapters.internal.DataSourceCallDelegate
@@ -29,12 +29,7 @@ import java.lang.reflect.Type
  *
  * request API network call asynchronously and returns [DataSource].
  */
-@Deprecated(
-  message = "CoroutinesDataSourceCallAdapter has been deprecated. Use `DataSourceCallAdapter` instead.",
-  replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.DataSourceCallAdapter"),
-  level = DeprecationLevel.WARNING
-)
-internal class CoroutinesDataSourceCallAdapter constructor(
+internal class DataSourceCallAdapter constructor(
   private val responseType: Type
 ) : CallAdapter<Type, Call<DataSource<Type>>> {
 
