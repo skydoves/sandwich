@@ -17,11 +17,11 @@
 package com.skydoves.sandwich.coroutines
 
 import com.skydoves.sandwich.DataSource
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -35,6 +35,11 @@ import java.lang.reflect.Type
  * suspend fun fetchDisneyPosterList(): DataSource<List<Poster>>
  * ```
  */
+@Deprecated(
+  message = "CoroutinesDataSourceCallAdapterFactory has been deprecated. Use `DataSourceCallAdapterFactory` instead.",
+  replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.DataSourceCallAdapterFactory"),
+  level = DeprecationLevel.WARNING
+)
 public class CoroutinesDataSourceCallAdapterFactory private constructor() : CallAdapter.Factory() {
 
   override fun get(

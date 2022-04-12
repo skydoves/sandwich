@@ -29,6 +29,11 @@ import java.lang.reflect.Type
  *
  * request API network call asynchronously and returns [DataSource].
  */
+@Deprecated(
+  message = "CoroutinesDataSourceCallAdapter has been deprecated. Use `DataSourceCallAdapter` instead.",
+  replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.DataSourceCallAdapter"),
+  level = DeprecationLevel.WARNING
+)
 internal class CoroutinesDataSourceCallAdapter constructor(
   private val responseType: Type
 ) : CallAdapter<Type, Call<DataSource<Type>>> {
