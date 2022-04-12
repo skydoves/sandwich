@@ -19,11 +19,12 @@
 package com.skydoves.sandwich.coroutines
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -37,6 +38,11 @@ import java.lang.reflect.Type
  * suspend fun fetchDisneyPosterList(): ApiResponse<List<Poster>>
  * ```
  */
+@Deprecated(
+  message = "CoroutinesResponseCallAdapterFactory has been deprecated. Use `ApiResponseCallAdapterFactory` instead.",
+  replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory"),
+  level = DeprecationLevel.WARNING
+)
 public class CoroutinesResponseCallAdapterFactory private constructor() : CallAdapter.Factory() {
 
   override fun get(
@@ -59,7 +65,7 @@ public class CoroutinesResponseCallAdapterFactory private constructor() : CallAd
 
   public companion object {
     @JvmStatic
-    public fun create(): CoroutinesResponseCallAdapterFactory =
-      CoroutinesResponseCallAdapterFactory()
+    public fun create(): ApiResponseCallAdapterFactory =
+      ApiResponseCallAdapterFactory.create()
   }
 }

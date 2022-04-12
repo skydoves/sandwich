@@ -29,6 +29,11 @@ import java.lang.reflect.Type
  *
  * request API network call asynchronously and returns [ApiResponse].
  */
+@Deprecated(
+  message = "CoroutinesResponseCallAdapter has been deprecated. Use `ApiResponseCallAdapter` instead.",
+  replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.ApiResponseCallAdapter"),
+  level = DeprecationLevel.WARNING
+)
 public class CoroutinesResponseCallAdapter constructor(
   private val resultType: Type
 ) : CallAdapter<Type, Call<ApiResponse<Type>>> {
