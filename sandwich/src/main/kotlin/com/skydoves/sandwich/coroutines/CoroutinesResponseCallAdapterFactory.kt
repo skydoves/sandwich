@@ -20,11 +20,11 @@ package com.skydoves.sandwich.coroutines
 
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -49,7 +49,7 @@ public class CoroutinesResponseCallAdapterFactory private constructor() : CallAd
     returnType: Type,
     annotations: Array<Annotation>,
     retrofit: Retrofit
-  ): CoroutinesResponseCallAdapter? = when (getRawType(returnType)) {
+  ): CallAdapter<*, *>? = when (getRawType(returnType)) {
     Call::class.java -> {
       val callType = getParameterUpperBound(0, returnType as ParameterizedType)
       when (getRawType(callType)) {

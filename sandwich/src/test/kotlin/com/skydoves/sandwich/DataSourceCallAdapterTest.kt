@@ -16,6 +16,7 @@
 
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.adapters.DataSourceCallAdapterFactory
 import junit.framework.TestCase.assertNotNull
 import org.junit.Test
 import org.junit.runner.RunWith

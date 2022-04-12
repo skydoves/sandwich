@@ -43,18 +43,20 @@ public class ApiResponseCallAdapterFactory private constructor() : CallAdapter.F
     returnType: Type,
     annotations: Array<Annotation>,
     retrofit: Retrofit
-  ): ApiResponseCallAdapter? = when (getRawType(returnType)) {
-    Call::class.java -> {
-      val callType = getParameterUpperBound(0, returnType as ParameterizedType)
-      when (getRawType(callType)) {
-        ApiResponse::class.java -> {
-          val resultType = getParameterUpperBound(0, callType as ParameterizedType)
-          ApiResponseCallAdapter(resultType)
+  ): CallAdapter<*, *>? {
+    when (getRawType(returnType)) {
+      Call::class.java -> {
+        val callType = getParameterUpperBound(0, returnType as ParameterizedType)
+        val rawType = getRawType(callType)
+        if (rawType != ApiResponse::class.java) {
+          return null
         }
-        else -> null
+
+        val resultType = getParameterUpperBound(0, callType as ParameterizedType)
+        return ApiResponseCallAdapter(resultType)
       }
+      else -> return null
     }
-    else -> null
   }
 
   public companion object {

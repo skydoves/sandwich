@@ -35,5 +35,10 @@ internal class DataSourceCallDelegate<T>(proxy: Call<T>) : CallDelegate<T, DataS
     callback.onResponse(this@DataSourceCallDelegate, Response.success(responseDataSource))
   }
 
+  override fun executeImpl(): Response<DataSource<T>> {
+    val responseDataSource = ResponseDataSource<T>().combine(proxy, null)
+    return Response.success(responseDataSource)
+  }
+
   override fun cloneImpl() = DataSourceCallDelegate(proxy.clone())
 }

@@ -34,7 +34,7 @@ import java.lang.reflect.Type
   replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.ApiResponseCallAdapter"),
   level = DeprecationLevel.WARNING
 )
-public class CoroutinesResponseCallAdapter constructor(
+internal class CoroutinesResponseCallAdapter constructor(
   private val resultType: Type
 ) : CallAdapter<Type, Call<ApiResponse<Type>>> {
 

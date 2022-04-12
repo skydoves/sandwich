@@ -29,7 +29,7 @@ import java.lang.reflect.Type
  *
  * request API network call asynchronously and returns [ApiResponse].
  */
-public class ApiResponseCallAdapter constructor(
+internal class ApiResponseCallAdapter constructor(
   private val resultType: Type
 ) : CallAdapter<Type, Call<ApiResponse<Type>>> {
 
