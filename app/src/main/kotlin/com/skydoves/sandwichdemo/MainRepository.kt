@@ -16,18 +16,11 @@
 
 package com.skydoves.sandwichdemo
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.skydoves.sandwichdemo.network.NetworkModule
+import com.skydoves.sandwichdemo.network.DisneyService
 
-@Suppress("UNCHECKED_CAST")
-class MainViewModelFactory : ViewModelProvider.Factory {
+class MainRepository constructor(
+  private val disneyService: DisneyService
+) {
 
-  override fun <T : ViewModel> create(modelClass: Class<T>): T {
-    if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-      val mainRepository = MainRepository(NetworkModule.disneyService)
-      return MainViewModel(mainRepository) as T
-    }
-    throw IllegalArgumentException("Unknown ViewModel class.")
-  }
+  suspend fun fetchPosters() = disneyService.fetchDisneyPosterList()
 }

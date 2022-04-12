@@ -16,69 +16,59 @@
 
 package com.skydoves.sandwichdemo
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.skydoves.sandwich.StatusCode
 import com.skydoves.sandwich.map
 import com.skydoves.sandwich.message
-import com.skydoves.sandwich.suspendOnProcedure
+import com.skydoves.sandwich.onError
+import com.skydoves.sandwich.onException
+import com.skydoves.sandwich.suspendOnSuccess
 import com.skydoves.sandwichdemo.mapper.ErrorEnvelopeMapper
 import com.skydoves.sandwichdemo.model.Poster
-import com.skydoves.sandwichdemo.network.DisneyService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
+class MainViewModel constructor(mainRepository: MainRepository) : ViewModel() {
 
-  val posterListLiveData: LiveData<List<Poster>>
+  private val _posterListFlow = MutableStateFlow<List<Poster>?>(emptyList())
+  val posterListFlow: StateFlow<List<Poster>?> = _posterListFlow
+
   val toastLiveData = MutableLiveData<String>()
 
   init {
     Timber.d("initialized MainViewModel.")
 
-    posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
-      emitSource(
-        flow {
-          disneyService.fetchDisneyPosterList()
-            .suspendOnProcedure(
-              // handles the success case when the API request gets a successful response.
-              onSuccess = {
-                Timber.d("$data")
+    viewModelScope.launch {
+      mainRepository.fetchPosters()
+        // handles the success scenario when the API request succeeds.
+        .suspendOnSuccess {
+          _posterListFlow.emit(data)
+        }
+        // handles the error scenario when the API request fail.
+        // e.g., internal server error.
+        .onError {
+          // handles error cases depending on the status code.
+          val message = when (statusCode) {
+            StatusCode.InternalServerError -> "InternalServerError"
+            StatusCode.BadGateway -> "BadGateway"
+            else -> "$statusCode(${statusCode.code}): ${message()}"
+          }
+          toastLiveData.postValue(message)
 
-                emit(data)
-              },
-              // handles error cases when the API request gets an error response.
-              // e.g., internal server error.
-              onError = {
-                Timber.d(message())
-
-                // handles error cases depending on the status code.
-                when (statusCode) {
-                  StatusCode.InternalServerError -> toastLiveData.postValue("InternalServerError")
-                  StatusCode.BadGateway -> toastLiveData.postValue("BadGateway")
-                  else -> toastLiveData.postValue("$statusCode(${statusCode.code}): ${message()}")
-                }
-
-                // map the ApiResponse.Failure.Error to our custom error model using the mapper.
-                map(ErrorEnvelopeMapper) {
-                  Timber.d("[Code: $code]: $message")
-                }
-              },
-              // handles exceptional cases when the API request gets an exception response.
-              // e.g., network connection error, timeout.
-              onException = {
-                Timber.d(message())
-                toastLiveData.postValue(message())
-              }
-            )
-        }.flowOn(Dispatchers.IO).asLiveData()
-      )
+          // map the ApiResponse.Failure.Error to our custom error model using the mapper.
+          map(ErrorEnvelopeMapper) {
+            Timber.d("[Code: $code]: $message")
+          }
+        }
+        // handles the error scenario when an unexpected exception happens.
+        // e.g., network connection error, timeout.
+        .onException {
+          toastLiveData.postValue(message)
+        }
     }
   }
 }
