@@ -42,5 +42,11 @@ internal class ApiResponseCallDelegate<T>(proxy: Call<T>) : CallDelegate<T, ApiR
     }
   )
 
+  override fun executeImpl(): Response<ApiResponse<T>> {
+    val response = proxy.execute()
+    val apiResponse = ApiResponse.of { response }
+    return Response.success(apiResponse)
+  }
+
   override fun cloneImpl() = ApiResponseCallDelegate(proxy.clone())
 }
