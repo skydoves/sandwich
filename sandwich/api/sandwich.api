@@ -283,13 +283,6 @@ public final class com/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory$
 	public final fun create ()Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory;
 }
 
-public final class com/skydoves/sandwich/adapters/DataSourceCallAdapter : retrofit2/CallAdapter {
-	public fun <init> (Ljava/lang/reflect/Type;)V
-	public fun adapt (Lretrofit2/Call;)Lcom/skydoves/sandwich/DataSource;
-	public synthetic fun adapt (Lretrofit2/Call;)Ljava/lang/Object;
-	public fun responseType ()Ljava/lang/reflect/Type;
-}
-
 public final class com/skydoves/sandwich/adapters/DataSourceCallAdapterFactory : retrofit2/CallAdapter$Factory {
 	public static final field Companion Lcom/skydoves/sandwich/adapters/DataSourceCallAdapterFactory$Companion;
 	public static final fun create ()Lcom/skydoves/sandwich/adapters/DataSourceCallAdapterFactory;

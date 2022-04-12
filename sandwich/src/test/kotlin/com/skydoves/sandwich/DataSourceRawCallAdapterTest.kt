@@ -25,7 +25,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 @RunWith(JUnit4::class)
-internal class DataSourceCallAdapterTest : ApiAbstract<DisneyService>() {
+internal class DataSourceRawCallAdapterTest : ApiAbstract<DisneyService>() {
 
   @Test
   fun fetchDataSourceTypeResponse() {

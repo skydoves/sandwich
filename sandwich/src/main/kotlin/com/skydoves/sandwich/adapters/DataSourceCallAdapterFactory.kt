@@ -17,6 +17,7 @@
 package com.skydoves.sandwich.adapters
 
 import com.skydoves.sandwich.DataSource
+import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
@@ -41,13 +42,22 @@ public class DataSourceCallAdapterFactory private constructor() : CallAdapter.Fa
     annotations: Array<Annotation>,
     retrofit: Retrofit
   ): CallAdapter<*, *>? {
-    val rawType = getRawType(returnType)
-    if (rawType != DataSource::class.java) {
-      return null
+    when (getRawType(returnType)) {
+      DataSource::class.java -> {
+        val resultType = getParameterUpperBound(0, returnType as ParameterizedType)
+        return DataSourceRawCallAdapter<Type>(resultType)
+      }
+      Call::class.java -> {
+        val callType = getParameterUpperBound(0, returnType as ParameterizedType)
+        val rawType = getRawType(callType)
+        if (rawType != DataSource::class.java) {
+          return null
+        }
+        val resultType = getParameterUpperBound(0, callType as ParameterizedType)
+        return DataSourceCallAdapter(resultType)
+      }
+      else -> return null
     }
-    val enclosingType = returnType as ParameterizedType
-    val actualType = enclosingType.actualTypeArguments[0]
-    return DataSourceCallAdapter<Type>(actualType)
   }
 
   public companion object {

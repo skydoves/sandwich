@@ -18,9 +18,9 @@ package com.skydoves.sandwich.adapters
 
 import com.skydoves.sandwich.DataSource
 import com.skydoves.sandwich.ResponseDataSource
-import java.lang.reflect.Type
 import retrofit2.Call
 import retrofit2.CallAdapter
+import java.lang.reflect.Type
 
 /**
  * @author skydoves (Jaewoong Eum)
