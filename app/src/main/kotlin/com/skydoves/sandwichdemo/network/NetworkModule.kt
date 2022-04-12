@@ -18,7 +18,6 @@ package com.skydoves.sandwichdemo.network
 
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import com.skydoves.sandwich.adapters.DataSourceCallAdapterFactory
-import com.skydoves.sandwichdemo.coroutines.DisneyCoroutinesService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -36,12 +35,12 @@ object NetworkModule {
       "https://gist.githubusercontent.com/skydoves/aa3bbbf495b0fa91db8a9e89f34e4873/raw/a1a13d37027e8920412da5f00f6a89c5a3dbfb9a/"
     )
     .addConverterFactory(MoshiConverterFactory.create())
-    .addCallAdapterFactory(DataSourceCallAdapterFactory.create())
     .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
+    .addCallAdapterFactory(DataSourceCallAdapterFactory.create())
     .build()
 
   val disneyService: DisneyService = retrofit.create(DisneyService::class.java)
 
-  val disneyCoroutinesService: DisneyCoroutinesService =
-    retrofit.create(DisneyCoroutinesService::class.java)
+  val disneyDataSourceService: DisneyDataSourceService =
+    retrofit.create(DisneyDataSourceService::class.java)
 }

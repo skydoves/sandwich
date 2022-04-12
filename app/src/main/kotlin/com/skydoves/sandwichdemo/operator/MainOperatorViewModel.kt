@@ -22,13 +22,13 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.skydoves.sandwich.suspendOperator
 import com.skydoves.sandwichdemo.SandwichDemoApp
-import com.skydoves.sandwichdemo.coroutines.DisneyCoroutinesService
 import com.skydoves.sandwichdemo.model.Poster
+import com.skydoves.sandwichdemo.network.DisneyService
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 
-class MainCoroutinesOperatorViewModel constructor(
-  disneyService: DisneyCoroutinesService
+class MainOperatorViewModel constructor(
+  disneyService: DisneyService
 ) : AndroidViewModel(SandwichDemoApp.sandwichApp) {
 
   val posterListLiveData: LiveData<List<Poster>>

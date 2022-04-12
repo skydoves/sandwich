@@ -7,13 +7,13 @@
 
     <variable
       name="viewModel"
-      type="com.skydoves.sandwichdemo.coroutines.MainCoroutinesViewModel" />
+      type="com.skydoves.sandwichdemo.MainViewModel" />
 
     <variable
       name="adapter"
       type="com.skydoves.sandwichdemo.adapter.PosterAdapter" />
   </data>
-  
+
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"

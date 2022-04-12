@@ -14,38 +14,31 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwichdemo.coroutines
+package com.skydoves.sandwichdemo.operator
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.skydoves.sandwichdemo.R
 import com.skydoves.sandwichdemo.adapter.PosterAdapter
-import com.skydoves.sandwichdemo.databinding.ActivityMainCoroutinesBinding
+import com.skydoves.sandwichdemo.databinding.ActivityMainCoroutinesOperatorBinding
 
-class MainCoroutinesActivity : AppCompatActivity() {
+class MainOperatorActivity : AppCompatActivity() {
 
-  private val viewModelFactory: MainCoroutinesViewModelFactory = MainCoroutinesViewModelFactory()
-  private val viewModel: MainCoroutinesViewModel by lazy {
-    viewModelFactory.create(MainCoroutinesViewModel::class.java)
+  private val viewModelFactory: MainOperatorViewModelFactory =
+    MainOperatorViewModelFactory()
+  private val viewModel: MainOperatorViewModel by lazy {
+    viewModelFactory.create(MainOperatorViewModel::class.java)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    DataBindingUtil.setContentView<ActivityMainCoroutinesBinding>(
-      this,
-      R.layout.activity_main_coroutines
+    DataBindingUtil.setContentView<ActivityMainCoroutinesOperatorBinding>(
+      this, R.layout.activity_main_coroutines_operator
     ).apply {
-      lifecycleOwner = this@MainCoroutinesActivity
-      viewModel = this@MainCoroutinesActivity.viewModel
+      lifecycleOwner = this@MainOperatorActivity
+      viewModel = this@MainOperatorActivity.viewModel
       adapter = PosterAdapter()
-    }
-
-    viewModel.toastLiveData.observe(
-      this
-    ) {
-      Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
     }
   }
 }

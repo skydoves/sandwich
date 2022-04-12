@@ -21,7 +21,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.skydoves.sandwichdemo.adapter.PosterAdapter
-import com.skydoves.sandwichdemo.databinding.ActivityMainBinding
+import com.skydoves.sandwichdemo.databinding.ActivityMainCoroutinesBinding
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,7 +32,10 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main).apply {
+    DataBindingUtil.setContentView<ActivityMainCoroutinesBinding>(
+      this,
+      R.layout.activity_main_coroutines
+    ).apply {
       lifecycleOwner = this@MainActivity
       viewModel = this@MainActivity.viewModel
       adapter = PosterAdapter()

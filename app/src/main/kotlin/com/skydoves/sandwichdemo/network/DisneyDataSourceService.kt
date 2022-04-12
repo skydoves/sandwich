@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwichdemo.coroutines
+package com.skydoves.sandwichdemo.network
 
-import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.DataSource
 import com.skydoves.sandwichdemo.model.Poster
 import retrofit2.http.GET
 
-interface DisneyCoroutinesService {
+interface DisneyDataSourceService {
 
   @GET("DisneyPosters.json")
-  suspend fun fetchDisneyPosterList(): ApiResponse<List<Poster>>
+  fun fetchDisneyPosterList(): DataSource<List<Poster>>
 }
