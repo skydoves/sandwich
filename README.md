@@ -16,7 +16,7 @@ Sandwich was invented to construct standardized interfaces from the Retrofit net
 ## Download
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
 
-🥪 Sandwich has been downloaded in more than __120k__ Android projects all over the globe! <br>
+🥪 Sandwich has been downloaded in more than __140k__ Android projects all over the globe! <br>
 
 <img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224"/>
 
