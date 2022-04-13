@@ -123,7 +123,7 @@ disneyService.fetchDisneyPosterList().request { response ->
     }
 ```
 
-ApiResponse has three main types; **Success**, **Failure.Error**, and **Failure.Exception**.
+ApiResponse has three types; **Success**, **Failure.Error**, and **Failure.Exception**.
 
 ### ApiResponse.Success
 This represents the network request has been successful. You can get the body data of the response, and additional information such as `StatusCode`, `Headers`, and more from the `ApiResponse.Success`.
@@ -172,10 +172,10 @@ disneyService.fetchDisneyPosterList().request { response ->
 ```
 
 ### ApiResponse for Coroutines
-You can use the `suspend` keyword in your Retrofit services with `ApiResponse<*>` as a response type. First, build your `Retrofit` with the `CoroutinesResponseCallAdapterFactory` call adapter factory as following below:
+You can use the `suspend` keyword in your Retrofit services with `ApiResponse<*>` as a response type. First, build your `Retrofit` with the `ApiResponseCallAdapterFactory` call adapter factory:
 
 ```kotlin
-.addCallAdapterFactory(CoroutinesResponseCallAdapterFactory.create())
+.addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
 ```
 
 Next, you should define the service interface with the suspend keyword and `ApiResponse<*>` as a response type. So eventually you will get the `ApiResponse` from the Retrofit service call like the examples below:
@@ -767,9 +767,9 @@ class MainViewModel constructor(
 ```
 
 ### DataSourceCallAdapterFactory
-We can get the `DataSource` directly from the Retrofit service. <br>
-Add a call adapter factory `DataSourceCallAdapterFactory` to your Retrofit builder. <br>
-And change the return type of your service `Call` to `DataSource`.
+
+You can get the `DataSource` directly from the Retrofit service. Add the `DataSourceCallAdapterFactory` call adapter factory to your Retrofit builder. And change the return type of your Retrfot services `Call` to `DataSource`.
+
 ```kotlin
 Retrofit.Builder()
     ...
@@ -806,20 +806,24 @@ class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
       .request() // must call request()
 ```
 
-### CoroutinesDataSourceCallAdapterFactory
-We can get the `DataSource` directly from the Retrofit service using with `suspend`. <br>
+### DataSource with Coroutines
+
+You can use the `DataSource` in Retrofit services with `suspend` keyword. <br>
+
 ```kotlin
 Retrofit.Builder()
     ...
-    .addCallAdapterFactory(CoroutinesDataSourceCallAdapterFactory.create())
+    .addCallAdapterFactory(DataSourceCallAdapterFactory.create())
     .build()
 
 interface DisneyService {
   @GET("DisneyPosters.json")
-  fun fetchDisneyPosterList(): DataSource<List<Poster>>
+  suspend fun fetchDisneyPosterList(): DataSource<List<Poster>>
 }
 ```
-Here is an exmaple of the `DataSource` in the MainViewModel.
+
+This is an exmaple of the `DataSource` in the MainViewModel:
+
 ```kotlin
 class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService) : ViewModel() {
 

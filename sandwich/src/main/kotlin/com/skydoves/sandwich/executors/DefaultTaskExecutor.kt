@@ -90,20 +90,17 @@ internal class DefaultTaskExecutor : TaskExecutor() {
     if (Build.VERSION.SDK_INT >= 28) {
       return Handler.createAsync(looper)
     }
-    if (Build.VERSION.SDK_INT >= 16) {
-      try {
-        return Handler::class.java.getDeclaredConstructor(
-          Looper::class.java,
-          Handler.Callback::class.java,
-          Boolean::class.javaPrimitiveType
-        )
-          .newInstance(looper, null, true)
-      } catch (ignored: IllegalAccessException) {
-      } catch (ignored: InstantiationException) {
-      } catch (ignored: NoSuchMethodException) {
-      } catch (e: InvocationTargetException) {
-        return Handler(looper)
-      }
+    try {
+      return Handler::class.java.getDeclaredConstructor(
+        Looper::class.java,
+        Handler.Callback::class.java,
+        Boolean::class.javaPrimitiveType
+      ).newInstance(looper, null, true)
+    } catch (ignored: IllegalAccessException) {
+    } catch (ignored: InstantiationException) {
+    } catch (ignored: NoSuchMethodException) {
+    } catch (e: InvocationTargetException) {
+      return Handler(looper)
     }
     return Handler(looper)
   }
