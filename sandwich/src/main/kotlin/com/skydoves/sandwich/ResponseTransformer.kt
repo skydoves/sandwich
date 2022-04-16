@@ -541,6 +541,23 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnProcedure(
 /**
  * @author skydoves (Jaewoong Eum)
  *
+ * Maps a [T] type of the [ApiResponse] to a [V] type of the [ApiResponse] if the [ApiResponse] is [ApiResponse.Success].
+ *
+ * @param transformer A transformer that receives [T] and returns [V].
+ *
+ * @return A [V] type of the [ApiResponse].
+ */
+@Suppress("UNCHECKED_CAST")
+public fun <T, V> ApiResponse<T>.mapSuccess(transformer: T.() -> V): ApiResponse<V> {
+  if (this is ApiResponse.Success<T>) {
+    return ApiResponse.of { Response.success(transformer(data)) }
+  }
+  return this as ApiResponse<V>
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
  * Maps [ApiResponse.Success] to a customized success response model.
  *
  * @param mapper A mapper interface for mapping [ApiResponse.Success] response as a custom [V] instance model.
