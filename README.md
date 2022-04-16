@@ -150,11 +150,12 @@ This represents the network request has been failed when unexpected exceptions o
 ### ApiResponse Extensions
 You can handle the `ApiResponse` with the extensions below:
 
-- **onSuccess**: Takes if the `ApiResponse` is `ApiResponse.Success`. You can access body data directly in this scope.
-- **onError**: Takes if the `ApiResponse` is `ApiResponse.Failure.Error`. You can access `message()` and `errorBody` in this scope.
-- **onException**: Takes if the `ApiResponse` is `ApiResponse.Failure.Exception`. Toy can access `message()` in this scope.
+- **onSuccess**: Executes if the `ApiResponse` is `ApiResponse.Success`. You can access body data directly in this scope.
+- **onError**: Executes if the `ApiResponse` is `ApiResponse.Failure.Error`. You can access `message()` and `errorBody` in this scope.
+- **onException**: Executes if the `ApiResponse` is `ApiResponse.Failure.Exception`. You can access `message()` in this scope.
+- **onFailure**: Executes if the `ApiResponse` is `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`. You can access `message()` in this scope.
 
-The scope runs depending on the `ApiResponse` as the example below:
+Each scope runs depending on its dedicated `ApiResponse` type:
 
 ```kotlin
 disneyService.fetchDisneyPosterList().request { response ->
