@@ -17,6 +17,7 @@
 package com.skydoves.sandwich
 
 import com.squareup.moshi.JsonClass
+import kotlin.random.Random
 
 @JsonClass(generateAdapter = false)
 internal data class Poster(
@@ -33,7 +34,7 @@ internal data class Poster(
 
     fun create(): Poster {
       return Poster(
-        id = 1,
+        id = Random.nextLong(),
         "Frozen II",
         "2019",
         "1 h 43 min",

@@ -20,12 +20,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skydoves.sandwich.StatusCode
-import com.skydoves.sandwich.map
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.suspendOnSuccess
-import com.skydoves.sandwichdemo.mapper.ErrorEnvelopeMapper
 import com.skydoves.sandwichdemo.model.Poster
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -58,11 +56,6 @@ class MainViewModel constructor(mainRepository: MainRepository) : ViewModel() {
             else -> "$statusCode(${statusCode.code}): ${message()}"
           }
           toastLiveData.postValue(message)
-
-          // map the ApiResponse.Failure.Error to our custom error model using the mapper.
-          map(ErrorEnvelopeMapper) {
-            Timber.d("[Code: $code]: $message")
-          }
         }
         // handles the error scenario when an unexpected exception happens.
         // e.g., network connection error, timeout.
