@@ -213,11 +213,12 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
 
 You can handle the `ApiResponse` with the coroutines extensions, which you can run your suspend functions on the scopes.
 
-- **suspendOnSuccess**: Takes if the `ApiResponse` is `ApiResponse.Success`. You can access body data directly in this scope.
-- **suspendOnError**: Takes if the `ApiResponse` is `ApiResponse.Failure.Error`. You can access `message()` and `errorBody` in this scope.
-- **suspendOnFailure**: Takes if the `ApiResponse` is `ApiResponse.Failure.Exception`. Toy can access `message()` in this scope.
+- **suspendOnSuccess**: Executes if the `ApiResponse` is `ApiResponse.Success`. You can access body data directly in this scope.
+- **suspendOnError**: Executes if the `ApiResponse` is `ApiResponse.Failure.Error`. You can access `message()` and `errorBody` in this scope.
+- **suspendOnException**: Executes if the `ApiResponse` is `ApiResponse.Failure.Exception`. You can access `message()` in this scope.
+- **suspendOnFailure**: Executes if the `ApiResponse` is `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`. You can access `message()` in this scope.
 
-The scope runs depending on the `ApiResponse` as the example below:
+Each scope runs depending on the its dedicated `ApiResponse` type:
 
 ```kotlin
 flow {
@@ -227,7 +228,7 @@ flow {
     emit(data)
   }.suspendOnError {
     // handles error cases
-  }.suspendOnFailure {
+  }.suspendOnException {
     // handles exceptional cases
   }
 }.flowOn(Dispatchers.IO)
