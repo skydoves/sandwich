@@ -423,6 +423,19 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
+  fun mapSuccessTest() {
+    var poster: Poster? = null
+    val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
+    val apiResponse = ApiResponse.of { response }
+
+    val mappedResponse = apiResponse.mapSuccess { first() }
+    mappedResponse.onSuccess {
+      poster = data
+    }
+    assertThat(poster, `is`(response.body()?.first()))
+  }
+
+  @Test
   fun mapOnSuccessTest() {
     var poster: Poster? = null
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
@@ -432,7 +445,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       poster = map(SuccessPosterMapper)
     }
 
-    assertThat(poster, `is`(Poster.create()))
+    assertThat(poster, `is`(response.body()?.first()))
   }
 
   @Test
@@ -447,7 +460,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       }
     }
 
-    assertThat(poster, `is`(Poster.create()))
+    assertThat(poster, `is`(response.body()?.first()))
   }
 
   @Test
@@ -462,7 +475,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       }
     }
 
-    assertThat(poster, `is`(Poster.create()))
+    assertThat(poster, `is`(response.body()?.first()))
   }
 
   @Test
@@ -475,7 +488,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       poster = this
     }
 
-    assertThat(poster, `is`(Poster.create()))
+    assertThat(poster, `is`(response.body()?.first()))
   }
 
   @Test
@@ -490,13 +503,14 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         }
       }
     }.collect {
-      assertThat(it, `is`(Poster.create()))
+      assertThat(it, `is`(response.body()?.first()))
     }
   }
 
   @Test
   fun mapSuspendSuccessWitExecutableLambdaTest() = runTest {
-    val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
+    val poster = Poster.create()
+    val response = Response.success(listOf(poster, Poster.create(), Poster.create()))
     val apiResponse = ApiResponse.of { response }
 
     flow {
@@ -506,7 +520,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         }
       }
     }.collect {
-      assertThat(it, `is`(Poster.create()))
+      assertThat(it, `is`(poster))
     }
   }
 
@@ -520,7 +534,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         emit(this)
       }
     }.collect {
-      assertThat(it, `is`(Poster.create()))
+      assertThat(it, `is`(response.body()?.first()))
     }
   }
 
