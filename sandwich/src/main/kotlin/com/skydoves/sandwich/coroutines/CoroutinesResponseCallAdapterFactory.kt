@@ -64,6 +64,11 @@ public class CoroutinesResponseCallAdapterFactory private constructor() : CallAd
   }
 
   public companion object {
+    @Deprecated(
+      message = "CoroutinesResponseCallAdapterFactory has been deprecated. Use `ApiResponseCallAdapterFactory` instead.",
+      replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory.create()"),
+      level = DeprecationLevel.WARNING
+    )
     @JvmStatic
     public fun create(): ApiResponseCallAdapterFactory =
       ApiResponseCallAdapterFactory.create()
