@@ -31,7 +31,7 @@ import java.lang.reflect.Type
  */
 @Deprecated(
   message = "CoroutinesDataSourceCallAdapter has been deprecated. Use `DataSourceCallAdapter` instead.",
-  replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.DataSourceCallAdapter"),
+  replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.internal.DataSourceCallAdapter"),
   level = DeprecationLevel.WARNING
 )
 internal class CoroutinesDataSourceCallAdapter constructor(

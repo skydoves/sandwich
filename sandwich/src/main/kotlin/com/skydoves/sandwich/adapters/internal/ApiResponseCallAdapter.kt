@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.adapters
+package com.skydoves.sandwich.adapters.internal
 
-import com.skydoves.sandwich.DataSource
-import com.skydoves.sandwich.ResponseDataSource
+import com.skydoves.sandwich.ApiResponse
 import retrofit2.Call
 import retrofit2.CallAdapter
 import java.lang.reflect.Type
@@ -25,20 +24,19 @@ import java.lang.reflect.Type
 /**
  * @author skydoves (Jaewoong Eum)
  *
- * DataSourceCallAdapter is an call adapter for creating [DataSource] from service method.
+ * ApiResponseCallAdapter is an call adapter for creating [ApiResponse] by executing Retrofit's service methods.
  *
- * request API network call asynchronously and returns [DataSource].
+ * Request API network call asynchronously and returns [ApiResponse].
  */
-internal class DataSourceRawCallAdapter<R> constructor(
-  private val responseType: Type
-) : CallAdapter<R, DataSource<R>> {
+internal class ApiResponseCallAdapter constructor(
+  private val resultType: Type
+) : CallAdapter<Type, Call<ApiResponse<Type>>> {
 
   override fun responseType(): Type {
-    return responseType
+    return resultType
   }
 
-  override fun adapt(call: Call<R>): DataSource<R> {
-    val responseDataSource: ResponseDataSource<R> = ResponseDataSource()
-    return responseDataSource.combine(call, null)
+  override fun adapt(call: Call<Type>): Call<ApiResponse<Type>> {
+    return ApiResponseCallDelegate(call)
   }
 }

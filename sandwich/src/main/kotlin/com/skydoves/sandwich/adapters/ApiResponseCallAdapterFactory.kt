@@ -19,6 +19,9 @@
 package com.skydoves.sandwich.adapters
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.adapters.internal.ApiResponseCallAdapter
+import com.skydoves.sandwich.adapters.internal.ApiResponseDeferredCallAdapter
+import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
@@ -54,6 +57,16 @@ public class ApiResponseCallAdapterFactory private constructor() : CallAdapter.F
 
         val resultType = getParameterUpperBound(0, callType as ParameterizedType)
         return ApiResponseCallAdapter(resultType)
+      }
+      Deferred::class.java -> {
+        val callType = getParameterUpperBound(0, returnType as ParameterizedType)
+        val rawType = getRawType(callType)
+        if (rawType != ApiResponse::class.java) {
+          return null
+        }
+
+        val resultType = getParameterUpperBound(0, callType as ParameterizedType)
+        return ApiResponseDeferredCallAdapter<Any>(resultType)
       }
       else -> return null
     }

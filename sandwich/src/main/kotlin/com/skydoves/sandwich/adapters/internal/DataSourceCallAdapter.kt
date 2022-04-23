@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.adapters
+package com.skydoves.sandwich.adapters.internal
 
 import com.skydoves.sandwich.DataSource
-import com.skydoves.sandwich.adapters.internal.DataSourceCallDelegate
 import retrofit2.Call
 import retrofit2.CallAdapter
 import java.lang.reflect.Type

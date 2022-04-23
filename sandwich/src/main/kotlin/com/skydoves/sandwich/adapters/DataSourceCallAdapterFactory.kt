@@ -17,6 +17,8 @@
 package com.skydoves.sandwich.adapters
 
 import com.skydoves.sandwich.DataSource
+import com.skydoves.sandwich.adapters.internal.DataSourceCallAdapter
+import com.skydoves.sandwich.adapters.internal.DataSourceRawCallAdapter
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit

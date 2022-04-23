@@ -18,10 +18,14 @@ package com.skydoves.sandwichdemo.network
 
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwichdemo.model.Poster
+import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 
 interface DisneyService {
 
   @GET("DisneyPosters.json")
-  suspend fun fetchDisneyPosterList(): ApiResponse<List<Poster>>
+  suspend fun fetchDisneyPosters(): ApiResponse<List<Poster>>
+
+  @GET("DisneyPosters.json")
+  fun fetchDisneyPostersAsync(): Deferred<ApiResponse<List<Poster>>>
 }
