@@ -61,6 +61,11 @@ public class CoroutinesDataSourceCallAdapterFactory private constructor() : Call
   }
 
   public companion object {
+    @Deprecated(
+      message = "CoroutinesDataSourceCallAdapterFactory has been deprecated. Use `DataSourceCallAdapterFactory` instead.",
+      replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.DataSourceCallAdapterFactory.create()"),
+      level = DeprecationLevel.WARNING
+    )
     @JvmStatic
     public fun create(): CoroutinesDataSourceCallAdapterFactory =
       CoroutinesDataSourceCallAdapterFactory()
