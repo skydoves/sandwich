@@ -1,0 +1,62 @@
+/*
+ * Designed and developed by 2020 skydoves (Jaewoong Eum)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.skydoves.sandwich.adapters.internal
+
+import com.skydoves.sandwich.ApiResponse
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Deferred
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * ApiResponseDeferredCallDelegate is a delegate [Call] proxy for handling and transforming normal generic type [T]
+ * as [Deferred] of [ApiResponse] that wrapping [T] data from the network responses.
+ */
+internal class ApiResponseDeferredCallDelegate<T>(proxy: Call<T>) :
+  CallDelegate<T, Deferred<ApiResponse<T>>>(proxy) {
+
+  override fun enqueueImpl(callback: Callback<Deferred<ApiResponse<T>>>) {
+    val deferred = CompletableDeferred<ApiResponse<T>>().apply {
+      invokeOnCompletion { throwable ->
+        if (throwable != null && throwable !is CancellationException) {
+          complete(ApiResponse.error(throwable))
+        }
+      }
+    }
+
+    proxy.enqueue(object : Callback<T> {
+      override fun onResponse(call: Call<T>, response: Response<T>) {
+        val apiResponse = ApiResponse.of { response }
+        deferred.complete(apiResponse)
+      }
+
+      override fun onFailure(call: Call<T>, throwable: Throwable) {
+        val apiResponse = ApiResponse.error<T>(throwable)
+        deferred.complete(apiResponse)
+      }
+    })
+  }
+
+  override fun executeImpl(): Response<Deferred<ApiResponse<T>>> = throw NotImplementedError()
+
+  override fun cloneImpl(): Call<Deferred<ApiResponse<T>>> =
+    ApiResponseDeferredCallDelegate(proxy.clone())
+}
