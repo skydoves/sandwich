@@ -17,7 +17,6 @@
 package com.skydoves.sandwich.adapters.internal
 
 import com.skydoves.sandwich.ApiResponse
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
@@ -44,9 +43,9 @@ internal class ApiResponseDeferredCallAdapter<T> constructor(
   @Suppress("DeferredIsResult")
   override fun adapt(call: Call<T>): Deferred<ApiResponse<T>> {
     val deferred = CompletableDeferred<ApiResponse<T>>().apply {
-      invokeOnCompletion { throwable ->
-        if (throwable != null && throwable !is CancellationException) {
-          complete(ApiResponse.error(throwable))
+      invokeOnCompletion {
+        if (isCancelled && !call.isCanceled) {
+          call.cancel()
         }
       }
     }
