@@ -37,7 +37,7 @@ class MainOperatorViewModel constructor(
     Timber.d("initialized MainViewModel.")
 
     posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
-      disneyService.fetchDisneyPosterList().suspendOperator(
+      disneyService.fetchDisneyPosters().suspendOperator(
         CommonResponseOperator(
           success = { success ->
             emit(success.data)

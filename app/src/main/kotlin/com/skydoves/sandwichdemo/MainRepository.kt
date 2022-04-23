@@ -22,5 +22,5 @@ class MainRepository constructor(
   private val disneyService: DisneyService
 ) {
 
-  suspend fun fetchPosters() = disneyService.fetchDisneyPosterList()
+  suspend fun fetchPosters() = disneyService.fetchDisneyPosters()
 }

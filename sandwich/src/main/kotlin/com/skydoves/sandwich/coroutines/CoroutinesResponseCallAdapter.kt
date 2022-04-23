@@ -31,7 +31,7 @@ import java.lang.reflect.Type
  */
 @Deprecated(
   message = "CoroutinesResponseCallAdapter has been deprecated. Use `ApiResponseCallAdapter` instead.",
-  replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.ApiResponseCallAdapter"),
+  replaceWith = ReplaceWith("com.skydoves.sandwich.adapters.internal.ApiResponseCallAdapter"),
   level = DeprecationLevel.WARNING
 )
 internal class CoroutinesResponseCallAdapter constructor(

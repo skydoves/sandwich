@@ -21,19 +21,28 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
+import retrofit2.CallAdapter
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.reflect.Type
 
 /**
  * @author skydoves (Jaewoong Eum)
  *
- * ApiResponseDeferredCallDelegate is a delegate [Call] proxy for handling and transforming normal generic type [T]
- * as [Deferred] of [ApiResponse] that wrapping [T] data from the network responses.
+ * ApiResponseCallAdapter is an call adapter for creating [ApiResponse] by executing Retrofit's service methods.
+ *
+ * Request API network call asynchronously and returns [Deferred] of [ApiResponse].
  */
-internal class ApiResponseDeferredCallDelegate<T>(proxy: Call<T>) :
-  CallDelegate<T, Deferred<ApiResponse<T>>>(proxy) {
+internal class ApiResponseDeferredCallAdapter<T> constructor(
+  private val resultType: Type
+) : CallAdapter<T, Deferred<ApiResponse<T>>> {
 
-  override fun enqueueImpl(callback: Callback<Deferred<ApiResponse<T>>>) {
+  override fun responseType(): Type {
+    return resultType
+  }
+
+  @Suppress("DeferredIsResult")
+  override fun adapt(call: Call<T>): Deferred<ApiResponse<T>> {
     val deferred = CompletableDeferred<ApiResponse<T>>().apply {
       invokeOnCompletion { throwable ->
         if (throwable != null && throwable !is CancellationException) {
@@ -42,7 +51,7 @@ internal class ApiResponseDeferredCallDelegate<T>(proxy: Call<T>) :
       }
     }
 
-    proxy.enqueue(object : Callback<T> {
+    call.enqueue(object : Callback<T> {
       override fun onResponse(call: Call<T>, response: Response<T>) {
         val apiResponse = ApiResponse.of { response }
         deferred.complete(apiResponse)
@@ -53,10 +62,7 @@ internal class ApiResponseDeferredCallDelegate<T>(proxy: Call<T>) :
         deferred.complete(apiResponse)
       }
     })
+
+    return deferred
   }
-
-  override fun executeImpl(): Response<Deferred<ApiResponse<T>>> = throw NotImplementedError()
-
-  override fun cloneImpl(): Call<Deferred<ApiResponse<T>>> =
-    ApiResponseDeferredCallDelegate(proxy.clone())
 }
