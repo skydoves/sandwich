@@ -14,10 +14,10 @@ public final class com/skydoves/sandwich/ApiResponse$Companion {
 	public final fun operate (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse;
 }
 
-public abstract class com/skydoves/sandwich/ApiResponse$Failure {
+public abstract class com/skydoves/sandwich/ApiResponse$Failure : com/skydoves/sandwich/ApiResponse {
 }
 
-public final class com/skydoves/sandwich/ApiResponse$Failure$Error : com/skydoves/sandwich/ApiResponse {
+public final class com/skydoves/sandwich/ApiResponse$Failure$Error : com/skydoves/sandwich/ApiResponse$Failure {
 	public fun <init> (Lretrofit2/Response;)V
 	public final fun component1 ()Lretrofit2/Response;
 	public final fun copy (Lretrofit2/Response;)Lcom/skydoves/sandwich/ApiResponse$Failure$Error;
@@ -32,7 +32,7 @@ public final class com/skydoves/sandwich/ApiResponse$Failure$Error : com/skydove
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/skydoves/sandwich/ApiResponse$Failure$Exception : com/skydoves/sandwich/ApiResponse {
+public final class com/skydoves/sandwich/ApiResponse$Failure$Exception : com/skydoves/sandwich/ApiResponse$Failure {
 	public fun <init> (Ljava/lang/Throwable;)V
 	public final fun component1 ()Ljava/lang/Throwable;
 	public final fun copy (Ljava/lang/Throwable;)Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;

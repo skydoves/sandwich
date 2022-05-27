@@ -63,7 +63,7 @@ public sealed class ApiResponse<out T> {
    * API Failure response class from OkHttp request call.
    * There are two subtypes: [ApiResponse.Failure.Error] and [ApiResponse.Failure.Exception].
    */
-  public sealed class Failure<T> {
+  public sealed class Failure<T> : ApiResponse<T>() {
     /**
      * API response error case.
      * API communication conventions do not match or applications need to handle errors.
@@ -76,7 +76,7 @@ public sealed class ApiResponse<out T> {
      * @property raw The raw response from the HTTP client.
      * @property errorBody The [ResponseBody] can be consumed only once.
      */
-    public data class Error<T>(val response: Response<T>) : ApiResponse<T>() {
+    public data class Error<T>(val response: Response<T>) : ApiResponse.Failure<T>() {
       val statusCode: StatusCode = getStatusCodeFromResponse(response)
       val headers: Headers = response.headers()
       val raw: okhttp3.Response = response.raw()
@@ -96,7 +96,7 @@ public sealed class ApiResponse<out T> {
      *
      * @property message The localized message from the exception.
      */
-    public data class Exception<T>(val exception: Throwable) : ApiResponse<T>() {
+    public data class Exception<T>(val exception: Throwable) : ApiResponse.Failure<T>() {
       val message: String? = exception.localizedMessage
       override fun toString(): String = "[ApiResponse.Failure.Exception](message=$message)"
     }
