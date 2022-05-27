@@ -163,6 +163,7 @@ public final class com/skydoves/sandwich/ResponseTransformer {
 	public static synthetic fun merge$default (Lcom/skydoves/sandwich/ApiResponse;[Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiResponseMergePolicy;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final fun message (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Ljava/lang/String;
 	public static final fun message (Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;)Ljava/lang/String;
+	public static final fun message (Lcom/skydoves/sandwich/ApiResponse$Failure;)Ljava/lang/String;
 	public static final synthetic fun onError (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiErrorModelMapper;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun onError (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun onException (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;

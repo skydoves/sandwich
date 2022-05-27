@@ -754,6 +754,18 @@ public fun <T> ApiResponse<List<T>>.merge(
 }
 
 /**
+ * Returns an error message from the [ApiResponse.Failure] that consists of the localized message.
+ *
+ * @return An error message from the [ApiResponse.Failure].
+ */
+public fun <T> ApiResponse.Failure<T>.message(): String {
+  return when (this) {
+    is ApiResponse.Failure.Error -> message()
+    is ApiResponse.Failure.Exception -> message()
+  }
+}
+
+/**
  * @author skydoves (Jaewoong Eum)
  *
  * Returns an error message from the [ApiResponse.Failure.Error] that consists of the status and error response.
