@@ -84,7 +84,7 @@ You can also check out nice use cases of this library in the repositories below:
 
 ## Usage
 ### ApiResponse
-`ApiResponse` is an interface to construct standardized responses from [Retrofit](https://github.com/square/retrofit) calls. It provides useful extensions for handling netowrk payload such as body data and exceptional cases. You can get `ApiResponse` with the `request` scope extension from the [Call](https://square.github.io/retrofit/2.x/retrofit/retrofit2/Call.html). The example below shows how to get an `ApiResponse` from an instance of the `Call`.
+`ApiResponse` is an interface to construct standardized responses from [Retrofit](https://github.com/square/retrofit) calls. It provides useful extensions for handling network payload such as body data and exceptional cases. You can get `ApiResponse` with the `request` scope extension from the [Call](https://square.github.io/retrofit/2.x/retrofit/retrofit2/Call.html). The example below shows how to get an `ApiResponse` from an instance of the `Call`.
 
 ```kotlin
 interface DisneyService {
