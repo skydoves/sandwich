@@ -340,10 +340,11 @@ public suspend inline fun <T, V> ApiResponse<T>.suspendOnSuccess(
  */
 @JvmSynthetic
 public inline fun <T> ApiResponse<T>.onFailure(
-  crossinline onResult: String.() -> Unit
+  crossinline onResult: ApiResponse.Failure<T>.() -> Unit
 ): ApiResponse<T> {
-  onError { onResult(message()) }
-  onException { onResult(message()) }
+  if (this is ApiResponse.Failure<T>) {
+    onResult(this)
+  }
   return this
 }
 
@@ -359,10 +360,11 @@ public inline fun <T> ApiResponse<T>.onFailure(
 @JvmSynthetic
 @SuspensionFunction
 public suspend inline fun <T> ApiResponse<T>.suspendOnFailure(
-  crossinline onResult: suspend String.() -> Unit
+  crossinline onResult: suspend ApiResponse.Failure<T>.() -> Unit
 ): ApiResponse<T> {
-  suspendOnError { onResult(message()) }
-  suspendOnException { onResult(message()) }
+  if (this is ApiResponse.Failure<T>) {
+    onResult(this)
+  }
   return this
 }
 
@@ -751,6 +753,18 @@ public fun <T> ApiResponse<List<T>>.merge(
   }
 
   return apiResponse
+}
+
+/**
+ * Returns an error message from the [ApiResponse.Failure] that consists of the localized message.
+ *
+ * @return An error message from the [ApiResponse.Failure].
+ */
+public fun <T> ApiResponse.Failure<T>.message(): String {
+  return when (this) {
+    is ApiResponse.Failure.Error -> message()
+    is ApiResponse.Failure.Exception -> message()
+  }
 }
 
 /**
