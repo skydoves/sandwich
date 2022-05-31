@@ -56,7 +56,7 @@ repositories {
 Next, add the dependency below to your **module**'s `build.gradle` file:
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.2.5-SNAPSHOT"
+    implementation "com.github.skydoves:sandwich:1.2.6-SNAPSHOT"
 }
 ```
 
