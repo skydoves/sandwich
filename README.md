@@ -16,7 +16,7 @@ Sandwich was invented to construct standardized interfaces from the Retrofit net
 ## Download
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
 
-🥪 Sandwich has been downloaded in more than __140k__ Android projects all over the globe! <br>
+🥪 Sandwich has been downloaded in more than __150k__ Android projects all over the globe! <br>
 
 <img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224"/>
 
@@ -32,7 +32,7 @@ allprojects {
 Next, add the dependency below to your **module**'s `build.gradle` file:
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.2.4"
+    implementation "com.github.skydoves:sandwich:1.2.5"
 }
 ```
 > Note: Sandwich uses [Retrofit](https://github.com/skydoves/Sandwich/blob/main/dependencies.gradle#L32) and [OkHttp](https://github.com/skydoves/Sandwich/blob/main/dependencies.gradle#L33) internally, so please make sure your project uses the same versions.
