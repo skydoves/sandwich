@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package com.skydoves.sandwich
 
 import com.skydoves.sandwich.exceptions.NoContentException
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import okhttp3.Headers
 import okhttp3.ResponseBody
@@ -158,9 +155,7 @@ public sealed class ApiResponse<out T> {
       if (globalOperator is ApiResponseOperator<*>) {
         operator(globalOperator as ApiResponseOperator<T>)
       } else if (globalOperator is ApiResponseSuspendOperator<*>) {
-        val context = SandwichInitializer.sandwichOperatorContext
-        val supervisorJob = SupervisorJob(context[Job])
-        val scope = CoroutineScope(context + supervisorJob)
+        val scope = SandwichInitializer.sandwichScope
         scope.launch {
           suspendOperator(globalOperator as ApiResponseSuspendOperator<T>)
         }

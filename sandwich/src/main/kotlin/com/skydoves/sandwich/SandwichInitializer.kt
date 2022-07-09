@@ -17,9 +17,8 @@
 package com.skydoves.sandwich
 
 import com.skydoves.sandwich.operators.SandwichOperator
-import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import okio.Timeout
 import kotlin.coroutines.CoroutineContext
 
@@ -61,13 +60,23 @@ public object SandwichInitializer {
   /**
    * @author skydoves (Jaewoong Eum)
    *
+   * A [CoroutineScope] for executing and operating the overall Retrofit network requests.
+   */
+  @JvmSynthetic
+  public var sandwichScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
+
+  /**
+   * @author skydoves (Jaewoong Eum)
+   *
    * A [CoroutineContext] for operating the [sandwichOperator] when it extends
    * the [com.skydoves.sandwich.operators.ApiResponseSuspendOperator].
    */
+  @Deprecated(
+    message = "sandwichOperatorContext has been deprecated. Use `sandwichScope` instead.",
+    replaceWith = ReplaceWith(expression = "SandwichInitializer.sandwichScope")
+  )
   @JvmSynthetic
-  @OptIn(DelicateCoroutinesApi::class)
-  public var sandwichOperatorContext: CoroutineContext =
-    Dispatchers.IO + GlobalScope.coroutineContext
+  public var sandwichOperatorContext: CoroutineContext = sandwichScope.coroutineContext
 
   /**
    * @author skydoves (Jaewoong Eum)
