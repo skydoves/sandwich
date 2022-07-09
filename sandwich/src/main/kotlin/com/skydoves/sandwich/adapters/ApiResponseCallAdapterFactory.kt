@@ -45,7 +45,7 @@ public class ApiResponseCallAdapterFactory private constructor() : CallAdapter.F
   override fun get(
     returnType: Type,
     annotations: Array<Annotation>,
-    retrofit: Retrofit
+    retrofit: Retrofit,
   ): CallAdapter<*, *>? {
     when (getRawType(returnType)) {
       Call::class.java -> {
