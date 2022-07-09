@@ -24,7 +24,6 @@ import com.skydoves.sandwich.suspendOperator
 import com.skydoves.sandwichdemo.SandwichDemoApp
 import com.skydoves.sandwichdemo.model.Poster
 import com.skydoves.sandwichdemo.network.DisneyService
-import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 
 class MainOperatorViewModel constructor(
@@ -36,7 +35,7 @@ class MainOperatorViewModel constructor(
   init {
     Timber.d("initialized MainViewModel.")
 
-    posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
+    posterListLiveData = liveData(viewModelScope.coroutineContext) {
       disneyService.fetchDisneyPosters().suspendOperator(
         CommonResponseOperator(
           success = { success ->
