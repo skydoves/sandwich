@@ -18,11 +18,12 @@ package com.skydoves.sandwich.adapters.internal
 
 import com.skydoves.sandwich.ApiResponse
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.CallAdapter
-import retrofit2.Callback
-import retrofit2.Response
+import retrofit2.awaitResponse
 import java.lang.reflect.Type
 
 /**
@@ -33,7 +34,8 @@ import java.lang.reflect.Type
  * Request API network call asynchronously and returns [Deferred] of [ApiResponse].
  */
 internal class ApiResponseDeferredCallAdapter<T> constructor(
-  private val resultType: Type
+  private val resultType: Type,
+  private val coroutineScope: CoroutineScope
 ) : CallAdapter<T, Deferred<ApiResponse<T>>> {
 
   override fun responseType(): Type {
@@ -50,17 +52,16 @@ internal class ApiResponseDeferredCallAdapter<T> constructor(
       }
     }
 
-    call.enqueue(object : Callback<T> {
-      override fun onResponse(call: Call<T>, response: Response<T>) {
+    coroutineScope.launch {
+      try {
+        val response = call.awaitResponse()
         val apiResponse = ApiResponse.of { response }
         deferred.complete(apiResponse)
-      }
-
-      override fun onFailure(call: Call<T>, throwable: Throwable) {
-        val apiResponse = ApiResponse.error<T>(throwable)
+      } catch (e: Exception) {
+        val apiResponse = ApiResponse.error<T>(e)
         deferred.complete(apiResponse)
       }
-    })
+    }
 
     return deferred
   }

@@ -70,7 +70,7 @@ public class ApiResponseCallAdapterFactory private constructor(
         }
 
         val resultType = getParameterUpperBound(0, callType as ParameterizedType)
-        return ApiResponseDeferredCallAdapter<Any>(resultType)
+        return ApiResponseDeferredCallAdapter<Any>(resultType, coroutineScope)
       }
       else -> return null
     }
