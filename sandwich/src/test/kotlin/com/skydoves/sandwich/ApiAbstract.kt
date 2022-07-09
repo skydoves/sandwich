@@ -16,6 +16,7 @@
 
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okio.buffer
@@ -67,6 +68,7 @@ internal abstract class ApiAbstract<T> {
     return Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
       .addConverterFactory(MoshiConverterFactory.create())
+      .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
       .build()
       .create(clazz)
   }
