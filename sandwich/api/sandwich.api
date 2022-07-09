@@ -279,12 +279,14 @@ public final class com/skydoves/sandwich/StatusCode : java/lang/Enum {
 
 public final class com/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory : retrofit2/CallAdapter$Factory {
 	public static final field Companion Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory$Companion;
-	public static final fun create ()Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory;
+	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public static final fun create (Lkotlinx/coroutines/CoroutineScope;)Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory;
 	public fun get (Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lretrofit2/CallAdapter;
 }
 
 public final class com/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory$Companion {
-	public final fun create ()Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory;
+	public final fun create (Lkotlinx/coroutines/CoroutineScope;)Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory;
+	public static synthetic fun create$default (Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory$Companion;Lkotlinx/coroutines/CoroutineScope;ILjava/lang/Object;)Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory;
 }
 
 public final class com/skydoves/sandwich/adapters/DataSourceCallAdapterFactory : retrofit2/CallAdapter$Factory {
@@ -295,26 +297,6 @@ public final class com/skydoves/sandwich/adapters/DataSourceCallAdapterFactory :
 
 public final class com/skydoves/sandwich/adapters/DataSourceCallAdapterFactory$Companion {
 	public final fun create ()Lcom/skydoves/sandwich/adapters/DataSourceCallAdapterFactory;
-}
-
-public final class com/skydoves/sandwich/coroutines/CoroutinesDataSourceCallAdapterFactory : retrofit2/CallAdapter$Factory {
-	public static final field Companion Lcom/skydoves/sandwich/coroutines/CoroutinesDataSourceCallAdapterFactory$Companion;
-	public static final fun create ()Lcom/skydoves/sandwich/coroutines/CoroutinesDataSourceCallAdapterFactory;
-	public fun get (Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lretrofit2/CallAdapter;
-}
-
-public final class com/skydoves/sandwich/coroutines/CoroutinesDataSourceCallAdapterFactory$Companion {
-	public final fun create ()Lcom/skydoves/sandwich/coroutines/CoroutinesDataSourceCallAdapterFactory;
-}
-
-public final class com/skydoves/sandwich/coroutines/CoroutinesResponseCallAdapterFactory : retrofit2/CallAdapter$Factory {
-	public static final field Companion Lcom/skydoves/sandwich/coroutines/CoroutinesResponseCallAdapterFactory$Companion;
-	public static final fun create ()Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory;
-	public fun get (Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lretrofit2/CallAdapter;
-}
-
-public final class com/skydoves/sandwich/coroutines/CoroutinesResponseCallAdapterFactory$Companion {
-	public final fun create ()Lcom/skydoves/sandwich/adapters/ApiResponseCallAdapterFactory;
 }
 
 public final class com/skydoves/sandwich/disposables/CompositeDisposable {
