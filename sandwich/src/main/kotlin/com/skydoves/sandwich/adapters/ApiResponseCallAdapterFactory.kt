@@ -19,8 +19,10 @@
 package com.skydoves.sandwich.adapters
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwich.adapters.internal.ApiResponseCallAdapter
 import com.skydoves.sandwich.adapters.internal.ApiResponseDeferredCallAdapter
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.CallAdapter
@@ -40,7 +42,9 @@ import java.lang.reflect.Type
  * suspend fun fetchDisneyPosterList(): ApiResponse<List<Poster>>
  * ```
  */
-public class ApiResponseCallAdapterFactory private constructor() : CallAdapter.Factory() {
+public class ApiResponseCallAdapterFactory private constructor(
+  private val coroutineScope: CoroutineScope
+) : CallAdapter.Factory() {
 
   override fun get(
     returnType: Type,
@@ -56,7 +60,7 @@ public class ApiResponseCallAdapterFactory private constructor() : CallAdapter.F
         }
 
         val resultType = getParameterUpperBound(0, callType as ParameterizedType)
-        return ApiResponseCallAdapter(resultType)
+        return ApiResponseCallAdapter(resultType, coroutineScope)
       }
       Deferred::class.java -> {
         val callType = getParameterUpperBound(0, returnType as ParameterizedType)
@@ -74,7 +78,8 @@ public class ApiResponseCallAdapterFactory private constructor() : CallAdapter.F
 
   public companion object {
     @JvmStatic
-    public fun create(): ApiResponseCallAdapterFactory =
-      ApiResponseCallAdapterFactory()
+    public fun create(
+      coroutineScope: CoroutineScope = SandwichInitializer.sandwichScope
+    ): ApiResponseCallAdapterFactory = ApiResponseCallAdapterFactory(coroutineScope)
   }
 }

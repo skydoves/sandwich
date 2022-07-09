@@ -17,6 +17,7 @@
 package com.skydoves.sandwich.adapters.internal
 
 import com.skydoves.sandwich.ApiResponse
+import kotlinx.coroutines.CoroutineScope
 import retrofit2.Call
 import retrofit2.CallAdapter
 import java.lang.reflect.Type
@@ -29,7 +30,8 @@ import java.lang.reflect.Type
  * Request API network call asynchronously and returns [ApiResponse].
  */
 internal class ApiResponseCallAdapter constructor(
-  private val resultType: Type
+  private val resultType: Type,
+  private val coroutineScope: CoroutineScope
 ) : CallAdapter<Type, Call<ApiResponse<Type>>> {
 
   override fun responseType(): Type {
@@ -37,6 +39,6 @@ internal class ApiResponseCallAdapter constructor(
   }
 
   override fun adapt(call: Call<Type>): Call<ApiResponse<Type>> {
-    return ApiResponseCallDelegate(call)
+    return ApiResponseCallDelegate(call, coroutineScope)
   }
 }
