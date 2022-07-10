@@ -54,7 +54,20 @@ internal class ApiResponseSuspendTest : ApiAbstract<DisneyCoroutinesService>() {
   fun `fetch items as an ApiResponse with suspend function`() = runTest {
     enqueueResponse("/DisneyPosters.json")
 
-    val apiResponse = service.fetchDisneyPosterList()
+    val apiResponse = service.fetchDisneyPosters()
+    assertThat(apiResponse, IsInstanceOf.instanceOf(ApiResponse.Success::class.java))
+
+    val first = (apiResponse as ApiResponse.Success).data.firstOrNull()
+    assertThat(first?.id, CoreMatchers.`is`(0L))
+    assertThat(first?.name, CoreMatchers.`is`("Frozen II"))
+    assertThat(first?.release, CoreMatchers.`is`("2019"))
+  }
+
+  @Test
+  fun `fetch items as a deferred ApiResponse with await`() = runTest {
+    enqueueResponse("/DisneyPosters.json")
+
+    val apiResponse = service.fetchDisneyPostersAsync().await()
     assertThat(apiResponse, IsInstanceOf.instanceOf(ApiResponse.Success::class.java))
 
     val first = (apiResponse as ApiResponse.Success).data.firstOrNull()

@@ -45,7 +45,7 @@ internal class ResponseRetryTest : ApiAbstract<DisneyCoroutinesService>() {
     ) {
       retryTick++
       mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
-      service.fetchDisneyPosterList()
+      service.fetchDisneyPosters()
     }
 
     assertThat(retryTick, `is`(3))
