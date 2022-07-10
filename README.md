@@ -210,7 +210,7 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
 }
 ```
 
-> **Note**: If your interested in injecting your own coroutine scope and unit testing with a test coroutine scope, check out the [Injecting a custom CoroutineScope and Unit Tests](https://github.com/skydoves/sandwich#injecting-a-custom-coroutinescope-and-unit-tests).
+> **Note**: If you're interested in injecting your own coroutine scope and unit testing with a test coroutine scope, check out the [Injecting a custom CoroutineScope and Unit Tests](https://github.com/skydoves/sandwich#injecting-a-custom-coroutinescope-and-unit-tests).
 
 ### ApiResponse Extensions for Coroutines
 
