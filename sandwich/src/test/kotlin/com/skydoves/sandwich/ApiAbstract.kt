@@ -27,7 +27,6 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.io.IOException
 import java.nio.charset.StandardCharsets
 
 @RunWith(JUnit4::class)
@@ -35,25 +34,21 @@ internal abstract class ApiAbstract<T> {
 
   lateinit var mockWebServer: MockWebServer
 
-  @Throws(IOException::class)
   @Before
   fun mockServer() {
     mockWebServer = MockWebServer()
     mockWebServer.start()
   }
 
-  @Throws(IOException::class)
   @After
   fun stopServer() {
     mockWebServer.shutdown()
   }
 
-  @Throws(IOException::class)
   fun enqueueResponse(fileName: String) {
     enqueueResponse(fileName, emptyMap())
   }
 
-  @Throws(IOException::class)
   private fun enqueueResponse(fileName: String, headers: Map<String, String>) {
     val inputStream = javaClass.classLoader!!.getResourceAsStream("api-response/$fileName")
     val source = inputStream.source().buffer()
