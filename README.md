@@ -212,7 +212,7 @@ class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService
 
 ### ApiResponse Extensions for Coroutines
 
-You can handle the `ApiResponse` with the coroutines extensions, which you can run your suspend functions on the scopes.
+You can handle the `ApiResponse` with coroutines extensions below, which allows you can launch your suspend functions on the scopes.
 
 - **suspendOnSuccess**: Executes if the `ApiResponse` is `ApiResponse.Success`. You can access body data directly in this scope.
 - **suspendOnError**: Executes if the `ApiResponse` is `ApiResponse.Failure.Error`. You can access `message()` and `errorBody` in this scope.
@@ -580,6 +580,33 @@ response.toFlow { pokemons ->
   pokemonDao.insertPokemonList(pokemons)
   pokemonDao.getAllPokemonList(page)
 }.flowOn(Dispatchers.IO)
+```
+
+### Injecting a custom CoroutineScope and Unit Tests
+
+Sandwich uses an internal coroutine scope to execute network requests in the background thread, but can inject your custom `CoroutineScope` by setting your scope on your `ApiResponseCallAdapterFactory` like the below:
+
+```kotlin
+.addCallAdapterFactory(ApiResponseCallAdapterFactory.create(
+  coroutineScope = `Your Coroutine Scope`
+))
+```
+
+You can apply your coroutine scope globally for the `ApiResponseCallAdapterFactory` by setting your scope on `SandwichInitializer` as the below:
+
+```kotlin
+SandwichInitializer.sandwichScope = `Your Coroutine Scope`
+```
+
+Also, you can inject a test coroutine scope into the `ApiResponseCallAdapterFactory` in your unit test cases.
+
+```kotlin
+val testScope = TestScope(coroutinesRule.testDispatcher)
+val retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(MoshiConverterFactory.create())
+      .addCallAdapterFactory(ApiResponseCallAdapterFactory.create(testScope))
+      .build()
 ```
 
 ### ResponseDataSource
