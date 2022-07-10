@@ -16,7 +16,6 @@
 
 package com.skydoves.sandwich
 
-import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.CoreMatchers.`is`
@@ -26,36 +25,27 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 @RunWith(JUnit4::class)
-internal class ResponseRetryTest : ApiAbstract<DisneyService>() {
+internal class ResponseRetryTest : ApiAbstract<DisneyCoroutinesService>() {
 
-  private lateinit var service: DisneyService
+  private lateinit var service: DisneyCoroutinesService
 
   @Before
   fun initService() {
-    service = createService(DisneyService::class.java)
+    service = createService(DisneyCoroutinesService::class.java)
   }
 
   @Test
   fun `Retry Test`() = runTest {
     var retryTick = 0
-    val retrofit: Retrofit = Retrofit.Builder()
-      .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
-      .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
-      .build()
-
-    val service = retrofit.create(DisneyCoroutinesService::class.java)
     val response = retry(
       retry = 2,
       timeMillis = 0,
     ) {
       retryTick++
       mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
-      service.fetchDisneyPosterList()
+      service.fetchDisneyPosters()
     }
 
     assertThat(retryTick, `is`(3))

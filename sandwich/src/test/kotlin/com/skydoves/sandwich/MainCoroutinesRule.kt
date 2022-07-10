@@ -16,14 +16,24 @@
 
 package com.skydoves.sandwich
 
-import kotlinx.coroutines.Deferred
-import retrofit2.http.GET
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
 
-internal interface DisneyCoroutinesService {
+internal class MainCoroutinesRule(
+  internal val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
+) : TestWatcher() {
 
-  @GET("DisneyPosters.json")
-  suspend fun fetchDisneyPosters(): ApiResponse<List<Poster>>
+  override fun starting(description: Description) {
+    Dispatchers.setMain(testDispatcher)
+  }
 
-  @GET("DisneyPosters.json")
-  fun fetchDisneyPostersAsync(): Deferred<ApiResponse<List<Poster>>>
+  override fun finished(description: Description) {
+    super.finished(description)
+    Dispatchers.resetMain()
+  }
 }
