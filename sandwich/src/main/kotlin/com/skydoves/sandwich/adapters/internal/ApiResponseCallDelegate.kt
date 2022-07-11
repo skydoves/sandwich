@@ -20,7 +20,6 @@ import com.skydoves.sandwich.ApiResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,13 +48,12 @@ internal class ApiResponseCallDelegate<T>(
     }
   }
 
-  override fun executeImpl(): Response<ApiResponse<T>> = runBlocking {
-    withContext(coroutineScope.coroutineContext) {
+  override fun executeImpl(): Response<ApiResponse<T>> =
+    runBlocking(coroutineScope.coroutineContext) {
       val response = proxy.execute()
       val apiResponse = ApiResponse.of { response }
       Response.success(apiResponse)
     }
-  }
 
   override fun cloneImpl() = ApiResponseCallDelegate(proxy.clone(), coroutineScope)
 }
