@@ -18,6 +18,7 @@ import com.github.skydoves.sandwich.Dependencies
 plugins {
   id 'com.android.library'
   id 'org.jetbrains.kotlin.android'
+  id 'org.jetbrains.kotlin.plugin.serialization'
   id 'org.jetbrains.dokka'
   id 'binary-compatibility-validator'
 }
@@ -61,6 +62,8 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 
 dependencies {
   api project(":sandwich")
+
+  implementation Dependencies.kotlinSerializationJson
 
   // unit test
   testImplementation Dependencies.junit
