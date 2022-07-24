@@ -70,7 +70,6 @@ dependencies {
   testImplementation Dependencies.mockitoCore
   testImplementation Dependencies.mockitoInline
   testImplementation Dependencies.mockitoKotlin
-  testImplementation Dependencies.archTest
 }
 
 apply from: "$rootDir/spotless.gradle"
