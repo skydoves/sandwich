@@ -143,9 +143,7 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
       assertThat(response.statusCode.code, `is`(404))
       assertThat(
         response.message(),
-        `is`(
-          "[ApiResponse.Failure.Error-${response.statusCode}](errorResponse=${response.response})"
-        )
+        `is`("foo")
       )
 
       val errorResponse = response.map(ErrorEnvelopeMapper)
@@ -169,7 +167,7 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
-    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody(""))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
 
