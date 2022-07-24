@@ -78,8 +78,14 @@ public sealed class ApiResponse<out T> {
       val headers: Headers = response.headers()
       val raw: okhttp3.Response = response.raw()
       val errorBody: ResponseBody? = response.errorBody()
-      override fun toString(): String =
-        "[ApiResponse.Failure.Error-$statusCode](errorResponse=$response)"
+      override fun toString(): String {
+        val errorBody = errorBody?.string()
+        return if (!errorBody.isNullOrEmpty()) {
+          errorBody
+        } else {
+          "[ApiResponse.Failure.Error-$statusCode](errorResponse=$response)"
+        }
+      }
     }
 
     /**

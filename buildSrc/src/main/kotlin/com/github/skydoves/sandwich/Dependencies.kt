@@ -5,6 +5,7 @@ object Versions {
   internal const val ANDROID_GRADLE_SPOTLESS = "6.3.0"
   internal const val GRADLE_NEXUS_PUBLISH_PLUGIN = "1.1.0"
   internal const val KOTLIN = "1.7.10"
+  internal const val KOTLIN_SERIALIZATION_JSON = "1.3.2"
   internal const val KOTLIN_GRADLE_DOKKA = "1.7.0"
   internal const val KOTLIN_BINARY_VALIDATOR = "0.10.1"
 
@@ -36,6 +37,10 @@ object Dependencies {
   const val dokka = "org.jetbrains.dokka:dokka-gradle-plugin:${Versions.KOTLIN_GRADLE_DOKKA}"
   const val kotlinBinaryValidator =
     "org.jetbrains.kotlinx:binary-compatibility-validator:${Versions.KOTLIN_BINARY_VALIDATOR}"
+  const val kotlinSerializationPlugin =
+    "org.jetbrains.kotlin:kotlin-serialization:${Versions.KOTLIN}"
+  const val kotlinSerializationJson =
+    "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.KOTLIN_SERIALIZATION_JSON}"
 
   const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT}"
   const val retrofitMoshi = "com.squareup.retrofit2:converter-moshi:${Versions.RETROFIT}"

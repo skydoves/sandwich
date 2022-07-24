@@ -18,13 +18,14 @@ import com.github.skydoves.sandwich.Dependencies
 plugins {
   id 'com.android.library'
   id 'org.jetbrains.kotlin.android'
+  id 'org.jetbrains.kotlin.plugin.serialization'
   id 'org.jetbrains.dokka'
   id 'binary-compatibility-validator'
 }
 
 ext {
   PUBLISH_GROUP_ID = Configuration.artifactGroup
-  PUBLISH_ARTIFACT_ID = 'sandwich'
+  PUBLISH_ARTIFACT_ID = 'sandwich-serialization'
   PUBLISH_VERSION = rootVersionName
 }
 
@@ -35,8 +36,6 @@ android {
   defaultConfig {
     minSdkVersion Configuration.minSdk
     targetSdkVersion Configuration.targetSdk
-    versionCode Configuration.versionCode
-    versionName Configuration.versionName
   }
 
   buildFeatures {
@@ -58,28 +57,19 @@ android {
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-  kotlinOptions.freeCompilerArgs += [
-    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-    "-Xopt-in=kotlin.RequiresOptIn",
-    "-Xexplicit-api=strict"
-  ]
+  kotlinOptions.freeCompilerArgs += ["-Xexplicit-api=strict"]
 }
 
 dependencies {
-  implementation Dependencies.appcompat
-  implementation Dependencies.coroutines
-  api Dependencies.retrofit
-  api Dependencies.okHttp
+  api project(":sandwich")
+
+  implementation Dependencies.kotlinSerializationJson
 
   // unit test
   testImplementation Dependencies.junit
   testImplementation Dependencies.mockitoCore
   testImplementation Dependencies.mockitoInline
   testImplementation Dependencies.mockitoKotlin
-  testImplementation Dependencies.archTest
-  testImplementation Dependencies.mockWebServer
-  testImplementation Dependencies.retrofitMoshi
-  testImplementation Dependencies.coroutinesTest
 }
 
 apply from: "$rootDir/spotless.gradle"
