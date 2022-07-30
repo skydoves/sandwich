@@ -1,17 +1,17 @@
 package com.github.skydoves.sandwich
 
 object Versions {
-  internal const val ANDROID_GRADLE_PLUGIN = "7.2.0"
-  internal const val ANDROID_GRADLE_SPOTLESS = "6.3.0"
+  internal const val ANDROID_GRADLE_PLUGIN = "7.2.1"
+  internal const val ANDROID_GRADLE_SPOTLESS = "6.7.0"
   internal const val GRADLE_NEXUS_PUBLISH_PLUGIN = "1.1.0"
   internal const val KOTLIN = "1.7.10"
   internal const val KOTLIN_SERIALIZATION_JSON = "1.3.2"
-  internal const val KOTLIN_GRADLE_DOKKA = "1.7.0"
-  internal const val KOTLIN_BINARY_VALIDATOR = "0.10.1"
+  internal const val KOTLIN_GRADLE_DOKKA = "1.7.10"
+  internal const val KOTLIN_BINARY_VALIDATOR = "0.11.0"
 
   internal const val RETROFIT = "2.9.0"
   internal const val OKHTTP = "4.9.3"
-  internal const val COROUTINES = "1.6.1"
+  internal const val COROUTINES = "1.6.4"
   internal const val MOSHI = "1.13.0"
 
   internal const val APPCOMPAT = "1.4.1"

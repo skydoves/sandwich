@@ -41,7 +41,7 @@ internal class ResponseRetryTest : ApiAbstract<DisneyCoroutinesService>() {
     var retryTick = 0
     val response = retry(
       retry = 2,
-      timeMillis = 0,
+      timeMillis = 0
     ) {
       retryTick++
       mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
