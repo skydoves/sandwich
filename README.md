@@ -26,7 +26,7 @@ Add the dependency below into your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.2.6"
+    implementation "com.github.skydoves:sandwich:1.2.7"
 }
 ```
 
@@ -49,7 +49,7 @@ repositories {
 Next, add the dependency below to your **module**'s `build.gradle` file:
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.2.7-SNAPSHOT"
+    implementation "com.github.skydoves:sandwich:1.2.8-SNAPSHOT"
 }
 ```
 
