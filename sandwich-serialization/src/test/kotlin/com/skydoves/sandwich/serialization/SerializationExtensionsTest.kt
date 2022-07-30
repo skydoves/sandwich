@@ -30,7 +30,7 @@ import retrofit2.Response
 internal class SerializationExtensionsTest {
 
   @Test
-  fun `deserializeErrorBody Test`() {
+  fun `deserializeErrorBody test`() {
     val response = Response.error<String>(
       403,
       ("""{"code":10001, "message":"This is a custom error message"}""".trimIndent()).toResponseBody(
@@ -42,5 +42,21 @@ internal class SerializationExtensionsTest {
     val errorBody = apiResponse.deserializeErrorBody<String, ErrorMessage>()
     assertThat(errorBody?.code, `is`(10001))
     assertThat(errorBody?.message, `is`("This is a custom error message"))
+  }
+
+  @Test
+  fun `onErrorDeserialize test`() {
+    val response = Response.error<String>(
+      403,
+      ("""{"code":10001, "message":"This is a custom error message"}""".trimIndent()).toResponseBody(
+        contentType = "text/plain".toMediaType()
+      )
+    )
+
+    val apiResponse = ApiResponse.of { response }
+    apiResponse.onErrorDeserialize<String, ErrorMessage> { errorMessage ->
+      assertThat(errorMessage.code, `is`(10001))
+      assertThat(errorMessage.message, `is`("This is a custom error message"))
+    }
   }
 }
