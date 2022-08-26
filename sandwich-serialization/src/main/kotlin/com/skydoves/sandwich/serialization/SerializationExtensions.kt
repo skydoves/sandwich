@@ -37,6 +37,7 @@ public inline fun <T, reified E> ApiResponse<T>.deserializeErrorBody(): E? {
 
 /**
  * @author skydoves (Jaewoong Eum)
+ * @since 1.2.7
  *
  * A scope function that would be executed for handling error responses if the request failed.
  *
