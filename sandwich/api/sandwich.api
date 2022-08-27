@@ -59,6 +59,14 @@ public final class com/skydoves/sandwich/ApiResponse$Success : com/skydoves/sand
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/skydoves/sandwich/ApiResponseExtensionsKt {
+	public static final fun getMessage (Lcom/skydoves/sandwich/ApiResponse;)Ljava/lang/String;
+	public static final fun isError (Lcom/skydoves/sandwich/ApiResponse;)Z
+	public static final fun isException (Lcom/skydoves/sandwich/ApiResponse;)Z
+	public static final fun isFailure (Lcom/skydoves/sandwich/ApiResponse;)Z
+	public static final fun isSuccess (Lcom/skydoves/sandwich/ApiResponse;)Z
+}
+
 public final class com/skydoves/sandwich/ApiResponseMergePolicy : java/lang/Enum {
 	public static final field IGNORE_FAILURE Lcom/skydoves/sandwich/ApiResponseMergePolicy;
 	public static final field PREFERRED_FAILURE Lcom/skydoves/sandwich/ApiResponseMergePolicy;
