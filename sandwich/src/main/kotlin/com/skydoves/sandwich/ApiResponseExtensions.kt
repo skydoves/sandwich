@@ -51,16 +51,3 @@ public inline val ApiResponse<Any>.isError: Boolean
  */
 public inline val ApiResponse<Any>.isException: Boolean
   get() = this is ApiResponse.Failure.Exception
-
-/**
- * @author skydoves (Jaewoong Eum)
- * @since 1.2.8
- *
- *  Returns the message of this [ApiResponse].
- */
-public inline val ApiResponse<Any>.message: String
-  get() = if (this is ApiResponse.Success) {
-    this.data.toString()
-  } else {
-    (this as ApiResponse.Failure).message()
-  }
