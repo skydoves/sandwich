@@ -62,8 +62,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 
 dependencies {
   api project(":sandwich")
-
-  implementation Dependencies.kotlinSerializationJson
+  api Dependencies.kotlinSerializationJson
 
   // unit test
   testImplementation Dependencies.junit
