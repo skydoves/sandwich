@@ -26,11 +26,14 @@ import kotlinx.serialization.json.Json
  *
  * Deserializes the Json string from error body of the [ApiResponse.Failure.Error] to the [E] custom type.
  * It returns `null` if the error body is empty.
+ *
+ * @param json [Json] instance that could be configured as needed.
  */
-public inline fun <T, reified E> ApiResponse<T>.deserializeErrorBody(): E? {
+@JvmOverloads
+public inline fun <T, reified E> ApiResponse<T>.deserializeErrorBody(json: Json = Json): E? {
   if (this is ApiResponse.Failure.Error<T>) {
     val errorBody = this.errorBody?.string() ?: return null
-    return Json.decodeFromString(errorBody)
+    return json.decodeFromString(errorBody)
   }
   return null
 }
@@ -41,15 +44,17 @@ public inline fun <T, reified E> ApiResponse<T>.deserializeErrorBody(): E? {
  *
  * A scope function that would be executed for handling error responses if the request failed.
  *
+ * @param json [Json] instance that could be configured as needed.
  * @param onResult The receiver function that receiving [ApiResponse.Failure.Exception] if the request failed.
  *
  * @return The original [ApiResponse].
  */
 @JvmSynthetic
 public inline fun <T, reified E> ApiResponse<T>.onErrorDeserialize(
+  json: Json = Json,
   crossinline onResult: ApiResponse.Failure.Error<T>.(E) -> Unit
 ): ApiResponse<T> {
-  val errorBody = this.deserializeErrorBody<T, E>()
+  val errorBody = this.deserializeErrorBody<T, E>(json = json)
   if (this is ApiResponse.Failure.Error && errorBody != null) {
     onResult(errorBody)
   }

@@ -1,0 +1,4 @@
+public final class com/skydoves/sandwich/serialization/SerializationExtensionsKt {
+	public static final synthetic fun deserializeErrorBody (Lcom/skydoves/sandwich/ApiResponse;)Ljava/lang/Object;
+}
+
