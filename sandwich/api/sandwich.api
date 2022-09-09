@@ -130,10 +130,7 @@ public final class com/skydoves/sandwich/ResponseTransformer {
 	public static final synthetic fun suspendOperator (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/operators/ApiResponseSuspendOperator;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun toFlow (Lcom/skydoves/sandwich/ApiResponse;)Lkotlinx/coroutines/flow/Flow;
 	public static final synthetic fun toFlow (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/flow/Flow;
-	public static final fun toLiveData (Lcom/skydoves/sandwich/ApiResponse;)Landroidx/lifecycle/LiveData;
-	public static final synthetic fun toLiveData (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Landroidx/lifecycle/LiveData;
 	public static final synthetic fun toSuspendFlow (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static final synthetic fun toSuspendLiveData (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/skydoves/sandwich/SandwichInitializer {
