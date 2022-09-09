@@ -26,7 +26,7 @@ Add the dependency below into your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.2.7"
+    implementation "com.github.skydoves:sandwich:1.3.0"
 }
 ```
 
@@ -72,7 +72,7 @@ You can also check out nice use cases of this library in the repositories below:
 - [Mapper](https://github.com/skydoves/sandwich#mapper)
 - [Operator](https://github.com/skydoves/sandwich#operator), [Operator for coroutines](https://github.com/skydoves/sandwich#operator-with-coroutines), [Global Operator](https://github.com/skydoves/sandwich#global-operator)
 - [Merge](https://github.com/skydoves/sandwich#merge)
-- [toLiveData](https://github.com/skydoves/sandwich#tolivedata), [toFlow](https://github.com/skydoves/sandwich#toflow)
+- [toFlow](https://github.com/skydoves/sandwich#toflow)
 - [ResponseDataSource](https://github.com/skydoves/sandwich#responsedatasource)
 
 ## Usage
@@ -521,37 +521,6 @@ disneyService.fetchDisneyPosterList(page = 0).merge(
 `ApiResponseMergePolicy` is a policy for merging response data depend on the success or not.
 - **IGNORE_FAILURE**: Regardless of the merging sequences, ignores failure responses in the responses.
 - **PREFERRED_FAILURE** (default): Regardless of the merging sequences, prefers failure responses in the responses.
-
-### toLiveData
-You can get a `LiveData` that contains body data if the response is an `ApiResponse.Success`. This is very useful if your goal is only getting a `LiveData` from the `ApiResponse` which holds successful data as the examples below:
-
-```kotlin
-posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
-  emitSource(
-    disneyService.fetchDisneyPosterList()
-     .onError {
-      // handles error cases when the API request gets an error response.
-     }.onException {
-      // handles exceptional cases when the API request gets an exception response.
-     }.toLiveData()) // returns an observable LiveData
-}
-```
-
-If you want to transform the original data and take a `LiveData` that contains transformed data, you can follow as the examples below:
-
-```kotlin
-posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
-  emitSource(
-   disneyService.fetchDisneyPosterList()
-    .onError {
-      // handles error cases when the API request gets an error response.
-    }.onException {
-      // handles exceptional cases when the API request gets an exception response.
-    }.toLiveData {
-      this.onEach { poster -> poster.date = SystemClock.currentThreadTimeMillis() }
-    }) // returns an observable LiveData
-    }
-```
 
 ### toFlow
 You can get a `Flow` that emits body data if the response is an `ApiResponse.Success` and the data is not null.
