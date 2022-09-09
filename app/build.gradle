@@ -51,8 +51,9 @@ android {
 }
 
 dependencies {
-  implementation Dependencies.retrofitMoshi
   implementation project(":sandwich")
+  implementation project(":sandwich-datasource")
+
 
   // android supports
   implementation Dependencies.material
@@ -60,6 +61,7 @@ dependencies {
   implementation Dependencies.viewModelKTX
 
   implementation Dependencies.coroutines
+  implementation Dependencies.retrofitMoshi
   implementation Dependencies.moshi
   kapt Dependencies.moshiGen
 

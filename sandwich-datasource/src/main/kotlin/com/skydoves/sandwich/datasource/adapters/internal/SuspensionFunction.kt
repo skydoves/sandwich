@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-@file:JvmName("DataSourceTransformer")
-@file:JvmMultifileClass
-
-package com.skydoves.sandwich
+package com.skydoves.sandwich.datasource.adapters.internal
 
 /**
  * @author skydoves (Jaewoong Eum)
  *
- * Changes an instance of the [DataSource] interface to the [ResponseDataSource].
+ * Specifies that this annotation should be used to mark suspension functions.
  */
-public fun <T> DataSource<T>.toResponseDataSource(): ResponseDataSource<T> {
-  requireNotNull(this is ResponseDataSource)
-  return this as ResponseDataSource<T>
-}
+@DslMarker
+internal annotation class SuspensionFunction

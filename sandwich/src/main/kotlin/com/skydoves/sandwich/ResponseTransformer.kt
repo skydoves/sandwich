@@ -58,44 +58,6 @@ public inline fun <T> Call<T>.request(
 /**
  * @author skydoves (Jaewoong Eum)
  *
- * Combines a [DataSource] to the call for processing response data more handy.
- */
-@JvmSynthetic
-public inline fun <T> Call<T>.combineDataSource(
-  dataSource: DataSource<T>,
-  crossinline onResult: (response: ApiResponse<T>) -> Unit
-): DataSource<T> = dataSource.combine(this, getCallbackFromOnResult(onResult))
-
-/**
- * @author skydoves (Jaewoong Eum)
- *
- * Combines a [DataSource] to the call for processing response data more handy.
- */
-@JvmSynthetic
-@SuspensionFunction
-public inline fun <T> Call<T>.suspendCombineDataSource(
-  dataSource: DataSource<T>,
-  coroutineScope: CoroutineScope,
-  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
-): DataSource<T> =
-  dataSource.combine(this, getCallbackFromOnResultOnCoroutinesScope(coroutineScope, onResult))
-
-/**
- * @author skydoves (Jaewoong Eum)
- *
- * Combines a [DataSource] to the call for processing response data more handy.
- */
-@JvmSynthetic
-@SuspensionFunction
-public inline fun <T> Call<T>.suspendCombineDataSource(
-  dataSource: DataSource<T>,
-  context: CoroutineContext = EmptyCoroutineContext,
-  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
-): DataSource<T> = dataSource.combine(this, getCallbackFromOnResultWithContext(context, onResult))
-
-/**
- * @author skydoves (Jaewoong Eum)
- *
  * Returns a response callback from an onResult lambda.
  *
  * @param onResult A lambda that would be executed when the request finished.

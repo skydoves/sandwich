@@ -16,7 +16,7 @@
 
 @file:Suppress("unused")
 
-package com.skydoves.sandwich.disposables
+package com.skydoves.sandwich.datasource.disposables
 
 /**
  * @author skydoves (Jaewoong Eum)

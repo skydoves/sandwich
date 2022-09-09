@@ -14,15 +14,27 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich
+package com.skydoves.sandwich.datasource
+
+import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.request
 
 internal class DisneyClient constructor(
-  private val disneyService: DisneyService
+  private val disneyService: DisneyService,
+  private val dataSource: ResponseDataSource<List<Poster>>
 ) {
 
   fun fetchDisneyPosters(
     onResult: (response: ApiResponse<List<Poster>>) -> Unit
   ) {
     this.disneyService.fetchDisneyPosterList().request(onResult)
+  }
+
+  fun combineDataSource(
+    onResult: (response: ApiResponse<List<Poster>>) -> Unit
+  ) {
+    this.dataSource
+      .retry(3, 3000L)
+      .combine(disneyService.fetchDisneyPosterList(), onResult)
   }
 }

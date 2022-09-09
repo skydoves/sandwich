@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich
+package com.skydoves.sandwich.datasource
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
+import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.ResponseObserver
+import com.skydoves.sandwich.datasource.disposables.CompositeDisposable
+import com.skydoves.sandwich.datasource.disposables.disposable
+import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
@@ -98,5 +103,42 @@ internal class DataSourceTest : ApiAbstract<DisneyService>() {
     dataSource.request()
       .concat(dataSource2)
       .concat(dataSource3)
+  }
+
+  @Test
+  fun disposeRequest() {
+    enqueueResponse("/DisneyPosters.json")
+
+    val requestCall = service.fetchDisneyPosterList()
+    val disposable = requestCall.disposable()
+
+    // execute network request call.
+    requestCall.execute()
+
+    assertThat(disposable.isDisposed(), CoreMatchers.`is`(false))
+
+    // dispose the request call.
+    disposable.dispose()
+
+    assertThat(disposable.isDisposed(), CoreMatchers.`is`(true))
+  }
+
+  @Test
+  fun compositeDisposableRequest() {
+    enqueueResponse("/DisneyPosters.json")
+
+    val requestCall = service.fetchDisneyPosterList()
+    val compositeDisposable = CompositeDisposable()
+    compositeDisposable.add(requestCall.disposable())
+
+    // execute network request call.
+    requestCall.execute()
+
+    assertThat(compositeDisposable.disposed, CoreMatchers.`is`(false))
+
+    // clear and dispose all the request calls.
+    compositeDisposable.clear()
+
+    assertThat(compositeDisposable.disposed, CoreMatchers.`is`(true))
   }
 }

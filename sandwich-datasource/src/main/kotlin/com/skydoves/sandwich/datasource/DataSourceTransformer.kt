@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich
+@file:JvmName("DataSourceTransformer")
+@file:JvmMultifileClass
+
+package com.skydoves.sandwich.datasource
 
 /**
  * @author skydoves (Jaewoong Eum)
  *
- * [DataRetainPolicy] is a policy for retaining data on the internal storage
- * when the same request is called from [ResponseDataSource].
+ * Changes an instance of the [DataSource] interface to the [ResponseDataSource].
  */
-public enum class DataRetainPolicy {
-  // Retain the fetched data on the memory storage temporarily.
-  // If request again, returns the retained data instead of re-fetching from the network.
-  RETAIN,
-
-  // Re-fetch data from the network every time.
-  NO_RETAIN
+public fun <T> DataSource<T>.toResponseDataSource(): ResponseDataSource<T> {
+  requireNotNull(this is ResponseDataSource)
+  return this as ResponseDataSource<T>
 }

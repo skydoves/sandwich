@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich
+package com.skydoves.sandwich.datasource
 
-import com.skydoves.sandwich.adapters.DataSourceCallAdapterFactory
+import com.skydoves.sandwich.datasource.adapters.DataSourceCallAdapterFactory
 import junit.framework.TestCase.assertNotNull
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,7 +36,8 @@ internal class DataSourceRawCallAdapterTest : ApiAbstract<DisneyService>() {
       .build()
 
     val service = retrofit.create(DisneyDataSourceService::class.java)
-    val response: DataSource<List<Poster>> = service.fetchDisneyPosterList()
+    val response: DataSource<List<Poster>> =
+      service.fetchDisneyPosterList()
     assertNotNull(response)
   }
 }

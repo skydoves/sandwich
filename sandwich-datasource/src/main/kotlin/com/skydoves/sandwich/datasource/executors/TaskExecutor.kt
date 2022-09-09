@@ -16,7 +16,7 @@
 
 @file:Suppress("unused")
 
-package com.skydoves.sandwich.executors
+package com.skydoves.sandwich.datasource.executors
 
 import androidx.annotation.RestrictTo
 
