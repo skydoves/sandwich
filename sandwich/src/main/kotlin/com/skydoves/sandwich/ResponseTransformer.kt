@@ -20,8 +20,6 @@
 
 package com.skydoves.sandwich
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.skydoves.sandwich.adapters.internal.SuspensionFunction
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
@@ -780,62 +778,6 @@ public suspend fun <T, V : ApiResponseSuspendOperator<T>> ApiResponse<T>.suspend
     is ApiResponse.Failure.Error -> apiResponseOperator.onError(this)
     is ApiResponse.Failure.Exception -> apiResponseOperator.onException(this)
   }
-}
-
-/**
- * @author skydoves (Jaewoong Eum)
- *
- * Returns a [LiveData] which contains successful data if the response is a [ApiResponse.Success].
- *
- * @return An observable [LiveData] which contains successful data.
- */
-public fun <T> ApiResponse<T>.toLiveData(): LiveData<T> {
-  val liveData = MutableLiveData<T>()
-  if (this is ApiResponse.Success) {
-    liveData.postValue(data)
-  }
-  return liveData
-}
-
-/**
- * @author skydoves (Jaewoong Eum)
- *
- * Returns a [LiveData] which contains transformed data using successful data if the response is a [ApiResponse.Success].
- *
- * @param transformer A transformer lambda receives successful data and returns anything.
- *
- * @return An observable [LiveData] which contains successful data.
- */
-@JvmSynthetic
-public inline fun <T, R> ApiResponse<T>.toLiveData(
-  crossinline transformer: T.() -> R
-): LiveData<R> {
-  val liveData = MutableLiveData<R>()
-  if (this is ApiResponse.Success) {
-    liveData.postValue(data.transformer())
-  }
-  return liveData
-}
-
-/**
- * @author skydoves (Jaewoong Eum)
- *
- * Returns a [LiveData] which contains transformed data using successful data if the response is a [ApiResponse.Success].
- *
- * @param transformer A suspension transformer lambda receives successful data and returns anything.
- *
- * @return An observable [LiveData] which contains successful data.
- */
-@JvmSynthetic
-@SuspensionFunction
-public suspend inline fun <T, R> ApiResponse<T>.toSuspendLiveData(
-  crossinline transformer: suspend T.() -> R
-): LiveData<R> {
-  val liveData = MutableLiveData<R>()
-  if (this is ApiResponse.Success) {
-    liveData.postValue(data.transformer())
-  }
-  return liveData
 }
 
 /**

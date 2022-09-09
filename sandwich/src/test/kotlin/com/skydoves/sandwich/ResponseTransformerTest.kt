@@ -16,9 +16,6 @@
 
 package com.skydoves.sandwich
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
-import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
@@ -27,20 +24,15 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Assert.assertNull
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.Mockito.verify
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 @RunWith(JUnit4::class)
 internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
-
-  @get:Rule
-  var instantExecutorRule = InstantTaskExecutorRule()
 
   private lateinit var service: DisneyService
 
@@ -797,43 +789,6 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     }.collect {
       assertThat(it, `is`("201"))
     }
-  }
-
-  @Test
-  fun toLiveDataTest() {
-    val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
-    val observer = mock<Observer<String>>()
-
-    apiResponse.toLiveData().observeForever(observer)
-
-    verify(observer).onChanged("foo")
-  }
-
-  @Test
-  fun toLiveDataWithTransformerTest() {
-    val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
-    val observer = mock<Observer<String>>()
-
-    apiResponse.toLiveData {
-      "hello, $this"
-    }.observeForever(observer)
-
-    verify(observer).onChanged("hello, foo")
-  }
-
-  @Test
-  fun toLiveDataWithSuspendTransformerTest() = runTest {
-    val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
-    val observer = mock<Observer<String>>()
-
-    apiResponse.toSuspendLiveData {
-      "hello, $this"
-    }.observeForever(observer)
-
-    verify(observer).onChanged("hello, foo")
   }
 
   @Test
