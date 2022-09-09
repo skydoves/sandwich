@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwichdemo.network
+package com.skydoves.sandwich.datasource.disposables
 
-import com.skydoves.sandwich.datasource.DataSource
-import com.skydoves.sandwichdemo.model.Poster
-import retrofit2.http.GET
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * A definition for canceling when works should be disposed.
+ */
+public interface Disposable {
 
-interface DisneyDataSourceService {
+  /** dispose the resource. */
+  public fun dispose()
 
-  @GET("DisneyPosters.json")
-  fun fetchDisneyPosterList(): DataSource<List<Poster>>
+  /** returns true if this resource has been disposed. */
+  public fun isDisposed(): Boolean
 }

@@ -1,0 +1,65 @@
+import com.github.skydoves.sandwich.Configuration
+import com.github.skydoves.sandwich.Dependencies
+
+plugins {
+  id 'com.android.library'
+  id 'org.jetbrains.kotlin.android'
+  id 'org.jetbrains.dokka'
+  id 'binary-compatibility-validator'
+}
+
+ext {
+  PUBLISH_GROUP_ID = Configuration.artifactGroup
+  PUBLISH_ARTIFACT_ID = 'sandwich-datasource'
+  PUBLISH_VERSION = rootVersionName
+}
+
+apply from: "${rootDir}/scripts/publish-module.gradle"
+
+android {
+  compileSdkVersion Configuration.compileSdk
+  defaultConfig {
+    minSdkVersion Configuration.minSdk
+    targetSdkVersion Configuration.targetSdk
+  }
+
+  buildFeatures {
+    buildConfig false
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    jvmTarget = '1.8'
+  }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+  kotlinOptions.freeCompilerArgs += [
+    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+    "-Xopt-in=kotlin.RequiresOptIn",
+    "-Xexplicit-api=strict"
+  ]
+}
+
+dependencies {
+  api(project(":sandwich"))
+
+  implementation Dependencies.appcompat
+  implementation Dependencies.coroutines
+
+  // unit test
+  testImplementation Dependencies.junit
+  testImplementation Dependencies.mockitoCore
+  testImplementation Dependencies.mockitoInline
+  testImplementation Dependencies.mockitoKotlin
+  testImplementation Dependencies.archTest
+  testImplementation Dependencies.mockWebServer
+  testImplementation Dependencies.retrofitMoshi
+  testImplementation Dependencies.coroutinesTest
+}
+
+apply from: "$rootDir/spotless.gradle"

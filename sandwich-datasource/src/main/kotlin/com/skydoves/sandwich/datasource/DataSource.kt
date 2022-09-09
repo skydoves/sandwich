@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich
+package com.skydoves.sandwich.datasource
 
-import com.skydoves.sandwich.disposables.CompositeDisposable
+import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.ResponseObserver
+import com.skydoves.sandwich.datasource.disposables.CompositeDisposable
 import retrofit2.Call
 import retrofit2.Callback
 

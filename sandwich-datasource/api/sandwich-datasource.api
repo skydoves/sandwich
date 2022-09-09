@@ -1,0 +1,102 @@
+public final class com/skydoves/sandwich/datasource/DataRetainPolicy : java/lang/Enum {
+	public static final field NO_RETAIN Lcom/skydoves/sandwich/datasource/DataRetainPolicy;
+	public static final field RETAIN Lcom/skydoves/sandwich/datasource/DataRetainPolicy;
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/sandwich/datasource/DataRetainPolicy;
+	public static fun values ()[Lcom/skydoves/sandwich/datasource/DataRetainPolicy;
+}
+
+public abstract interface class com/skydoves/sandwich/datasource/DataSource {
+	public abstract fun combine (Lretrofit2/Call;Lretrofit2/Callback;)Lcom/skydoves/sandwich/datasource/DataSource;
+	public abstract fun concat (Lcom/skydoves/sandwich/datasource/DataSource;)Lcom/skydoves/sandwich/datasource/DataSource;
+	public abstract fun invalidate ()V
+	public abstract fun joinDisposable (Lcom/skydoves/sandwich/datasource/disposables/CompositeDisposable;)Lcom/skydoves/sandwich/datasource/DataSource;
+	public abstract fun observeResponse (Lcom/skydoves/sandwich/ResponseObserver;)Lcom/skydoves/sandwich/datasource/DataSource;
+	public abstract fun request ()Lcom/skydoves/sandwich/datasource/DataSource;
+	public abstract fun retry (IJ)Lcom/skydoves/sandwich/datasource/DataSource;
+}
+
+public final class com/skydoves/sandwich/datasource/DataSource$ConcatStrategy : java/lang/Enum {
+	public static final field BREAK Lcom/skydoves/sandwich/datasource/DataSource$ConcatStrategy;
+	public static final field CONTINUOUS Lcom/skydoves/sandwich/datasource/DataSource$ConcatStrategy;
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/sandwich/datasource/DataSource$ConcatStrategy;
+	public static fun values ()[Lcom/skydoves/sandwich/datasource/DataSource$ConcatStrategy;
+}
+
+public final class com/skydoves/sandwich/datasource/DataSourceTransformer {
+	public static final fun toResponseDataSource (Lcom/skydoves/sandwich/datasource/DataSource;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+}
+
+public final class com/skydoves/sandwich/datasource/ResponseDataSource : com/skydoves/sandwich/datasource/DataSource {
+	public fun <init> ()V
+	public final fun asLiveData ()Landroidx/lifecycle/LiveData;
+	public final synthetic fun combine (Lretrofit2/Call;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public synthetic fun combine (Lretrofit2/Call;Lretrofit2/Callback;)Lcom/skydoves/sandwich/datasource/DataSource;
+	public fun combine (Lretrofit2/Call;Lretrofit2/Callback;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public fun concat (Lcom/skydoves/sandwich/datasource/DataSource;)Lcom/skydoves/sandwich/datasource/DataSource;
+	public final fun dataRetainPolicy (Lcom/skydoves/sandwich/datasource/DataRetainPolicy;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public final fun getCall ()Lretrofit2/Call;
+	public final fun getCallback ()Lretrofit2/Callback;
+	public final fun getConcatStrategy ()Lcom/skydoves/sandwich/datasource/DataSource$ConcatStrategy;
+	public final fun getData ()Ljava/lang/Object;
+	public fun invalidate ()V
+	public synthetic fun joinDisposable (Lcom/skydoves/sandwich/datasource/disposables/CompositeDisposable;)Lcom/skydoves/sandwich/datasource/DataSource;
+	public fun joinDisposable (Lcom/skydoves/sandwich/datasource/disposables/CompositeDisposable;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public synthetic fun observeResponse (Lcom/skydoves/sandwich/ResponseObserver;)Lcom/skydoves/sandwich/datasource/DataSource;
+	public fun observeResponse (Lcom/skydoves/sandwich/ResponseObserver;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public final synthetic fun observeResponse (Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public final fun postValue (Lcom/skydoves/sandwich/ApiResponse;)V
+	public synthetic fun request ()Lcom/skydoves/sandwich/datasource/DataSource;
+	public fun request ()Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public final synthetic fun request (Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public synthetic fun retry (IJ)Lcom/skydoves/sandwich/datasource/DataSource;
+	public fun retry (IJ)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public final fun setCall (Lretrofit2/Call;)V
+	public final fun setCallback (Lretrofit2/Callback;)V
+	public final fun setConcatStrategy (Lcom/skydoves/sandwich/datasource/DataSource$ConcatStrategy;)V
+	public final synthetic fun suspendCombine (Lretrofit2/Call;Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public final synthetic fun suspendCombine (Lretrofit2/Call;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public static synthetic fun suspendCombine$default (Lcom/skydoves/sandwich/datasource/ResponseDataSource;Lretrofit2/Call;Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public final synthetic fun suspendRequest (Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public final synthetic fun suspendRequest (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+	public static synthetic fun suspendRequest$default (Lcom/skydoves/sandwich/datasource/ResponseDataSource;Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/skydoves/sandwich/datasource/ResponseDataSource;
+}
+
+public final class com/skydoves/sandwich/datasource/ResponseTransformerKt {
+	public static final synthetic fun combineDataSource (Lretrofit2/Call;Lcom/skydoves/sandwich/datasource/DataSource;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/datasource/DataSource;
+	public static final synthetic fun getCallbackFromOnResult (Lkotlin/jvm/functions/Function1;)Lretrofit2/Callback;
+	public static final synthetic fun getCallbackFromOnResultOnCoroutinesScope (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;)Lretrofit2/Callback;
+	public static final synthetic fun getCallbackFromOnResultWithContext (Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;)Lretrofit2/Callback;
+	public static synthetic fun getCallbackFromOnResultWithContext$default (Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lretrofit2/Callback;
+	public static final synthetic fun suspendCombineDataSource (Lretrofit2/Call;Lcom/skydoves/sandwich/datasource/DataSource;Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;)Lcom/skydoves/sandwich/datasource/DataSource;
+	public static final synthetic fun suspendCombineDataSource (Lretrofit2/Call;Lcom/skydoves/sandwich/datasource/DataSource;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;)Lcom/skydoves/sandwich/datasource/DataSource;
+	public static synthetic fun suspendCombineDataSource$default (Lretrofit2/Call;Lcom/skydoves/sandwich/datasource/DataSource;Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/skydoves/sandwich/datasource/DataSource;
+}
+
+public final class com/skydoves/sandwich/datasource/adapters/DataSourceCallAdapterFactory : retrofit2/CallAdapter$Factory {
+	public static final field Companion Lcom/skydoves/sandwich/datasource/adapters/DataSourceCallAdapterFactory$Companion;
+	public static final fun create ()Lcom/skydoves/sandwich/datasource/adapters/DataSourceCallAdapterFactory;
+	public fun get (Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lretrofit2/CallAdapter;
+}
+
+public final class com/skydoves/sandwich/datasource/adapters/DataSourceCallAdapterFactory$Companion {
+	public final fun create ()Lcom/skydoves/sandwich/datasource/adapters/DataSourceCallAdapterFactory;
+}
+
+public final class com/skydoves/sandwich/datasource/disposables/CompositeDisposable {
+	public fun <init> ()V
+	public final fun add (Lcom/skydoves/sandwich/datasource/disposables/Disposable;)V
+	public final fun clear ()V
+	public final fun getDisposed ()Z
+	public final fun remove (Lcom/skydoves/sandwich/datasource/disposables/Disposable;)V
+}
+
+public abstract interface class com/skydoves/sandwich/datasource/disposables/Disposable {
+	public abstract fun dispose ()V
+	public abstract fun isDisposed ()Z
+}
+
+public final class com/skydoves/sandwich/datasource/disposables/DisposableTransformer {
+	public static final fun disposable (Lretrofit2/Call;)Lcom/skydoves/sandwich/datasource/disposables/Disposable;
+	public static final fun joinDisposable (Lretrofit2/Call;Lcom/skydoves/sandwich/datasource/disposables/CompositeDisposable;)Lretrofit2/Call;
+}
+

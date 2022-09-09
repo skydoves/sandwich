@@ -30,4 +30,5 @@ dependencyResolutionManagement {
 rootProject.name='SandwichDemo'
 include ':app'
 include ':sandwich'
+include ':sandwich-datasource'
 include ':sandwich-serialization'

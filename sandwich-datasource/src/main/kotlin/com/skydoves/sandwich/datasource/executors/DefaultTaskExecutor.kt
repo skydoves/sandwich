@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.executors
+package com.skydoves.sandwich.datasource.executors
 
 import android.os.Build
 import android.os.Handler

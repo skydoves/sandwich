@@ -16,14 +16,16 @@
 
 @file:Suppress("unused")
 
-package com.skydoves.sandwich
+package com.skydoves.sandwich.datasource
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.skydoves.sandwich.adapters.internal.SuspensionFunction
-import com.skydoves.sandwich.disposables.CompositeDisposable
-import com.skydoves.sandwich.disposables.disposable
-import com.skydoves.sandwich.executors.ArchTaskExecutor
+import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.ResponseObserver
+import com.skydoves.sandwich.datasource.adapters.internal.SuspensionFunction
+import com.skydoves.sandwich.datasource.disposables.CompositeDisposable
+import com.skydoves.sandwich.datasource.disposables.disposable
+import com.skydoves.sandwich.datasource.executors.ArchTaskExecutor
 import kotlinx.coroutines.CoroutineScope
 import retrofit2.Call
 import retrofit2.Callback
@@ -116,7 +118,8 @@ public class ResponseDataSource<T> : DataSource<T> {
   private var concat: (() -> Unit)? = null
 
   // a strategy for determining to request continuously or stop when the first request got failed.
-  public var concatStrategy: DataSource.ConcatStrategy = DataSource.ConcatStrategy.CONTINUOUS
+  public var concatStrategy: DataSource.ConcatStrategy =
+    DataSource.ConcatStrategy.CONTINUOUS
 
   /** sets value on the worker thread and post the value to the main thread. */
   public fun postValue(value: ApiResponse<T>) {

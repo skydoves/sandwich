@@ -19,15 +19,14 @@ package com.skydoves.sandwichdemo.datasource
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skydoves.sandwich.DataRetainPolicy
 import com.skydoves.sandwich.StatusCode
-import com.skydoves.sandwich.disposables.CompositeDisposable
+import com.skydoves.sandwich.datasource.disposables.CompositeDisposable
+import com.skydoves.sandwich.datasource.toResponseDataSource
 import com.skydoves.sandwich.map
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.onSuccess
-import com.skydoves.sandwich.toResponseDataSource
 import com.skydoves.sandwichdemo.mapper.ErrorEnvelopeMapper
 import com.skydoves.sandwichdemo.model.Poster
 import com.skydoves.sandwichdemo.network.DisneyDataSourceService
@@ -48,7 +47,7 @@ class MainDataSourceViewModel constructor(disneyService: DisneyDataSourceService
         // retry fetching data 3 times with 5000L interval when the request gets failure.
         .retry(3, 5000L)
         // a retain policy for retaining data on the internal storage.
-        .dataRetainPolicy(DataRetainPolicy.RETAIN)
+        .dataRetainPolicy(com.skydoves.sandwich.datasource.DataRetainPolicy.RETAIN)
         // joins onto CompositeDisposable as a disposable and dispose onCleared().
         .joinDisposable(disposable)
         // request API network call asynchronously.

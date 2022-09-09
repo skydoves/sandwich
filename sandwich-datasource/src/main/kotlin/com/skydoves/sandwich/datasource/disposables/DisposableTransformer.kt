@@ -18,9 +18,8 @@
 @file:JvmName("DisposableTransformer")
 @file:JvmMultifileClass
 
-package com.skydoves.sandwich.disposables
+package com.skydoves.sandwich.datasource.disposables
 
-import com.skydoves.sandwich.request
 import retrofit2.Call
 
 /**

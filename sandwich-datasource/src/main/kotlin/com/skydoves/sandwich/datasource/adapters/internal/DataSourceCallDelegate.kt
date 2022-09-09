@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.skydoves.sandwich.adapters.internal
+package com.skydoves.sandwich.datasource.adapters.internal
 
-import com.skydoves.sandwich.DataSource
-import com.skydoves.sandwich.ResponseDataSource
+import com.skydoves.sandwich.datasource.DataSource
+import com.skydoves.sandwich.datasource.ResponseDataSource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,12 +31,14 @@ import retrofit2.Response
 internal class DataSourceCallDelegate<T>(proxy: Call<T>) : CallDelegate<T, DataSource<T>>(proxy) {
 
   override fun enqueueImpl(callback: Callback<DataSource<T>>) {
-    val responseDataSource = ResponseDataSource<T>().combine(proxy, null)
+    val responseDataSource = ResponseDataSource<T>()
+      .combine(proxy, null)
     callback.onResponse(this@DataSourceCallDelegate, Response.success(responseDataSource))
   }
 
   override fun executeImpl(): Response<DataSource<T>> {
-    val responseDataSource = ResponseDataSource<T>().combine(proxy, null)
+    val responseDataSource = ResponseDataSource<T>()
+      .combine(proxy, null)
     return Response.success(responseDataSource)
   }
 
