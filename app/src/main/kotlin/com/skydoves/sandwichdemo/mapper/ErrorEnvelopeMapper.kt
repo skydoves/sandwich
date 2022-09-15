@@ -19,16 +19,16 @@ package com.skydoves.sandwichdemo.mapper
 import com.skydoves.sandwich.ApiErrorModelMapper
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.message
-import com.skydoves.sandwichdemo.model.ErrorEnvelope
+import com.skydoves.sandwichdemo.model.ErrorMessage
 
 /**
- * A mapper object for mapping [ApiResponse.Failure.Error] response as a custom [ErrorEnvelope] model.
+ * A mapper object for mapping [ApiResponse.Failure.Error] response as a custom [ErrorMessage] model.
  *
  * @see [ApiErrorModelMapper](https://github.com/skydoves/sandwich#apierrormodelmapper)
  */
-object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorEnvelope> {
+object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorMessage> {
 
-  override fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): ErrorEnvelope {
-    return ErrorEnvelope(apiErrorResponse.statusCode.code, apiErrorResponse.message())
+  override fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): ErrorMessage {
+    return ErrorMessage(apiErrorResponse.statusCode.code, apiErrorResponse.message())
   }
 }

@@ -20,6 +20,7 @@ plugins {
   id 'com.android.application'
   id 'kotlin-android'
   id 'kotlin-kapt'
+  id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 android {
@@ -54,7 +55,6 @@ dependencies {
   implementation project(":sandwich")
   implementation project(":sandwich-datasource")
   implementation project(":sandwich-serialization")
-
 
   // android supports
   implementation Dependencies.material

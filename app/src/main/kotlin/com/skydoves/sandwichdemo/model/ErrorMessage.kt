@@ -16,13 +16,16 @@
 
 package com.skydoves.sandwichdemo.model
 
+import kotlinx.serialization.Serializable
+
 /**
  * ErrorEnvelope is a custom error model for handling network error.
  *
  * @param code Http error response code.
  * @param message Http error response body message.
  */
-data class ErrorEnvelope(
+@Serializable
+data class ErrorMessage(
   val code: Int,
   val message: String
 )

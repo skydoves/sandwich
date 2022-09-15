@@ -573,6 +573,66 @@ val retrofit = Retrofit.Builder()
       .build()
 ```
 
+<img align="right" width="90px" src="https://user-images.githubusercontent.com/24237865/178630165-76855349-ac04-4474-8bcf-8eb5f8c41095.png"/>
+
+## Kotlin Serialization
+
+This library allows you to deserialize your error body of the Retrofit response as your custom error class with [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html).
+
+> For more information about setting up the plugin and dependency, check out [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html).
+
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
+
+Add the dependency below to your **module**'s `build.gradle` file:
+
+```gradle
+dependencies {
+    implementation "com.github.skydoves:sandwich-serialization:<version>"
+}
+```
+
+### Deserialize Error Body
+
+You can deserialize your error body with `deserializeErrorBody` extension and your custom error class. First, define your custom error class following your RESTful API formats as seen in the below:
+
+```kotlin
+@Serializable
+public data class ErrorMessage(
+  val code: Int,
+  val message: String
+)
+```
+
+Next, gets the result of the error class from the `ApiResponse` instance with the `deserializeErrorBody` extension like the below:
+
+```kotlin
+val apiResponse = pokemonService.fetchPokemonList()
+val errorModel: ErrorMessage? = apiResponse.deserializeErrorBody()
+```
+
+Or you can get deserialized error response directly with `onErrorDeserialize` extension like the below:
+
+```kotlin
+val apiResponse = mainRepository.fetchPosters()
+apiResponse.onErrorDeserialize<List<Poster>, ErrorMessage> { errorMessage ->
+  ..
+}
+```
+
+## Snadwich DataSource
+
+This library provides additional solutions `DataSource` for handing network responses.
+
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
+
+Add the dependency below to your **module**'s `build.gradle` file:
+
+```gradle
+dependencies {
+    implementation "com.github.skydoves:sandwich-datasource:<version>"
+}
+```
+
 ### ResponseDataSource
 ResponseDataSource is an implementation of the `DataSource` interface. <br>
  * Asynchronously send requests.
