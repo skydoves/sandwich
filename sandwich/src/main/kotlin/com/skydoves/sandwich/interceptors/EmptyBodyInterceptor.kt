@@ -42,14 +42,14 @@ public object EmptyBodyInterceptor : Interceptor {
     }
 
     if ((response.body?.contentLength()?.takeIf { it >= 0 } != null)) {
-      return response.newBuilder().code(200).build()
+      return response.newBuilder().code(StatusCode.OK.code).build()
     }
 
     val emptyBody = "".toResponseBody("text/plain".toMediaType())
 
     return response
       .newBuilder()
-      .code(200)
+      .code(StatusCode.OK.code)
       .body(emptyBody)
       .build()
   }
