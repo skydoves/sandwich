@@ -73,7 +73,7 @@ public sealed class ApiResponse<out T> {
      * @property raw The raw response from the HTTP client.
      * @property errorBody The [ResponseBody] can be consumed only once.
      */
-    public data class Error<T>(val response: Response<T>) : ApiResponse.Failure<T>() {
+    public data class Error<T>(val response: Response<T>) : Failure<T>() {
       val statusCode: StatusCode = getStatusCodeFromResponse(response)
       val headers: Headers = response.headers()
       val raw: okhttp3.Response = response.raw()
@@ -99,7 +99,7 @@ public sealed class ApiResponse<out T> {
      *
      * @property message The localized message from the exception.
      */
-    public data class Exception<T>(val exception: Throwable) : ApiResponse.Failure<T>() {
+    public data class Exception<T>(val exception: Throwable) : Failure<T>() {
       val message: String? = exception.localizedMessage
       override fun toString(): String = "[ApiResponse.Failure.Exception](message=$message)"
     }
