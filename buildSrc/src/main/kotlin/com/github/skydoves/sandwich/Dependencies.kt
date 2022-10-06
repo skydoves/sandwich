@@ -12,12 +12,12 @@ object Versions {
   internal const val RETROFIT = "2.9.0"
   internal const val OKHTTP = "4.10.0"
   internal const val COROUTINES = "1.6.4"
-  internal const val MOSHI = "1.13.0"
+  internal const val MOSHI = "1.14.0"
 
-  internal const val APPCOMPAT = "1.4.1"
+  internal const val APPCOMPAT = "1.5.0"
   internal const val MATERIAL = "1.5.0"
   internal const val GLIDE = "4.13.1"
-  internal const val LIFECYCLE = "2.4.1"
+  internal const val LIFECYCLE = "2.5.1"
   internal const val TIMBER = "5.0.1"
 
   internal const val JUNIT = "4.13.1"
