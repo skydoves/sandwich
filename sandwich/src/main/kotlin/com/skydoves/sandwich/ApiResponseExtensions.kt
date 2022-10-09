@@ -18,7 +18,7 @@ package com.skydoves.sandwich
 
 /**
  * @author skydoves (Jaewoong Eum)
- * @since 1.2.8
+ * @since 1.3.1
  *
  *  Returns true if this instance represents an [ApiResponse.Success].
  */
@@ -27,7 +27,7 @@ public inline val ApiResponse<Any>.isSuccess: Boolean
 
 /**
  * @author skydoves (Jaewoong Eum)
- * @since 1.2.8
+ * @since 1.3.1
  *
  *  Returns true if this instance represents an [ApiResponse.Failure].
  */
@@ -36,7 +36,7 @@ public inline val ApiResponse<Any>.isFailure: Boolean
 
 /**
  * @author skydoves (Jaewoong Eum)
- * @since 1.2.8
+ * @since 1.3.1
  *
  *  Returns true if this instance represents an [ApiResponse.Failure.Error].
  */
@@ -45,9 +45,22 @@ public inline val ApiResponse<Any>.isError: Boolean
 
 /**
  * @author skydoves (Jaewoong Eum)
- * @since 1.2.8
+ * @since 1.3.1
  *
  *  Returns true if this instance represents an [ApiResponse.Failure.Exception].
  */
 public inline val ApiResponse<Any>.isException: Boolean
   get() = this is ApiResponse.Failure.Exception
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.3.2
+ *
+ *  Returns The error message or null depending on the type of [ApiResponse].
+ */
+public inline val ApiResponse<Any>.messageOrNull: String?
+  get() = when (this) {
+    is ApiResponse.Failure.Error -> message()
+    is ApiResponse.Failure.Exception -> message
+    else -> null
+  }
