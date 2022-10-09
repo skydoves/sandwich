@@ -433,7 +433,7 @@ class SandwichDemoApp : Application() {
     
     // We will handle only the error and exceptional cases,
     // so we don't need to mind the generic type of the operator.
-    SandwichInitializer.sandwichOperator = GlobalResponseOperator<Any>(this)
+    SandwichInitializer.sandwichOperators += GlobalResponseOperator<Any>(this)
 
     // ... //
 ```

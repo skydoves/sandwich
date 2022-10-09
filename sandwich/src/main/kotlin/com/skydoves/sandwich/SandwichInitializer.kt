@@ -20,7 +20,6 @@ import com.skydoves.sandwich.operators.SandwichOperator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import okio.Timeout
-import kotlin.coroutines.CoroutineContext
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -54,8 +53,26 @@ public object SandwichInitializer {
    *
    * Via setting a [sandwichOperator], we don't need to set operator for every [ApiResponse].
    */
+  @Deprecated(
+    message = "sandwichOperator has been deprecated. Use `sandwichOperators` instead.",
+    replaceWith = ReplaceWith(expression = "SandwichInitializer.sandwichOperators")
+  )
   @JvmStatic
   public var sandwichOperator: SandwichOperator? = null
+
+  /**
+   * @author skydoves (Jaewoong Eum)
+   *
+   * A list of global operators that is executed by [ApiResponse]s globally on each response.
+   *
+   * [com.skydoves.sandwich.operators.ApiResponseOperator] which allows you to handle success and error response instead of
+   * the [ApiResponse.onSuccess], [ApiResponse.onError], [ApiResponse.onException] transformers.
+   * [com.skydoves.sandwich.operators.ApiResponseSuspendOperator] can be used for suspension scope.
+   *
+   * Via setting [sandwichOperators], you don't need to set operator for every [ApiResponse].
+   */
+  @JvmStatic
+  public var sandwichOperators: MutableList<SandwichOperator> = mutableListOf()
 
   /**
    * @author skydoves (Jaewoong Eum)
@@ -68,21 +85,7 @@ public object SandwichInitializer {
   /**
    * @author skydoves (Jaewoong Eum)
    *
-   * A [CoroutineContext] for operating the [sandwichOperator] when it extends
-   * the [com.skydoves.sandwich.operators.ApiResponseSuspendOperator].
-   */
-  @Deprecated(
-    message = "sandwichOperatorContext has been deprecated. Use `sandwichScope` instead.",
-    replaceWith = ReplaceWith(expression = "SandwichInitializer.sandwichScope")
-  )
-  @JvmSynthetic
-  public var sandwichOperatorContext: CoroutineContext = sandwichScope.coroutineContext
-
-  /**
-   * @author skydoves (Jaewoong Eum)
-   *
-   * A global [Timeout] for operating the [com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory]
-   * or [com.skydoves.sandwich.adapters.CoroutinesDataSourceCallAdapterFactory] when API requests.
+   * A global [Timeout] for operating the [com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory].
    *
    * Returns a timeout that spans the entire call: resolving DNS, connecting, writing the request
    * body, server processing, and reading the response body. If the call requires redirects or

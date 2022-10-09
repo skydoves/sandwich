@@ -66,7 +66,7 @@ internal class SandwichInitializerTest {
     var onError = false
     var onException = false
 
-    SandwichInitializer.sandwichOperator = TestApiResponseOperator<Any>(
+    SandwichInitializer.sandwichOperators += TestApiResponseOperator<Any>(
       onSuccess = { onSuccess = true },
       onError = { onError = true },
       onException = { onException = true }

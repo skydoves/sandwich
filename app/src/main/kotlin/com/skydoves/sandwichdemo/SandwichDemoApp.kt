@@ -19,6 +19,8 @@
 package com.skydoves.sandwichdemo
 
 import android.app.Application
+import com.skydoves.sandwich.SandwichInitializer
+import com.skydoves.sandwichdemo.operator.GlobalResponseOperator
 import timber.log.Timber
 
 class SandwichDemoApp : Application() {
@@ -28,7 +30,7 @@ class SandwichDemoApp : Application() {
 
     sandwichApp = this
 
-//    SandwichInitializer.sandwichOperator = GlobalResponseOperator<Any>(this)
+    SandwichInitializer.sandwichOperators += GlobalResponseOperator<Any>(this)
 
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())

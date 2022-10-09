@@ -157,13 +157,15 @@ public sealed class ApiResponse<out T> {
     @PublishedApi
     @Suppress("UNCHECKED_CAST")
     internal fun <T> ApiResponse<T>.operate(): ApiResponse<T> = apply {
-      val globalOperator = SandwichInitializer.sandwichOperator ?: return@apply
-      if (globalOperator is ApiResponseOperator<*>) {
-        operator(globalOperator as ApiResponseOperator<T>)
-      } else if (globalOperator is ApiResponseSuspendOperator<*>) {
-        val scope = SandwichInitializer.sandwichScope
-        scope.launch {
-          suspendOperator(globalOperator as ApiResponseSuspendOperator<T>)
+      val globalOperators = SandwichInitializer.sandwichOperators
+      globalOperators.forEach { globalOperator ->
+        if (globalOperator is ApiResponseOperator<*>) {
+          operator(globalOperator as ApiResponseOperator<T>)
+        } else if (globalOperator is ApiResponseSuspendOperator<*>) {
+          val scope = SandwichInitializer.sandwichScope
+          scope.launch {
+            suspendOperator(globalOperator as ApiResponseSuspendOperator<T>)
+          }
         }
       }
     }
