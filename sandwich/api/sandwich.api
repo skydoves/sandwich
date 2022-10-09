@@ -60,6 +60,7 @@ public final class com/skydoves/sandwich/ApiResponse$Success : com/skydoves/sand
 }
 
 public final class com/skydoves/sandwich/ApiResponseExtensionsKt {
+	public static final fun getMessageOrNull (Lcom/skydoves/sandwich/ApiResponse;)Ljava/lang/String;
 	public static final fun isError (Lcom/skydoves/sandwich/ApiResponse;)Z
 	public static final fun isException (Lcom/skydoves/sandwich/ApiResponse;)Z
 	public static final fun isFailure (Lcom/skydoves/sandwich/ApiResponse;)Z
