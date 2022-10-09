@@ -136,12 +136,12 @@ public final class com/skydoves/sandwich/ResponseTransformer {
 public final class com/skydoves/sandwich/SandwichInitializer {
 	public static final field INSTANCE Lcom/skydoves/sandwich/SandwichInitializer;
 	public static final fun getSandwichOperator ()Lcom/skydoves/sandwich/operators/SandwichOperator;
-	public final fun getSandwichOperatorContext ()Lkotlin/coroutines/CoroutineContext;
+	public static final fun getSandwichOperators ()Ljava/util/List;
 	public final fun getSandwichScope ()Lkotlinx/coroutines/CoroutineScope;
 	public static final fun getSandwichTimeout ()Lokio/Timeout;
 	public static final fun getSuccessCodeRange ()Lkotlin/ranges/IntRange;
 	public static final fun setSandwichOperator (Lcom/skydoves/sandwich/operators/SandwichOperator;)V
-	public final fun setSandwichOperatorContext (Lkotlin/coroutines/CoroutineContext;)V
+	public static final fun setSandwichOperators (Ljava/util/List;)V
 	public final fun setSandwichScope (Lkotlinx/coroutines/CoroutineScope;)V
 	public static final fun setSandwichTimeout (Lokio/Timeout;)V
 	public static final fun setSuccessCodeRange (Lkotlin/ranges/IntRange;)V
