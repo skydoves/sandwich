@@ -16,6 +16,7 @@
 
 package com.skydoves.sandwich
 
+import junit.framework.Assert.assertNull
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.hamcrest.MatcherAssert.assertThat
@@ -72,5 +73,24 @@ internal class ApiResponseExtensionsTest {
     assertThat(apiResponse.isException, `is`(true))
     assertThat(apiResponse.isError, `is`(false))
     assertThat(apiResponse.isSuccess, `is`(false))
+  }
+
+  @Test
+  fun `messageOrNull test`() {
+    val exception = ApiResponse.error<String>(RuntimeException("RuntimeException"))
+    assertThat(exception.messageOrNull, `is`("RuntimeException"))
+
+    val errorBody = Response.error<String>(
+      403,
+      ("""This is a custom error message""".trimIndent()).toResponseBody(
+        contentType = "text/plain".toMediaType()
+      )
+    )
+    val error = ApiResponse.of { errorBody }
+    assertThat(error.messageOrNull, `is`("This is a custom error message"))
+
+    val body = Response.success("foo")
+    val success = ApiResponse.of { body }
+    assertNull(success.messageOrNull)
   }
 }
