@@ -619,7 +619,7 @@ apiResponse.onErrorDeserialize<List<Poster>, ErrorMessage> { errorMessage ->
 }
 ```
 
-## Snadwich DataSource
+## Sandwich DataSource
 
 This library provides additional solutions `DataSource` for handing network responses.
 
