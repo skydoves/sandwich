@@ -526,6 +526,8 @@ public fun <T, V> ApiResponse<T>.mapSuccess(transformer: T.() -> V): ApiResponse
  *
  * @return A [V] type of the [ApiResponse].
  */
+@JvmSynthetic
+@SuspensionFunction
 @Suppress("UNCHECKED_CAST")
 public suspend fun <T, V> ApiResponse<T>.suspendMapSuccess(transformer: suspend T.() -> V): ApiResponse<V> {
   if (this is ApiResponse.Success<T>) {
