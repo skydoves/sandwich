@@ -121,6 +121,7 @@ public final class com/skydoves/sandwich/ResponseTransformer {
 	public static final synthetic fun suspendMap (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendMap (Lcom/skydoves/sandwich/ApiResponse$Success;Lcom/skydoves/sandwich/ApiSuccessModelMapper;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendMap (Lcom/skydoves/sandwich/ApiResponse$Success;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun suspendMapSuccess (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOnError (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiErrorModelMapper;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOnError (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOnException (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
