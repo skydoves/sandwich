@@ -257,3 +257,12 @@ public abstract class com/skydoves/sandwich/operators/ApiResponseSuspendOperator
 public abstract interface class com/skydoves/sandwich/operators/SandwichOperator {
 }
 
+public final class com/skydoves/sandwich/retry/ApiResponseRetryKt {
+	public static final fun runAndRetry (Lcom/skydoves/sandwich/retry/RetryPolicy;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/skydoves/sandwich/retry/RetryPolicy {
+	public abstract fun retryTimeout (ILjava/lang/String;)I
+	public abstract fun shouldRetry (ILjava/lang/String;)Z
+}
+
