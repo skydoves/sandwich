@@ -71,6 +71,7 @@ You can also check out nice use cases of this library in the repositories below:
 - [ApiResponse Extensions for Coroutines](https://github.com/skydoves/sandwich#apiresponse-extensions-for-coroutines)
 - [Retrieve success data](https://github.com/skydoves/sandwich#retrieve-success-data)
 - [Mapper](https://github.com/skydoves/sandwich#mapper)
+- [Run and Retry](https://github.com/skydoves/sandwich#run-and-retry)
 - [Operator](https://github.com/skydoves/sandwich#operator), [Operator for coroutines](https://github.com/skydoves/sandwich#operator-with-coroutines), [Global Operator](https://github.com/skydoves/sandwich#global-operator)
 - [Merge](https://github.com/skydoves/sandwich#merge)
 - [toFlow](https://github.com/skydoves/sandwich#toflow)
