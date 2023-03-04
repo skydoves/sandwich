@@ -27,7 +27,7 @@ Add the dependency below into your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.3.3"
+    implementation "com.github.skydoves:sandwich:1.3.4"
 }
 ```
 
@@ -50,7 +50,7 @@ repositories {
 Next, add the dependency below to your **module**'s `build.gradle` file:
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.3.4-SNAPSHOT"
+    implementation "com.github.skydoves:sandwich:1.3.5-SNAPSHOT"
 }
 ```
 
@@ -328,6 +328,26 @@ If you want to receive transformed data from in the scope, you can use the mappe
 ```kotlin
 .suspendOnError(ErrorEnvelopeMapper) {
     val message = this.message
+}
+```
+
+### Run and Retry
+
+You can run and retry network requests by using `RetryPolicy` interface and `runAndRetry` extension like the code below:
+
+```kotlin
+val retryPolicy = object : RetryPolicy {
+  override fun shouldRetry(attempt: Int, message: String?): Boolean = attempt <= 3
+
+  override fun retryTimeout(attempt: Int, message: String?): Int = 3000
+}
+
+val apiResponse = runAndRetry(retryPolicy) { attempt, reason ->
+  mainRepository.fetchPosters()
+}.onSuccess {
+  // handle a success case
+}.onFailure {
+  // handle failure cases
 }
 ```
 
