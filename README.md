@@ -27,7 +27,7 @@ Add the dependency below into your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.3.4"
+    implementation "com.github.skydoves:sandwich:1.3.5"
 }
 ```
 
@@ -50,7 +50,7 @@ repositories {
 Next, add the dependency below to your **module**'s `build.gradle` file:
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.3.5-SNAPSHOT"
+    implementation "com.github.skydoves:sandwich:1.3.6-SNAPSHOT"
 }
 ```
 
@@ -58,11 +58,12 @@ dependencies {
 
 ## Use Cases
 You can also check out nice use cases of this library in the repositories below:
-- [Pokedex](https://github.com/skydoves/pokedex) - 🗡️ Android Pokedex using Hilt, Motion, Coroutines, Flow, Jetpack (Room, ViewModel, LiveData) based on MVVM architecture.
-- [DisneyMotions](https://github.com/skydoves/DisneyMotions) - 🦁 A Disney app using transformation motions based on MVVM (ViewModel, Coroutines, LiveData, Room, Repository, Koin) architecture.
-- [MarvelHeroes](https://github.com/skydoves/marvelheroes) - ❤️ A sample Marvel heroes application based on MVVM (ViewModel, Coroutines, LiveData, Room, Repository, Koin)  architecture.
-- [Neko](https://github.com/CarlosEsco/Neko) - Free, open source, unofficial MangaDex reader for Android.
-- [TheMovies2](https://github.com/skydoves/TheMovies2) - 🎬 A demo project using The Movie DB based on Kotlin MVVM architecture and material design & animations.
+- [Pokedex](https://github.com/skydoves/pokedex): 🗡️ Android Pokedex using Hilt, Motion, Coroutines, Flow, Jetpack (Room, ViewModel, LiveData) based on MVVM architecture.
+- [ChatGPT Android](https://github.com/skydoves/chatgpt-android): 📲 ChatGPT Android demonstrates OpenAI's ChatGPT on Android with Stream Chat SDK for Compose.
+- [DisneyMotions](https://github.com/skydoves/DisneyMotions): 🦁 A Disney app using transformation motions based on MVVM (ViewModel, Coroutines, LiveData, Room, Repository, Koin) architecture.
+- [MarvelHeroes](https://github.com/skydoves/marvelheroes): ❤️ A sample Marvel heroes application based on MVVM (ViewModel, Coroutines, LiveData, Room, Repository, Koin)  architecture.
+- [Neko](https://github.com/CarlosEsco/Neko): Free, open source, unofficial MangaDex reader for Android.
+- [TheMovies2](https://github.com/skydoves/TheMovies2): 🎬 A demo project using The Movie DB based on Kotlin MVVM architecture and material design & animations.
 
 ## Table of contents
 - [ApiResponse](https://github.com/skydoves/sandwich#apiresponse)
