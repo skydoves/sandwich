@@ -35,7 +35,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 @JvmSynthetic
 public inline fun <T> Call<T>.combineDataSource(
   dataSource: DataSource<T>,
-  crossinline onResult: (response: ApiResponse<T>) -> Unit
+  crossinline onResult: (response: ApiResponse<T>) -> Unit,
 ): DataSource<T> =
   dataSource.combine(this, getCallbackFromOnResult(onResult))
 
@@ -48,7 +48,7 @@ public inline fun <T> Call<T>.combineDataSource(
 public inline fun <T> Call<T>.suspendCombineDataSource(
   dataSource: DataSource<T>,
   coroutineScope: CoroutineScope,
-  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
+  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
 ): DataSource<T> =
   dataSource.combine(this, getCallbackFromOnResultOnCoroutinesScope(coroutineScope, onResult))
 
@@ -61,7 +61,7 @@ public inline fun <T> Call<T>.suspendCombineDataSource(
 public inline fun <T> Call<T>.suspendCombineDataSource(
   dataSource: DataSource<T>,
   context: CoroutineContext = EmptyCoroutineContext,
-  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
+  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
 ): DataSource<T> =
   dataSource.combine(this, getCallbackFromOnResultWithContext(context, onResult))
 
@@ -77,7 +77,7 @@ public inline fun <T> Call<T>.suspendCombineDataSource(
 @PublishedApi
 @JvmSynthetic
 internal inline fun <T> getCallbackFromOnResult(
-  crossinline onResult: (response: ApiResponse<T>) -> Unit
+  crossinline onResult: (response: ApiResponse<T>) -> Unit,
 ): Callback<T> {
   return object : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
@@ -103,7 +103,7 @@ internal inline fun <T> getCallbackFromOnResult(
 @JvmSynthetic
 internal inline fun <T> getCallbackFromOnResultOnCoroutinesScope(
   coroutineScope: CoroutineScope,
-  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
+  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
 ): Callback<T> {
   return object : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
@@ -133,7 +133,7 @@ internal inline fun <T> getCallbackFromOnResultOnCoroutinesScope(
 @JvmSynthetic
 internal inline fun <T> getCallbackFromOnResultWithContext(
   context: CoroutineContext = EmptyCoroutineContext,
-  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
+  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
 ): Callback<T> {
   return object : Callback<T> {
     val supervisorJob = SupervisorJob(context[Job])

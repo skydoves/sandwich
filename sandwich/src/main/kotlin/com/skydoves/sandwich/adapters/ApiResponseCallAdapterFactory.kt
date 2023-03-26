@@ -43,13 +43,13 @@ import java.lang.reflect.Type
  * ```
  */
 public class ApiResponseCallAdapterFactory private constructor(
-  private val coroutineScope: CoroutineScope
+  private val coroutineScope: CoroutineScope,
 ) : CallAdapter.Factory() {
 
   override fun get(
     returnType: Type,
     annotations: Array<Annotation>,
-    retrofit: Retrofit
+    retrofit: Retrofit,
   ): CallAdapter<*, *>? {
     when (getRawType(returnType)) {
       Call::class.java -> {
@@ -79,7 +79,7 @@ public class ApiResponseCallAdapterFactory private constructor(
   public companion object {
     @JvmStatic
     public fun create(
-      coroutineScope: CoroutineScope = SandwichInitializer.sandwichScope
+      coroutineScope: CoroutineScope = SandwichInitializer.sandwichScope,
     ): ApiResponseCallAdapterFactory = ApiResponseCallAdapterFactory(coroutineScope)
   }
 }

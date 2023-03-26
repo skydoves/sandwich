@@ -134,7 +134,7 @@ public sealed class ApiResponse<out T> {
     @JvmSynthetic
     public inline fun <T> of(
       successCodeRange: IntRange = SandwichInitializer.successCodeRange,
-      crossinline f: () -> Response<T>
+      crossinline f: () -> Response<T>,
     ): ApiResponse<T> = try {
       val response = f()
       if (response.raw().code in successCodeRange) {

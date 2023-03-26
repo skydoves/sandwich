@@ -34,5 +34,5 @@ public enum class ApiResponseMergePolicy {
    * if there are three responses (success, success, failure) or (success, failure, success),
    * the response will be the [ApiResponse.Failure.Error] or [ApiResponse.Failure.Exception].
    */
-  PREFERRED_FAILURE
+  PREFERRED_FAILURE,
 }

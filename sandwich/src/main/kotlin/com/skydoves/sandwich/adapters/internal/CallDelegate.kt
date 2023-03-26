@@ -30,7 +30,7 @@ import retrofit2.Response
  * between the two different types of [Call] requests.
  */
 internal abstract class CallDelegate<TIn, TOut>(
-  protected val proxy: Call<TIn>
+  protected val proxy: Call<TIn>,
 ) : Call<TOut> {
   final override fun enqueue(callback: Callback<TOut>) = enqueueImpl(callback)
   final override fun execute(): Response<TOut> = executeImpl()

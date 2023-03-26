@@ -61,7 +61,7 @@ internal class DefaultTaskExecutor : TaskExecutor() {
         t.name = String.format(THREAD_NAME_STEM, mThreadId.getAndIncrement())
         return t
       }
-    }
+    },
   )
 
   @Volatile
@@ -94,7 +94,7 @@ internal class DefaultTaskExecutor : TaskExecutor() {
       return Handler::class.java.getDeclaredConstructor(
         Looper::class.java,
         Handler.Callback::class.java,
-        Boolean::class.javaPrimitiveType
+        Boolean::class.javaPrimitiveType,
       ).newInstance(looper, null, true)
     } catch (ignored: IllegalAccessException) {
     } catch (ignored: InstantiationException) {

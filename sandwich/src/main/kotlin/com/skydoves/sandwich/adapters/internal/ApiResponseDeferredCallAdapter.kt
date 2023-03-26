@@ -35,7 +35,7 @@ import java.lang.reflect.Type
  */
 internal class ApiResponseDeferredCallAdapter<T> constructor(
   private val resultType: Type,
-  private val coroutineScope: CoroutineScope
+  private val coroutineScope: CoroutineScope,
 ) : CallAdapter<T, Deferred<ApiResponse<T>>> {
 
   override fun responseType(): Type {

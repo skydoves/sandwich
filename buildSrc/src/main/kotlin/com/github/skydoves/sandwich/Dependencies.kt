@@ -2,7 +2,7 @@ package com.github.skydoves.sandwich
 
 object Versions {
   internal const val ANDROID_GRADLE_PLUGIN = "7.4.2"
-  internal const val ANDROID_GRADLE_SPOTLESS = "6.7.0"
+  internal const val ANDROID_GRADLE_SPOTLESS = "6.13.0"
   internal const val GRADLE_NEXUS_PUBLISH_PLUGIN = "1.3.0"
   internal const val KOTLIN = "1.8.10"
   internal const val KOTLIN_SERIALIZATION_JSON = "1.5.0"

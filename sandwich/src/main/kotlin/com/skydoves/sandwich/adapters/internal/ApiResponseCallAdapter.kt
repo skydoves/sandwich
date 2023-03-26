@@ -31,7 +31,7 @@ import java.lang.reflect.Type
  */
 internal class ApiResponseCallAdapter constructor(
   private val resultType: Type,
-  private val coroutineScope: CoroutineScope
+  private val coroutineScope: CoroutineScope,
 ) : CallAdapter<Type, Call<ApiResponse<Type>>> {
 
   override fun responseType(): Type {

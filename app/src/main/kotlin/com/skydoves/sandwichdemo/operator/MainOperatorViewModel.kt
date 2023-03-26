@@ -27,7 +27,7 @@ import com.skydoves.sandwichdemo.network.DisneyService
 import timber.log.Timber
 
 class MainOperatorViewModel constructor(
-  disneyService: DisneyService
+  disneyService: DisneyService,
 ) : AndroidViewModel(SandwichDemoApp.sandwichApp) {
 
   val posterListLiveData: LiveData<List<Poster>>
@@ -42,8 +42,8 @@ class MainOperatorViewModel constructor(
             emit(success.data)
             Timber.d("$success.data")
           },
-          application = getApplication()
-        )
+          application = getApplication(),
+        ),
       )
     }
   }

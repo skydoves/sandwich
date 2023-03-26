@@ -42,7 +42,7 @@ public class DataSourceCallAdapterFactory private constructor() : CallAdapter.Fa
   override fun get(
     returnType: Type,
     annotations: Array<Annotation>,
-    retrofit: Retrofit
+    retrofit: Retrofit,
   ): CallAdapter<*, *>? {
     when (getRawType(returnType)) {
       DataSource::class.java -> {

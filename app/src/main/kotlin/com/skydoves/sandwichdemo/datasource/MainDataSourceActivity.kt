@@ -40,7 +40,7 @@ class MainDataSourceActivity : AppCompatActivity() {
     }
 
     viewModel.toastLiveData.observe(
-      this
+      this,
     ) {
       Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
     }
