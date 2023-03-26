@@ -30,7 +30,7 @@ import java.lang.reflect.Type
  * request API network call asynchronously and returns [DataSource].
  */
 internal class DataSourceRawCallAdapter<R> constructor(
-  private val responseType: Type
+  private val responseType: Type,
 ) : CallAdapter<R, DataSource<R>> {
 
   override fun responseType(): Type {

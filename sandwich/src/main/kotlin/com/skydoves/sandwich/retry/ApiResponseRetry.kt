@@ -32,7 +32,7 @@ import kotlinx.coroutines.delay
  */
 public suspend fun <T : Any> runAndRetry(
   retryPolicy: RetryPolicy,
-  task: suspend (attempt: Int, reason: String?) -> ApiResponse<T>
+  task: suspend (attempt: Int, reason: String?) -> ApiResponse<T>,
 ): ApiResponse<T> {
   var attempt = 1
   var reason: String? = null

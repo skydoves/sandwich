@@ -52,7 +52,7 @@ public inline fun <T, reified E> ApiResponse<T>.deserializeErrorBody(json: Json 
 @JvmSynthetic
 public inline fun <T, reified E> ApiResponse<T>.onErrorDeserialize(
   json: Json = Json,
-  crossinline onResult: ApiResponse.Failure.Error<T>.(E) -> Unit
+  crossinline onResult: ApiResponse.Failure.Error<T>.(E) -> Unit,
 ): ApiResponse<T> {
   val errorBody = this.deserializeErrorBody<T, E>(json = json)
   if (this is ApiResponse.Failure.Error && errorBody != null) {

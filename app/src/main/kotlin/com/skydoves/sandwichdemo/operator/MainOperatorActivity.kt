@@ -35,7 +35,7 @@ class MainOperatorActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     DataBindingUtil.setContentView<ActivityMainCoroutinesOperatorBinding>(
       this,
-      R.layout.activity_main_coroutines_operator
+      R.layout.activity_main_coroutines_operator,
     ).apply {
       lifecycleOwner = this@MainOperatorActivity
       viewModel = this@MainOperatorActivity.viewModel

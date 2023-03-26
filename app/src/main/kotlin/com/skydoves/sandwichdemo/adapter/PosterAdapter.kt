@@ -50,6 +50,6 @@ class PosterAdapter : RecyclerView.Adapter<PosterAdapter.PosterViewHolder>() {
   override fun getItemCount(): Int = items.size
 
   class PosterViewHolder(
-    val binding: ItemPosterBinding
+    val binding: ItemPosterBinding,
   ) : RecyclerView.ViewHolder(binding.root)
 }

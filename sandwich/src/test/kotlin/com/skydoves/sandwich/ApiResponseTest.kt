@@ -141,7 +141,7 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
       assertThat(response.statusCode.code, `is`(404))
       assertThat(
         response.message(),
-        `is`("foo")
+        `is`("foo"),
       )
 
       val errorResponse = response.map(ErrorEnvelopeMapper)
@@ -176,7 +176,7 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
         assertThat(statusCode.code, `is`(404))
         assertThat(
           message(),
-          `is`("[ApiResponse.Failure.Error-$statusCode](errorResponse=${this.response})")
+          `is`("[ApiResponse.Failure.Error-$statusCode](errorResponse=${this.response})"),
         )
 
         map(ErrorEnvelopeMapper) {

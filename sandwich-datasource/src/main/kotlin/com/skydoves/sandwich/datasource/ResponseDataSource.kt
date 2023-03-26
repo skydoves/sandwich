@@ -150,7 +150,7 @@ public class ResponseDataSource<T> : DataSource<T> {
   @JvmSynthetic
   public inline fun combine(
     call: Call<T>,
-    crossinline onResult: (response: ApiResponse<T>) -> Unit
+    crossinline onResult: (response: ApiResponse<T>) -> Unit,
   ): ResponseDataSource<T> =
     combine(call, getCallbackFromOnResult(onResult))
 
@@ -160,7 +160,7 @@ public class ResponseDataSource<T> : DataSource<T> {
   public inline fun suspendCombine(
     call: Call<T>,
     coroutineScope: CoroutineScope,
-    crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
+    crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
   ): ResponseDataSource<T> =
     combine(call, getCallbackFromOnResultOnCoroutinesScope(coroutineScope, onResult))
 
@@ -170,7 +170,7 @@ public class ResponseDataSource<T> : DataSource<T> {
   public inline fun suspendCombine(
     call: Call<T>,
     context: CoroutineContext = EmptyCoroutineContext,
-    crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
+    crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
   ): ResponseDataSource<T> =
     combine(call, getCallbackFromOnResultWithContext(context, onResult))
 
@@ -204,7 +204,9 @@ public class ResponseDataSource<T> : DataSource<T> {
 
   /** extension method for requesting and observing response at once. */
   @JvmSynthetic
-  public inline fun request(crossinline action: (ApiResponse<T>).() -> Unit): ResponseDataSource<T> =
+  public inline fun request(
+    crossinline action: (ApiResponse<T>).() -> Unit,
+  ): ResponseDataSource<T> =
     apply {
       if (call != null && callback == null) {
         combine(requireNotNull(call), action)
@@ -217,7 +219,7 @@ public class ResponseDataSource<T> : DataSource<T> {
   @SuspensionFunction
   public inline fun suspendRequest(
     coroutineScope: CoroutineScope,
-    crossinline action: suspend (ApiResponse<T>).() -> Unit
+    crossinline action: suspend (ApiResponse<T>).() -> Unit,
   ): ResponseDataSource<T> = apply {
     if (call != null && callback == null) {
       suspendCombine(requireNotNull(call), coroutineScope, action)
@@ -230,7 +232,7 @@ public class ResponseDataSource<T> : DataSource<T> {
   @SuspensionFunction
   public inline fun suspendRequest(
     context: CoroutineContext = EmptyCoroutineContext,
-    crossinline action: suspend (ApiResponse<T>).() -> Unit
+    crossinline action: suspend (ApiResponse<T>).() -> Unit,
   ): ResponseDataSource<T> = apply {
     if (call != null && callback == null) {
       suspendCombine(requireNotNull(call), context, action)
@@ -320,6 +322,10 @@ public class ResponseDataSource<T> : DataSource<T> {
 
   /** observes a [ApiResponse] value from the API call request. */
   @JvmSynthetic
-  public inline fun observeResponse(crossinline action: (ApiResponse<T>) -> Unit): ResponseDataSource<T> =
+  public inline fun observeResponse(
+    crossinline action: (
+      ApiResponse<T>,
+    ) -> Unit,
+  ): ResponseDataSource<T> =
     observeResponse(ResponseObserver { response -> action(response) })
 }

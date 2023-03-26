@@ -21,7 +21,7 @@ import com.skydoves.sandwichdemo.model.Poster
 import com.skydoves.sandwichdemo.network.DisneyService
 
 class MainRepository constructor(
-  private val disneyService: DisneyService
+  private val disneyService: DisneyService,
 ) {
 
   suspend fun fetchPosters(): ApiResponse<List<Poster>> = disneyService.fetchDisneyPosters()

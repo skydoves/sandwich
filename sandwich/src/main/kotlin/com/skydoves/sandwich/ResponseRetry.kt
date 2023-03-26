@@ -29,7 +29,7 @@ import kotlinx.coroutines.delay
 public suspend inline fun <T : Any> retry(
   retry: Int = 1,
   timeMillis: Long = 1000,
-  execute: () -> ApiResponse<T>
+  execute: () -> ApiResponse<T>,
 ): ApiResponse<T> {
   repeat(times = retry) {
     when (val response = execute.invoke()) {

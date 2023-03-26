@@ -33,7 +33,7 @@ import timber.log.Timber
  */
 class CommonResponseOperator<T> constructor(
   private val success: suspend (ApiResponse.Success<T>) -> Unit,
-  private val application: Application
+  private val application: Application,
 ) : ApiResponseSuspendOperator<T>() {
 
   // handle the case when the API request gets a success response.

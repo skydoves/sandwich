@@ -55,7 +55,7 @@ public object SandwichInitializer {
    */
   @Deprecated(
     message = "sandwichOperator has been deprecated. Use `sandwichOperators` instead.",
-    replaceWith = ReplaceWith(expression = "SandwichInitializer.sandwichOperators")
+    replaceWith = ReplaceWith(expression = "SandwichInitializer.sandwichOperators"),
   )
   @JvmStatic
   public var sandwichOperator: SandwichOperator? = null

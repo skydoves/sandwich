@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     DataBindingUtil.setContentView<ActivityMainCoroutinesBinding>(
       this,
-      R.layout.activity_main_coroutines
+      R.layout.activity_main_coroutines,
     ).apply {
       lifecycleOwner = this@MainActivity
       viewModel = this@MainActivity.viewModel
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     viewModel.toastLiveData.observe(
-      this
+      this,
     ) {
       Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
     }

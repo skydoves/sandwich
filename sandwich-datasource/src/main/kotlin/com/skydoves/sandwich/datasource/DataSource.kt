@@ -59,6 +59,6 @@ public interface DataSource<T> {
     CONTINUOUS,
 
     // break requesting chain when the previous request got failed.
-    BREAK
+    BREAK,
   }
 }

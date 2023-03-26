@@ -89,5 +89,5 @@ public enum class StatusCode(public val code: Int) {
   GatewayTimeout(504),
   HTTPVersionNotSupported(505),
   NotExtended(510),
-  NetworkAuthenticationRequired(511);
+  NetworkAuthenticationRequired(511),
 }
