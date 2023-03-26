@@ -33,7 +33,7 @@ import retrofit2.awaitResponse
  */
 internal class ApiResponseCallDelegate<T>(
   proxy: Call<T>,
-  private val coroutineScope: CoroutineScope
+  private val coroutineScope: CoroutineScope,
 ) : CallDelegate<T, ApiResponse<T>>(proxy) {
 
   override fun enqueueImpl(callback: Callback<ApiResponse<T>>) {

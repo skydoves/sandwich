@@ -21,7 +21,7 @@ import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
 internal class TestApiResponseSuspendOperator<T> constructor(
   private val onSuccess: suspend () -> Unit,
   private val onError: suspend () -> Unit,
-  private val onException: suspend () -> Unit
+  private val onException: suspend () -> Unit,
 ) : ApiResponseSuspendOperator<T>() {
 
   override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) = onSuccess()

@@ -32,7 +32,7 @@ import timber.log.Timber
  * A global response operator for handling [ApiResponse]s regardless of its type.
  */
 class GlobalResponseOperator<T> constructor(
-  private val application: Application
+  private val application: Application,
 ) : ApiResponseSuspendOperator<T>() {
 
   // handle the case when the API request gets a success response.

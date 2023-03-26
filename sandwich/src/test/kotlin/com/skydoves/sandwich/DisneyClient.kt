@@ -17,11 +17,11 @@
 package com.skydoves.sandwich
 
 internal class DisneyClient constructor(
-  private val disneyService: DisneyService
+  private val disneyService: DisneyService,
 ) {
 
   fun fetchDisneyPosters(
-    onResult: (response: ApiResponse<List<Poster>>) -> Unit
+    onResult: (response: ApiResponse<List<Poster>>) -> Unit,
   ) {
     this.disneyService.fetchDisneyPosterList().request(onResult)
   }

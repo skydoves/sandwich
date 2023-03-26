@@ -48,15 +48,16 @@ internal class SandwichInitializerTest {
       ApiResponse.of { successResponse }
     assertThat(
       apiResponse,
-      CoreMatchers.instanceOf(ApiResponse.Failure.Error::class.java)
+      CoreMatchers.instanceOf(ApiResponse.Failure.Error::class.java),
     )
 
     val errorResponse = apiResponse as ApiResponse.Failure.Error
     assertThat(
       errorResponse.message(),
       CoreMatchers.`is`(
-        "[ApiResponse.Failure.Error-${errorResponse.statusCode}](errorResponse=${errorResponse.response})"
-      )
+        "[ApiResponse.Failure.Error-${errorResponse.statusCode}](" +
+          "errorResponse=${errorResponse.response})",
+      ),
     )
   }
 
@@ -69,7 +70,7 @@ internal class SandwichInitializerTest {
     SandwichInitializer.sandwichOperators += TestApiResponseOperator<Any>(
       onSuccess = { onSuccess = true },
       onError = { onError = true },
-      onException = { onException = true }
+      onException = { onException = true },
     )
 
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))

@@ -33,9 +33,12 @@ internal class SerializationExtensionsTest {
   fun `deserializeErrorBody test`() {
     val response = Response.error<String>(
       403,
-      ("""{"code":10001, "message":"This is a custom error message"}""".trimIndent()).toResponseBody(
-        contentType = "text/plain".toMediaType()
-      )
+      (
+        """{"code":10001, "message":"This is a custom error message"}"""
+          .trimIndent()
+        ).toResponseBody(
+        contentType = "text/plain".toMediaType(),
+      ),
     )
 
     val apiResponse = ApiResponse.of { response }
@@ -48,9 +51,12 @@ internal class SerializationExtensionsTest {
   fun `onErrorDeserialize test`() {
     val response = Response.error<String>(
       403,
-      ("""{"code":10001, "message":"This is a custom error message"}""".trimIndent()).toResponseBody(
-        contentType = "text/plain".toMediaType()
-      )
+      (
+        """{"code":10001, "message":"This is a custom error message"}"""
+          .trimIndent()
+        ).toResponseBody(
+        contentType = "text/plain".toMediaType(),
+      ),
     )
 
     val apiResponse = ApiResponse.of { response }

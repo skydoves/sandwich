@@ -28,5 +28,5 @@ public enum class DataRetainPolicy {
   RETAIN,
 
   // Re-fetch data from the network every time.
-  NO_RETAIN
+  NO_RETAIN,
 }

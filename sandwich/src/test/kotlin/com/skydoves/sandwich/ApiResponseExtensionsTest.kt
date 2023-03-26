@@ -42,9 +42,12 @@ internal class ApiResponseExtensionsTest {
   fun `isFailure test`() {
     val response = Response.error<String>(
       403,
-      ("""{"code":10001, "message":"This is a custom error message"}""".trimIndent()).toResponseBody(
-        contentType = "text/plain".toMediaType()
-      )
+      (
+        """{"code":10001, "message":"This is a custom error message"}"""
+          .trimIndent()
+        ).toResponseBody(
+        contentType = "text/plain".toMediaType(),
+      ),
     )
 
     val apiResponse = ApiResponse.of { response }
@@ -56,9 +59,12 @@ internal class ApiResponseExtensionsTest {
   fun `isError test`() {
     val response = Response.error<String>(
       403,
-      ("""{"code":10001, "message":"This is a custom error message"}""".trimIndent()).toResponseBody(
-        contentType = "text/plain".toMediaType()
-      )
+      (
+        """{"code":10001, "message":"This is a custom error message"}"""
+          .trimIndent()
+        ).toResponseBody(
+        contentType = "text/plain".toMediaType(),
+      ),
     )
 
     val apiResponse = ApiResponse.of { response }
@@ -83,8 +89,8 @@ internal class ApiResponseExtensionsTest {
     val errorBody = Response.error<String>(
       403,
       ("""This is a custom error message""".trimIndent()).toResponseBody(
-        contentType = "text/plain".toMediaType()
-      )
+        contentType = "text/plain".toMediaType(),
+      ),
     )
     val error = ApiResponse.of { errorBody }
     assertThat(error.messageOrNull, `is`("This is a custom error message"))

@@ -48,7 +48,7 @@ import kotlin.coroutines.EmptyCoroutineContext
  */
 @JvmSynthetic
 public inline fun <T> Call<T>.request(
-  crossinline onResult: (response: ApiResponse<T>) -> Unit
+  crossinline onResult: (response: ApiResponse<T>) -> Unit,
 ): Call<T> = apply {
   enqueue(getCallbackFromOnResult(onResult))
 }
@@ -65,7 +65,7 @@ public inline fun <T> Call<T>.request(
 @PublishedApi
 @JvmSynthetic
 internal inline fun <T> getCallbackFromOnResult(
-  crossinline onResult: (response: ApiResponse<T>) -> Unit
+  crossinline onResult: (response: ApiResponse<T>) -> Unit,
 ): Callback<T> {
   return object : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
@@ -91,7 +91,7 @@ internal inline fun <T> getCallbackFromOnResult(
 @JvmSynthetic
 internal inline fun <T> getCallbackFromOnResultOnCoroutinesScope(
   coroutineScope: CoroutineScope,
-  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
+  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
 ): Callback<T> {
   return object : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
@@ -121,7 +121,7 @@ internal inline fun <T> getCallbackFromOnResultOnCoroutinesScope(
 @JvmSynthetic
 internal inline fun <T> getCallbackFromOnResultWithContext(
   context: CoroutineContext = EmptyCoroutineContext,
-  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit
+  crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
 ): Callback<T> {
   return object : Callback<T> {
     val supervisorJob = SupervisorJob(context[Job])
@@ -218,7 +218,7 @@ public fun <T> ApiResponse<T>.getOrThrow(): T {
  */
 @JvmSynthetic
 public inline fun <T> ApiResponse<T>.onSuccess(
-  crossinline onResult: ApiResponse.Success<T>.() -> Unit
+  crossinline onResult: ApiResponse.Success<T>.() -> Unit,
 ): ApiResponse<T> {
   if (this is ApiResponse.Success) {
     onResult(this)
@@ -239,7 +239,7 @@ public inline fun <T> ApiResponse<T>.onSuccess(
 @JvmSynthetic
 public inline fun <T, V> ApiResponse<T>.onSuccess(
   mapper: ApiSuccessModelMapper<T, V>,
-  crossinline onResult: V.() -> Unit
+  crossinline onResult: V.() -> Unit,
 ): ApiResponse<T> {
   if (this is ApiResponse.Success) {
     onResult(map(mapper))
@@ -259,7 +259,7 @@ public inline fun <T, V> ApiResponse<T>.onSuccess(
 @JvmSynthetic
 @SuspensionFunction
 public suspend inline fun <T> ApiResponse<T>.suspendOnSuccess(
-  crossinline onResult: suspend ApiResponse.Success<T>.() -> Unit
+  crossinline onResult: suspend ApiResponse.Success<T>.() -> Unit,
 ): ApiResponse<T> {
   if (this is ApiResponse.Success) {
     onResult(this)
@@ -281,7 +281,7 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnSuccess(
 @SuspensionFunction
 public suspend inline fun <T, V> ApiResponse<T>.suspendOnSuccess(
   mapper: ApiSuccessModelMapper<T, V>,
-  crossinline onResult: suspend V.() -> Unit
+  crossinline onResult: suspend V.() -> Unit,
 ): ApiResponse<T> {
   if (this is ApiResponse.Success) {
     onResult(map(mapper))
@@ -300,7 +300,7 @@ public suspend inline fun <T, V> ApiResponse<T>.suspendOnSuccess(
  */
 @JvmSynthetic
 public inline fun <T> ApiResponse<T>.onFailure(
-  crossinline onResult: ApiResponse.Failure<T>.() -> Unit
+  crossinline onResult: ApiResponse.Failure<T>.() -> Unit,
 ): ApiResponse<T> {
   if (this is ApiResponse.Failure<T>) {
     onResult(this)
@@ -320,7 +320,7 @@ public inline fun <T> ApiResponse<T>.onFailure(
 @JvmSynthetic
 @SuspensionFunction
 public suspend inline fun <T> ApiResponse<T>.suspendOnFailure(
-  crossinline onResult: suspend ApiResponse.Failure<T>.() -> Unit
+  crossinline onResult: suspend ApiResponse.Failure<T>.() -> Unit,
 ): ApiResponse<T> {
   if (this is ApiResponse.Failure<T>) {
     onResult(this)
@@ -339,7 +339,7 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnFailure(
  */
 @JvmSynthetic
 public inline fun <T> ApiResponse<T>.onError(
-  crossinline onResult: ApiResponse.Failure.Error<T>.() -> Unit
+  crossinline onResult: ApiResponse.Failure.Error<T>.() -> Unit,
 ): ApiResponse<T> {
   if (this is ApiResponse.Failure.Error) {
     onResult(this)
@@ -361,7 +361,7 @@ public inline fun <T> ApiResponse<T>.onError(
 @JvmSynthetic
 public inline fun <T, V> ApiResponse<T>.onError(
   mapper: ApiErrorModelMapper<V>,
-  crossinline onResult: V.() -> Unit
+  crossinline onResult: V.() -> Unit,
 ): ApiResponse<T> {
   if (this is ApiResponse.Failure.Error) {
     onResult(map(mapper))
@@ -381,7 +381,7 @@ public inline fun <T, V> ApiResponse<T>.onError(
 @JvmSynthetic
 @SuspensionFunction
 public suspend inline fun <T> ApiResponse<T>.suspendOnError(
-  crossinline onResult: suspend ApiResponse.Failure.Error<T>.() -> Unit
+  crossinline onResult: suspend ApiResponse.Failure.Error<T>.() -> Unit,
 ): ApiResponse<T> {
   if (this is ApiResponse.Failure.Error) {
     onResult(this)
@@ -404,7 +404,7 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnError(
 @SuspensionFunction
 public suspend inline fun <T, V> ApiResponse<T>.suspendOnError(
   mapper: ApiErrorModelMapper<V>,
-  crossinline onResult: suspend V.() -> Unit
+  crossinline onResult: suspend V.() -> Unit,
 ): ApiResponse<T> {
   if (this is ApiResponse.Failure.Error) {
     onResult(map(mapper))
@@ -423,7 +423,7 @@ public suspend inline fun <T, V> ApiResponse<T>.suspendOnError(
  */
 @JvmSynthetic
 public inline fun <T> ApiResponse<T>.onException(
-  crossinline onResult: ApiResponse.Failure.Exception<T>.() -> Unit
+  crossinline onResult: ApiResponse.Failure.Exception<T>.() -> Unit,
 ): ApiResponse<T> {
   if (this is ApiResponse.Failure.Exception) {
     onResult(this)
@@ -443,7 +443,7 @@ public inline fun <T> ApiResponse<T>.onException(
 @JvmSynthetic
 @SuspensionFunction
 public suspend inline fun <T> ApiResponse<T>.suspendOnException(
-  crossinline onResult: suspend ApiResponse.Failure.Exception<T>.() -> Unit
+  crossinline onResult: suspend ApiResponse.Failure.Exception<T>.() -> Unit,
 ): ApiResponse<T> {
   if (this is ApiResponse.Failure.Exception) {
     onResult(this)
@@ -468,7 +468,7 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnException(
 public inline fun <T> ApiResponse<T>.onProcedure(
   crossinline onSuccess: ApiResponse.Success<T>.() -> Unit,
   crossinline onError: ApiResponse.Failure.Error<T>.() -> Unit,
-  crossinline onException: ApiResponse.Failure.Exception<T>.() -> Unit
+  crossinline onException: ApiResponse.Failure.Exception<T>.() -> Unit,
 ): ApiResponse<T> = apply {
   this.onSuccess(onSuccess)
   this.onError(onError)
@@ -493,7 +493,7 @@ public inline fun <T> ApiResponse<T>.onProcedure(
 public suspend inline fun <T> ApiResponse<T>.suspendOnProcedure(
   crossinline onSuccess: suspend ApiResponse.Success<T>.() -> Unit,
   crossinline onError: suspend ApiResponse.Failure.Error<T>.() -> Unit,
-  crossinline onException: suspend ApiResponse.Failure.Exception<T>.() -> Unit
+  crossinline onException: suspend ApiResponse.Failure.Exception<T>.() -> Unit,
 ): ApiResponse<T> = apply {
   this.suspendOnSuccess(onSuccess)
   this.suspendOnError(onError)
@@ -529,7 +529,9 @@ public fun <T, V> ApiResponse<T>.mapSuccess(transformer: T.() -> V): ApiResponse
 @JvmSynthetic
 @SuspensionFunction
 @Suppress("UNCHECKED_CAST")
-public suspend fun <T, V> ApiResponse<T>.suspendMapSuccess(transformer: suspend T.() -> V): ApiResponse<V> {
+public suspend fun <T, V> ApiResponse<T>.suspendMapSuccess(
+  transformer: suspend T.() -> V,
+): ApiResponse<V> {
   if (this is ApiResponse.Success<T>) {
     val invoke = transformer.invoke(data)
     return ApiResponse.of { Response.success(invoke) }
@@ -576,7 +578,7 @@ public fun <T, V> ApiResponse.Success<T>.map(mapper: (ApiResponse.Success<T>) ->
 @JvmSynthetic
 public inline fun <T, V> ApiResponse.Success<T>.map(
   mapper: ApiSuccessModelMapper<T, V>,
-  crossinline onResult: V.() -> Unit
+  crossinline onResult: V.() -> Unit,
 ) {
   onResult(mapper.map(this))
 }
@@ -595,7 +597,7 @@ public inline fun <T, V> ApiResponse.Success<T>.map(
 @SuspensionFunction
 public suspend inline fun <T, V> ApiResponse.Success<T>.suspendMap(
   mapper: ApiSuccessModelMapper<T, V>,
-  crossinline onResult: suspend V.() -> Unit
+  crossinline onResult: suspend V.() -> Unit,
 ) {
   onResult(mapper.map(this))
 }
@@ -612,7 +614,7 @@ public suspend inline fun <T, V> ApiResponse.Success<T>.suspendMap(
 @JvmSynthetic
 @SuspensionFunction
 public suspend inline fun <T, V> ApiResponse.Success<T>.suspendMap(
-  crossinline mapper: suspend (ApiResponse.Success<T>) -> V
+  crossinline mapper: suspend (ApiResponse.Success<T>) -> V,
 ): V {
   return mapper(this)
 }
@@ -656,7 +658,7 @@ public fun <T, V> ApiResponse.Failure.Error<T>.map(mapper: (ApiResponse.Failure.
 @JvmSynthetic
 public inline fun <T, V> ApiResponse.Failure.Error<T>.map(
   mapper: ApiErrorModelMapper<V>,
-  crossinline onResult: V.() -> Unit
+  crossinline onResult: V.() -> Unit,
 ) {
   onResult(mapper.map(this))
 }
@@ -675,7 +677,7 @@ public inline fun <T, V> ApiResponse.Failure.Error<T>.map(
 @SuspensionFunction
 public suspend inline fun <T, V> ApiResponse.Failure.Error<T>.suspendMap(
   mapper: ApiErrorModelMapper<V>,
-  crossinline onResult: suspend V.() -> Unit
+  crossinline onResult: suspend V.() -> Unit,
 ) {
   onResult(mapper.map(this))
 }
@@ -692,7 +694,7 @@ public suspend inline fun <T, V> ApiResponse.Failure.Error<T>.suspendMap(
 @JvmSynthetic
 @SuspensionFunction
 public suspend inline fun <T, V> ApiResponse.Failure.Error<T>.suspendMap(
-  crossinline mapper: suspend (ApiResponse.Failure.Error<T>) -> V
+  crossinline mapper: suspend (ApiResponse.Failure.Error<T>) -> V,
 ): V {
   return mapper(this)
 }
@@ -711,7 +713,7 @@ public suspend inline fun <T, V> ApiResponse.Failure.Error<T>.suspendMap(
 @JvmSynthetic
 public fun <T> ApiResponse<List<T>>.merge(
   vararg responses: ApiResponse<List<T>>,
-  mergePolicy: ApiResponseMergePolicy = ApiResponseMergePolicy.IGNORE_FAILURE
+  mergePolicy: ApiResponseMergePolicy = ApiResponseMergePolicy.IGNORE_FAILURE,
 ): ApiResponse<List<T>> {
   val apiResponses = responses.toMutableList()
   apiResponses.add(0, this)
@@ -725,7 +727,7 @@ public fun <T> ApiResponse<List<T>>.merge(
     if (response is ApiResponse.Success) {
       data.addAll(response.data)
       apiResponse = ApiResponse.Success(
-        Response.success(data, response.headers)
+        Response.success(data, response.headers),
       )
     } else if (mergePolicy === ApiResponseMergePolicy.PREFERRED_FAILURE) {
       return response
@@ -772,7 +774,7 @@ public fun <T> ApiResponse.Failure.Exception<T>.message(): String = toString()
  */
 @JvmSynthetic
 public fun <T, V : ApiResponseOperator<T>> ApiResponse<T>.operator(
-  apiResponseOperator: V
+  apiResponseOperator: V,
 ): ApiResponse<T> = apply {
   when (this) {
     is ApiResponse.Success -> apiResponseOperator.onSuccess(this)
@@ -791,7 +793,7 @@ public fun <T, V : ApiResponseOperator<T>> ApiResponse<T>.operator(
 @JvmSynthetic
 @SuspensionFunction
 public suspend fun <T, V : ApiResponseSuspendOperator<T>> ApiResponse<T>.suspendOperator(
-  apiResponseOperator: V
+  apiResponseOperator: V,
 ): ApiResponse<T> = apply {
   when (this) {
     is ApiResponse.Success -> apiResponseOperator.onSuccess(this)
@@ -828,7 +830,7 @@ public fun <T> ApiResponse<T>.toFlow(): Flow<T> {
  */
 @JvmSynthetic
 public inline fun <T, R> ApiResponse<T>.toFlow(
-  crossinline transformer: T.() -> R
+  crossinline transformer: T.() -> R,
 ): Flow<R> {
   return if (this is ApiResponse.Success) {
     flowOf(data.transformer())
@@ -850,7 +852,7 @@ public inline fun <T, R> ApiResponse<T>.toFlow(
 @JvmSynthetic
 @SuspensionFunction
 public suspend inline fun <T, R> ApiResponse<T>.toSuspendFlow(
-  crossinline transformer: suspend T.() -> R
+  crossinline transformer: suspend T.() -> R,
 ): Flow<R> {
   return if (this is ApiResponse.Success) {
     flowOf(data.transformer())

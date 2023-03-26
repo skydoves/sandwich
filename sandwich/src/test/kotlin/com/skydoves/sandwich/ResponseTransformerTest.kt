@@ -205,7 +205,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       },
       onError = {
         onResult = false
-      }
+      },
     )
 
     assertThat(onResult, `is`(true))
@@ -240,7 +240,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         },
         onException = {
           emit(false)
-        }
+        },
       )
     }.collect {
       assertThat(it, `is`(true))
@@ -291,7 +291,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       },
       onException = {
         onResult = false
-      }
+      },
     )
     assertThat(onResult, `is`(true))
   }
@@ -341,7 +341,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         },
         onException = {
           emit(false)
-        }
+        },
       )
     }.collect {
       assertThat(it, `is`(true))
@@ -374,7 +374,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       },
       onException = {
         onResult = true
-      }
+      },
     )
 
     assertThat(onResult, `is`(true))
@@ -407,7 +407,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         },
         onException = {
           emit(true)
-        }
+        },
       )
     }.collect {
       assertThat(it, `is`(true))
@@ -698,8 +698,8 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       TestApiResponseOperator(
         onSuccess = { onSuccess = true },
         onError = {},
-        onException = {}
-      )
+        onException = {},
+      ),
     )
 
     assertThat(onSuccess, `is`(true))
@@ -719,8 +719,8 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       TestApiResponseOperator(
         onSuccess = {},
         onError = { onError = true },
-        onException = {}
-      )
+        onException = {},
+      ),
     )
 
     assertThat(onError, `is`(true))
@@ -731,8 +731,8 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       TestApiResponseOperator(
         onSuccess = {},
         onError = {},
-        onException = { onException = true }
-      )
+        onException = { onException = true },
+      ),
     )
 
     assertThat(onException, `is`(true))
@@ -748,8 +748,8 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         TestApiResponseSuspendOperator(
           onSuccess = { emit("100") },
           onError = {},
-          onException = {}
-        )
+          onException = {},
+        ),
       )
     }.collect {
       assertThat(it, `is`("100"))
@@ -770,8 +770,8 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         TestApiResponseSuspendOperator(
           onSuccess = {},
           onError = { emit("404") },
-          onException = {}
-        )
+          onException = {},
+        ),
       )
     }.collect {
       assertThat(it, `is`("404"))
@@ -783,8 +783,8 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         TestApiResponseSuspendOperator(
           onSuccess = {},
           onError = {},
-          onException = { emit("201") }
-        )
+          onException = { emit("201") },
+        ),
       )
     }.collect {
       assertThat(it, `is`("201"))

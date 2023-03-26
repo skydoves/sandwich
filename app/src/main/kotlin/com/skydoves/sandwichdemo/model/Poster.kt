@@ -26,5 +26,5 @@ data class Poster(
   val playtime: String,
   val description: String,
   val plot: String,
-  val poster: String
+  val poster: String,
 )
