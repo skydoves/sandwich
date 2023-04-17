@@ -29,14 +29,6 @@ ext {
 
 apply from: "${rootDir}/scripts/publish-module.gradle"
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-  kotlinOptions.freeCompilerArgs += [
-    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-    "-Xopt-in=kotlin.RequiresOptIn",
-    "-Xexplicit-api=strict"
-  ]
-}
-
 dependencies {
   implementation Dependencies.coroutines
   api Dependencies.retrofit

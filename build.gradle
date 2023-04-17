@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import com.github.skydoves.sandwich.Dependencies
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 apply plugin: 'io.github.gradle-nexus.publish-plugin'
 apply plugin: 'org.jetbrains.dokka'
@@ -31,6 +33,27 @@ buildscript {
     classpath Dependencies.gradleNexusPublishPlugin
     classpath Dependencies.dokka
     classpath Dependencies.kotlinBinaryValidator
+  }
+}
+
+allprojects {
+  if (project.name.contains("app")) return // exclude app module
+
+  plugins.withType(JavaBasePlugin).configureEach {
+    java.toolchain {
+      languageVersion.set(JavaLanguageVersion.of(8))
+    }
+  }
+
+  tasks.withType(KotlinCompile).configureEach {
+    compilerOptions {
+      freeCompilerArgs.addAll(
+        [
+          "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+          "-Xexplicit-api=strict"
+        ]
+      )
+    }
   }
 }
 

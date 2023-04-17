@@ -30,10 +30,6 @@ ext {
 
 apply from: "${rootDir}/scripts/publish-module.gradle"
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-  kotlinOptions.freeCompilerArgs += ["-Xexplicit-api=strict"]
-}
-
 dependencies {
   api project(":sandwich")
   api Dependencies.kotlinSerializationJson
