@@ -24,31 +24,34 @@ plugins {
 }
 
 android {
-  compileSdkVersion Configuration.compileSdk
+  compileSdk Configuration.compileSdk
+  namespace "com.skydoves.sandwichdemo"
   defaultConfig {
     applicationId "com.skydoves.sandwichdemo"
-    minSdkVersion Configuration.minSdkDemo
-    targetSdkVersion Configuration.targetSdk
+    minSdk Configuration.minSdkDemo
+    targetSdk Configuration.targetSdk
     versionCode Configuration.versionCode
     versionName Configuration.versionName
   }
 
   buildFeatures {
+    buildConfig true
     dataBinding true
   }
 
+  // Can remove this once https://issuetracker.google.com/issues/260059413 is fixed.
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_11
     targetCompatibility JavaVersion.VERSION_11
   }
 
-  kotlinOptions {
-    jvmTarget = "11"
-  }
-
-  lintOptions {
+  lint {
     abortOnError false
   }
+}
+
+java.toolchain {
+  languageVersion.set(JavaLanguageVersion.of(11))
 }
 
 dependencies {
