@@ -17,10 +17,11 @@ ext {
 apply from: "${rootDir}/scripts/publish-module.gradle"
 
 android {
-  compileSdkVersion Configuration.compileSdk
+  compileSdk Configuration.compileSdk
+  namespace "com.skydoves.sandwich.datasource"
   defaultConfig {
-    minSdkVersion Configuration.minSdk
-    targetSdkVersion Configuration.targetSdk
+    minSdk Configuration.minSdk
+    targetSdk Configuration.targetSdk
   }
 
   buildFeatures {
@@ -32,7 +33,7 @@ android {
     targetCompatibility JavaVersion.VERSION_1_8
   }
 
-  lintOptions {
+  lint {
     abortOnError false
   }
 
