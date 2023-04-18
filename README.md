@@ -56,6 +56,11 @@ dependencies {
 
 </details>
 
+
+## R8 / ProGuard
+The specific rules are [already bundled](sandwich/src/main/resources/META-INF/proguard/sandwich.pro) into the JAR which can be interpreted by R8 automatically.
+
+
 ## Use Cases
 You can also check out nice use cases of this library in the repositories below:
 - [Pokedex](https://github.com/skydoves/pokedex): 🗡️ Android Pokedex using Hilt, Motion, Coroutines, Flow, Jetpack (Room, ViewModel, LiveData) based on MVVM architecture.

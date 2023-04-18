@@ -31,7 +31,7 @@ import retrofit2.Response
  *
  * ApiResponse is an interface for constructing standard responses from the retrofit call.
  */
-public sealed class ApiResponse<out T> {
+public sealed interface ApiResponse<out T> {
 
   /**
    * @author skydoves (Jaewoong Eum)
@@ -46,7 +46,7 @@ public sealed class ApiResponse<out T> {
    * @property raw The raw response from the HTTP client.
    * @property data The de-serialized response body of a successful data.
    */
-  public data class Success<T>(val response: Response<T>) : ApiResponse<T>() {
+  public data class Success<T>(val response: Response<T>) : ApiResponse<T> {
     val statusCode: StatusCode = getStatusCodeFromResponse(response)
     val headers: Headers = response.headers()
     val raw: okhttp3.Response = response.raw()
@@ -60,7 +60,7 @@ public sealed class ApiResponse<out T> {
    * API Failure response class from OkHttp request call.
    * There are two subtypes: [ApiResponse.Failure.Error] and [ApiResponse.Failure.Exception].
    */
-  public sealed class Failure<T> : ApiResponse<T>() {
+  public sealed interface Failure<T> : ApiResponse<T> {
     /**
      * API response error case.
      * API communication conventions do not match or applications need to handle errors.
@@ -73,7 +73,7 @@ public sealed class ApiResponse<out T> {
      * @property raw The raw response from the HTTP client.
      * @property errorBody The [ResponseBody] can be consumed only once.
      */
-    public data class Error<T>(val response: Response<T>) : Failure<T>() {
+    public data class Error<T>(val response: Response<T>) : Failure<T> {
       val statusCode: StatusCode = getStatusCodeFromResponse(response)
       val headers: Headers = response.headers()
       val raw: okhttp3.Response = response.raw()
@@ -99,7 +99,7 @@ public sealed class ApiResponse<out T> {
      *
      * @property message The localized message from the exception.
      */
-    public data class Exception<T>(val exception: Throwable) : Failure<T>() {
+    public data class Exception<T>(val exception: Throwable) : Failure<T> {
       val message: String? = exception.localizedMessage
       override fun toString(): String = "[ApiResponse.Failure.Exception](message=$message)"
     }
