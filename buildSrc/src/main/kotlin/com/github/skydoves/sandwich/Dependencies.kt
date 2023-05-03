@@ -1,13 +1,13 @@
 package com.github.skydoves.sandwich
 
 object Versions {
-  internal const val ANDROID_GRADLE_PLUGIN = "8.0.0"
-  internal const val ANDROID_GRADLE_SPOTLESS = "6.13.0"
+  internal const val ANDROID_GRADLE_PLUGIN = "8.0.0-rc01"
+  internal const val ANDROID_GRADLE_SPOTLESS = "6.18.0"
   internal const val GRADLE_NEXUS_PUBLISH_PLUGIN = "1.3.0"
-  internal const val KOTLIN = "1.8.20"
+  internal const val KOTLIN = "1.8.10"
   internal const val KOTLIN_SERIALIZATION_JSON = "1.5.0"
   internal const val KOTLIN_GRADLE_DOKKA = "1.8.10"
-  internal const val KOTLIN_BINARY_VALIDATOR = "0.13.0"
+  internal const val KOTLIN_BINARY_VALIDATOR = "0.13.1"
 
   internal const val RETROFIT = "2.9.0"
   internal const val OKHTTP = "4.10.0"
