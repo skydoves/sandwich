@@ -10,8 +10,8 @@ object Versions {
   internal const val KOTLIN_BINARY_VALIDATOR = "0.13.1"
 
   internal const val RETROFIT = "2.9.0"
-  internal const val OKHTTP = "4.10.0"
-  internal const val COROUTINES = "1.6.4"
+  internal const val OKHTTP = "4.11.0"
+  internal const val COROUTINES = "1.7.0"
   internal const val MOSHI = "1.14.0"
 
   internal const val APPCOMPAT = "1.5.0"
