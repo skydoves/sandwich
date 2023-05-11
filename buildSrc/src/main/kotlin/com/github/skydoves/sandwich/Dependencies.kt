@@ -17,7 +17,7 @@ object Versions {
   internal const val APPCOMPAT = "1.5.0"
   internal const val MATERIAL = "1.5.0"
   internal const val GLIDE = "4.13.1"
-  internal const val LIFECYCLE = "2.5.1"
+  internal const val LIFECYCLE = "2.6.1"
   internal const val TIMBER = "5.0.1"
 
   internal const val JUNIT = "4.13.1"
