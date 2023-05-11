@@ -14,7 +14,7 @@ object Versions {
   internal const val COROUTINES = "1.7.0"
   internal const val MOSHI = "1.14.0"
 
-  internal const val APPCOMPAT = "1.5.0"
+  internal const val APPCOMPAT = "1.6.1"
   internal const val MATERIAL = "1.5.0"
   internal const val GLIDE = "4.13.1"
   internal const val LIFECYCLE = "2.6.1"
