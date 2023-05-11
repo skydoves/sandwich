@@ -21,7 +21,7 @@ object Versions {
   internal const val TIMBER = "5.0.1"
 
   internal const val JUNIT = "4.13.2"
-  internal const val ARCH_TEST = "2.1.0"
+  internal const val ARCH_TEST = "2.2.0"
   internal const val MOCKITO = "3.5.13"
   internal const val MOCKITO_KOTLIN = "2.2.0"
 }
