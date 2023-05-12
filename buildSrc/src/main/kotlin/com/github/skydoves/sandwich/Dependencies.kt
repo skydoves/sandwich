@@ -12,7 +12,7 @@ object Versions {
   internal const val RETROFIT = "2.9.0"
   internal const val OKHTTP = "4.11.0"
   internal const val COROUTINES = "1.7.1"
-  internal const val MOSHI = "1.14.0"
+  internal const val MOSHI = "1.15.0"
 
   internal const val APPCOMPAT = "1.6.1"
   internal const val MATERIAL = "1.9.0"
