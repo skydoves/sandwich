@@ -17,6 +17,7 @@
 package com.skydoves.sandwich.retry
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.adapters.internal.SuspensionFunction
 import com.skydoves.sandwich.messageOrNull
 import kotlinx.coroutines.delay
 
@@ -30,6 +31,7 @@ import kotlinx.coroutines.delay
  * and the 'reason' parameter represents the error message if the [task] is failed. If the [task]
  * succeeds, it will be null.
  */
+@SuspensionFunction
 public suspend fun <T : Any> runAndRetry(
   retryPolicy: RetryPolicy,
   task: suspend (attempt: Int, reason: String?) -> ApiResponse<T>,
