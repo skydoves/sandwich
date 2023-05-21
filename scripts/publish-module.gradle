@@ -2,7 +2,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 apply plugin: 'org.jetbrains.dokka'
 
-task androidSourcesJar(type: Jar) {
+tasks.register('androidSourcesJar', Jar) {
   archiveClassifier.set('sources')
   if (project.plugins.findPlugin("com.android.library")) {
     from android.sourceSets.main.java.srcDirs
@@ -36,6 +36,7 @@ afterEvaluate {
   publishing {
     publications {
       release(MavenPublication) {
+        tasks.named("generateMetadataFileForReleasePublication").configure { dependsOn("androidSourcesJar") }
         groupId PUBLISH_GROUP_ID
         artifactId PUBLISH_ARTIFACT_ID
         version PUBLISH_VERSION
@@ -45,7 +46,6 @@ afterEvaluate {
           from components.java
         }
 
-        artifact androidSourcesJar
         artifact javadocJar
 
         pom {
