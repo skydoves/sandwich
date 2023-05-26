@@ -22,7 +22,7 @@ object Versions {
 
   internal const val JUNIT = "4.13.2"
   internal const val ARCH_TEST = "2.2.0"
-  internal const val MOCKITO = "3.12.4"
+  internal const val MOCKITO = "5.3.1"
   internal const val MOCKITO_KOTLIN = "2.2.0"
 }
 
