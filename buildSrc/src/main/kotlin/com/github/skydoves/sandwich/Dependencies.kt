@@ -4,7 +4,7 @@ object Versions {
   internal const val ANDROID_GRADLE_PLUGIN = "8.0.2"
   internal const val ANDROID_GRADLE_SPOTLESS = "6.19.0"
   internal const val GRADLE_NEXUS_PUBLISH_PLUGIN = "1.3.0"
-  internal const val KOTLIN = "1.8.21"
+  internal const val KOTLIN = "1.8.22"
   internal const val KOTLIN_SERIALIZATION_JSON = "1.5.1"
   internal const val KOTLIN_GRADLE_DOKKA = "1.8.20"
   internal const val KOTLIN_BINARY_VALIDATOR = "0.13.2"
