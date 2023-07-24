@@ -1,6 +1,7 @@
 public final class com/skydoves/sandwich/datasource/DataRetainPolicy : java/lang/Enum {
 	public static final field NO_RETAIN Lcom/skydoves/sandwich/datasource/DataRetainPolicy;
 	public static final field RETAIN Lcom/skydoves/sandwich/datasource/DataRetainPolicy;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/sandwich/datasource/DataRetainPolicy;
 	public static fun values ()[Lcom/skydoves/sandwich/datasource/DataRetainPolicy;
 }
@@ -18,6 +19,7 @@ public abstract interface class com/skydoves/sandwich/datasource/DataSource {
 public final class com/skydoves/sandwich/datasource/DataSource$ConcatStrategy : java/lang/Enum {
 	public static final field BREAK Lcom/skydoves/sandwich/datasource/DataSource$ConcatStrategy;
 	public static final field CONTINUOUS Lcom/skydoves/sandwich/datasource/DataSource$ConcatStrategy;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/sandwich/datasource/DataSource$ConcatStrategy;
 	public static fun values ()[Lcom/skydoves/sandwich/datasource/DataSource$ConcatStrategy;
 }

@@ -70,6 +70,7 @@ public final class com/skydoves/sandwich/ApiResponseExtensionsKt {
 public final class com/skydoves/sandwich/ApiResponseMergePolicy : java/lang/Enum {
 	public static final field IGNORE_FAILURE Lcom/skydoves/sandwich/ApiResponseMergePolicy;
 	public static final field PREFERRED_FAILURE Lcom/skydoves/sandwich/ApiResponseMergePolicy;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/sandwich/ApiResponseMergePolicy;
 	public static fun values ()[Lcom/skydoves/sandwich/ApiResponseMergePolicy;
 }
@@ -207,6 +208,7 @@ public final class com/skydoves/sandwich/StatusCode : java/lang/Enum {
 	public static final field UpgradeRequired Lcom/skydoves/sandwich/StatusCode;
 	public static final field UseProxy Lcom/skydoves/sandwich/StatusCode;
 	public final fun getCode ()I
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/sandwich/StatusCode;
 	public static fun values ()[Lcom/skydoves/sandwich/StatusCode;
 }
