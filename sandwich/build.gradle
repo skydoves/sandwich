@@ -18,7 +18,6 @@ import com.github.skydoves.sandwich.Dependencies
 plugins {
   id 'kotlin'
   id 'org.jetbrains.dokka'
-  id 'binary-compatibility-validator'
 }
 
 ext {

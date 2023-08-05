@@ -19,7 +19,6 @@ plugins {
   id 'kotlin'
   id 'org.jetbrains.kotlin.plugin.serialization'
   id 'org.jetbrains.dokka'
-  id 'binary-compatibility-validator'
 }
 
 ext {
