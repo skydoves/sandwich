@@ -31,6 +31,7 @@ import com.github.skydoves.sandwich.Configuration
 
 plugins {
   id("kotlin")
+  id(libs.plugins.kotlin.serialization.get().pluginId)
 }
 
 rootProject.extra.apply {
@@ -54,4 +55,5 @@ dependencies {
   testImplementation(libs.mock.webserver)
   testImplementation(libs.retrofit.moshi)
   testImplementation(libs.coroutines.test)
+  testImplementation(libs.serialization)
 }
