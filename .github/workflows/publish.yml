@@ -17,7 +17,7 @@ jobs:
         with:
           distribution: zulu
           java-version: 17
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v2.7.0
       - name: Release build
         run: ./gradlew assemble --scan
       - name: Source jar and dokka
