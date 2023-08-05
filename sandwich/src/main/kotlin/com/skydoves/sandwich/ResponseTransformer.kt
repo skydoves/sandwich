@@ -30,6 +30,10 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import okhttp3.Headers
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -534,6 +538,67 @@ public suspend fun <T, V> ApiResponse<T>.suspendMapSuccess(
   if (this is ApiResponse.Success<T>) {
     val invoke = transformer.invoke(data)
     return ApiResponse.of { Response.success(invoke) }
+  }
+  return this as ApiResponse<V>
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps a [T] type of the [ApiResponse] to a [V] type of the [ApiResponse] if the [ApiResponse] is [ApiResponse.Failure].
+ *
+ * @param transformer A transformer that receives [T] and returns [V].
+ *
+ * @return A [V] type of the [ApiResponse].
+ */
+@Suppress("UNCHECKED_CAST")
+public fun <T, V> ApiResponse<T>.mapFailure(
+  contentType: MediaType = "text/plain".toMediaType(),
+  transformer: (ResponseBody?) -> V,
+): ApiResponse<V> {
+  if (this is ApiResponse.Failure.Error<T>) {
+    return ApiResponse.of {
+      Response.error(
+        statusCode.code,
+        transformer(errorBody).toString().toResponseBody(
+          contentType = contentType,
+        ),
+      )
+    }
+  } else if (this is ApiResponse.Failure.Exception<T>) {
+    return ApiResponse.error(exception)
+  }
+  return this as ApiResponse<V>
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps a [T] type of the [ApiResponse] to a [V] type of the [ApiResponse] if the [ApiResponse] is [ApiResponse.Failure].
+ *
+ * @param transformer A suspend transformer that receives [T] and returns [V].
+ *
+ * @return A [V] type of the [ApiResponse].
+ */
+@JvmSynthetic
+@SuspensionFunction
+@Suppress("UNCHECKED_CAST")
+public suspend fun <T, V> ApiResponse<T>.suspendMapFailure(
+  contentType: MediaType = "text/plain".toMediaType(),
+  transformer: suspend (ResponseBody?) -> V,
+): ApiResponse<V> {
+  if (this is ApiResponse.Failure.Error<T>) {
+    val invoke = transformer.invoke(errorBody)
+    return ApiResponse.of {
+      Response.error(
+        statusCode.code,
+        invoke.toString().toResponseBody(
+          contentType = contentType,
+        ),
+      )
+    }
+  } else if (this is ApiResponse.Failure.Exception<T>) {
+    return ApiResponse.error(exception)
   }
   return this as ApiResponse<V>
 }
