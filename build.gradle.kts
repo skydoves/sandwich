@@ -57,11 +57,16 @@ subprojects {
 
   if (!name.contains("app")) {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
-      kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+      kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
       kotlinOptions.freeCompilerArgs += listOf(
         "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
         "-Xexplicit-api=strict",
       )
     }
+  }
+
+  tasks.withType(JavaCompile::class.java).configureEach {
+    this.targetCompatibility = libs.versions.jvmTarget.get()
+    this.sourceCompatibility = libs.versions.jvmTarget.get()
   }
 }
