@@ -17,18 +17,19 @@ pluginManagement {
     gradlePluginPortal()
     google()
     mavenCentral()
+    maven(url = "https://plugins.gradle.org/m2/")
   }
 }
 dependencyResolutionManagement {
-  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
   repositories {
     google()
     mavenCentral()
+    maven(url = "https://plugins.gradle.org/m2/")
   }
 }
 
-rootProject.name='SandwichDemo'
-include ':app'
-include ':sandwich'
-include ':sandwich-datasource'
-include ':sandwich-serialization'
+rootProject.name = "SandwichDemo"
+include(":app")
+include(":sandwich")
+include(":sandwich-datasource")
+include(":sandwich-serialization")
