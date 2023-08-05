@@ -28,7 +28,6 @@
 // limitations under the License.
 
 import com.github.skydoves.sandwich.Configuration
-import com.github.skydoves.sandwich.Dependencies
 
 plugins {
   id("kotlin")
@@ -40,7 +39,7 @@ rootProject.extra.apply {
   set("PUBLISH_VERSION", rootProject.extra.get("rootVersionName"))
 }
 
-apply(from ="${rootDir}/scripts/publish-module.gradle")
+apply(from = "${rootDir}/scripts/publish-module.gradle")
 
 dependencies {
   implementation(libs.coroutines)

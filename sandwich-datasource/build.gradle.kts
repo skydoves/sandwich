@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import com.github.skydoves.sandwich.Configuration
-import com.github.skydoves.sandwich.Dependencies
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
