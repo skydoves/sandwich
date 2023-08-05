@@ -41,7 +41,7 @@ allprojects {
 
   plugins.withType(JavaBasePlugin).configureEach {
     java.toolchain {
-      languageVersion.set(JavaLanguageVersion.of(8))
+      languageVersion.set(JavaLanguageVersion.of(11))
     }
   }
 
@@ -55,10 +55,6 @@ allprojects {
       )
     }
   }
-}
-
-task clean(type: Delete) {
-  delete rootProject.buildDir
 }
 
 apply from: "${rootDir}/scripts/publish-root.gradle"
