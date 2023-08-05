@@ -47,6 +47,7 @@ android {
     targetSdk = Configuration.targetSdk
     versionCode = Configuration.versionCode
     versionName = Configuration.versionName
+    multiDexEnabled = true
   }
 
   buildFeatures {
@@ -81,4 +82,6 @@ dependencies {
 
   implementation(libs.glide)
   implementation(libs.timber)
+
+  implementation("androidx.multidex:multidex:2.0.1")
 }
