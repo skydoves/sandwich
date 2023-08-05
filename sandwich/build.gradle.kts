@@ -44,7 +44,7 @@ apply(from ="${rootDir}/scripts/publish-module.gradle")
 
 dependencies {
   implementation(libs.coroutines)
-  implementation(libs.retrofit)
+  api(libs.retrofit)
   api(libs.okhttp)
 
   // unit test
