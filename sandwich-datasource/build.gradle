@@ -49,5 +49,3 @@ dependencies {
   testImplementation Dependencies.retrofitMoshi
   testImplementation Dependencies.coroutinesTest
 }
-
-apply from: "$rootDir/spotless.gradle"
