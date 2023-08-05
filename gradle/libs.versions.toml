@@ -1,0 +1,70 @@
+[versions]
+agp = "8.1.0"
+kotlin = "1.9.0"
+dokka = "1.8.20"
+jvmTarget = "11"
+mavenPublish = "1.3.0"
+binaryCompatibility = "0.13.2"
+appcompat = "1.6.1"
+material = "1.9.0"
+retrofit = "2.9.0"
+okhttp = "4.11.0"
+coroutines = "1.7.3"
+kotlinSerialization = "1.5.1"
+ksp = "1.9.0-1.0.12"
+moshi = "1.15.0"
+glide = "4.15.1"
+androidxLifecycle = "2.6.1"
+androidxMacroBenchmark = "1.2.0-beta02"
+androidxProfileinstaller = "1.3.1"
+androidxUiAutomator = "2.3.0-alpha04"
+junit = "4.13.2"
+androidxTest = "1.5.2"
+androidxJunit = "1.1.5"
+androidxArchTest = "2.2.0"
+mockito = "3.12.4"
+mockitoKotlin = "2.2.0"
+timber = "5.0.1"
+spotless = "6.19.0"
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+nexusPlugin = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "mavenPublish" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+kotlin-binary-compatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binaryCompatibility" }
+
+[libraries]
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
+moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
+lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+
+arch-test = { group = "androidx.arch.core", name = "core-testing", version.ref = "androidxArchTest" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
+mockito-kotlin = { group = "com.nhaarman.mockitokotlin2", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+mock-webserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidxProfileinstaller" }
+androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidxMacroBenchmark" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTest" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTest" }
+androidx-test-junit = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxJunit" }
+androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "androidxUiAutomator" }

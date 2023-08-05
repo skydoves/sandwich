@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.sandwichdemo.mapper
 
 import com.skydoves.sandwich.ApiResponse
@@ -27,7 +26,7 @@ import com.skydoves.sandwichdemo.model.Poster
  */
 object SuccessPosterMapper : ApiSuccessModelMapper<List<Poster>, Poster?> {
 
-  override fun map(apiErrorResponse: ApiResponse.Success<List<Poster>>): Poster? {
-    return apiErrorResponse.data.firstOrNull()
+  override fun map(apiSuccessResponse: ApiResponse.Success<List<Poster>>): Poster? {
+    return apiSuccessResponse.data.firstOrNull()
   }
 }

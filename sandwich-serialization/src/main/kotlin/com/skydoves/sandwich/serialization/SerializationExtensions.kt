@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.sandwich.serialization
 
 import com.skydoves.sandwich.ApiResponse

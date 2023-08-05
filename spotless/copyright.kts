@@ -13,19 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.skydoves.sandwich
-
-import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
-
-internal class TestApiResponseSuspendOperator<T> constructor(
-  private val onSuccess: suspend () -> Unit,
-  private val onError: suspend () -> Unit,
-  private val onException: suspend () -> Unit,
-) : ApiResponseSuspendOperator<T>() {
-
-  override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) = onSuccess()
-
-  override suspend fun onError(apiResponse: ApiResponse.Failure.Error<T>) = onError()
-
-  override suspend fun onException(apiResponse: ApiResponse.Failure.Exception<T>) = onException()
-}
