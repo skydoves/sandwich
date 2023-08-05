@@ -15,7 +15,9 @@
  */
 package com.skydoves.sandwich
 
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -424,6 +426,20 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       poster = data
     }
     assertThat(poster, `is`(response.body()?.first()))
+  }
+
+  @Test
+  fun suspendMapSuccessTest() = runTest {
+    var poster: Poster? = null
+    val response =
+      Response.success(flowOf(listOf(Poster.create(), Poster.create(), Poster.create())))
+    val apiResponse = ApiResponse.of { response }
+
+    val mappedResponse = apiResponse.suspendMapSuccess { first().first() }
+    mappedResponse.onSuccess {
+      poster = data
+    }
+    assertThat(poster, `is`(response.body()?.first()?.first()))
   }
 
   @Test
