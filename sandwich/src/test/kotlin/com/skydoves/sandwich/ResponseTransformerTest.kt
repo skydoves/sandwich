@@ -15,9 +15,14 @@
  */
 package com.skydoves.sandwich
 
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
@@ -424,6 +429,43 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       poster = data
     }
     assertThat(poster, `is`(response.body()?.first()))
+  }
+
+  @Test
+  fun suspendMapSuccessTest() = runTest {
+    var poster: Poster? = null
+    val response =
+      Response.success(flowOf(listOf(Poster.create(), Poster.create(), Poster.create())))
+    val apiResponse = ApiResponse.of { response }
+
+    val mappedResponse = apiResponse.suspendMapSuccess { first().first() }
+    mappedResponse.onSuccess {
+      poster = data
+    }
+    assertThat(poster, `is`(response.body()?.first()?.first()))
+  }
+
+  @Test
+  fun mapFailureTest() {
+    var message: String? = null
+    val response = Response.error<String>(
+      403,
+      (
+        """{"code":10001, "message":"This is a custom error message"}"""
+          .trimIndent()
+        ).toResponseBody(
+        contentType = "text/plain".toMediaType(),
+      ),
+    )
+    val apiResponse = ApiResponse.of { response }
+    apiResponse.mapFailure {
+      val envelope = Json.decodeFromString<ErrorEnvelope>(it?.string().orEmpty())
+      """{"message":"${envelope.message}"}"""
+    }.onError {
+      val data = Json.decodeFromString<Message>(errorBody?.string().orEmpty())
+      message = data.message
+    }
+    assertThat(message, `is`("This is a custom error message"))
   }
 
   @Test
