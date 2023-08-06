@@ -21,12 +21,10 @@ plugins {
   alias(libs.plugins.kotlin.kapt) apply false
   alias(libs.plugins.ksp) apply false
   alias(libs.plugins.kotlin.binary.compatibility)
-  alias(libs.plugins.nexusPlugin)
+  alias(libs.plugins.nexus.plugin)
   alias(libs.plugins.spotless)
   alias(libs.plugins.dokka)
 }
-
-apply(from ="${rootDir}/scripts/publish-root.gradle")
 
 apiValidation {
   ignoredProjects.addAll(listOf("app"))
