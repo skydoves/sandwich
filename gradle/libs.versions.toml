@@ -3,7 +3,7 @@ agp = "8.1.0"
 kotlin = "1.9.0"
 dokka = "1.8.20"
 jvmTarget = "11"
-mavenPublish = "2.0.0-rc-1"
+nexusPlugin = "0.25.3"
 binaryCompatibility = "0.13.2"
 appcompat = "1.6.1"
 material = "1.9.0"
@@ -35,7 +35,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
-nexusPlugin = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "mavenPublish" }
+nexus-plugin = { id = "com.vanniktech.maven.publish", version.ref = "nexusPlugin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kotlin-binary-compatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binaryCompatibility" }
 

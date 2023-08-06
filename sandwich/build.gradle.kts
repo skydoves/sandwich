@@ -19,15 +19,27 @@ import com.github.skydoves.sandwich.Configuration
 plugins {
   id("kotlin")
   id(libs.plugins.kotlin.serialization.get().pluginId)
+  id(libs.plugins.nexus.plugin.get().pluginId)
 }
 
-rootProject.extra.apply {
-  set("PUBLISH_GROUP_ID", Configuration.artifactGroup)
-  set("PUBLISH_ARTIFACT_ID", "sandwich")
-  set("PUBLISH_VERSION", rootProject.extra.get("rootVersionName"))
-}
+apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
 
-apply(from = "${rootDir}/scripts/publish-module.gradle")
+mavenPublishing {
+  val artifactId = "sandwich"
+  coordinates(
+    Configuration.artifactGroup,
+    artifactId,
+    rootProject.extra.get("libVersion").toString()
+  )
+
+  pom {
+    name.set(artifactId)
+    description.set(
+      "A lightweight and pluggable sealed API library for modeling Retrofit " +
+        "responses and handling exceptions on Kotlin and Android."
+    )
+  }
+}
 
 dependencies {
   implementation(libs.coroutines)
