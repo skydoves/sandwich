@@ -44,13 +44,6 @@ android {
   lint {
     abortOnError = false
   }
-
-  publishing {
-    multipleVariants {
-      allVariants()
-      withJavadocJar()
-    }
-  }
 }
 
 dependencies {
