@@ -46,6 +46,7 @@ afterEvaluate {
           from components.java
         }
 
+        artifact androidSourcesJar
         artifact javadocJar
 
         pom {
