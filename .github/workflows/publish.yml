@@ -23,7 +23,7 @@ jobs:
       - name: Source jar and dokka
         run: ./gradlew androidSourcesJar javadocJar --scan
       - name: Publish to MavenCentral
-        run: ./gradlew publishReleasePublicationToSonatypeRepository --max-workers 1 closeAndReleaseSonatypeStagingRepository --scan
+        run: ./gradlew publishToSonatype --max-workers 1 closeAndReleaseSonatypeStagingRepository --scan
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
