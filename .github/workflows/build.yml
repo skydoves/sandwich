@@ -20,7 +20,7 @@ jobs:
         with:
           distribution: zulu
           java-version: 17
-      - uses: gradle/gradle-build-action@v2.7.0
+      - uses: gradle/gradle-build-action@v2.7.1
       - name: spotless
         run: ./gradlew spotlessCheck
 
@@ -35,7 +35,7 @@ jobs:
         with:
           distribution: zulu
           java-version: 17
-      - uses: gradle/gradle-build-action@v2.7.0
+      - uses: gradle/gradle-build-action@v2.7.1
       - name: API check
         run: ./gradlew apiCheck
 
@@ -48,7 +48,7 @@ jobs:
         with:
           distribution: zulu
           java-version: 17
-      - uses: gradle/gradle-build-action@v2.7.0
+      - uses: gradle/gradle-build-action@v2.7.1
       - name: Make Gradle executable
         run: chmod +x ./gradlew
       - name: Build with Gradle
