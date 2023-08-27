@@ -33,7 +33,7 @@ theme:
   name: 'material'
   language: 'en'
   icon:
-    logo: material/leaf-maple
+    logo: material/sandwich
 
   palette:
     primary: 'amber'
