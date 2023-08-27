@@ -30,7 +30,7 @@ theme:
   name: 'material'
   language: 'en'
   icon:
-    logo: material/sandwich
+    logo: material/bread-slice
 
   palette:
     primary: 'amber'
