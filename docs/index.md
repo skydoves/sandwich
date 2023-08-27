@@ -55,7 +55,9 @@ You can delve deeper into the art of modeling Retrofit responses through the fol
 - [Handling success data and error callback responses from a network for Android projects using Sandwich](https://proandroiddev.com/handling-success-data-and-error-callback-responses-from-a-network-for-android-projects-using-b53a26214cef)
 
 ## Use Cases
+
 You can also check out nice use cases of this library in the repositories below:
+
 - [Pokedex](https://github.com/skydoves/pokedex): 🗡️ Android Pokedex using Hilt, Motion, Coroutines, Flow, Jetpack (Room, ViewModel, LiveData) based on MVVM architecture.
 - [ChatGPT Android](https://github.com/skydoves/chatgpt-android): 📲 ChatGPT Android demonstrates OpenAI's ChatGPT on Android with Stream Chat SDK for Compose.
 - [DisneyMotions](https://github.com/skydoves/DisneyMotions): 🦁 A Disney app using transformation motions based on MVVM (ViewModel, Coroutines, LiveData, Room, Repository, Koin) architecture.
