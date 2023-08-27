@@ -60,6 +60,9 @@ dependencies {
 ## R8 / ProGuard
 The specific rules are [already bundled](sandwich/src/main/resources/META-INF/proguard/sandwich.pro) into the JAR which can be interpreted by R8 automatically.
 
+## Documentation
+
+For comprehensive details about Sandwich, please refer to the complete [documentation available here](https://skydoves.github.io/sandwich/).
 
 ## Use Cases
 You can also check out nice use cases of this library in the repositories below:
