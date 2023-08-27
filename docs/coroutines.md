@@ -2,7 +2,7 @@
 
 You can seamlessly integrate the `ApiResponse<*>` type into your Retrofit services by using the `suspend` keyword. Here's how to set it up:
 
-1. Build your `Retrofit` instance using the `ApiResponseCallAdapterFactory` call adapter factory:
+First, build your `Retrofit` instance using the `ApiResponseCallAdapterFactory` call adapter factory:
 
 ```kotlin
 val retrofit = Retrofit.Builder()
@@ -11,7 +11,7 @@ val retrofit = Retrofit.Builder()
     .build()
 ```
 
-2. Define your service interface with the `suspend` keyword and `ApiResponse<*>` as the response type:
+Next, define your service interface with the `suspend` keyword and `ApiResponse<*>` as the response type:
 
 ```kotlin
 interface MyApiService {
@@ -21,7 +21,7 @@ interface MyApiService {
 }
 ```
 
-3. Execute the defined service to receive the `ApiResponse`:
+Lastly, execute the defined service to receive the `ApiResponse`:
 
 ```kotlin
 val apiService = retrofit.create(MyApiService::class.java)
