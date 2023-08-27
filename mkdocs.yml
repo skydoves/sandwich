@@ -1,0 +1,70 @@
+site_name: Sandwich
+site_description: 'An adaptable and lightweight sealed API library designed for Kotlin and Android, specializing in efficient Retrofit response modeling and exception handling.
+
+Topics
+'
+site_author: 'Jaewoong (skydoves)'
+site_url: 'https://github.com/skydoves/sandwich'
+edit_uri: 'tree/main/docs/'
+remote_branch: gh-pages
+
+docs_dir: docs
+
+# Navigation
+nav:
+  - 'Overview': index.md
+  - 'Snapshot': snapshot.md
+  - 'ApiResponse': apiresponse.md
+  - 'Coroutines': coroutines.md
+  - 'Retrieve': retrieve.md
+  - 'Mapper': mapper.md
+  - 'Retry': retry.md
+  - 'Operator': operator.md
+  - 'Merge': merge.md
+  - 'Serialization': serialization.md
+  - 'Sponsor 🩷': sponsor.md
+    
+# Repository
+repo_name: 'sandwich'
+repo_url: 'https://github.com/skydoves/sandwich'
+
+# Configuration
+theme:
+  name: 'material'
+  language: 'en'
+  icon:
+    logo: material/leaf-maple
+
+  palette:
+    primary: 'amber'
+    accent: 'amber'
+    scheme: slate
+
+  font:
+    text: 'Roboto'
+    code: 'JetBrains Mono'
+
+  features:
+    - content.tabs.link  
+    - content.code.copy
+    - content.code.annotate
+
+extra:
+  analytics:
+    provider: google
+    property: G-1SBY14Q79E    
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - attr_list
+  - codehilite:
+      guess_lang: false
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.betterem
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
