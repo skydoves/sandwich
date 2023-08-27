@@ -1,8 +1,5 @@
 site_name: Sandwich
-site_description: 'An adaptable and lightweight sealed API library designed for Kotlin and Android, specializing in efficient Retrofit response modeling and exception handling.
-
-Topics
-'
+site_description: 'An adaptable and lightweight sealed API library designed for Kotlin and Android, specializing in efficient Retrofit response modeling and exception handling.'
 site_author: 'Jaewoong (skydoves)'
 site_url: 'https://github.com/skydoves/sandwich'
 edit_uri: 'tree/main/docs/'
