@@ -865,4 +865,15 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       assertThat(it, `is`("hello, foo"))
     }
   }
+
+  @Test
+  fun transformSuccessResponseWithThen() = runTest {
+    val response1 = Response.success("foo")
+    val response2 = Response.success("bar")
+    val apiResponse1 = ApiResponse.of { response1 }
+    val apiResponse2 = ApiResponse.of { response2 }
+    val apiResponse3 = apiResponse1 then { apiResponse2 }
+
+    assertThat(apiResponse3.getOrThrow(), `is`("bar"))
+  }
 }
