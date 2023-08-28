@@ -126,6 +126,10 @@ class TokenRefreshGlobalOperator<T> @Inject constructor(
   }
 
   override suspend fun onError(apiResponse: ApiResponse.Failure.Error<T>) {
+    // verify whether the current request was previously issued as an authenticated request
+    apiResponse.headers["Authorization"] ?: return
+
+    // refresh an access token if the error response is Unauthorized or Forbidden
     when (apiResponse.statusCode) {
       StatusCode.Unauthorized, StatusCode.Forbidden -> {
         userToken?.let { token ->
