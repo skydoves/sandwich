@@ -924,3 +924,49 @@ public suspend inline fun <T, R> ApiResponse<T>.toSuspendFlow(
     emptyFlow()
   }
 }
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Composition the [ApiResponse] with a given [ApiResponse] from the [transformer].
+ *
+ * If the give [ApiResponse] success, execute [transformer] for executing the next request.
+ * If the give [ApiResponse] failed, it returns the first [ApiResponse.Failure] response.
+ *
+ * @param transformer A transformer lambda receives successful data and returns anything.
+ *
+ * @return A mapped custom [V] success response or failed response depending on the given [ApiResponse].
+ */
+@Suppress("UNCHECKED_CAST")
+@JvmSynthetic
+public inline infix fun <T : Any, V : Any> ApiResponse<T>.then(
+  transformer: (T) -> ApiResponse<V>,
+): ApiResponse<V> {
+  if (this is ApiResponse.Success<T>) {
+    return transformer(this.data)
+  }
+  return this as ApiResponse<V>
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Composition the [ApiResponse] with a given [ApiResponse] from the [transformer].
+ *
+ * If the give [ApiResponse] success, execute [transformer] for executing the next request.
+ * If the give [ApiResponse] failed, it returns the first [ApiResponse.Failure] response.
+ *
+ * @param transformer A transformer lambda receives successful data and returns anything.
+ *
+ * @return A mapped custom [V] success response or failed response depending on the given [ApiResponse].
+ */
+@Suppress("UNCHECKED_CAST")
+@JvmSynthetic
+public suspend inline infix fun <T : Any, V : Any> ApiResponse<T>.thenSuspend(
+  crossinline transformer: suspend (T) -> ApiResponse<V>,
+): ApiResponse<V> {
+  if (this is ApiResponse.Success<T>) {
+    return transformer(this.data)
+  }
+  return this as ApiResponse<V>
+}
