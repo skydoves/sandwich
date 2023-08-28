@@ -6,7 +6,7 @@
 This indicates a successful network request. From the `ApiResponse.Success`, you can retrieve the response's body data as well as supplementary details such as `StatusCode`, `Headers`, and more.
 
 ```kotlin
-val data: List<Poster>? = response.data
+val data: List<Poster> = response.data
 val statusCode: StatusCode = response.statusCode
 val headers: Headers = response.headers
 ```
