@@ -13,7 +13,7 @@ val data: List<Poster>? = disneyService.fetchDisneyPosterList().getOrNull()
 Returns the encapsulated data if this instance represents `ApiResponse.Success` or returns a default value if this is failed.
 
 ```kotlin
-val data: List<Poster>? = disneyService.fetchDisneyPosterList().getOrElse(emptyList())
+val data: List<Poster> = disneyService.fetchDisneyPosterList().getOrElse(emptyList())
 ```
 
 ## getOrThrow
@@ -21,7 +21,7 @@ Returns the encapsulated data if this instance represents `ApiResponse.Success` 
 
 ```kotlin
 try {
-  val data: List<Poster>? = disneyService.fetchDisneyPosterList().getOrThrow()
+  val data: List<Poster> = disneyService.fetchDisneyPosterList().getOrThrow()
 } catch (e: Exception) {
   e.printStackTrace()
 }

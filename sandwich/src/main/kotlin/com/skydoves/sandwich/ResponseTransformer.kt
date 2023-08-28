@@ -962,7 +962,7 @@ public inline infix fun <T : Any, V : Any> ApiResponse<T>.then(
  */
 @Suppress("UNCHECKED_CAST")
 @JvmSynthetic
-public suspend inline infix fun <T : Any, V : Any> ApiResponse<T>.thenSuspend(
+public suspend inline infix fun <T : Any, V : Any> ApiResponse<T>.suspendThen(
   crossinline transformer: suspend (T) -> ApiResponse<V>,
 ): ApiResponse<V> {
   if (this is ApiResponse.Success<T>) {
