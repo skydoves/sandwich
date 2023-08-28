@@ -130,6 +130,8 @@ public final class com/skydoves/sandwich/ResponseTransformer {
 	public static final synthetic fun suspendOnSuccess (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiSuccessModelMapper;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOnSuccess (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOperator (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/operators/ApiResponseSuspendOperator;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun then (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun thenSuspend (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun toFlow (Lcom/skydoves/sandwich/ApiResponse;)Lkotlinx/coroutines/flow/Flow;
 	public static final synthetic fun toFlow (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/flow/Flow;
 	public static final synthetic fun toSuspendFlow (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
