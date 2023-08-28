@@ -1,4 +1,4 @@
-# Empty Body (No Content 204)
+# Sequential
 
 Sandwich provides sequential solutions for scenarios where you require sequential execution of network requests.
 
