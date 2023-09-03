@@ -37,6 +37,8 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -52,8 +54,12 @@ import kotlin.coroutines.EmptyCoroutineContext
 @JvmSynthetic
 public inline fun <T> Call<T>.request(
   crossinline onResult: (response: ApiResponse<T>) -> Unit,
-): Call<T> = apply {
+): Call<T> {
+  contract {
+    callsInPlace(onResult, InvocationKind.AT_MOST_ONCE)
+  }
   enqueue(getCallbackFromOnResult(onResult))
+  return this
 }
 
 /**
@@ -223,6 +229,7 @@ public fun <T> ApiResponse<T>.getOrThrow(): T {
 public inline fun <T> ApiResponse<T>.onSuccess(
   crossinline onResult: ApiResponse.Success<T>.() -> Unit,
 ): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Success) {
     onResult(this)
   }
@@ -244,6 +251,7 @@ public inline fun <T, V> ApiResponse<T>.onSuccess(
   mapper: ApiSuccessModelMapper<T, V>,
   crossinline onResult: V.() -> Unit,
 ): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Success) {
     onResult(map(mapper))
   }
@@ -264,6 +272,7 @@ public inline fun <T, V> ApiResponse<T>.onSuccess(
 public suspend inline fun <T> ApiResponse<T>.suspendOnSuccess(
   crossinline onResult: suspend ApiResponse.Success<T>.() -> Unit,
 ): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Success) {
     onResult(this)
   }
@@ -286,6 +295,7 @@ public suspend inline fun <T, V> ApiResponse<T>.suspendOnSuccess(
   mapper: ApiSuccessModelMapper<T, V>,
   crossinline onResult: suspend V.() -> Unit,
 ): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Success) {
     onResult(map(mapper))
   }
@@ -305,6 +315,7 @@ public suspend inline fun <T, V> ApiResponse<T>.suspendOnSuccess(
 public inline fun <T> ApiResponse<T>.onFailure(
   crossinline onResult: ApiResponse.Failure<T>.() -> Unit,
 ): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure<T>) {
     onResult(this)
   }
@@ -325,6 +336,7 @@ public inline fun <T> ApiResponse<T>.onFailure(
 public suspend inline fun <T> ApiResponse<T>.suspendOnFailure(
   crossinline onResult: suspend ApiResponse.Failure<T>.() -> Unit,
 ): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure<T>) {
     onResult(this)
   }
@@ -344,6 +356,7 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnFailure(
 public inline fun <T> ApiResponse<T>.onError(
   crossinline onResult: ApiResponse.Failure.Error<T>.() -> Unit,
 ): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Error) {
     onResult(this)
   }
@@ -366,6 +379,7 @@ public inline fun <T, V> ApiResponse<T>.onError(
   mapper: ApiErrorModelMapper<V>,
   crossinline onResult: V.() -> Unit,
 ): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Error) {
     onResult(map(mapper))
   }
@@ -386,6 +400,7 @@ public inline fun <T, V> ApiResponse<T>.onError(
 public suspend inline fun <T> ApiResponse<T>.suspendOnError(
   crossinline onResult: suspend ApiResponse.Failure.Error<T>.() -> Unit,
 ): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Error) {
     onResult(this)
   }
@@ -409,6 +424,7 @@ public suspend inline fun <T, V> ApiResponse<T>.suspendOnError(
   mapper: ApiErrorModelMapper<V>,
   crossinline onResult: suspend V.() -> Unit,
 ): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Error) {
     onResult(map(mapper))
   }
@@ -428,6 +444,7 @@ public suspend inline fun <T, V> ApiResponse<T>.suspendOnError(
 public inline fun <T> ApiResponse<T>.onException(
   crossinline onResult: ApiResponse.Failure.Exception<T>.() -> Unit,
 ): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Exception) {
     onResult(this)
   }
@@ -448,6 +465,7 @@ public inline fun <T> ApiResponse<T>.onException(
 public suspend inline fun <T> ApiResponse<T>.suspendOnException(
   crossinline onResult: suspend ApiResponse.Failure.Exception<T>.() -> Unit,
 ): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Exception) {
     onResult(this)
   }
@@ -472,10 +490,16 @@ public inline fun <T> ApiResponse<T>.onProcedure(
   crossinline onSuccess: ApiResponse.Success<T>.() -> Unit,
   crossinline onError: ApiResponse.Failure.Error<T>.() -> Unit,
   crossinline onException: ApiResponse.Failure.Exception<T>.() -> Unit,
-): ApiResponse<T> = apply {
+): ApiResponse<T> {
+  contract {
+    callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(onError, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(onException, InvocationKind.AT_MOST_ONCE)
+  }
   this.onSuccess(onSuccess)
   this.onError(onError)
   this.onException(onException)
+  return this
 }
 
 /**
@@ -497,10 +521,16 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnProcedure(
   crossinline onSuccess: suspend ApiResponse.Success<T>.() -> Unit,
   crossinline onError: suspend ApiResponse.Failure.Error<T>.() -> Unit,
   crossinline onException: suspend ApiResponse.Failure.Exception<T>.() -> Unit,
-): ApiResponse<T> = apply {
+): ApiResponse<T> {
+  contract {
+    callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(onError, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(onException, InvocationKind.AT_MOST_ONCE)
+  }
   this.suspendOnSuccess(onSuccess)
   this.suspendOnError(onError)
   this.suspendOnException(onException)
+  return this
 }
 
 /**
@@ -514,6 +544,7 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnProcedure(
  */
 @Suppress("UNCHECKED_CAST")
 public fun <T, V> ApiResponse<T>.mapSuccess(transformer: T.() -> V): ApiResponse<V> {
+  contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Success<T>) {
     return ApiResponse.of { Response.success(transformer(data)) }
   }
@@ -535,6 +566,7 @@ public fun <T, V> ApiResponse<T>.mapSuccess(transformer: T.() -> V): ApiResponse
 public suspend fun <T, V> ApiResponse<T>.suspendMapSuccess(
   transformer: suspend T.() -> V,
 ): ApiResponse<V> {
+  contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Success<T>) {
     val invoke = transformer.invoke(data)
     return ApiResponse.of { Response.success(invoke) }
@@ -556,6 +588,7 @@ public fun <T, V> ApiResponse<T>.mapFailure(
   contentType: MediaType = "text/plain".toMediaType(),
   transformer: (ResponseBody?) -> V,
 ): ApiResponse<V> {
+  contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Error<T>) {
     return ApiResponse.of {
       Response.error(
@@ -587,6 +620,7 @@ public suspend fun <T, V> ApiResponse<T>.suspendMapFailure(
   contentType: MediaType = "text/plain".toMediaType(),
   transformer: suspend (ResponseBody?) -> V,
 ): ApiResponse<V> {
+  contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Error<T>) {
     val invoke = transformer.invoke(errorBody)
     return ApiResponse.of {
@@ -626,6 +660,7 @@ public fun <T, V> ApiResponse.Success<T>.map(mapper: ApiSuccessModelMapper<T, V>
  * @return A mapped custom [V] error response model.
  */
 public fun <T, V> ApiResponse.Success<T>.map(mapper: (ApiResponse.Success<T>) -> V): V {
+  contract { callsInPlace(mapper, InvocationKind.AT_MOST_ONCE) }
   return mapper(this)
 }
 
@@ -644,6 +679,7 @@ public inline fun <T, V> ApiResponse.Success<T>.map(
   mapper: ApiSuccessModelMapper<T, V>,
   crossinline onResult: V.() -> Unit,
 ) {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   onResult(mapper.map(this))
 }
 
@@ -663,6 +699,7 @@ public suspend inline fun <T, V> ApiResponse.Success<T>.suspendMap(
   mapper: ApiSuccessModelMapper<T, V>,
   crossinline onResult: suspend V.() -> Unit,
 ) {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   onResult(mapper.map(this))
 }
 
@@ -680,6 +717,7 @@ public suspend inline fun <T, V> ApiResponse.Success<T>.suspendMap(
 public suspend inline fun <T, V> ApiResponse.Success<T>.suspendMap(
   crossinline mapper: suspend (ApiResponse.Success<T>) -> V,
 ): V {
+  contract { callsInPlace(mapper, InvocationKind.AT_MOST_ONCE) }
   return mapper(this)
 }
 
@@ -706,6 +744,7 @@ public fun <T, V> ApiResponse.Failure.Error<T>.map(mapper: ApiErrorModelMapper<V
  * @return A mapped custom [V] error response model.
  */
 public fun <T, V> ApiResponse.Failure.Error<T>.map(mapper: (ApiResponse.Failure.Error<T>) -> V): V {
+  contract { callsInPlace(mapper, InvocationKind.AT_MOST_ONCE) }
   return mapper(this)
 }
 
@@ -724,6 +763,7 @@ public inline fun <T, V> ApiResponse.Failure.Error<T>.map(
   mapper: ApiErrorModelMapper<V>,
   crossinline onResult: V.() -> Unit,
 ) {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   onResult(mapper.map(this))
 }
 
@@ -743,6 +783,7 @@ public suspend inline fun <T, V> ApiResponse.Failure.Error<T>.suspendMap(
   mapper: ApiErrorModelMapper<V>,
   crossinline onResult: suspend V.() -> Unit,
 ) {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   onResult(mapper.map(this))
 }
 
@@ -896,6 +937,7 @@ public fun <T> ApiResponse<T>.toFlow(): Flow<T> {
 public inline fun <T, R> ApiResponse<T>.toFlow(
   crossinline transformer: T.() -> R,
 ): Flow<R> {
+  contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
   return if (this is ApiResponse.Success) {
     flowOf(data.transformer())
   } else {
@@ -918,6 +960,7 @@ public inline fun <T, R> ApiResponse<T>.toFlow(
 public suspend inline fun <T, R> ApiResponse<T>.toSuspendFlow(
   crossinline transformer: suspend T.() -> R,
 ): Flow<R> {
+  contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
   return if (this is ApiResponse.Success) {
     flowOf(data.transformer())
   } else {
@@ -942,6 +985,7 @@ public suspend inline fun <T, R> ApiResponse<T>.toSuspendFlow(
 public inline infix fun <T : Any, V : Any> ApiResponse<T>.then(
   transformer: (T) -> ApiResponse<V>,
 ): ApiResponse<V> {
+  contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Success<T>) {
     return transformer(this.data)
   }
@@ -965,6 +1009,7 @@ public inline infix fun <T : Any, V : Any> ApiResponse<T>.then(
 public suspend inline infix fun <T : Any, V : Any> ApiResponse<T>.suspendThen(
   crossinline transformer: suspend (T) -> ApiResponse<V>,
 ): ApiResponse<V> {
+  contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Success<T>) {
     return transformer(this.data)
   }
