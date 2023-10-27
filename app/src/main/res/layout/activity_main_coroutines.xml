@@ -26,7 +26,7 @@
       android:clipToPadding="false"
       android:padding="6dp"
       app:adapter="@{adapter}"
-      app:adapterPosterList="@{viewModel.posterListFlow}"
+      app:adapterPosterList="@{viewModel.posterList}"
       app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
       app:spanCount="2"
       tools:listitem="@layout/item_poster" />

@@ -18,10 +18,17 @@ package com.skydoves.sandwichdemo
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwichdemo.model.Poster
 import com.skydoves.sandwichdemo.network.DisneyService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
-class MainRepository constructor(
+class MainRepository(
   private val disneyService: DisneyService,
 ) {
+
+  fun fetchPostersFlow(): Flow<ApiResponse<List<Poster>>> = flow {
+    val response = disneyService.fetchDisneyPosters()
+    emit(response)
+  }
 
   suspend fun fetchPosters(): ApiResponse<List<Poster>> = disneyService.fetchDisneyPosters()
 }

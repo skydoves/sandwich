@@ -19,22 +19,40 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skydoves.sandwich.StatusCode
+import com.skydoves.sandwich.getOrThrow
+import com.skydoves.sandwich.isSuccess
 import com.skydoves.sandwich.message
+import com.skydoves.sandwich.messageOrNull
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.suspendOnSuccess
 import com.skydoves.sandwichdemo.model.Poster
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class MainViewModel constructor(mainRepository: MainRepository) : ViewModel() {
-
-  private val _posterListFlow = MutableStateFlow<List<Poster>?>(emptyList())
-  val posterListFlow: StateFlow<List<Poster>?> = _posterListFlow
+class MainViewModel(mainRepository: MainRepository) : ViewModel() {
 
   val toastLiveData = MutableLiveData<String>()
+
+  // Use Case 1 - update the fetched posters as a property
+  val posterList: StateFlow<List<Poster>> = mainRepository.fetchPostersFlow().map {
+    if (it.isSuccess) {
+      it.getOrThrow()
+    } else {
+      toastLiveData.postValue(it.messageOrNull)
+      emptyList()
+    }
+  }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
+  // End (Use Case 1)
+
+  // Use Case 2 - update the fetched posters manually
+  private val _posterList2Flow = MutableStateFlow<List<Poster>?>(emptyList())
+  val posterList2Flow: StateFlow<List<Poster>?> = _posterList2Flow
 
   init {
     Timber.d("initialized MainViewModel.")
@@ -43,7 +61,7 @@ class MainViewModel constructor(mainRepository: MainRepository) : ViewModel() {
       mainRepository.fetchPosters()
         // handles the success scenario when the API request succeeds.
         .suspendOnSuccess {
-          _posterListFlow.emit(data)
+          _posterList2Flow.emit(data)
         }
         // handles the error scenario when the API request fail.
         // e.g., internal server error.
@@ -63,4 +81,5 @@ class MainViewModel constructor(mainRepository: MainRepository) : ViewModel() {
         }
     }
   }
+  // End (Use Case 2)
 }
