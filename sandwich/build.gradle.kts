@@ -13,50 +13,89 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
+/*
+ * Designed and developed by 2020 skydoves (Jaewoong Eum)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import com.github.skydoves.sandwich.Configuration
 
 plugins {
-  id("kotlin")
+  id(libs.plugins.kotlin.multiplatform.get().pluginId)
   id(libs.plugins.kotlin.serialization.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
+  java
 }
 
 apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
 
 mavenPublishing {
-  val artifactId = "sandwich"
-  coordinates(
-    Configuration.artifactGroup,
-    artifactId,
-    rootProject.extra.get("libVersion").toString()
-  )
-
   pom {
-    name.set(artifactId)
-    description.set(
-      "A lightweight and pluggable sealed API library for modeling Retrofit " +
-        "responses and handling exceptions on Kotlin and Android."
-    )
+    version = rootProject.extra.get("libVersion").toString()
+    group = Configuration.artifactGroup
   }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
-  kotlinOptions.freeCompilerArgs += listOf("-Xopt-in=kotlin.contracts.ExperimentalContracts")
+kotlin {
+  jvmToolchain(11)
+  jvm {
+    compilations.all {
+      kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
+    }
+    withJava()
+  }
+
+  sourceSets {
+    all { languageSettings.optIn("kotlin.contracts.ExperimentalContracts") }
+    val commonMain by getting {
+      dependencies {
+        api(libs.retrofit)
+      }
+    }
+
+    val commonTest by getting {
+      dependencies {
+        implementation(libs.junit)
+        implementation(libs.mockito.core)
+        implementation(libs.mockito.inline)
+        implementation(libs.mockito.kotlin)
+        implementation(libs.mock.webserver)
+        implementation(libs.retrofit.moshi)
+        implementation(libs.coroutines.test)
+        implementation(libs.serialization)
+      }
+    }
+
+    val jvmMain by getting {
+      dependencies {
+        api(libs.okhttp)
+        implementation(libs.coroutines)
+      }
+    }
+    val jvmTest by getting
+  }
+
+  explicitApi()
 }
 
-dependencies {
-  implementation(libs.coroutines)
-  api(libs.retrofit)
-  api(libs.okhttp)
+java {
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
+}
 
-  // unit test
-  testImplementation(libs.junit)
-  testImplementation(libs.mockito.core)
-  testImplementation(libs.mockito.inline)
-  testImplementation(libs.mockito.kotlin)
-  testImplementation(libs.mock.webserver)
-  testImplementation(libs.retrofit.moshi)
-  testImplementation(libs.coroutines.test)
-  testImplementation(libs.serialization)
+tasks.withType(JavaCompile::class.java).configureEach {
+  this.targetCompatibility = JavaVersion.VERSION_11.toString()
+  this.sourceCompatibility = JavaVersion.VERSION_11.toString()
 }
