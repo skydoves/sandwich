@@ -1,0 +1,56 @@
+public final class com/skydoves/sandwich/retrofit/ApiResponseExtensionsKt {
+	public static final synthetic fun apiResponseOf (Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function0;)Lcom/skydoves/sandwich/ApiResponse;
+	public static synthetic fun apiResponseOf$default (Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final fun getApiMessage (Lcom/skydoves/sandwich/ApiResponse;)Ljava/lang/String;
+	public static final fun getBody (Lcom/skydoves/sandwich/ApiResponse$Success;)Ljava/lang/Object;
+	public static final fun getErrorBody (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Lokhttp3/ResponseBody;
+	public static final fun getHeaders (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Lokhttp3/Headers;
+	public static final fun getHeaders (Lcom/skydoves/sandwich/ApiResponse$Success;)Lokhttp3/Headers;
+	public static final fun getPayloadResponse (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Lretrofit2/Response;
+	public static final fun getRaw (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Lokhttp3/Response;
+	public static final fun getRaw (Lcom/skydoves/sandwich/ApiResponse$Success;)Lokhttp3/Response;
+	public static final fun getStatusCode (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Lcom/skydoves/sandwich/StatusCode;
+	public static final fun getStatusCode (Lcom/skydoves/sandwich/ApiResponse$Success;)Lcom/skydoves/sandwich/StatusCode;
+	public static final fun getStatusCode (Lretrofit2/Response;)Lcom/skydoves/sandwich/StatusCode;
+	public static final fun getTagResponse (Lcom/skydoves/sandwich/ApiResponse$Success;)Lretrofit2/Response;
+	public static final fun of (Lcom/skydoves/sandwich/ApiResponse$Companion;Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function0;)Lcom/skydoves/sandwich/ApiResponse;
+	public static synthetic fun of$default (Lcom/skydoves/sandwich/ApiResponse$Companion;Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
+}
+
+public synthetic class com/skydoves/sandwich/retrofit/ApiResponseExtensionsKt$EntriesMappings {
+	public static final synthetic field entries$0 Lkotlin/enums/EnumEntries;
+}
+
+public final class com/skydoves/sandwich/retrofit/ResponseTransformerKt {
+	public static final synthetic fun getCallbackFromOnResult (Lkotlin/jvm/functions/Function1;)Lretrofit2/Callback;
+	public static final synthetic fun getCallbackFromOnResultOnCoroutinesScope (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;)Lretrofit2/Callback;
+	public static final synthetic fun getCallbackFromOnResultWithContext (Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;)Lretrofit2/Callback;
+	public static synthetic fun getCallbackFromOnResultWithContext$default (Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lretrofit2/Callback;
+	public static final fun mapFailure (Lcom/skydoves/sandwich/ApiResponse;Lokhttp3/MediaType;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
+	public static synthetic fun mapFailure$default (Lcom/skydoves/sandwich/ApiResponse;Lokhttp3/MediaType;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final fun mapSuccess (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun merge (Lcom/skydoves/sandwich/ApiResponse;[Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiResponseMergePolicy;)Lcom/skydoves/sandwich/ApiResponse;
+	public static synthetic fun merge$default (Lcom/skydoves/sandwich/ApiResponse;[Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiResponseMergePolicy;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun request (Lretrofit2/Call;Lkotlin/jvm/functions/Function1;)Lretrofit2/Call;
+	public static final synthetic fun suspendMapFailure (Lcom/skydoves/sandwich/ApiResponse;Lokhttp3/MediaType;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun suspendMapFailure$default (Lcom/skydoves/sandwich/ApiResponse;Lokhttp3/MediaType;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final synthetic fun suspendMapSuccess (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapterFactory : retrofit2/CallAdapter$Factory {
+	public static final field Companion Lcom/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapterFactory$Companion;
+	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public static final fun create (Lkotlinx/coroutines/CoroutineScope;)Lcom/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapterFactory;
+	public fun get (Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lretrofit2/CallAdapter;
+}
+
+public final class com/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapterFactory$Companion {
+	public final fun create (Lkotlinx/coroutines/CoroutineScope;)Lcom/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapterFactory;
+	public static synthetic fun create$default (Lcom/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapterFactory$Companion;Lkotlinx/coroutines/CoroutineScope;ILjava/lang/Object;)Lcom/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapterFactory;
+}
+
+public final class com/skydoves/sandwich/retrofit/interceptors/EmptyBodyInterceptor : okhttp3/Interceptor {
+	public static final field INSTANCE Lcom/skydoves/sandwich/retrofit/interceptors/EmptyBodyInterceptor;
+	public fun intercept (Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;
+}
+

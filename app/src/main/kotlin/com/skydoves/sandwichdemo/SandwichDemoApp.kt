@@ -18,6 +18,7 @@
 package com.skydoves.sandwichdemo
 
 import android.app.Application
+import androidx.multidex.BuildConfig
 import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwichdemo.operator.GlobalResponseOperator
 import timber.log.Timber

@@ -15,7 +15,7 @@
  */
 package com.skydoves.sandwichdemo.network
 
-import com.skydoves.sandwich.datasource.DataSource
+import com.skydoves.sandwich.retrofit.datasource.DataSource
 import com.skydoves.sandwichdemo.model.Poster
 import retrofit2.http.GET
 

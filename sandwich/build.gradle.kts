@@ -17,46 +17,119 @@
 import com.github.skydoves.sandwich.Configuration
 
 plugins {
-  id("kotlin")
+  id(libs.plugins.kotlin.multiplatform.get().pluginId)
   id(libs.plugins.kotlin.serialization.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
+  java
 }
 
 apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
 
 mavenPublishing {
-  val artifactId = "sandwich"
-  coordinates(
-    Configuration.artifactGroup,
-    artifactId,
-    rootProject.extra.get("libVersion").toString()
-  )
-
   pom {
-    name.set(artifactId)
-    description.set(
-      "A lightweight and pluggable sealed API library for modeling Retrofit " +
-        "responses and handling exceptions on Kotlin and Android."
-    )
+    version = rootProject.extra.get("libVersion").toString()
+    group = Configuration.artifactGroup
   }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
-  kotlinOptions.freeCompilerArgs += listOf("-Xopt-in=kotlin.contracts.ExperimentalContracts")
+kotlin {
+  jvmToolchain(11)
+  jvm {
+    compilations.all {
+      kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
+    }
+    withJava()
+  }
+  ios()
+  iosSimulatorArm64()
+  macosArm64()
+  macosX64()
+
+  sourceSets {
+    all { languageSettings.optIn("kotlin.contracts.ExperimentalContracts") }
+    val commonMain by getting {
+      dependencies {
+        implementation(libs.coroutines)
+        implementation(libs.okio)
+      }
+    }
+
+    val commonTest by getting {
+      dependencies {
+        dependsOn(commonMain)
+        implementation(libs.coroutines.test)
+        implementation(libs.junit)
+        implementation(libs.mockito.core)
+        implementation(libs.mockito.inline)
+        implementation(libs.mockito.kotlin)
+        implementation(libs.serialization)
+      }
+    }
+
+    val jvmMain by getting {
+      dependencies {
+        implementation(libs.coroutines)
+      }
+    }
+
+    val jvmTest by getting
+
+    val appleTest by creating {
+      dependsOn(commonTest)
+    }
+    val appleMain by creating {
+      dependsOn(commonMain)
+    }
+    val iosMain by getting {
+      dependsOn(appleMain)
+    }
+    val macosArm64Main by getting {
+      dependsOn(appleMain)
+    }
+    val macosX64Main by getting {
+      dependsOn(appleMain)
+    }
+    val iosSimulatorArm64Main by getting {
+      dependsOn(appleMain)
+    }
+
+    val iosArm64Main by getting {
+      dependsOn(appleTest)
+    }
+    val iosArm64Test by getting {
+      dependsOn(appleTest)
+    }
+
+    val iosX64Main by getting {
+      dependsOn(appleTest)
+    }
+    val iosX64Test by getting {
+      dependsOn(appleTest)
+    }
+
+    val iosTest by getting {
+      dependsOn(appleTest)
+    }
+    val iosSimulatorArm64Test by getting {
+      dependsOn(appleTest)
+    }
+    val macosX64Test by getting {
+      dependsOn(appleTest)
+    }
+    val macosArm64Test by getting {
+      dependsOn(appleTest)
+    }
+  }
+
+  explicitApi()
 }
 
-dependencies {
-  implementation(libs.coroutines)
-  api(libs.retrofit)
-  api(libs.okhttp)
+java {
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
+}
 
-  // unit test
-  testImplementation(libs.junit)
-  testImplementation(libs.mockito.core)
-  testImplementation(libs.mockito.inline)
-  testImplementation(libs.mockito.kotlin)
-  testImplementation(libs.mock.webserver)
-  testImplementation(libs.retrofit.moshi)
-  testImplementation(libs.coroutines.test)
-  testImplementation(libs.serialization)
+tasks.withType(JavaCompile::class.java).configureEach {
+  this.targetCompatibility = JavaVersion.VERSION_11.toString()
+  this.sourceCompatibility = JavaVersion.VERSION_11.toString()
 }

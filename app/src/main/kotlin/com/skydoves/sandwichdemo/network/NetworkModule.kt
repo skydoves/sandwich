@@ -15,8 +15,8 @@
  */
 package com.skydoves.sandwichdemo.network
 
-import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
-import com.skydoves.sandwich.datasource.adapters.DataSourceCallAdapterFactory
+import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
+import com.skydoves.sandwich.retrofit.datasource.adapters.DataSourceCallAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
