@@ -33,7 +33,7 @@ package com.skydoves.sandwich.exceptions
  *   .build()
  * ```
  */
-public class NoContentException constructor(
+public class NoContentException(
   public val code: Int,
   override val message: String? =
     "The server has successfully fulfilled the request with the code ($code) and that there is " +

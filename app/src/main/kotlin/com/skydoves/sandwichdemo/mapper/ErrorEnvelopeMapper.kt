@@ -18,6 +18,7 @@ package com.skydoves.sandwichdemo.mapper
 import com.skydoves.sandwich.ApiErrorModelMapper
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.message
+import com.skydoves.sandwich.retrofit.statusCode
 import com.skydoves.sandwichdemo.model.ErrorMessage
 
 /**

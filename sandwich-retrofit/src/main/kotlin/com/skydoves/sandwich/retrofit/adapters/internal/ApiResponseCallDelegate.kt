@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.skydoves.sandwich.adapters.internal
+package com.skydoves.sandwich.retrofit.adapters.internal
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.retrofit.of
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

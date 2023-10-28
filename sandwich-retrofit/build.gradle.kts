@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import com.github.skydoves.sandwich.Configuration
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-  id(libs.plugins.android.library.get().pluginId)
-  id(libs.plugins.kotlin.android.get().pluginId)
+  id("kotlin")
+  id(libs.plugins.kotlin.serialization.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
 }
 
 apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
 
 mavenPublishing {
-  val artifactId = "sandwich-datasource"
+  val artifactId = "sandwich-retrofit"
   coordinates(
     Configuration.artifactGroup,
     artifactId,
@@ -41,29 +41,16 @@ mavenPublishing {
   }
 }
 
-android {
-  compileSdk = Configuration.compileSdk
-  namespace = "com.skydoves.sandwich.datasource"
-  defaultConfig {
-    minSdk = Configuration.minSdk
-  }
-
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-  }
-
-  lint {
-    abortOnError = false
-  }
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
+  kotlinOptions.freeCompilerArgs += listOf("-Xopt-in=kotlin.contracts.ExperimentalContracts")
 }
 
 dependencies {
-  api(project(":sandwich-retrofit"))
+  api(project(":sandwich"))
 
-  implementation(libs.appcompat)
   implementation(libs.coroutines)
-  implementation(libs.retrofit)
+  api(libs.retrofit)
+  api(libs.okhttp)
 
   // unit test
   testImplementation(libs.junit)
@@ -73,5 +60,5 @@ dependencies {
   testImplementation(libs.mock.webserver)
   testImplementation(libs.retrofit.moshi)
   testImplementation(libs.coroutines.test)
-  testImplementation(libs.arch.test)
+  testImplementation(libs.serialization)
 }

@@ -43,7 +43,7 @@ mavenPublishing {
 }
 
 dependencies {
-  api(project(":sandwich"))
+  api(project(":sandwich-retrofit"))
   api(libs.serialization)
 
   // unit test

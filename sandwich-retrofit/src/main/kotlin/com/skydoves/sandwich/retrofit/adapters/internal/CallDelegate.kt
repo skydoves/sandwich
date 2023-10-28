@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.skydoves.sandwich.adapters.internal
+package com.skydoves.sandwich.retrofit.adapters.internal
 
 import com.skydoves.sandwich.SandwichInitializer
 import okhttp3.Request

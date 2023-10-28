@@ -15,12 +15,12 @@
  */
 @file:Suppress("unused")
 
-package com.skydoves.sandwich.adapters
+package com.skydoves.sandwich.retrofit.adapters
 
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.SandwichInitializer
-import com.skydoves.sandwich.adapters.internal.ApiResponseCallAdapter
-import com.skydoves.sandwich.adapters.internal.ApiResponseDeferredCallAdapter
+import com.skydoves.sandwich.retrofit.adapters.internal.ApiResponseCallAdapter
+import com.skydoves.sandwich.retrofit.adapters.internal.ApiResponseDeferredCallAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import retrofit2.Call

@@ -16,7 +16,7 @@
 package com.skydoves.sandwich.retry
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.adapters.internal.SuspensionFunction
+import com.skydoves.sandwich.SuspensionFunction
 import com.skydoves.sandwich.messageOrNull
 import kotlinx.coroutines.delay
 

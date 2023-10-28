@@ -54,6 +54,7 @@ android {
 
 dependencies {
   implementation(project(":sandwich"))
+  implementation(project(":sandwich-retrofit"))
   implementation(project(":sandwich-datasource"))
   implementation(project(":sandwich-serialization"))
 

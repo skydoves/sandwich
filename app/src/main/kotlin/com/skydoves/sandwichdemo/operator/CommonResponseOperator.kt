@@ -22,6 +22,7 @@ import com.skydoves.sandwich.StatusCode
 import com.skydoves.sandwich.map
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
+import com.skydoves.sandwich.retrofit.statusCode
 import com.skydoves.sandwichdemo.mapper.ErrorEnvelopeMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

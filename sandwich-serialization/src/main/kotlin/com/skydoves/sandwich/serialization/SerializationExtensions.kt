@@ -16,6 +16,7 @@
 package com.skydoves.sandwich.serialization
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.retrofit.errorBody
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 

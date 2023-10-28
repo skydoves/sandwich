@@ -8,6 +8,7 @@ binaryCompatibility = "0.13.2"
 appcompat = "1.6.1"
 material = "1.9.0"
 retrofit = "2.9.0"
+okio = "3.6.0"
 okhttp = "4.12.0"
 coroutines = "1.7.3"
 kotlinSerialization = "1.6.0"
@@ -26,6 +27,9 @@ mockito = "3.12.4"
 mockitoKotlin = "2.2.0"
 timber = "5.0.1"
 spotless = "6.21.0"
+core-ktx = "1.12.0"
+androidx-test-ext-junit = "1.1.5"
+espresso-core = "3.5.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -46,6 +50,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
@@ -69,3 +74,6 @@ androidx-test-runner = { group = "androidx.test", name = "runner", version.ref =
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTest" }
 androidx-test-junit = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxJunit" }
 androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "androidxUiAutomator" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }

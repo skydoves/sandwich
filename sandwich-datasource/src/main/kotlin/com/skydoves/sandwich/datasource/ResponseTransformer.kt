@@ -16,6 +16,7 @@
 package com.skydoves.sandwich.datasource
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.retrofit.of
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob

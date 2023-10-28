@@ -18,13 +18,18 @@ package com.skydoves.sandwich
 import com.skydoves.sandwich.operators.SandwichOperator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import okio.Timeout
+import kotlin.jvm.JvmStatic
+import kotlin.jvm.JvmSynthetic
+import kotlin.native.concurrent.ThreadLocal
 
 /**
  * @author skydoves (Jaewoong Eum)
  *
  * SandwichInitializer is a rules and strategies initializer of the network response.
  */
+@ThreadLocal
 public object SandwichInitializer {
 
   /**
@@ -40,24 +45,6 @@ public object SandwichInitializer {
    * */
   @JvmStatic
   public var successCodeRange: IntRange = 200..299
-
-  /**
-   * @author skydoves (Jaewoong Eum)
-   *
-   * A global Operator that operates on [ApiResponse]s globally on each response.
-   *
-   * [com.skydoves.sandwich.operators.ApiResponseOperator] which allows you to handle success and error response instead of
-   * the [ApiResponse.onSuccess], [ApiResponse.onError], [ApiResponse.onException] transformers.
-   * [com.skydoves.sandwich.operators.ApiResponseSuspendOperator] can be used for suspension scope.
-   *
-   * Via setting a [sandwichOperator], we don't need to set operator for every [ApiResponse].
-   */
-  @Deprecated(
-    message = "sandwichOperator has been deprecated. Use `sandwichOperators` instead.",
-    replaceWith = ReplaceWith(expression = "SandwichInitializer.sandwichOperators"),
-  )
-  @JvmStatic
-  public var sandwichOperator: SandwichOperator? = null
 
   /**
    * @author skydoves (Jaewoong Eum)

@@ -25,6 +25,7 @@ import com.skydoves.sandwich.datasource.adapters.internal.SuspensionFunction
 import com.skydoves.sandwich.datasource.disposables.CompositeDisposable
 import com.skydoves.sandwich.datasource.disposables.disposable
 import com.skydoves.sandwich.datasource.executors.ArchTaskExecutor
+import com.skydoves.sandwich.retrofit.of
 import kotlinx.coroutines.CoroutineScope
 import retrofit2.Call
 import retrofit2.Callback
@@ -193,9 +194,10 @@ public class ResponseDataSource<T> : DataSource<T> {
     } else {
       when (val data = data as ApiResponse<T>) {
         is ApiResponse.Success<T> -> {
-          callback?.onResponse(call, data.response)
+          callback?.onResponse(call, data.tag as Response<T>)
           emitResponseToObserver()
         }
+
         else -> enqueue()
       }
     }
@@ -264,7 +266,7 @@ public class ResponseDataSource<T> : DataSource<T> {
       if (data != empty) {
         val data = data as ApiResponse<T>
         if (data is ApiResponse.Success<T>) {
-          postValue(data.response.body())
+          postValue((data.tag as Response<T>).body())
         }
       }
     }

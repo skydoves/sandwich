@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.skydoves.sandwich.adapters.internal
+package com.skydoves.sandwich.retrofit.adapters.internal
 
 import com.skydoves.sandwich.ApiResponse
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.CallAdapter
-import retrofit2.awaitResponse
 import java.lang.reflect.Type
 
 /**
@@ -30,38 +26,18 @@ import java.lang.reflect.Type
  *
  * ApiResponseCallAdapter is an call adapter for creating [ApiResponse] by executing Retrofit's service methods.
  *
- * Request API network call asynchronously and returns [Deferred] of [ApiResponse].
+ * Request API network call asynchronously and returns [ApiResponse].
  */
-internal class ApiResponseDeferredCallAdapter<T> constructor(
+internal class ApiResponseCallAdapter(
   private val resultType: Type,
   private val coroutineScope: CoroutineScope,
-) : CallAdapter<T, Deferred<ApiResponse<T>>> {
+) : CallAdapter<Type, Call<ApiResponse<Type>>> {
 
   override fun responseType(): Type {
     return resultType
   }
 
-  @Suppress("DeferredIsResult")
-  override fun adapt(call: Call<T>): Deferred<ApiResponse<T>> {
-    val deferred = CompletableDeferred<ApiResponse<T>>().apply {
-      invokeOnCompletion {
-        if (isCancelled && !call.isCanceled) {
-          call.cancel()
-        }
-      }
-    }
-
-    coroutineScope.launch {
-      try {
-        val response = call.awaitResponse()
-        val apiResponse = ApiResponse.of { response }
-        deferred.complete(apiResponse)
-      } catch (e: Exception) {
-        val apiResponse = ApiResponse.error<T>(e)
-        deferred.complete(apiResponse)
-      }
-    }
-
-    return deferred
+  override fun adapt(call: Call<Type>): Call<ApiResponse<Type>> {
+    return ApiResponseCallDelegate(call, coroutineScope)
   }
 }

@@ -17,13 +17,9 @@
 
 package com.skydoves.sandwich
 
-import com.skydoves.sandwich.exceptions.NoContentException
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
 import kotlinx.coroutines.launch
-import okhttp3.Headers
-import okhttp3.ResponseBody
-import retrofit2.Response
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -37,21 +33,10 @@ public sealed interface ApiResponse<out T> {
    *
    * API Success response class from OkHttp request call.
    * The [data] is a nullable generic type. (A response without data)
-   *
-   * @param response A response from OkHttp request call.
-   *
-   * @property statusCode [StatusCode] is Hypertext Transfer Protocol (HTTP) response status codes.
-   * @property headers The header fields of a single HTTP message.
-   * @property raw The raw response from the HTTP client.
+
    * @property data The de-serialized response body of a successful data.
    */
-  public data class Success<T>(val response: Response<T>) : ApiResponse<T> {
-    val statusCode: StatusCode = getStatusCodeFromResponse(response)
-    val headers: Headers = response.headers()
-    val raw: okhttp3.Response = response.raw()
-    val data: T by lazy { response.body() ?: throw NoContentException(statusCode.code) }
-    override fun toString(): String = "[ApiResponse.Success](data=$data)"
-  }
+  public data class Success<T>(public val data: T, public val tag: Any? = null) : ApiResponse<T>
 
   /**
    * @author skydoves (Jaewoong Eum)
@@ -64,28 +49,8 @@ public sealed interface ApiResponse<out T> {
      * API response error case.
      * API communication conventions do not match or applications need to handle errors.
      * e.g., internal server error.
-     *
-     * @param response A response from OkHttp request call.
-     *
-     * @property statusCode [StatusCode] is Hypertext Transfer Protocol (HTTP) response status codes.
-     * @property headers The header fields of a single HTTP message.
-     * @property raw The raw response from the HTTP client.
-     * @property errorBody The [ResponseBody] can be consumed only once.
      */
-    public data class Error<T>(val response: Response<T>) : Failure<T> {
-      val statusCode: StatusCode = getStatusCodeFromResponse(response)
-      val headers: Headers = response.headers()
-      val raw: okhttp3.Response = response.raw()
-      val errorBody: ResponseBody? = response.errorBody()
-      override fun toString(): String {
-        val errorBody = errorBody?.string()
-        return if (!errorBody.isNullOrEmpty()) {
-          errorBody
-        } else {
-          "[ApiResponse.Failure.Error-$statusCode](errorResponse=$response)"
-        }
-      }
-    }
+    public data class Error<T>(public val payload: Any) : Failure<T>
 
     /**
      * @author skydoves (Jaewoong Eum)
@@ -99,8 +64,7 @@ public sealed interface ApiResponse<out T> {
      * @property message The localized message from the exception.
      */
     public data class Exception<T>(val exception: Throwable) : Failure<T> {
-      val message: String? = exception.localizedMessage
-      override fun toString(): String = "[ApiResponse.Failure.Exception](message=$message)"
+      val message: String? = exception.message
     }
   }
 
@@ -120,42 +84,13 @@ public sealed interface ApiResponse<out T> {
     /**
      * @author skydoves (Jaewoong Eum)
      *
-     * ApiResponse Factory.
-     *
-     * @param successCodeRange A success code range for determining the response is successful or failure.
-     * @param [f] Create [ApiResponse] from [retrofit2.Response] returning from the block.
-     * If [retrofit2.Response] has no errors, it creates [ApiResponse.Success].
-     * If [retrofit2.Response] has errors, it creates [ApiResponse.Failure.Error].
-     * If [retrofit2.Response] has occurred exceptions, it creates [ApiResponse.Failure.Exception].
-     *
-     * @return An [ApiResponse] model which holds information about the response.
-     */
-    @JvmSynthetic
-    public inline fun <T> of(
-      successCodeRange: IntRange = SandwichInitializer.successCodeRange,
-      crossinline f: () -> Response<T>,
-    ): ApiResponse<T> = try {
-      val response = f()
-      if (response.raw().code in successCodeRange) {
-        Success(response)
-      } else {
-        Failure.Error(response)
-      }
-    } catch (ex: Exception) {
-      Failure.Exception(ex)
-    }.operate()
-
-    /**
-     * @author skydoves (Jaewoong Eum)
-     *
      * Operates if there is a global [com.skydoves.sandwich.operators.SandwichOperator]
      * which operates on [ApiResponse]s globally on each response and returns the target [ApiResponse].
      *
      * @return [ApiResponse] A target [ApiResponse].
      */
-    @PublishedApi
     @Suppress("UNCHECKED_CAST")
-    internal fun <T> ApiResponse<T>.operate(): ApiResponse<T> = apply {
+    public fun <T> ApiResponse<T>.operate(): ApiResponse<T> = apply {
       val globalOperators = SandwichInitializer.sandwichOperators
       globalOperators.forEach { globalOperator ->
         if (globalOperator is ApiResponseOperator<*>) {
@@ -167,20 +102,6 @@ public sealed interface ApiResponse<out T> {
           }
         }
       }
-    }
-
-    /**
-     * @author skydoves (Jaewoong Eum)
-     *
-     * Returns a status code from the [Response].
-     *
-     * @param response A network callback response.
-     *
-     * @return A [StatusCode] from the network callback response.
-     */
-    public fun <T> getStatusCodeFromResponse(response: Response<T>): StatusCode {
-      return StatusCode.values().find { it.code == response.code() }
-        ?: StatusCode.Unknown
     }
   }
 }
