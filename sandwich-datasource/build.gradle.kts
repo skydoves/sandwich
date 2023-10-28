@@ -56,6 +56,8 @@ android {
   lint {
     abortOnError = false
   }
+
+  testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
@@ -63,7 +65,6 @@ dependencies {
 
   implementation(libs.appcompat)
   implementation(libs.coroutines)
-  implementation(libs.retrofit)
 
   // unit test
   testImplementation(libs.junit)

@@ -16,7 +16,7 @@
 package com.skydoves.sandwich.datasource
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.request
+import com.skydoves.sandwich.retrofit.request
 
 internal class DisneyClient constructor(
   private val disneyService: DisneyService,
