@@ -1,6 +1,7 @@
 public final class com/skydoves/sandwich/retrofit/ApiResponseExtensionsKt {
 	public static final synthetic fun apiResponseOf (Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function0;)Lcom/skydoves/sandwich/ApiResponse;
 	public static synthetic fun apiResponseOf$default (Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final fun getApiMessage (Lcom/skydoves/sandwich/ApiResponse;)Ljava/lang/String;
 	public static final fun getBody (Lcom/skydoves/sandwich/ApiResponse$Success;)Ljava/lang/Object;
 	public static final fun getErrorBody (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Lokhttp3/ResponseBody;
 	public static final fun getHeaders (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Lokhttp3/Headers;

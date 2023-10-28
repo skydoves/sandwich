@@ -15,13 +15,17 @@
  */
 package com.skydoves.sandwich
 
-internal class DisneyClient constructor(
-  private val disneyService: DisneyService,
-) {
+import com.skydoves.sandwich.operators.ApiResponseOperator
 
-  fun fetchDisneyPosters(
-    onResult: (response: ApiResponse<List<Poster>>) -> Unit,
-  ) {
-    this.disneyService.fetchDisneyPosterList().request(onResult)
-  }
+internal class TestApiResponseOperator<T>(
+  private val onSuccess: () -> Unit,
+  private val onError: () -> Unit,
+  private val onException: () -> Unit,
+) : ApiResponseOperator<T>() {
+
+  override fun onSuccess(apiResponse: ApiResponse.Success<T>) = onSuccess()
+
+  override fun onError(apiResponse: ApiResponse.Failure.Error<T>) = onError()
+
+  override fun onException(apiResponse: ApiResponse.Failure.Exception<T>) = onException()
 }

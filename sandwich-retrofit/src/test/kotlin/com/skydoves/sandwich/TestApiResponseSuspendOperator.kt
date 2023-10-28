@@ -15,17 +15,17 @@
  */
 package com.skydoves.sandwich
 
-import com.skydoves.sandwich.operators.ApiResponseOperator
+import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
 
-internal class TestApiResponseOperator<T> constructor(
-  private val onSuccess: () -> Unit,
-  private val onError: () -> Unit,
-  private val onException: () -> Unit,
-) : ApiResponseOperator<T>() {
+internal class TestApiResponseSuspendOperator<T>(
+  private val onSuccess: suspend () -> Unit,
+  private val onError: suspend () -> Unit,
+  private val onException: suspend () -> Unit,
+) : ApiResponseSuspendOperator<T>() {
 
-  override fun onSuccess(apiResponse: ApiResponse.Success<T>) = onSuccess()
+  override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) = onSuccess()
 
-  override fun onError(apiResponse: ApiResponse.Failure.Error<T>) = onError()
+  override suspend fun onError(apiResponse: ApiResponse.Failure.Error<T>) = onError()
 
-  override fun onException(apiResponse: ApiResponse.Failure.Exception<T>) = onException()
+  override suspend fun onException(apiResponse: ApiResponse.Failure.Exception<T>) = onException()
 }

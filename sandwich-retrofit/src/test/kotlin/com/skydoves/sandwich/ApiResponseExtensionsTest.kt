@@ -15,6 +15,8 @@
  */
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.retrofit.apiMessage
+import com.skydoves.sandwich.retrofit.of
 import junit.framework.Assert.assertNull
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -83,7 +85,7 @@ internal class ApiResponseExtensionsTest {
   @Test
   fun `messageOrNull test`() {
     val exception = ApiResponse.error<String>(RuntimeException("RuntimeException"))
-    assertThat(exception.messageOrNull, `is`("RuntimeException"))
+    assertThat(exception.apiMessage, `is`("RuntimeException"))
 
     val errorBody = Response.error<String>(
       403,
@@ -92,10 +94,10 @@ internal class ApiResponseExtensionsTest {
       ),
     )
     val error = ApiResponse.of { errorBody }
-    assertThat(error.messageOrNull, `is`("This is a custom error message"))
+    assertThat(error.apiMessage, `is`("This is a custom error message"))
 
     val body = Response.success("foo")
     val success = ApiResponse.of { body }
-    assertNull(success.messageOrNull)
+    assertNull(success.apiMessage)
   }
 }

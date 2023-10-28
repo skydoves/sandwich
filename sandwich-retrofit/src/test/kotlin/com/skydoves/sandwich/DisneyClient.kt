@@ -15,9 +15,15 @@
  */
 package com.skydoves.sandwich
 
-internal object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorEnvelope> {
+import com.skydoves.sandwich.retrofit.request
 
-  override fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): ErrorEnvelope {
-    return ErrorEnvelope(apiErrorResponse.statusCode.code, apiErrorResponse.message())
+internal class DisneyClient(
+  private val disneyService: DisneyService,
+) {
+
+  fun fetchDisneyPosters(
+    onResult: (response: ApiResponse<List<Poster>>) -> Unit,
+  ) {
+    this.disneyService.fetchDisneyPosterList().request(onResult)
   }
 }

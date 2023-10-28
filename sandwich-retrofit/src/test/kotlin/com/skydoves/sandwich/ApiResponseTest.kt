@@ -17,6 +17,12 @@ package com.skydoves.sandwich
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
+import com.skydoves.sandwich.retrofit.apiMessage
+import com.skydoves.sandwich.retrofit.apiResponseOf
+import com.skydoves.sandwich.retrofit.headers
+import com.skydoves.sandwich.retrofit.of
+import com.skydoves.sandwich.retrofit.raw
+import com.skydoves.sandwich.retrofit.statusCode
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.CoreMatchers.`is`
@@ -76,7 +82,7 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
 
     whenever(client.fetchDisneyPosters(onResult)).thenAnswer {
       val response: (response: ApiResponse<List<Poster>>) -> Unit = it.getArgument(0)
-      response(ApiResponse.Success(Response.success(responseBody)))
+      response(apiResponseOf { Response.success(responseBody) })
     }
     client.fetchDisneyPosters(onResult)
   }
@@ -101,7 +107,7 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
 
     whenever(client.fetchDisneyPosters(onResult)).thenAnswer {
       val response: (response: ApiResponse<List<Poster>>) -> Unit = it.getArgument(0)
-      response(ApiResponse.Success(Response.success(responseBody)))
+      response(apiResponseOf { Response.success(responseBody) })
     }
     client.fetchDisneyPosters(onResult)
   }
@@ -138,20 +144,17 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
       assertThat(it, instanceOf(ApiResponse.Failure.Error::class.java))
       val response = requireNotNull((it as ApiResponse.Failure.Error))
       assertThat(response.statusCode.code, `is`(404))
-      assertThat(
-        response.message(),
-        `is`("foo"),
-      )
+      assertThat(response.apiMessage, `is`("foo"))
 
       val errorResponse = response.map(ErrorEnvelopeMapper)
       assertThat(errorResponse, instanceOf(ErrorEnvelope::class.java))
       assertThat(errorResponse.code, `is`(response.statusCode.code))
-      assertThat(errorResponse.message, `is`(response.message()))
+      assertThat(errorResponse.message, `is`(response.apiMessage))
     }
 
     whenever(client.fetchDisneyPosters(onResult)).thenAnswer {
       val response: (response: ApiResponse<List<Poster>>) -> Unit = it.getArgument(0)
-      response(ApiResponse.Failure.Error(Response.error(404, responseBody)))
+      response(ApiResponse.Failure.Error(Response.error<List<Poster>>(404, responseBody)))
     }
     client.fetchDisneyPosters(onResult)
   }
@@ -173,43 +176,18 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
       val response = requireNotNull((it as ApiResponse.Failure.Error))
       response.onError {
         assertThat(statusCode.code, `is`(404))
-        assertThat(
-          message(),
-          `is`("[ApiResponse.Failure.Error-$statusCode](errorResponse=${this.response})"),
-        )
-
         map(ErrorEnvelopeMapper) {
           assertThat(this, instanceOf(ErrorEnvelope::class.java))
           assertThat(this.code, `is`(response.statusCode.code))
-          assertThat(this.message, `is`(response.message()))
+          assertThat(this.message, `is`(response.apiMessage))
         }
       }
     }
 
     whenever(client.fetchDisneyPosters(onResult)).thenAnswer {
       val response: (response: ApiResponse<List<Poster>>) -> Unit = it.getArgument(0)
-      response(ApiResponse.Failure.Error(Response.error(404, responseBody)))
+      response(ApiResponse.Failure.Error(Response.error<List<Poster>>(404, responseBody)))
     }
     client.fetchDisneyPosters(onResult)
-  }
-
-  @Test
-  fun exception() {
-    val exception = Exception("foo")
-    val apiResponse = ApiResponse.error<String>(exception)
-
-    assertThat(apiResponse.message, `is`("foo"))
-    assertThat(apiResponse.toString(), `is`("[ApiResponse.Failure.Exception](message=foo)"))
-  }
-
-  @Test
-  fun exceptionExtension() {
-    val exception = Exception("foo")
-    val apiResponse = ApiResponse.error<String>(exception)
-
-    apiResponse.onException {
-      assertThat(message, `is`("foo"))
-      assertThat(toString(), `is`("[ApiResponse.Failure.Exception](message=foo)"))
-    }
   }
 }

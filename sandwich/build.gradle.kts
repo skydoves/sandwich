@@ -56,6 +56,7 @@ kotlin {
 
     val commonTest by getting {
       dependencies {
+        dependsOn(commonMain)
         implementation(libs.coroutines.test)
         implementation(libs.junit)
         implementation(libs.mockito.core)

@@ -59,7 +59,7 @@ public inline val ApiResponse<Any>.isException: Boolean
  */
 public inline val ApiResponse<Any>.messageOrNull: String?
   get() = when (this) {
-    is ApiResponse.Failure.Error -> message()
+    is ApiResponse.Failure.Error -> payload.toString()
     is ApiResponse.Failure.Exception -> message
     else -> null
   }

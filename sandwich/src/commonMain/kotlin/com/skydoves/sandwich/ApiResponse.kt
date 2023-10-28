@@ -50,7 +50,7 @@ public sealed interface ApiResponse<out T> {
      * API communication conventions do not match or applications need to handle errors.
      * e.g., internal server error.
      */
-    public data class Error<T>(public val payload: Any) : Failure<T>
+    public data class Error<T>(public val payload: Any?) : Failure<T>
 
     /**
      * @author skydoves (Jaewoong Eum)

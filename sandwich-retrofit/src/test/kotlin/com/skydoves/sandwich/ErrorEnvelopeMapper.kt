@@ -15,17 +15,12 @@
  */
 package com.skydoves.sandwich
 
-import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
+import com.skydoves.sandwich.retrofit.apiMessage
+import com.skydoves.sandwich.retrofit.statusCode
 
-internal class TestApiResponseSuspendOperator<T> constructor(
-  private val onSuccess: suspend () -> Unit,
-  private val onError: suspend () -> Unit,
-  private val onException: suspend () -> Unit,
-) : ApiResponseSuspendOperator<T>() {
+internal object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorEnvelope> {
 
-  override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) = onSuccess()
-
-  override suspend fun onError(apiResponse: ApiResponse.Failure.Error<T>) = onError()
-
-  override suspend fun onException(apiResponse: ApiResponse.Failure.Exception<T>) = onException()
+  override fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): ErrorEnvelope {
+    return ErrorEnvelope(apiErrorResponse.statusCode.code, apiErrorResponse.apiMessage.orEmpty())
+  }
 }

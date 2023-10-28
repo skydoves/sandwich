@@ -15,7 +15,10 @@
  */
 package com.skydoves.sandwich
 
-import com.skydoves.sandwich.exceptions.NoContentException
+import com.skydoves.sandwich.retrofit.headers
+import com.skydoves.sandwich.retrofit.of
+import com.skydoves.sandwich.retrofit.raw
+import com.skydoves.sandwich.retrofit.statusCode
 import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
@@ -39,8 +42,8 @@ internal class NoContentExceptionTest {
     assertThat(success.headers, `is`(response.headers()))
   }
 
-  @Test(expected = NoContentException::class)
-  fun `throw NoContentException when body is null with accessing data property`() {
+  @Test
+  fun `data should be Unit when body is null with accessing data property`() {
     val response = Response.success<String?>(204, null)
     val apiResponse = ApiResponse.of { response }
     assertThat(apiResponse, instanceOf(ApiResponse.Success::class.java))
@@ -49,6 +52,6 @@ internal class NoContentExceptionTest {
     assertThat(success.statusCode.code, `is`(204))
     assertThat(success.raw, `is`(response.raw()))
     assertThat(success.headers, `is`(response.headers()))
-    assertThat(success.data, `is`("foo"))
+    assertThat(success.data, `is`(Unit))
   }
 }

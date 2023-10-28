@@ -87,6 +87,19 @@ public val <T> ApiResponse.Failure.Error<T>.raw: okhttp3.Response
 
 /**
  * @author skydoves (Jaewoong Eum)
+ * @since 1.3.2
+ *
+ *  Returns The error message or null depending on the type of [ApiResponse].
+ */
+public inline val ApiResponse<*>.apiMessage: String?
+  get() = when (this) {
+    is ApiResponse.Failure.Error -> payloadResponse.errorBody()?.string()
+    is ApiResponse.Failure.Exception -> message
+    else -> null
+  }
+
+/**
+ * @author skydoves (Jaewoong Eum)
  *
  * ApiResponse Factory.
  *
