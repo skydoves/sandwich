@@ -16,14 +16,17 @@
 package com.skydoves.sandwichdemo.model
 
 import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 @JsonClass(generateAdapter = true)
 data class Poster(
-  val id: Long,
-  val name: String,
-  val release: String,
-  val playtime: String,
-  val description: String,
-  val plot: String,
-  val poster: String,
+  @SerialName("id") val id: Long,
+  @SerialName("name") val name: String,
+  @SerialName("release") val release: String,
+  @SerialName("playtime") val playtime: String,
+  @SerialName("description") val description: String,
+  @SerialName("plot") val plot: String,
+  @SerialName("poster") val poster: String,
 )
