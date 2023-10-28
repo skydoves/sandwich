@@ -13,14 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.skydoves.sandwichdemo.network
+package com.skydoves.sandwich.retrofit.datasource
 
-import com.skydoves.sandwich.retrofit.datasource.DataSource
-import com.skydoves.sandwichdemo.model.Poster
-import retrofit2.http.GET
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * [DataRetainPolicy] is a policy for retaining data on the internal storage
+ * when the same request is called from [ResponseDataSource].
+ */
+public enum class DataRetainPolicy {
+  // Retain the fetched data on the memory storage temporarily.
+  // If request again, returns the retained data instead of re-fetching from the network.
+  RETAIN,
 
-interface DisneyDataSourceService {
-
-  @GET("DisneyPosters.json")
-  fun fetchDisneyPosterList(): DataSource<List<Poster>>
+  // Re-fetch data from the network every time.
+  NO_RETAIN,
 }

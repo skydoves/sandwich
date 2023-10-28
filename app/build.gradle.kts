@@ -55,8 +55,8 @@ android {
 dependencies {
   implementation(project(":sandwich"))
   implementation(project(":sandwich-retrofit"))
-  implementation(project(":sandwich-datasource"))
-  implementation(project(":sandwich-serialization"))
+  implementation(project(":sandwich-retrofit-datasource"))
+  implementation(project(":sandwich-retrofit-serialization"))
 
   // android supports
   implementation(libs.material)

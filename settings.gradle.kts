@@ -31,6 +31,6 @@ dependencyResolutionManagement {
 rootProject.name = "SandwichDemo"
 include(":app")
 include(":sandwich")
-include(":sandwich-datasource")
-include(":sandwich-serialization")
+include(":sandwich-retrofit-datasource")
+include(":sandwich-retrofit-serialization")
 include(":sandwich-retrofit")

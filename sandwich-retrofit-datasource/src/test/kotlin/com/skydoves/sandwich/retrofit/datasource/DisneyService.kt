@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.skydoves.sandwichdemo.network
+package com.skydoves.sandwich.retrofit.datasource
 
-import com.skydoves.sandwich.retrofit.datasource.DataSource
-import com.skydoves.sandwichdemo.model.Poster
+import retrofit2.Call
 import retrofit2.http.GET
 
-interface DisneyDataSourceService {
+internal interface DisneyService {
 
   @GET("DisneyPosters.json")
-  fun fetchDisneyPosterList(): DataSource<List<Poster>>
+  fun fetchDisneyPosterList(): Call<List<Poster>>
 }
