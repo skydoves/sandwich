@@ -50,7 +50,7 @@ kotlin {
     val commonMain by getting {
       dependencies {
         api(project(":sandwich"))
-        implementation(libs.ktor.core)
+        api(libs.ktor.core)
         implementation(libs.coroutines)
       }
     }
@@ -61,11 +61,7 @@ kotlin {
       }
     }
 
-    val jvmMain by getting {
-      dependencies {
-        implementation(libs.coroutines)
-      }
-    }
+    val jvmMain by getting
 
     val jvmTest by getting
 
