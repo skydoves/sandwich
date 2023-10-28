@@ -130,6 +130,19 @@ public inline fun <T> apiResponseOf(
   ApiResponse.Failure.Exception(ex)
 }.operate()
 
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * ApiResponse Factory.
+ *
+ * @param successCodeRange A success code range for determining the response is successful or failure.
+ * @param [f] Create [ApiResponse] from [retrofit2.Response] returning from the block.
+ * If [retrofit2.Response] has no errors, it creates [ApiResponse.Success].
+ * If [retrofit2.Response] has errors, it creates [ApiResponse.Failure.Error].
+ * If [retrofit2.Response] has occurred exceptions, it creates [ApiResponse.Failure.Exception].
+ *
+ * @return An [ApiResponse] model which holds information about the response.
+ */
 public inline fun <T> ApiResponse.Companion.of(
   successCodeRange: IntRange = SandwichInitializer.successCodeRange,
   crossinline f: () -> Response<T>,
