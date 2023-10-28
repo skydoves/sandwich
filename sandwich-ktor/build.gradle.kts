@@ -49,20 +49,15 @@ kotlin {
     all { languageSettings.optIn("kotlin.contracts.ExperimentalContracts") }
     val commonMain by getting {
       dependencies {
+        api(project(":sandwich"))
+        api(libs.ktor.core)
         implementation(libs.coroutines)
-        implementation(libs.okio)
       }
     }
 
     val commonTest by getting {
       dependencies {
         dependsOn(commonMain)
-        implementation(libs.coroutines.test)
-        implementation(libs.junit)
-        implementation(libs.mockito.core)
-        implementation(libs.mockito.inline)
-        implementation(libs.mockito.kotlin)
-        implementation(libs.serialization)
       }
     }
 

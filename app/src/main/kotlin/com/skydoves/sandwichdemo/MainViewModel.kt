@@ -28,17 +28,43 @@ import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.retrofit.statusCode
 import com.skydoves.sandwich.suspendOnSuccess
 import com.skydoves.sandwichdemo.model.Poster
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.accept
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import timber.log.Timber
 
 class MainViewModel(mainRepository: MainRepository) : ViewModel() {
 
   val toastLiveData = MutableLiveData<String>()
+
+  private val client = HttpClient(OkHttp) {
+    defaultRequest {
+      contentType(ContentType.Application.Json)
+      accept(ContentType.Application.Json)
+    }
+
+    install(ContentNegotiation) {
+      json(
+        Json {
+          prettyPrint = true
+          isLenient = true
+          ignoreUnknownKeys = true
+        },
+      )
+    }
+  }
 
   // Use Case 1 - update the fetched posters as a property
   val posterList: StateFlow<List<Poster>> = mainRepository.fetchPostersFlow().map {

@@ -54,6 +54,7 @@ android {
 
 dependencies {
   implementation(project(":sandwich"))
+  implementation(project(":sandwich-ktor"))
   implementation(project(":sandwich-retrofit"))
   implementation(project(":sandwich-retrofit-datasource"))
   implementation(project(":sandwich-retrofit-serialization"))
@@ -67,6 +68,11 @@ dependencies {
   implementation(libs.retrofit.moshi)
   implementation(libs.moshi)
   ksp(libs.moshi.codegen)
+
+  implementation(libs.ktor.negotiation)
+  implementation(libs.ktor.okhttp)
+  implementation(libs.ktor.json)
+  implementation(libs.serialization)
 
   implementation(libs.glide)
   implementation(libs.timber)
