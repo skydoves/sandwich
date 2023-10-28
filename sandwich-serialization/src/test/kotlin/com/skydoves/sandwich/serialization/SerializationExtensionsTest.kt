@@ -16,6 +16,7 @@
 package com.skydoves.sandwich.serialization
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.retrofit.of
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.hamcrest.MatcherAssert.assertThat
