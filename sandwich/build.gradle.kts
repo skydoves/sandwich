@@ -40,10 +40,6 @@ kotlin {
     }
     withJava()
   }
-  js(IR) {
-    browser()
-    binaries.executable()
-  }
   ios()
   iosSimulatorArm64()
   macosArm64()
