@@ -18,7 +18,6 @@ package com.skydoves.sandwich.ktor
 import com.skydoves.sandwich.ApiResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.get
 import io.ktor.client.request.request
 import io.ktor.client.request.url
 import io.ktor.client.statement.HttpStatement

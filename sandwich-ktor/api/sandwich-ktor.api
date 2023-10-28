@@ -1,7 +1,12 @@
 public final class com/skydoves/sandwich/ktor/ApiResponseExtensionKt {
+	public static final fun bodyChannel (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun bodyString (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;Ljava/nio/charset/Charset;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun bodyString$default (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;Ljava/nio/charset/Charset;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun getHeaders (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Lio/ktor/http/Headers;
 	public static final fun getHeaders (Lcom/skydoves/sandwich/ApiResponse$Success;)Lio/ktor/http/Headers;
 	public static final fun getHttpResponse (Lcom/skydoves/sandwich/ApiResponse$Success;)Lio/ktor/client/statement/HttpResponse;
 	public static final fun getPayloadResponse (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Lio/ktor/client/statement/HttpResponse;
+	public static final fun getStatusCode (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Lcom/skydoves/sandwich/StatusCode;
 	public static final fun getStatusCode (Lcom/skydoves/sandwich/ApiResponse$Success;)Lcom/skydoves/sandwich/StatusCode;
 	public static final fun getStatusCode (Lio/ktor/client/statement/HttpResponse;)Lcom/skydoves/sandwich/StatusCode;
 	public static final fun getTagResponse (Lcom/skydoves/sandwich/ApiResponse$Success;)Lio/ktor/client/statement/HttpResponse;

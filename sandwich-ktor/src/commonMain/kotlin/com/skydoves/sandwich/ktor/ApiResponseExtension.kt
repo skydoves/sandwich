@@ -22,7 +22,12 @@ import com.skydoves.sandwich.StatusCode
 import com.skydoves.sandwich.exceptions.NoContentException
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsChannel
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.Headers
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.charsets.Charset
+import io.ktor.utils.io.charsets.Charsets
 import kotlin.jvm.JvmSynthetic
 
 /**
@@ -67,6 +72,28 @@ public val <T> ApiResponse.Success<T>.headers: Headers
 /** Take out the [HttpResponse] from the tag property. */
 public val <T> ApiResponse.Success<T>.httpResponse: HttpResponse
   inline get() = tagResponse
+
+/**
+ * The [ByteReadChannel] can be consumed only once. */
+public suspend fun <T> ApiResponse.Failure.Error<T>.bodyChannel(): ByteReadChannel {
+  return payloadResponse.bodyAsChannel()
+}
+
+/**
+ * The [ByteReadChannel] can be consumed only once. */
+public suspend fun <T> ApiResponse.Failure.Error<T>.bodyString(
+  fallbackCharset: Charset = Charsets.UTF_8,
+): String {
+  return payloadResponse.bodyAsText(fallbackCharset = fallbackCharset)
+}
+
+/** [StatusCode] is Hypertext Transfer Protocol (HTTP) response status codes. */
+public val <T> ApiResponse.Failure.Error<T>.statusCode: StatusCode
+  inline get() = payloadResponse.getStatusCode()
+
+/** The header fields of a single HTTP message. */
+public val <T> ApiResponse.Failure.Error<T>.headers: Headers
+  inline get() = payloadResponse.headers
 
 /**
  * @author skydoves (Jaewoong Eum)
