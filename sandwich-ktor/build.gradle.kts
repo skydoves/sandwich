@@ -49,6 +49,7 @@ kotlin {
     all { languageSettings.optIn("kotlin.contracts.ExperimentalContracts") }
     val commonMain by getting {
       dependencies {
+        api(project(":sandwich"))
         implementation(libs.ktor.core)
         implementation(libs.coroutines)
       }

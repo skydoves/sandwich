@@ -39,7 +39,7 @@ public fun <T> Response<T>.getStatusCode(): StatusCode {
 @Suppress("UNCHECKED_CAST")
 @PublishedApi
 internal val <T> ApiResponse.Success<T>.tagResponse: Response<T>
-  inline get() = (tag as? Response<T>) ?: throw IllegalAccessException(
+  inline get() = (tag as? Response<T>) ?: throw IllegalArgumentException(
     "You can access the `tag` only for the encapsulated ApiResponse.Success<T> " +
       "using the Response class.",
   )
@@ -47,7 +47,7 @@ internal val <T> ApiResponse.Success<T>.tagResponse: Response<T>
 @Suppress("UNCHECKED_CAST")
 @PublishedApi
 internal val <T> ApiResponse.Failure.Error<T>.payloadResponse: Response<T>
-  inline get() = (payload as? Response<T>) ?: throw IllegalAccessException(
+  inline get() = (payload as? Response<T>) ?: throw IllegalArgumentException(
     "You can access the `payload` only for the encapsulated ApiResponse.Failure.Error<T> " +
       "using the Response class.",
   )
