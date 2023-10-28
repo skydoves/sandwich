@@ -56,6 +56,14 @@ kotlin {
     }
     withJava()
   }
+  ios()
+  js(IR) {
+    browser()
+    binaries.executable()
+  }
+  iosSimulatorArm64()
+  macosArm64()
+  macosX64()
 
   sourceSets {
     all { languageSettings.optIn("kotlin.contracts.ExperimentalContracts") }
@@ -71,7 +79,6 @@ kotlin {
         implementation(libs.mockito.core)
         implementation(libs.mockito.inline)
         implementation(libs.mockito.kotlin)
-        implementation(libs.mock.webserver)
         implementation(libs.retrofit.moshi)
         implementation(libs.coroutines.test)
         implementation(libs.serialization)
@@ -84,7 +91,56 @@ kotlin {
         implementation(libs.coroutines)
       }
     }
-    val jvmTest by getting
+    val jvmTest by getting {
+      dependencies {
+        implementation(libs.mock.webserver)
+      }
+    }
+    val appleTest by creating {
+      dependsOn(commonTest)
+    }
+    val appleMain by creating {
+      dependsOn(commonMain)
+    }
+    val iosMain by getting {
+      dependsOn(appleMain)
+    }
+    val macosArm64Main by getting {
+      dependsOn(appleMain)
+    }
+    val macosX64Main by getting {
+      dependsOn(appleMain)
+    }
+    val iosSimulatorArm64Main by getting {
+      dependsOn(appleMain)
+    }
+
+    val iosArm64Main by getting {
+      dependsOn(appleTest)
+    }
+    val iosArm64Test by getting {
+      dependsOn(appleTest)
+    }
+
+    val iosX64Main by getting {
+      dependsOn(appleTest)
+    }
+    val iosX64Test by getting {
+      dependsOn(appleTest)
+    }
+
+    val iosTest by getting {
+      dependsOn(appleTest)
+    }
+    val iosSimulatorArm64Test by getting {
+      dependsOn(appleTest)
+    }
+    val macosX64Test by getting {
+      dependsOn(appleTest)
+    }
+    val macosArm64Test by getting {
+      dependsOn(appleTest)
+    }
   }
 
   explicitApi()
