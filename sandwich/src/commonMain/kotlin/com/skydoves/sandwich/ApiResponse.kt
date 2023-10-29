@@ -78,7 +78,7 @@ public sealed interface ApiResponse<out T> {
      *
      * @return A [ApiResponse.Failure.Exception] based on the throwable.
      */
-    public fun <T> error(ex: Throwable): Failure.Exception<T> =
+    public fun <T> exception(ex: Throwable): Failure.Exception<T> =
       Failure.Exception<T>(ex).apply { operate() }
 
     /**
@@ -99,7 +99,7 @@ public sealed interface ApiResponse<out T> {
           tag = tag,
         ).operate()
       } catch (e: Exception) {
-        error(e)
+        exception(e)
       }
     }
 

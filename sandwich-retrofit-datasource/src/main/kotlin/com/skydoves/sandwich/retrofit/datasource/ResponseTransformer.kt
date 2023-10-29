@@ -85,7 +85,7 @@ internal inline fun <T> getCallbackFromOnResult(
     }
 
     override fun onFailure(call: Call<T>, throwable: Throwable) {
-      onResult(ApiResponse.error(throwable))
+      onResult(ApiResponse.exception(throwable))
     }
   }
 }
@@ -114,7 +114,7 @@ internal inline fun <T> getCallbackFromOnResultOnCoroutinesScope(
 
     override fun onFailure(call: Call<T>, throwable: Throwable) {
       coroutineScope.launch {
-        onResult(ApiResponse.error(throwable))
+        onResult(ApiResponse.exception(throwable))
       }
     }
   }
@@ -146,7 +146,7 @@ internal inline fun <T> getCallbackFromOnResultWithContext(
 
     override fun onFailure(call: Call<T>, throwable: Throwable) {
       scope.launch {
-        onResult(ApiResponse.error(throwable))
+        onResult(ApiResponse.exception(throwable))
       }
     }
   }

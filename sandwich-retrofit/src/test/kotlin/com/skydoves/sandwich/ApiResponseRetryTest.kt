@@ -40,7 +40,7 @@ internal class ApiResponseRetryTest {
 
     runAndRetry(retryPolicy) { attempt, reason ->
       currentValue++
-      ApiResponse.error<String>(UnknownHostException("UnknownHostException"))
+      ApiResponse.exception<String>(UnknownHostException("UnknownHostException"))
     }
 
     assertThat(currentValue, `is`(maxAttempts + 1))

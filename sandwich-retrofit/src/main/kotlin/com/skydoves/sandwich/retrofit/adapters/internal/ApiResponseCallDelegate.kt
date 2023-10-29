@@ -43,7 +43,10 @@ internal class ApiResponseCallDelegate<T>(
         val apiResponse = ApiResponse.of { response }
         callback.onResponse(this@ApiResponseCallDelegate, Response.success(apiResponse))
       } catch (e: Exception) {
-        callback.onResponse(this@ApiResponseCallDelegate, Response.success(ApiResponse.error(e)))
+        callback.onResponse(
+          this@ApiResponseCallDelegate,
+          Response.success(ApiResponse.exception(e)),
+        )
       }
     }
   }

@@ -58,7 +58,7 @@ internal class ApiResponseDeferredCallAdapter<T>(
         val apiResponse = ApiResponse.of { response }
         deferred.complete(apiResponse)
       } catch (e: Exception) {
-        val apiResponse = ApiResponse.error<T>(e)
+        val apiResponse = ApiResponse.exception<T>(e)
         deferred.complete(apiResponse)
       }
     }
