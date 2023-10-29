@@ -84,6 +84,28 @@ public sealed interface ApiResponse<out T> {
     /**
      * @author skydoves (Jaewoong Eum)
      *
+     * ApiResponse Factory.
+     *
+     * Create an [ApiResponse] from the given executable [f].
+     *
+     * If the [f] doesn't throw any exceptions, it creates [ApiResponse.Success].
+     * If the [f] throws an exception, it creates [ApiResponse.Failure.Exception].
+     */
+    public inline fun <T> of(tag: Any? = null, crossinline f: () -> T): ApiResponse<T> {
+      return try {
+        val result = f()
+        Success(
+          data = result,
+          tag = tag,
+        )
+      } catch (e: Exception) {
+        error(e)
+      }
+    }
+
+    /**
+     * @author skydoves (Jaewoong Eum)
+     *
      * Operates if there is a global [com.skydoves.sandwich.operators.SandwichOperator]
      * which operates on [ApiResponse]s globally on each response and returns the target [ApiResponse].
      *
