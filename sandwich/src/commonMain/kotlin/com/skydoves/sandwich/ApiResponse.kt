@@ -97,7 +97,7 @@ public sealed interface ApiResponse<out T> {
         Success(
           data = result,
           tag = tag,
-        )
+        ).operate()
       } catch (e: Exception) {
         error(e)
       }
