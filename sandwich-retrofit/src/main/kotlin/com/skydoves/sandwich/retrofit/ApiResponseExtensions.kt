@@ -19,6 +19,7 @@ import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ApiResponse.Companion.operate
 import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwich.StatusCode
+import com.skydoves.sandwich.SuspensionFunction
 import com.skydoves.sandwich.exceptions.NoContentException
 import okhttp3.Headers
 import okhttp3.ResponseBody
@@ -143,7 +144,49 @@ public inline fun <T> apiResponseOf(
  *
  * @return An [ApiResponse] model which holds information about the response.
  */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T> apiResponseOfSuspend(
+  successCodeRange: IntRange = SandwichInitializer.successCodeRange,
+  crossinline f: suspend () -> Response<T>,
+): ApiResponse<T> {
+  val response = f()
+  return apiResponseOf(successCodeRange) { response }
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * ApiResponse Factory.
+ *
+ * @param successCodeRange A success code range for determining the response is successful or failure.
+ * @param [f] Create [ApiResponse] from [retrofit2.Response] returning from the block.
+ * If [retrofit2.Response] has no errors, it creates [ApiResponse.Success].
+ * If [retrofit2.Response] has errors, it creates [ApiResponse.Failure.Error].
+ * If [retrofit2.Response] has occurred exceptions, it creates [ApiResponse.Failure.Exception].
+ *
+ * @return An [ApiResponse] model which holds information about the response.
+ */
 public inline fun <T> ApiResponse.Companion.of(
   successCodeRange: IntRange = SandwichInitializer.successCodeRange,
   crossinline f: () -> Response<T>,
 ): ApiResponse<T> = apiResponseOf(successCodeRange, f)
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * ApiResponse Factory.
+ *
+ * @param successCodeRange A success code range for determining the response is successful or failure.
+ * @param [f] Create [ApiResponse] from [retrofit2.Response] returning from the block.
+ * If [retrofit2.Response] has no errors, it creates [ApiResponse.Success].
+ * If [retrofit2.Response] has errors, it creates [ApiResponse.Failure.Error].
+ * If [retrofit2.Response] has occurred exceptions, it creates [ApiResponse.Failure.Exception].
+ *
+ * @return An [ApiResponse] model which holds information about the response.
+ */
+@SuspensionFunction
+public suspend inline fun <T> ApiResponse.Companion.ofSuspend(
+  successCodeRange: IntRange = SandwichInitializer.successCodeRange,
+  crossinline f: suspend () -> Response<T>,
+): ApiResponse<T> = apiResponseOfSuspend(successCodeRange, f)

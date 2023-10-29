@@ -91,7 +91,7 @@ public sealed interface ApiResponse<out T> {
      * If the [f] doesn't throw any exceptions, it creates [ApiResponse.Success].
      * If the [f] throws an exception, it creates [ApiResponse.Failure.Exception].
      */
-    public inline fun <T> of(tag: Any? = null, crossinline f: () -> T): ApiResponse<T> {
+    public inline fun <T> by(tag: Any? = null, crossinline f: () -> T): ApiResponse<T> {
       return try {
         val result = f()
         Success(
@@ -101,6 +101,25 @@ public sealed interface ApiResponse<out T> {
       } catch (e: Exception) {
         error(e)
       }
+    }
+
+    /**
+     * @author skydoves (Jaewoong Eum)
+     *
+     * ApiResponse Factory.
+     *
+     * Create an [ApiResponse] from the given executable [f].
+     *
+     * If the [f] doesn't throw any exceptions, it creates [ApiResponse.Success].
+     * If the [f] throws an exception, it creates [ApiResponse.Failure.Exception].
+     */
+    @SuspensionFunction
+    public suspend inline fun <T> bySuspend(
+      tag: Any? = null,
+      crossinline f: suspend () -> T,
+    ): ApiResponse<T> {
+      val result = f()
+      return by(tag = tag) { result }
     }
 
     /**

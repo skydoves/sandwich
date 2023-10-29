@@ -7,6 +7,10 @@ public abstract interface class com/skydoves/sandwich/ApiResponse {
 }
 
 public final class com/skydoves/sandwich/ApiResponse$Companion {
+	public final fun by (Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)Lcom/skydoves/sandwich/ApiResponse;
+	public static synthetic fun by$default (Lcom/skydoves/sandwich/ApiResponse$Companion;Ljava/lang/Object;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
+	public final fun bySuspend (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun bySuspend$default (Lcom/skydoves/sandwich/ApiResponse$Companion;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun error (Ljava/lang/Throwable;)Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;
 	public final fun operate (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse;
 }
@@ -52,6 +56,10 @@ public final class com/skydoves/sandwich/ApiResponse$Success : com/skydoves/sand
 }
 
 public final class com/skydoves/sandwich/ApiResponseExtensionsKt {
+	public static final fun apiResponseBy (Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)Lcom/skydoves/sandwich/ApiResponse;
+	public static synthetic fun apiResponseBy$default (Ljava/lang/Object;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final fun apiResponseBySuspend (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun apiResponseBySuspend$default (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static final fun getMessageOrNull (Lcom/skydoves/sandwich/ApiResponse;)Ljava/lang/String;
 	public static final fun isError (Lcom/skydoves/sandwich/ApiResponse;)Z
 	public static final fun isException (Lcom/skydoves/sandwich/ApiResponse;)Z
