@@ -72,7 +72,7 @@ internal class SandwichInitializerTest {
     ApiResponse.of { successResponse }
     assertThat(onError, `is`(true))
 
-    ApiResponse.error<Poster>(Throwable())
+    ApiResponse.exception<Poster>(Throwable())
     assertThat(onException, `is`(true))
   }
 }

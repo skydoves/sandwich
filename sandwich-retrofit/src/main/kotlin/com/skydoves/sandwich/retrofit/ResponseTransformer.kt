@@ -75,7 +75,7 @@ internal inline fun <T> getCallbackFromOnResult(
     }
 
     override fun onFailure(call: Call<T>, throwable: Throwable) {
-      onResult(ApiResponse.error(throwable))
+      onResult(ApiResponse.exception(throwable))
     }
   }
 }
@@ -104,7 +104,7 @@ internal inline fun <T> getCallbackFromOnResultOnCoroutinesScope(
 
     override fun onFailure(call: Call<T>, throwable: Throwable) {
       coroutineScope.launch {
-        onResult(ApiResponse.error(throwable))
+        onResult(ApiResponse.exception(throwable))
       }
     }
   }
@@ -136,7 +136,7 @@ internal inline fun <T> getCallbackFromOnResultWithContext(
 
     override fun onFailure(call: Call<T>, throwable: Throwable) {
       scope.launch {
-        onResult(ApiResponse.error(throwable))
+        onResult(ApiResponse.exception(throwable))
       }
     }
   }
@@ -208,7 +208,7 @@ public fun <T, V> ApiResponse<T>.mapFailure(
       )
     }
   } else if (this is ApiResponse.Failure.Exception<T>) {
-    return ApiResponse.error(exception)
+    return ApiResponse.exception(exception)
   }
   return this as ApiResponse<V>
 }
@@ -241,7 +241,7 @@ public suspend fun <T, V> ApiResponse<T>.suspendMapFailure(
       )
     }
   } else if (this is ApiResponse.Failure.Exception<T>) {
-    return ApiResponse.error(exception)
+    return ApiResponse.exception(exception)
   }
   return this as ApiResponse<V>
 }

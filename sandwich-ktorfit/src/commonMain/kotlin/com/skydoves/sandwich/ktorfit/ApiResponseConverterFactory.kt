@@ -46,7 +46,7 @@ public class ApiResponseConverterFactory : Converter.Factory {
           return try {
             ApiResponse.Success(response.body(typeData.typeArgs.first().typeInfo))
           } catch (e: Throwable) {
-            ApiResponse.error(e)
+            ApiResponse.exception(e)
           }
         }
       }

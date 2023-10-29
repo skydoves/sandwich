@@ -284,7 +284,7 @@ public class ResponseDataSource<T> : DataSource<T> {
 
         override fun onFailure(call: Call<T>, throwable: Throwable) {
           callback?.onFailure(call, throwable)
-          postValue(ApiResponse.error(throwable))
+          postValue(ApiResponse.exception(throwable))
           ArchTaskExecutor.instance.postToMainThread(retryRunnable, retryTimeInterval)
           call.cancel()
         }

@@ -80,7 +80,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun getOrNullOnExceptionTest() {
     val exception = IllegalArgumentException("foo")
-    val apiResponse = ApiResponse.error<String>(exception)
+    val apiResponse = ApiResponse.exception<String>(exception)
     val data = apiResponse.getOrNull()
 
     assertNull(data)
@@ -115,7 +115,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun getOrElseOnExceptionTest() {
     val exception = IllegalArgumentException("foo")
-    val apiResponse = ApiResponse.error<String>(exception)
+    val apiResponse = ApiResponse.exception<String>(exception)
     val data = apiResponse.getOrElse("bar")
 
     assertThat(data, `is`("bar"))
@@ -150,7 +150,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun getOrElseLambdaOnExceptionTest() {
     val exception = IllegalArgumentException("foo")
-    val apiResponse = ApiResponse.error<String>(exception)
+    val apiResponse = ApiResponse.exception<String>(exception)
     val data = apiResponse.getOrElse { "bar" }
 
     assertThat(data, `is`("bar"))
@@ -183,7 +183,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test(expected = IllegalArgumentException::class)
   fun getOrThrowOnExceptionTest() {
     val exception = IllegalArgumentException("foo")
-    val apiResponse = ApiResponse.error<String>(exception)
+    val apiResponse = ApiResponse.exception<String>(exception)
     apiResponse.getOrThrow()
   }
 
@@ -361,7 +361,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun onExceptionTest() {
     var onResult = false
-    val apiResponse = ApiResponse.error<Poster>(Throwable())
+    val apiResponse = ApiResponse.exception<Poster>(Throwable())
 
     apiResponse.onException {
       onResult = true
@@ -373,7 +373,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun onExceptionInProcedureTest() {
     var onResult = false
-    val apiResponse = ApiResponse.error<Poster>(Throwable())
+    val apiResponse = ApiResponse.exception<Poster>(Throwable())
 
     apiResponse.onProcedure(
       onSuccess = {
@@ -392,7 +392,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
 
   @Test
   fun suspendOnExceptionTest() = runTest {
-    val apiResponse = ApiResponse.error<Poster>(Throwable())
+    val apiResponse = ApiResponse.exception<Poster>(Throwable())
 
     flow {
       apiResponse.suspendOnException {
@@ -405,7 +405,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
 
   @Test
   fun suspendOnExceptionInProcedureTest() = runTest {
-    val apiResponse = ApiResponse.error<Poster>(Throwable())
+    val apiResponse = ApiResponse.exception<Poster>(Throwable())
 
     flow {
       apiResponse.suspendOnProcedure(
@@ -773,7 +773,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     assertThat(onError, `is`(true))
 
     var onException = false
-    val apiException = ApiResponse.error<Poster>(Throwable())
+    val apiException = ApiResponse.exception<Poster>(Throwable())
     apiException.operator(
       TestApiResponseOperator(
         onSuccess = {},
@@ -824,7 +824,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       assertThat(it, `is`("404"))
     }
 
-    val apiException = ApiResponse.error<Poster>(Throwable())
+    val apiException = ApiResponse.exception<Poster>(Throwable())
     flow {
       apiException.suspendOperator(
         TestApiResponseSuspendOperator(
