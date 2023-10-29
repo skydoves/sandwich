@@ -19,6 +19,7 @@ import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ApiResponse.Companion.operate
 import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwich.StatusCode
+import com.skydoves.sandwich.SuspensionFunction
 import com.skydoves.sandwich.exceptions.NoContentException
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
@@ -109,9 +110,10 @@ public val <T> ApiResponse.Failure.Error<T>.headers: Headers
  * @return An [ApiResponse] model which holds information about the response.
  */
 @JvmSynthetic
+@SuspensionFunction
 public suspend inline fun <reified T> apiResponseOf(
   successCodeRange: IntRange = SandwichInitializer.successCodeRange,
-  crossinline f: () -> HttpResponse,
+  crossinline f: suspend () -> HttpResponse,
 ): ApiResponse<T> = try {
   val response = f()
   if (response.status.value in successCodeRange) {
@@ -139,7 +141,8 @@ public suspend inline fun <reified T> apiResponseOf(
  *
  * @return An [ApiResponse] model which holds information about the response.
  */
+@SuspensionFunction
 public suspend inline fun <reified T> ApiResponse.Companion.of(
   successCodeRange: IntRange = SandwichInitializer.successCodeRange,
-  crossinline f: () -> HttpResponse,
+  crossinline f: suspend () -> HttpResponse,
 ): ApiResponse<T> = apiResponseOf(successCodeRange, f)

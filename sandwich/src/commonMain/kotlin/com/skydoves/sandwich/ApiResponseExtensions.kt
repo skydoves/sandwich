@@ -17,6 +17,35 @@ package com.skydoves.sandwich
 
 /**
  * @author skydoves (Jaewoong Eum)
+ *
+ * ApiResponse Factory.
+ *
+ * Create an [ApiResponse] from the given executable [f].
+ *
+ * If the [f] doesn't throw any exceptions, it creates [ApiResponse.Success].
+ * If the [f] throws an exception, it creates [ApiResponse.Failure.Exception].
+ */
+public inline fun <T> apiResponseBy(tag: Any? = null, crossinline f: () -> T): ApiResponse<T> =
+  ApiResponse.by(tag = tag, f = f)
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * ApiResponse Factory.
+ *
+ * Create an [ApiResponse] from the given executable [f].
+ *
+ * If the [f] doesn't throw any exceptions, it creates [ApiResponse.Success].
+ * If the [f] throws an exception, it creates [ApiResponse.Failure.Exception].
+ */
+@SuspensionFunction
+public suspend inline fun <T> apiResponseBySuspend(
+  tag: Any? = null,
+  crossinline f: suspend () -> T,
+): ApiResponse<T> = ApiResponse.bySuspend(tag = tag, f = f)
+
+/**
+ * @author skydoves (Jaewoong Eum)
  * @since 1.3.1
  *
  *  Returns true if this instance represents an [ApiResponse.Success].
