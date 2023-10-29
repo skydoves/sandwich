@@ -33,8 +33,7 @@ mavenPublishing {
 }
 
 kotlin {
-  jvmToolchain(11)
-  jvm {
+  jvm {libs.versions.jvmTarget.get().toInt()
     compilations.all {
       kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
     }
@@ -67,12 +66,8 @@ kotlin {
     }
 
     val jvmMain by getting
-
     val jvmTest by getting
 
-    val appleTest by creating {
-      dependsOn(commonTest)
-    }
     val appleMain by creating {
       dependsOn(commonMain)
     }
@@ -88,22 +83,23 @@ kotlin {
     val iosSimulatorArm64Main by getting {
       dependsOn(appleMain)
     }
-
     val iosArm64Main by getting {
+      dependsOn(appleMain)
+    }
+    val iosX64Main by getting {
+      dependsOn(appleMain)
+    }
+
+    val appleTest by creating {
+      dependsOn(commonTest)
+    }
+    val iosTest by getting {
       dependsOn(appleTest)
     }
     val iosArm64Test by getting {
       dependsOn(appleTest)
     }
-
-    val iosX64Main by getting {
-      dependsOn(appleTest)
-    }
     val iosX64Test by getting {
-      dependsOn(appleTest)
-    }
-
-    val iosTest by getting {
       dependsOn(appleTest)
     }
     val iosSimulatorArm64Test by getting {
