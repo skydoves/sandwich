@@ -77,5 +77,7 @@ dependencies {
   implementation(libs.glide)
   implementation(libs.timber)
 
+  implementation(libs.ktrofit)
+
   implementation("androidx.multidex:multidex:2.0.1")
 }
