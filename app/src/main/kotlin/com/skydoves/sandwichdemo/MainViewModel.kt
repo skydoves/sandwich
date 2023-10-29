@@ -21,12 +21,17 @@ import androidx.lifecycle.viewModelScope
 import com.skydoves.sandwich.StatusCode
 import com.skydoves.sandwich.getOrThrow
 import com.skydoves.sandwich.isSuccess
+import com.skydoves.sandwich.ktor.bodyString
+import com.skydoves.sandwich.ktor.getApiResponse
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.messageOrNull
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
+import com.skydoves.sandwich.onSuccess
 import com.skydoves.sandwich.retrofit.statusCode
+import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
+import com.skydoves.sandwichdemo.model.PokemonResponse
 import com.skydoves.sandwichdemo.model.Poster
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -82,9 +87,19 @@ class MainViewModel(mainRepository: MainRepository) : ViewModel() {
   val posterList2Flow: StateFlow<List<Poster>?> = _posterList2Flow
 
   init {
+    Timber.plant(Timber.DebugTree())
     Timber.d("initialized MainViewModel.")
 
     viewModelScope.launch {
+      val response = client.getApiResponse<PokemonResponse>("https://pokeapi.co/api/v2/pokemon")
+      response.onSuccess {
+        Timber.d("success: $data")
+      }.suspendOnError {
+        Timber.d("error: ${bodyString()}")
+      }.onException {
+        Timber.d("exception: $messageOrNull")
+      }
+
       mainRepository.fetchPosters()
         // handles the success scenario when the API request succeeds.
         .suspendOnSuccess {
