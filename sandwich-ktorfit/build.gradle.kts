@@ -49,7 +49,7 @@ kotlin {
     val commonMain by getting {
       dependencies {
         api(project(":sandwich-ktor"))
-        api(libs.ktrofit)
+        api(libs.ktorfit)
         implementation(libs.coroutines)
       }
     }

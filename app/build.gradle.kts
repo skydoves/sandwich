@@ -22,6 +22,7 @@ plugins {
   id(libs.plugins.kotlin.android.get().pluginId)
   id(libs.plugins.kotlin.serialization.get().pluginId)
   id(libs.plugins.kotlin.kapt.get().pluginId)
+  id(libs.plugins.ktorfit.get().pluginId)
   id(libs.plugins.ksp.get().pluginId)
 }
 
@@ -55,6 +56,7 @@ android {
 dependencies {
   implementation(project(":sandwich"))
   implementation(project(":sandwich-ktor"))
+  implementation(project(":sandwich-ktorfit"))
   implementation(project(":sandwich-retrofit"))
   implementation(project(":sandwich-retrofit-datasource"))
   implementation(project(":sandwich-retrofit-serialization"))
@@ -74,10 +76,13 @@ dependencies {
   implementation(libs.ktor.json)
   implementation(libs.serialization)
 
+  implementation(libs.ktorfit)
+  ksp(libs.ktorfit.ksp)
+
   implementation(libs.glide)
   implementation(libs.timber)
 
-  implementation(libs.ktrofit)
+  implementation(libs.ktorfit)
 
   implementation("androidx.multidex:multidex:2.0.1")
 }
