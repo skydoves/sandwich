@@ -48,8 +48,8 @@ kotlin {
   sourceSets {
     val commonMain by getting {
       dependencies {
-        api(project(":sandwich"))
-        api(libs.ktor.core)
+        api(project(":sandwich-ktor"))
+        api(libs.ktorfit.light)
         implementation(libs.coroutines)
       }
     }

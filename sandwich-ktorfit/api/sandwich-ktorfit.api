@@ -1,0 +1,7 @@
+public final class com/skydoves/sandwich/ktorfit/ApiResponseConverterFactory : de/jensklingenberg/ktorfit/converter/Converter$Factory {
+	public fun <init> ()V
+	public fun requestParameterConverter (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)Lde/jensklingenberg/ktorfit/converter/Converter$RequestParameterConverter;
+	public fun responseConverter (Lde/jensklingenberg/ktorfit/internal/TypeData;Lde/jensklingenberg/ktorfit/Ktorfit;)Lde/jensklingenberg/ktorfit/converter/Converter$ResponseConverter;
+	public fun suspendResponseConverter (Lde/jensklingenberg/ktorfit/internal/TypeData;Lde/jensklingenberg/ktorfit/Ktorfit;)Lde/jensklingenberg/ktorfit/converter/Converter$SuspendResponseConverter;
+}
+

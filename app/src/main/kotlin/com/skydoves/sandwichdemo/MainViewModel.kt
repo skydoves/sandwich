@@ -23,6 +23,7 @@ import com.skydoves.sandwich.getOrThrow
 import com.skydoves.sandwich.isSuccess
 import com.skydoves.sandwich.ktor.bodyString
 import com.skydoves.sandwich.ktor.getApiResponse
+import com.skydoves.sandwich.ktorfit.ApiResponseConverterFactory
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.messageOrNull
 import com.skydoves.sandwich.onError
@@ -33,6 +34,8 @@ import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
 import com.skydoves.sandwichdemo.model.PokemonResponse
 import com.skydoves.sandwichdemo.model.Poster
+import com.skydoves.sandwichdemo.network.KtorfitPokemonService
+import de.jensklingenberg.ktorfit.Ktorfit
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -54,23 +57,6 @@ class MainViewModel(mainRepository: MainRepository) : ViewModel() {
 
   val toastLiveData = MutableLiveData<String>()
 
-  private val client = HttpClient(OkHttp) {
-    defaultRequest {
-      contentType(ContentType.Application.Json)
-      accept(ContentType.Application.Json)
-    }
-
-    install(ContentNegotiation) {
-      json(
-        Json {
-          prettyPrint = true
-          isLenient = true
-          ignoreUnknownKeys = true
-        },
-      )
-    }
-  }
-
   // Use Case 1 - update the fetched posters as a property
   val posterList: StateFlow<List<Poster>> = mainRepository.fetchPostersFlow().map {
     if (it.isSuccess) {
@@ -91,15 +77,6 @@ class MainViewModel(mainRepository: MainRepository) : ViewModel() {
     Timber.d("initialized MainViewModel.")
 
     viewModelScope.launch {
-      val response = client.getApiResponse<PokemonResponse>("https://pokeapi.co/api/v2/pokemon")
-      response.onSuccess {
-        Timber.d("success: $data")
-      }.suspendOnError {
-        Timber.d("error: ${bodyString()}")
-      }.onException {
-        Timber.d("exception: $messageOrNull")
-      }
-
       mainRepository.fetchPosters()
         // handles the success scenario when the API request succeeds.
         .suspendOnSuccess {
@@ -124,4 +101,50 @@ class MainViewModel(mainRepository: MainRepository) : ViewModel() {
     }
   }
   // End (Use Case 2)
+
+  private val client = HttpClient(OkHttp) {
+    defaultRequest {
+      contentType(ContentType.Application.Json)
+      accept(ContentType.Application.Json)
+    }
+
+    install(ContentNegotiation) {
+      json(
+        Json {
+          prettyPrint = true
+          isLenient = true
+          ignoreUnknownKeys = true
+        },
+      )
+    }
+  }
+
+  // Ktor example
+  private fun ktor() = viewModelScope.launch {
+    val response = client.getApiResponse<PokemonResponse>("https://pokeapi.co/api/v2/pokemon")
+    response.onSuccess {
+      Timber.d("success: $data")
+    }.suspendOnError {
+      Timber.d("error: ${bodyString()}")
+    }.onException {
+      Timber.d("exception: $messageOrNull")
+    }
+  }
+
+  // Ktorfit example
+  private fun ktorfit() = viewModelScope.launch {
+    val ktorfit = Ktorfit.Builder().baseUrl("https://pokeapi.co/api/v2/")
+      .converterFactories(ApiResponseConverterFactory())
+      .httpClient(client)
+      .build()
+    val service = ktorfit.create<KtorfitPokemonService>()
+    val response = service.getPokemon()
+    response.onSuccess {
+      Timber.d("success: $data")
+    }.suspendOnError {
+      Timber.d("error: ${bodyString()}")
+    }.onException {
+      Timber.d("exception: $messageOrNull")
+    }
+  }
 }
