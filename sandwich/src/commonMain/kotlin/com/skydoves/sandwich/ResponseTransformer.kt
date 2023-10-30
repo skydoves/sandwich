@@ -41,8 +41,7 @@ import kotlin.jvm.JvmSynthetic
 public fun <T> ApiResponse<T>.getOrNull(): T? {
   return when (this) {
     is ApiResponse.Success -> data
-    is ApiResponse.Failure.Error -> null
-    is ApiResponse.Failure.Exception -> null
+    is ApiResponse.Failure -> null
   }
 }
 
@@ -57,8 +56,7 @@ public fun <T> ApiResponse<T>.getOrNull(): T? {
 public fun <T> ApiResponse<T>.getOrElse(defaultValue: T): T {
   return when (this) {
     is ApiResponse.Success -> data
-    is ApiResponse.Failure.Error -> defaultValue
-    is ApiResponse.Failure.Exception -> defaultValue
+    is ApiResponse.Failure -> defaultValue
   }
 }
 
@@ -73,8 +71,7 @@ public fun <T> ApiResponse<T>.getOrElse(defaultValue: T): T {
 public inline fun <T> ApiResponse<T>.getOrElse(defaultValue: () -> T): T {
   return when (this) {
     is ApiResponse.Success -> data
-    is ApiResponse.Failure.Error -> defaultValue()
-    is ApiResponse.Failure.Exception -> defaultValue()
+    is ApiResponse.Failure -> defaultValue()
   }
 }
 
@@ -94,6 +91,7 @@ public fun <T> ApiResponse<T>.getOrThrow(): T {
     is ApiResponse.Success -> return data
     is ApiResponse.Failure.Error -> throw RuntimeException(message())
     is ApiResponse.Failure.Exception -> throw exception
+    is ApiResponse.Failure.Cause -> throw RuntimeException(payload?.toString())
   }
 }
 
@@ -356,6 +354,47 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnException(
 /**
  * @author skydoves (Jaewoong Eum)
  *
+ * A scope function that would be executed for handling cause responses if the request is failed.
+ *
+ * @param onResult The receiver function that receiving [ApiResponse.Failure.Cause] if the request is failed.
+ *
+ * @return The original [ApiResponse].
+ */
+@JvmSynthetic
+public inline fun <T> ApiResponse<T>.onCause(
+  crossinline onResult: ApiResponse.Failure.Cause.() -> Unit,
+): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure.Cause) {
+    onResult(this)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * A suspension scope function that would be executed for handling exception responses if the request get an exception.
+ *
+ * @param onResult The receiver function that receiving [ApiResponse.Failure.Cause] if the request get an exception.
+ *
+ * @return The original [ApiResponse].
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T> ApiResponse<T>.suspendOnCause(
+  crossinline onResult: suspend ApiResponse.Failure.Cause.() -> Unit,
+): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure.Cause) {
+    onResult(this)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A scope function that will be executed for handling successful, error, exception responses.
  *  This function receives and handles [ApiResponse.onSuccess], [ApiResponse.onError],
  *  and [ApiResponse.onException] in one scope.
@@ -363,6 +402,7 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnException(
  * @param onSuccess A scope function that would be executed for handling successful responses if the request succeeds.
  * @param onError A scope function that would be executed for handling error responses if the request failed.
  * @param onException A scope function that would be executed for handling exception responses if the request get an exception.
+ * @param onCause A scope function that would be executed for handling exception responses if the request get an exception.
  *
  *  @return The original [ApiResponse].
  */
@@ -371,15 +411,18 @@ public inline fun <T> ApiResponse<T>.onProcedure(
   crossinline onSuccess: ApiResponse.Success<T>.() -> Unit,
   crossinline onError: ApiResponse.Failure.Error<T>.() -> Unit,
   crossinline onException: ApiResponse.Failure.Exception<T>.() -> Unit,
+  crossinline onCause: ApiResponse.Failure.Cause.() -> Unit,
 ): ApiResponse<T> {
   contract {
     callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
     callsInPlace(onError, InvocationKind.AT_MOST_ONCE)
     callsInPlace(onException, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(onCause, InvocationKind.AT_MOST_ONCE)
   }
   this.onSuccess(onSuccess)
   this.onError(onError)
   this.onException(onException)
+  this.onCause(onCause)
   return this
 }
 
@@ -393,7 +436,7 @@ public inline fun <T> ApiResponse<T>.onProcedure(
  * @param onSuccess A suspension scope function that would be executed for handling successful responses if the request succeeds.
  * @param onError A suspension scope function that would be executed for handling error responses if the request failed.
  * @param onException A suspension scope function that would be executed for handling exception responses if the request get an exception.
- *
+ * @param onCause A suspension scope function that would be executed for handling exception responses if the request get an exception.
  *  @return The original [ApiResponse].
  */
 @JvmSynthetic
@@ -402,15 +445,146 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnProcedure(
   crossinline onSuccess: suspend ApiResponse.Success<T>.() -> Unit,
   crossinline onError: suspend ApiResponse.Failure.Error<T>.() -> Unit,
   crossinline onException: suspend ApiResponse.Failure.Exception<T>.() -> Unit,
+  crossinline onCause: suspend ApiResponse.Failure.Cause.() -> Unit,
 ): ApiResponse<T> {
   contract {
     callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
     callsInPlace(onError, InvocationKind.AT_MOST_ONCE)
     callsInPlace(onException, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(onCause, InvocationKind.AT_MOST_ONCE)
   }
   this.suspendOnSuccess(onSuccess)
   this.suspendOnError(onError)
   this.suspendOnException(onException)
+  this.suspendOnCause(onCause)
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps a [T] type of the [ApiResponse] to a [V] type of the [ApiResponse] if the [ApiResponse] is [ApiResponse.Success].
+ *
+ * @param transformer A transformer that receives [T] and returns [V].
+ *
+ * @return A [V] type of the [ApiResponse].
+ */
+@Suppress("UNCHECKED_CAST")
+public inline fun <reified T, reified V> ApiResponse<T>.mapSuccess(
+  crossinline transformer: T.() -> V,
+): ApiResponse<V> {
+  contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Success<T>) {
+    return ApiResponse.of(tag = tag) { transformer(data) }
+  }
+  return this as ApiResponse<V>
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps a [T] type of the [ApiResponse] to a [V] type of the [ApiResponse] if the [ApiResponse] is [ApiResponse.Success].
+ *
+ * @param transformer A suspend transformer that receives [T] and returns [V].
+ *
+ * @return A [V] type of the [ApiResponse].
+ */
+@JvmSynthetic
+@SuspensionFunction
+@Suppress("UNCHECKED_CAST")
+public suspend inline fun <reified T, reified V> ApiResponse<T>.suspendMapSuccess(
+  crossinline transformer: suspend T.() -> V,
+): ApiResponse<V> {
+  if (this is ApiResponse.Success<T>) {
+    val invoke = transformer(data)
+    return ApiResponse.of(tag = tag) { invoke }
+  }
+  return this as ApiResponse<V>
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps [Any] type of the [ApiResponse.Failure.Error.payload] to another Any type.
+ *
+ * @param transformer A transformer that receives [Any] and returns [Any].
+ *
+ * @return A [T] type of the [ApiResponse].
+ */
+public fun <T> ApiResponse<T>.mapFailure(
+  transformer: Any?.() -> Any?,
+): ApiResponse<T> {
+  contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure.Error<T>) {
+    return ApiResponse.Failure.Error(payload = transformer.invoke(payload))
+  } else if (this is ApiResponse.Failure.Exception<T>) {
+    return ApiResponse.exception(ex = (transformer.invoke(exception) as? Throwable) ?: exception)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps [Any] type of the [ApiResponse.Failure.Error.payload] to another Any type.
+ *
+ * @param transformer A transformer that receives [Any] and returns [Any].
+ *
+ * @return A [T] type of the [ApiResponse].
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend fun <T> ApiResponse<T>.suspendMapFailure(
+  transformer: suspend Any?.() -> Any?,
+): ApiResponse<T> {
+  contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure.Error<T>) {
+    return ApiResponse.Failure.Error(payload = transformer.invoke(payload))
+  } else if (this is ApiResponse.Failure.Exception<T>) {
+    return ApiResponse.exception(ex = (transformer.invoke(exception) as? Throwable) ?: exception)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps [T] type of the [ApiResponse] to [ApiResponse.Failure.Cause] with the given payload
+ * if the receiver is [ApiResponse.Failure].
+ *
+ * @param transformer A transformer that receives [Any] and returns [ApiResponse.Failure.Cause].
+ *
+ * @return A [T] type of the [ApiResponse].
+ */
+public fun <T> ApiResponse<T>.mapCause(
+  transformer: (payload: Any?) -> ApiResponse.Failure.Cause,
+): ApiResponse<T> {
+  if (this is ApiResponse.Failure.Error) {
+    return transformer.invoke(payload)
+  } else if (this is ApiResponse.Failure.Exception) {
+    return transformer.invoke(exception)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps [T] type of the [ApiResponse] to [ApiResponse.Failure.Cause] with the given payload
+ * if the receiver is [ApiResponse.Failure].
+ *
+ * @param transformer A transformer that receives [Any] and returns [ApiResponse.Failure.Cause].
+ *
+ * @return A [T] type of the [ApiResponse].
+ */
+public suspend fun <T> ApiResponse<T>.suspendMapCause(
+  transformer: suspend (payload: Any?) -> ApiResponse.Failure.Cause,
+): ApiResponse<T> {
+  if (this is ApiResponse.Failure.Error) {
+    return transformer.invoke(payload)
+  } else if (this is ApiResponse.Failure.Exception) {
+    return transformer.invoke(exception)
+  }
   return this
 }
 
@@ -582,6 +756,21 @@ public suspend inline fun <T, V> ApiResponse.Failure.Error<T>.suspendMap(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Returns the tag value if this instance represents [ApiResponse.Success].
+ *
+ * @return The encapsulated data.
+ */
+public fun <T> ApiResponse<T>.tagOrNull(): Any? {
+  return if (this is ApiResponse.Success) {
+    tag
+  } else {
+    null
+  }
+}
+
+/**
  * Returns an error message from the [ApiResponse.Failure] that consists of the localized message.
  *
  * @return An error message from the [ApiResponse.Failure].
@@ -590,6 +779,7 @@ public fun <T> ApiResponse.Failure<T>.message(): String {
   return when (this) {
     is ApiResponse.Failure.Error -> message()
     is ApiResponse.Failure.Exception -> message()
+    is ApiResponse.Failure.Cause -> message()
   }
 }
 
@@ -610,6 +800,13 @@ public fun <T> ApiResponse.Failure.Error<T>.message(): String = toString()
 public fun <T> ApiResponse.Failure.Exception<T>.message(): String = toString()
 
 /**
+ * Returns a payload message from the [ApiResponse.Failure.Cause] that consists of the localized message.
+ *
+ * @return A payload message from the [ApiResponse.Failure.Cause].
+ */
+public fun ApiResponse.Failure.Cause.message(): String = payload.toString()
+
+/**
  * @author skydoves (Jaewoong Eum)
  *
  * Operates on an [ApiResponse] and return an [ApiResponse].
@@ -624,6 +821,7 @@ public fun <T, V : ApiResponseOperator<T>> ApiResponse<T>.operator(
     is ApiResponse.Success -> apiResponseOperator.onSuccess(this)
     is ApiResponse.Failure.Error -> apiResponseOperator.onError(this)
     is ApiResponse.Failure.Exception -> apiResponseOperator.onException(this)
+    is ApiResponse.Failure.Cause -> apiResponseOperator.onCause(this)
   }
 }
 
@@ -643,7 +841,43 @@ public suspend fun <T, V : ApiResponseSuspendOperator<T>> ApiResponse<T>.suspend
     is ApiResponse.Success -> apiResponseOperator.onSuccess(this)
     is ApiResponse.Failure.Error -> apiResponseOperator.onError(this)
     is ApiResponse.Failure.Exception -> apiResponseOperator.onException(this)
+    is ApiResponse.Failure.Cause -> apiResponseOperator.onCause(this)
   }
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Merges multiple [ApiResponse]s as one [ApiResponse] depending on the policy, [ApiResponseMergePolicy].
+ * The default policy is [ApiResponseMergePolicy.IGNORE_FAILURE].
+ *
+ * @param responses Responses for merging as one [ApiResponse].
+ * @param mergePolicy A policy for merging response data depend on the success or not.
+ *
+ * @return [ApiResponse] that depends on the [ApiResponseMergePolicy].
+ */
+@JvmSynthetic
+public fun <T> ApiResponse<List<T>>.merge(
+  vararg responses: ApiResponse<List<T>>,
+  mergePolicy: ApiResponseMergePolicy = ApiResponseMergePolicy.IGNORE_FAILURE,
+): ApiResponse<List<T>> {
+  val apiResponses = responses.toMutableList()
+  apiResponses.add(0, this)
+
+  var apiResponse: ApiResponse<List<T>> = ApiResponse.of(tag = tagOrNull()) { mutableListOf() }
+
+  val data: MutableList<T> = mutableListOf()
+
+  for (response in apiResponses) {
+    if (response is ApiResponse.Success) {
+      data.addAll(response.data)
+      apiResponse = ApiResponse.Success(data = data, tag = response.tag)
+    } else if (mergePolicy === ApiResponseMergePolicy.PREFERRED_FAILURE) {
+      return response
+    }
+  }
+
+  return apiResponse
 }
 
 /**

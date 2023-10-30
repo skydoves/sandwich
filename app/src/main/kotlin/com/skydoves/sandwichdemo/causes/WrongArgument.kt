@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 skydoves
+ * Designed and developed by 2020 skydoves (Jaewoong Eum)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.skydoves.sandwichdemo.causes
 
-package com.github.skydoves.sandwich
+import com.skydoves.sandwich.ApiResponse
 
-object Configuration {
-  const val compileSdk = 33
-  const val targetSdk = 33
-  const val minSdk = 21
-  const val minSdkDemo = 21
-  const val majorVersion = 1
-  const val minorVersion = 3
-  const val patchVersion = 11
-  const val versionName = "$majorVersion.$minorVersion.$patchVersion"
-  const val versionCode = 31
-  const val snapshotVersionName = "$majorVersion.$minorVersion.${patchVersion + 1}-SNAPSHOT"
-  const val artifactGroup = "com.github.skydoves"
+object WrongArgument : ApiResponse.Failure.Cause() {
+
+  override val payload: Any = "request is limited"
 }

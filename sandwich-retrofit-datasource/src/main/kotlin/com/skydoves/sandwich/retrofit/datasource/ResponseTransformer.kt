@@ -16,7 +16,7 @@
 package com.skydoves.sandwich.retrofit.datasource
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.retrofit.of
+import com.skydoves.sandwich.retrofit.responseOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -81,7 +81,7 @@ internal inline fun <T> getCallbackFromOnResult(
 ): Callback<T> {
   return object : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
-      onResult(ApiResponse.of { response })
+      onResult(ApiResponse.responseOf { response })
     }
 
     override fun onFailure(call: Call<T>, throwable: Throwable) {
@@ -108,7 +108,7 @@ internal inline fun <T> getCallbackFromOnResultOnCoroutinesScope(
   return object : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
       coroutineScope.launch {
-        onResult(ApiResponse.of { response })
+        onResult(ApiResponse.responseOf { response })
       }
     }
 
@@ -140,7 +140,7 @@ internal inline fun <T> getCallbackFromOnResultWithContext(
     val scope = CoroutineScope(context + supervisorJob)
     override fun onResponse(call: Call<T>, response: Response<T>) {
       scope.launch {
-        onResult(ApiResponse.of { response })
+        onResult(ApiResponse.responseOf { response })
       }
     }
 

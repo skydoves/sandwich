@@ -31,7 +31,7 @@ import timber.log.Timber
 /**
  * A common response operator for handling [ApiResponse]s regardless of its type.
  */
-class CommonResponseOperator<T> constructor(
+class CommonResponseOperator<T>(
   private val success: suspend (ApiResponse.Success<T>) -> Unit,
   private val application: Application,
 ) : ApiResponseSuspendOperator<T>() {
@@ -70,6 +70,9 @@ class CommonResponseOperator<T> constructor(
         toast(message())
       }
     }
+  }
+
+  override suspend fun onCause(apiResponse: ApiResponse.Failure.Cause) {
   }
 
   private fun toast(message: String) {

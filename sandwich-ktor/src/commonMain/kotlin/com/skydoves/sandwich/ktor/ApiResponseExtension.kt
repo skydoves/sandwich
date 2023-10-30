@@ -142,7 +142,7 @@ public suspend inline fun <reified T> apiResponseOf(
  * @return An [ApiResponse] model which holds information about the response.
  */
 @SuspensionFunction
-public suspend inline fun <reified T> ApiResponse.Companion.of(
+public suspend inline fun <reified T> ApiResponse.Companion.responseOf(
   successCodeRange: IntRange = SandwichInitializer.successCodeRange,
   crossinline f: suspend () -> HttpResponse,
 ): ApiResponse<T> = apiResponseOf(successCodeRange, f)

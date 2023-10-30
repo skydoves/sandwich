@@ -47,4 +47,11 @@ public abstract class ApiResponseOperator<T> : SandwichOperator {
    * @param apiResponse The exception response.
    */
   public abstract fun onException(apiResponse: ApiResponse.Failure.Exception<T>)
+
+  /**
+   * Operates the [ApiResponse.Failure.Cause] for handling custom failure responses.
+   *
+   * @param apiResponse The cause response.
+   */
+  public abstract fun onCause(apiResponse: ApiResponse.Failure.Cause)
 }

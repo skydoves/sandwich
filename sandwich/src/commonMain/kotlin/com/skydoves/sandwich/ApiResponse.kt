@@ -66,6 +66,19 @@ public sealed interface ApiResponse<out T> {
     public data class Exception<T>(val exception: Throwable) : Failure<T> {
       val message: String? = exception.message
     }
+
+    /**
+     * @author skydoves (Jaewoong Eum)
+     *
+     * A customizable failure case.
+     * For any reasons, if you need to design your own error API models, you can build your own
+     * failure models by extending [Cause].
+     *
+     * @property payload A payload that [Cause] can contain.
+     */
+    public abstract class Cause : Failure<Nothing> {
+      public abstract val payload: Any?
+    }
   }
 
   public companion object {
@@ -91,7 +104,7 @@ public sealed interface ApiResponse<out T> {
      * If the [f] doesn't throw any exceptions, it creates [ApiResponse.Success].
      * If the [f] throws an exception, it creates [ApiResponse.Failure.Exception].
      */
-    public inline fun <T> by(tag: Any? = null, crossinline f: () -> T): ApiResponse<T> {
+    public inline fun <reified T> of(tag: Any? = null, crossinline f: () -> T): ApiResponse<T> {
       return try {
         val result = f()
         Success(
@@ -114,12 +127,12 @@ public sealed interface ApiResponse<out T> {
      * If the [f] throws an exception, it creates [ApiResponse.Failure.Exception].
      */
     @SuspensionFunction
-    public suspend inline fun <T> bySuspend(
+    public suspend inline fun <reified T> suspendOf(
       tag: Any? = null,
       crossinline f: suspend () -> T,
     ): ApiResponse<T> {
       val result = f()
-      return by(tag = tag) { result }
+      return of(tag = tag) { result }
     }
 
     /**

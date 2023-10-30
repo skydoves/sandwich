@@ -25,7 +25,7 @@ import com.skydoves.sandwich.retrofit.datasource.adapters.internal.SuspensionFun
 import com.skydoves.sandwich.retrofit.datasource.disposables.CompositeDisposable
 import com.skydoves.sandwich.retrofit.datasource.disposables.disposable
 import com.skydoves.sandwich.retrofit.datasource.executors.ArchTaskExecutor
-import com.skydoves.sandwich.retrofit.of
+import com.skydoves.sandwich.retrofit.responseOf
 import kotlinx.coroutines.CoroutineScope
 import retrofit2.Call
 import retrofit2.Callback
@@ -279,7 +279,7 @@ public class ResponseDataSource<T> : DataSource<T> {
       val callback = object : Callback<T> {
         override fun onResponse(call: Call<T>, response: Response<T>) {
           callback?.onResponse(call, response)
-          postValue(ApiResponse.of { response })
+          postValue(ApiResponse.responseOf { response })
         }
 
         override fun onFailure(call: Call<T>, throwable: Throwable) {

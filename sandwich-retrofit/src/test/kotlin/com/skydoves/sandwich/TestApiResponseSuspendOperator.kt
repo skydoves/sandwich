@@ -21,6 +21,7 @@ internal class TestApiResponseSuspendOperator<T>(
   private val onSuccess: suspend () -> Unit,
   private val onError: suspend () -> Unit,
   private val onException: suspend () -> Unit,
+  private val onCause: suspend () -> Unit,
 ) : ApiResponseSuspendOperator<T>() {
 
   override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) = onSuccess()
@@ -28,4 +29,6 @@ internal class TestApiResponseSuspendOperator<T>(
   override suspend fun onError(apiResponse: ApiResponse.Failure.Error<T>) = onError()
 
   override suspend fun onException(apiResponse: ApiResponse.Failure.Exception<T>) = onException()
+
+  override suspend fun onCause(apiResponse: ApiResponse.Failure.Cause) = onCause()
 }

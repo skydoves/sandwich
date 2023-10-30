@@ -15,20 +15,13 @@
  */
 package com.skydoves.sandwich
 
-import com.skydoves.sandwich.retrofit.errorBody
-import com.skydoves.sandwich.retrofit.mapFailure
-import com.skydoves.sandwich.retrofit.mapSuccess
-import com.skydoves.sandwich.retrofit.of
+import com.skydoves.sandwich.retrofit.responseOf
 import com.skydoves.sandwich.retrofit.statusCode
-import com.skydoves.sandwich.retrofit.suspendMapSuccess
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
@@ -54,7 +47,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun getOrNullOnSuccessTest() {
     val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     val data = apiResponse.getOrElse("bar")
 
     assertThat(data, `is`("foo"))
@@ -71,7 +64,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
     val data = apiResponse.getOrNull()
 
     assertNull(data)
@@ -89,7 +82,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun getOrElseOnSuccessTest() {
     val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     val data = apiResponse.getOrElse("bar")
 
     assertThat(data, `is`("foo"))
@@ -106,7 +99,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
     val data = apiResponse.getOrElse("bar")
 
     assertThat(data, `is`("bar"))
@@ -124,7 +117,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun getOrElseLambdaOnSuccessTest() {
     val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     val data = apiResponse.getOrElse { "bar" }
 
     assertThat(data, `is`("foo"))
@@ -141,7 +134,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
     val data = apiResponse.getOrElse { "bar" }
 
     assertThat(data, `is`("bar"))
@@ -159,7 +152,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun getOrThrowOnSuccessTest() {
     val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     val data = apiResponse.getOrThrow()
 
     assertThat(data, `is`("foo"))
@@ -176,7 +169,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
     apiResponse.getOrThrow()
   }
 
@@ -190,7 +183,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun onSuccessTest() {
     val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     var onResult = false
 
     apiResponse.onSuccess {
@@ -203,7 +196,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun onSuccessInProcedureTest() {
     val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     var onResult = false
 
     apiResponse.onProcedure(
@@ -216,6 +209,9 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       onError = {
         onResult = false
       },
+      onCause = {
+        var onResult = false
+      },
     )
 
     assertThat(onResult, `is`(true))
@@ -224,7 +220,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun suspendOnSuccessTest() = runTest {
     val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     flow {
       apiResponse.suspendOnSuccess {
@@ -238,7 +234,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun suspendOnSuccessInProcedureTest() = runTest {
     val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     flow {
       apiResponse.suspendOnProcedure(
@@ -249,6 +245,9 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
           emit(false)
         },
         onException = {
+          emit(false)
+        },
+        onCause = {
           emit(false)
         },
       )
@@ -269,7 +268,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
 
     apiResponse.onError {
       onResult = true
@@ -290,7 +289,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
 
     apiResponse.onProcedure(
       onSuccess = {
@@ -301,6 +300,9 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       },
       onException = {
         onResult = false
+      },
+      onCause = {
+        var onResult = false
       },
     )
     assertThat(onResult, `is`(true))
@@ -317,7 +319,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
 
     flow {
       apiResponse.suspendOnError {
@@ -339,7 +341,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
 
     flow {
       apiResponse.suspendOnProcedure(
@@ -350,6 +352,9 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
           emit(true)
         },
         onException = {
+          emit(false)
+        },
+        onCause = {
           emit(false)
         },
       )
@@ -385,6 +390,9 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       onException = {
         onResult = true
       },
+      onCause = {
+        onResult = false
+      },
     )
 
     assertThat(onResult, `is`(true))
@@ -418,6 +426,9 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         onException = {
           emit(true)
         },
+        onCause = {
+          emit(false)
+        },
       )
     }.collect {
       assertThat(it, `is`(true))
@@ -428,7 +439,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun mapSuccessTest() {
     var poster: Poster? = null
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     val mappedResponse = apiResponse.mapSuccess { first() }
     mappedResponse.onSuccess {
@@ -442,7 +453,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     var poster: Poster? = null
     val response =
       Response.success(flowOf(listOf(Poster.create(), Poster.create(), Poster.create())))
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     val mappedResponse = apiResponse.suspendMapSuccess { first().first() }
     mappedResponse.onSuccess {
@@ -452,33 +463,10 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   }
 
   @Test
-  fun mapFailureTest() {
-    var message: String? = null
-    val response = Response.error<String>(
-      403,
-      (
-        """{"code":10001, "message":"This is a custom error message"}"""
-          .trimIndent()
-        ).toResponseBody(
-        contentType = "text/plain".toMediaType(),
-      ),
-    )
-    val apiResponse = ApiResponse.of { response }
-    apiResponse.mapFailure {
-      val envelope = Json.decodeFromString<ErrorEnvelope>(it?.string().orEmpty())
-      """{"message":"${envelope.message}"}"""
-    }.onError {
-      val data = Json.decodeFromString<Message>(errorBody?.string().orEmpty())
-      message = data.message
-    }
-    assertThat(message, `is`("This is a custom error message"))
-  }
-
-  @Test
   fun mapOnSuccessTest() {
     var poster: Poster? = null
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     apiResponse.onSuccess {
       poster = map(SuccessPosterMapper)
@@ -491,7 +479,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun mapOnSuccessWithLambdaTest() {
     var poster: Poster? = null
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     apiResponse.onSuccess {
       map(SuccessPosterMapper) {
@@ -506,7 +494,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun mapOnSuccessWithExecutableLambdaTest() {
     var poster: Poster? = null
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     apiResponse.onSuccess {
       map {
@@ -521,7 +509,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun mapOnSuccessWithParameterTest() {
     var poster: Poster? = null
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     apiResponse.onSuccess(SuccessPosterMapper) {
       poster = this
@@ -533,7 +521,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun mapSuspendSuccessWithLambdaTest() = runTest {
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     flow {
       apiResponse.suspendOnSuccess {
@@ -550,7 +538,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun mapSuspendSuccessWitExecutableLambdaTest() = runTest {
     val poster = Poster.create()
     val response = Response.success(listOf(poster, Poster.create(), Poster.create()))
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     flow {
       apiResponse.suspendOnSuccess {
@@ -566,7 +554,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun mapSuspendSuccessWithParameterTest() = runTest {
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     flow {
       apiResponse.suspendOnSuccess(SuccessPosterMapper) {
@@ -589,7 +577,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
 
     apiResponse.onError {
       val errorEnvelope = map(ErrorEnvelopeMapper)
@@ -611,7 +599,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
 
     apiResponse.onError {
       map(ErrorEnvelopeMapper) {
@@ -634,7 +622,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
 
     apiResponse.onError {
       map {
@@ -657,7 +645,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
 
     apiResponse.onError(ErrorEnvelopeMapper) {
       onResult = code.toString()
@@ -677,7 +665,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
 
     flow {
       apiResponse.suspendOnError {
@@ -701,7 +689,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
 
     flow {
       apiResponse.suspendOnError {
@@ -725,7 +713,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiResponse = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
 
     flow {
       apiResponse.suspendOnError(ErrorEnvelopeMapper) {
@@ -740,12 +728,13 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun operatorTest() {
     var onSuccess = false
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     apiResponse.operator(
       TestApiResponseOperator(
         onSuccess = { onSuccess = true },
         onError = {},
         onException = {},
+        onCause = {},
       ),
     )
 
@@ -761,12 +750,13 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiError = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiError = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
     apiError.operator(
       TestApiResponseOperator(
         onSuccess = {},
         onError = { onError = true },
         onException = {},
+        onCause = {},
       ),
     )
 
@@ -779,6 +769,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         onSuccess = {},
         onError = {},
         onException = { onException = true },
+        onCause = {},
       ),
     )
 
@@ -788,7 +779,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun suspendOperatorTest() = runBlocking {
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     flow {
       apiResponse.suspendOperator(
@@ -796,6 +787,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
           onSuccess = { emit("100") },
           onError = {},
           onException = {},
+          onCause = {},
         ),
       )
     }.collect {
@@ -811,13 +803,14 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
 
     val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
-    val apiError = ApiResponse.of { Response.error<Poster>(404, responseBody) }
+    val apiError = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
     flow {
       apiError.suspendOperator(
         TestApiResponseSuspendOperator(
           onSuccess = {},
           onError = { emit("404") },
           onException = {},
+          onCause = {},
         ),
       )
     }.collect {
@@ -831,6 +824,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
           onSuccess = {},
           onError = {},
           onException = { emit("201") },
+          onCause = {},
         ),
       )
     }.collect {
@@ -841,7 +835,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun toFlowTest() = runTest {
     val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     apiResponse.toFlow().collect {
       assertThat(it, `is`("foo"))
@@ -851,7 +845,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun toFlowWithTransformerTest() = runTest {
     val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     apiResponse.toFlow {
       "hello, $this"
@@ -863,7 +857,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun toFlowWithSuspendTransformerTest() = runTest {
     val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
 
     apiResponse.toSuspendFlow {
       "hello, $this"
@@ -876,8 +870,8 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun transformSuccessResponseWithThen() = runTest {
     val response1 = Response.success("foo")
     val response2 = Response.success("bar")
-    val apiResponse1 = ApiResponse.of { response1 }
-    val apiResponse2 = ApiResponse.of { response2 }
+    val apiResponse1 = ApiResponse.responseOf { response1 }
+    val apiResponse2 = ApiResponse.responseOf { response2 }
     val apiResponse3 = apiResponse1 then { apiResponse2 }
 
     assertThat(apiResponse3.getOrThrow(), `is`("bar"))
