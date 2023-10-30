@@ -16,6 +16,8 @@
 package com.skydoves.sandwich.ktorfit
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.ApiResponse.Companion.mapFailure
+import com.skydoves.sandwich.ApiResponse.Companion.operate
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.converter.Converter
 import de.jensklingenberg.ktorfit.internal.TypeData
@@ -43,11 +45,12 @@ public class ApiResponseConverterFactory : Converter.Factory {
     if (typeData.typeInfo.type == ApiResponse::class) {
       return object : Converter.SuspendResponseConverter<HttpResponse, ApiResponse<Any>> {
         override suspend fun convert(response: HttpResponse): ApiResponse<Any> {
-          return try {
+          val apiResponse: ApiResponse<Any> = try {
             ApiResponse.Success(response.body(typeData.typeArgs.first().typeInfo))
           } catch (e: Throwable) {
             ApiResponse.exception(e)
           }
+          return apiResponse.operate().mapFailure()
         }
       }
     }

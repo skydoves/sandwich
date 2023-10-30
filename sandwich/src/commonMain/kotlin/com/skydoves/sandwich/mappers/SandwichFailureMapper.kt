@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.skydoves.sandwich.operators
+package com.skydoves.sandwich.mappers
 
 import com.skydoves.sandwich.ApiResponse
 
 /**
  * @author skydoves (Jaewoong Eum)
  *
- * An interface of Operator which operates an [ApiResponse] which should be handled.
+ * An interface of an error mapper which maps an [ApiResponse] which should be handled.
  */
-public interface SandwichOperator
+public interface SandwichFailureMapper

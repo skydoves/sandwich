@@ -19,8 +19,13 @@ package com.skydoves.sandwichdemo
 
 import android.app.Application
 import androidx.multidex.BuildConfig
+import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.SandwichInitializer
+import com.skydoves.sandwich.mappers.ApiResponseFailureMapper
+import com.skydoves.sandwichdemo.causes.LimitedRequest
+import com.skydoves.sandwichdemo.causes.WrongArgument
 import com.skydoves.sandwichdemo.operator.GlobalResponseOperator
+import retrofit2.Response
 import timber.log.Timber
 
 class SandwichDemoApp : Application() {
@@ -31,6 +36,24 @@ class SandwichDemoApp : Application() {
     sandwichApp = this
 
     SandwichInitializer.sandwichOperators += GlobalResponseOperator<Any>(this)
+    SandwichInitializer.sandwichFailureMappers += listOf(
+      object : ApiResponseFailureMapper {
+        override fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
+          return if (apiResponse is ApiResponse.Failure.Error<*>&&
+            apiResponse.payload is Response<*>
+          ) {
+            val response = apiResponse.payload as Response<*>
+            if (response.errorBody().toString().contains("limited")) {
+              LimitedRequest
+            } else {
+              apiResponse
+            }
+          } else {
+            WrongArgument
+          }
+        }
+      },
+    )
 
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())

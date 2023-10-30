@@ -472,8 +472,23 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnProcedure(
  *
  * @return A [V] type of the [ApiResponse].
  */
-public inline fun <reified T, reified V> ApiResponse<T>.map(
+public inline fun <reified T, reified V> ApiResponse<T>.flatMap(
   crossinline transformer: ApiResponse<T>.() -> ApiResponse<V>,
+): ApiResponse<V> {
+  return transformer.invoke(this)
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps a [T] type of the [ApiResponse] to a [V] type of the [ApiResponse].
+ *
+ * @param transformer A transformer that receives [T] and returns [V].
+ *
+ * @return A [V] type of the [ApiResponse].
+ */
+public suspend inline fun <reified T, reified V> ApiResponse<T>.suspendFlatMap(
+  crossinline transformer: suspend ApiResponse<T>.() -> ApiResponse<V>,
 ): ApiResponse<V> {
   return transformer.invoke(this)
 }
@@ -487,7 +502,7 @@ public inline fun <reified T, reified V> ApiResponse<T>.map(
  *
  * @return A [V] type of the [ApiResponse].
  */
-public inline fun <reified T, reified V> ApiResponse<T>.map(
+public inline fun <reified T, reified V> ApiResponse<T>.flatmap(
   mapper: ApiResponseMapper<T, V>,
 ): ApiResponse<V> {
   return mapper.map(this)

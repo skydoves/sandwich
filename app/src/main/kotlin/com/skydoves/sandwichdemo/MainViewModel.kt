@@ -26,6 +26,7 @@ import com.skydoves.sandwich.ktor.getApiResponse
 import com.skydoves.sandwich.ktorfit.ApiResponseConverterFactory
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.messageOrNull
+import com.skydoves.sandwich.onCause
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.onSuccess
@@ -122,6 +123,8 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
       .onException {
         Timber.d("retrofit exception: $messageOrNull")
         toastLiveData.postValue(message)
+      }.onCause {
+        Timber.d("retrofit cause: $messageOrNull")
       }
   }
 
@@ -134,6 +137,8 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
       Timber.d("ktor error: ${bodyString()}")
     }.onException {
       Timber.d("ktor exception: $messageOrNull")
+    }.onCause {
+      Timber.d("ktor cause: $messageOrNull")
     }
   }
 
@@ -151,6 +156,8 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
       Timber.d("ktorfit error: ${bodyString()}")
     }.onException {
       Timber.d("ktorfit exception: $messageOrNull")
+    }.onCause {
+      Timber.d("ktorfit cause: $messageOrNull")
     }
   }
 }
