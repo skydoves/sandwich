@@ -393,7 +393,7 @@ class CommonResponseOperator<T> constructor(
 
   // handles error cases depending on the status code.
   // e.g., internal server error.
-  override fun onError(apiResponse: ApiResponse.Failure.Error<T>) {
+  override fun onError(apiResponse: ApiResponse.Failure.Error) {
     apiResponse.run {
       Timber.d(message())
       
@@ -406,7 +406,7 @@ class CommonResponseOperator<T> constructor(
 
   // handles exceptional cases when the API request gets an exception response.
   // e.g., network connection error, timeout.
-  override fun onException(apiResponse: ApiResponse.Failure.Exception<T>) {
+  override fun onException(apiResponse: ApiResponse.Failure.Exception) {
     apiResponse.run {
       Timber.d(message())
       toast(message())
@@ -482,7 +482,7 @@ class GlobalResponseOperator<T> constructor(
 
   // handles error cases when the API request gets an error response.
   // e.g., internal server error.
-  override suspend fun onError(apiResponse: ApiResponse.Failure.Error<T>) {
+  override suspend fun onError(apiResponse: ApiResponse.Failure.Error) {
     withContext(Dispatchers.Main) {
       apiResponse.run {
         Timber.d(message())
@@ -504,7 +504,7 @@ class GlobalResponseOperator<T> constructor(
 
   // handles exceptional cases when the API request gets an exception response.
   // e.g., network connection error, timeout.
-  override suspend fun onException(apiResponse: ApiResponse.Failure.Exception<T>) {
+  override suspend fun onException(apiResponse: ApiResponse.Failure.Exception) {
     withContext(Dispatchers.Main) {
       apiResponse.run {
         Timber.d(message())

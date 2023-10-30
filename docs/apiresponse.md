@@ -1,6 +1,6 @@
 # ApiResponse
 
-`ApiResponse` serves as an interface designed to create consistent responses from API or I/O calls, such as network, database, or whatever. It offers convenient extensions to manage your payloads, encompassing both body data and exceptional scenarios. `ApiResponse` encompasses three distinct types: **Success**, **Failure.Error**, **Failure.Exception**, and **Failure.Cause**.
+`ApiResponse` serves as an interface designed to create consistent responses from API or I/O calls, such as network, database, or whatever. It offers convenient extensions to manage your payloads, encompassing both body data and exceptional scenarios. `ApiResponse` encompasses three distinct types: **Success**, **Failure.Error**, and **Failure.Exception**.
 
 ### ApiResponse.Success
 
@@ -18,15 +18,6 @@ val apiResponse = Apiresponse.Success(data = myData, tag = myTag)
 val tag = apiResponse.tag
 ```
 
-### ApiResponse.Failure.Error
-
-This denotes a failed API or I/O request, typically due to bad requests or internal server errors. You can additionally put an error payload that can contain detailed error information.
-
-```kotlin
-val apiResponse = ApiResponse.Failure.Error(payload = errorBody)
-val payload = apiResponse.payload
-```
-
 ### ApiResponse.Failure.Exception 
 
 This signals a failed tasks captured by unexpected exceptions during API request creation or response processing on the client side, such as a network connection failure. You can obtain exception details from the `ApiResponse.Failure.Exception`.
@@ -37,28 +28,35 @@ val exception = apiResponse.exception
 val message = apiResponse.message
 ```
 
-### ApiResponse.Failure.Cause
+### ApiResponse.Failure.Error
 
-This denotes a custom failure response that can be extended using custom classes and objects.
+This denotes a failed API or I/O request, typically due to bad requests or internal server errors. You can additionally put an error payload that can contain detailed error information.
 
 ```kotlin
-object LimitedRequest : ApiResponse.Failure.Cause() {
-  override val payload: Any = "name is wrong"
-}
-
-object WrongArgument : ApiResponse.Failure.Cause() {
-  override val payload: Any = "wrong argument"
-}
+val apiResponse = ApiResponse.Failure.Error(payload = errorBody)
+val payload = apiResponse.payload
 ```
 
-This custom failure response is very useful when you want to explicitly define and handle error responses, especially when working with mappers.
+You can also define custom error responses that extend `ApiResponse.Failure.Error`, as demonstrated in the example below:
+
+```kotlin
+data object LimitedRequest : ApiResponse.Failure.Error(
+  payload = "your request is limited",
+)
+
+data object WrongArgument : ApiResponse.Failure.Error(
+  payload = "wrong argument",
+)
+```
+
+The custom error response is very useful when you want to explicitly define and handle error responses, especially when working with map extensions.
 
 ```kotlin
 val apiResponse = service.fetchMovieList()
 apiResponse.onSuccess {
     // ..
 }.flatMap {
-  // if the ApiResponse is Failure.Error and contains error body, then maps it to a custom failure response.  
+  // if the ApiResponse is Failure.Error and contains error body, then maps it to a custom error response.  
   if (this is ApiResponse.Failure.Error) {
     val errorBody = (payload as? Response)?.body?.string()
     if (errorBody != null) {
@@ -77,7 +75,7 @@ Then you can handle the errors based on your custom message in other layers:
 
 ```kotlin
 val apiResponse = repository.fetchMovieList()
-apiResponse.onCause {
+apiResponse.onError {
   when (this) {
     LimitedRequest -> // update your UI
     WrongArgument -> // update your UI
@@ -114,8 +112,7 @@ You can effectively handling `ApiResponse` using the following extensions:
 - **onSuccess**: Executes when the `ApiResponse` is of type `ApiResponse.Success`. Within this scope, you can directly access the body data.
 - **onError**: Executes when the `ApiResponse` is of type `ApiResponse.Failure.Error`. Here, you can access the `messareOrNull` and `payload` here.
 - **onException**: Executes when the `ApiResponse` is of type `ApiResponse.Failure.Exception`. You can access the `messareOrNull` and `exception` here.
-- **onCause**: Executes when the `ApiResponse` is of type `ApiResponse.Failure.Cause`. You can access the `messareOrNull` and `payload` here.
-- **onFailure**: Executes when the `ApiResponse` is either `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`, or `ApiResponse.Failure.Cause`. You can access the `messareOrNull` here.
+- **onFailure**: Executes when the `ApiResponse` is either `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`. You can access the `messareOrNull` here.
 
 Each scope operates according to its corresponding `ApiResponse` type:
 
@@ -130,9 +127,6 @@ response.onSuccess {
   }.onException {
    // this scope will be executed when the request failed with exceptions.
    // handle the exception case
-  }.onCause {
-    // this scope will be executed when the request failed with custom errors.
-    // handle the custom exception cases
   }
 ```
 

@@ -34,9 +34,7 @@ import com.skydoves.sandwich.onSuccess
 import com.skydoves.sandwich.retrofit.statusCode
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
-import com.skydoves.sandwichdemo.causes.LimitedRequest
-import com.skydoves.sandwichdemo.causes.WrongArgument
-import com.skydoves.sandwichdemo.model.ErrorMessage
+import com.skydoves.sandwichdemo.errors.LimitedRequest
 import com.skydoves.sandwichdemo.model.PokemonResponse
 import com.skydoves.sandwichdemo.model.Poster
 import com.skydoves.sandwichdemo.network.KtorfitPokemonService
@@ -56,7 +54,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
-import okhttp3.Response
 import timber.log.Timber
 
 class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
@@ -141,17 +138,13 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
     }.onException {
       Timber.d("ktor exception: $messageOrNull")
     }.flatMap {
-      if (this is ApiResponse.Failure.Error) {
-        val errorBody = (payload as? Response)?.body?.string()
-        if (errorBody != null) {
-          val errorMessage: ErrorMessage = Json.decodeFromString(errorBody)
-          when (errorMessage.code) {
-            10000 -> LimitedRequest
-            10001 -> WrongArgument
-          }
-        }
+      if (this is ApiResponse.Failure) {
+        LimitedRequest
+      } else {
+        this
       }
-      this
+    }.onError {
+      Timber.d("ktor error: $this")
     }
   }
 

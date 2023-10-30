@@ -49,7 +49,7 @@ internal val <T> ApiResponse.Success<T>.tagResponse: Response<T>
 @PublishedApi
 internal val ApiResponse.Failure.Error.payloadResponse: Response<*>
   inline get() = (payload as? Response<*>) ?: throw IllegalArgumentException(
-    "You can access the `payload` only for the encapsulated ApiResponse.Failure.Error<T> " +
+    "You can access the `payload` only for the encapsulated ApiResponse.Failure.Error " +
       "using the Response class.",
   )
 

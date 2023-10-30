@@ -15,7 +15,7 @@ class CommonResponseOperator<T> constructor(
 
   // handles error cases depending on the status code.
   // e.g., internal server error.
-  override fun onError(apiResponse: ApiResponse.Failure.Error<T>) {
+  override fun onError(apiResponse: ApiResponse.Failure.Error) {
     apiResponse.run {
       Timber.d(message())
       
@@ -28,7 +28,7 @@ class CommonResponseOperator<T> constructor(
 
   // handles exceptional cases when the API request gets an exception response.
   // e.g., network connection error, timeout.
-  override fun onException(apiResponse: ApiResponse.Failure.Exception<T>) {
+  override fun onException(apiResponse: ApiResponse.Failure.Exception) {
     apiResponse.run {
       Timber.d(message())
     }
@@ -125,7 +125,7 @@ class TokenRefreshGlobalOperator<T> @Inject constructor(
     }
   }
 
-  override suspend fun onError(apiResponse: ApiResponse.Failure.Error<T>) {
+  override suspend fun onError(apiResponse: ApiResponse.Failure.Error) {
     // verify whether the current request was previously issued as an authenticated request
     apiResponse.headers["Authorization"] ?: return
 
@@ -153,7 +153,7 @@ class TokenRefreshGlobalOperator<T> @Inject constructor(
 
   override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) = Unit
 
-  override suspend fun onException(apiResponse: ApiResponse.Failure.Exception<T>) = Unit
+  override suspend fun onException(apiResponse: ApiResponse.Failure.Exception) = Unit
 
   private suspend fun toast(@StringRes resource: Int) = withContext(Dispatchers.Main) {
     Toast.makeText(context, resource, Toast.LENGTH_SHORT).show()

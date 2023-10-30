@@ -363,7 +363,6 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnException(
  * @param onSuccess A scope function that would be executed for handling successful responses if the request succeeds.
  * @param onError A scope function that would be executed for handling error responses if the request failed.
  * @param onException A scope function that would be executed for handling exception responses if the request get an exception.
- * @param onCause A scope function that would be executed for handling exception responses if the request get an exception.
  *
  *  @return The original [ApiResponse].
  */
@@ -394,7 +393,6 @@ public inline fun <T> ApiResponse<T>.onProcedure(
  * @param onSuccess A suspension scope function that would be executed for handling successful responses if the request succeeds.
  * @param onError A suspension scope function that would be executed for handling error responses if the request failed.
  * @param onException A suspension scope function that would be executed for handling exception responses if the request get an exception.
- * @param onCause A suspension scope function that would be executed for handling exception responses if the request get an exception.
  *  @return The original [ApiResponse].
  */
 @JvmSynthetic

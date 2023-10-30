@@ -22,12 +22,11 @@ import androidx.multidex.BuildConfig
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwich.mappers.ApiResponseFailureMapper
-import com.skydoves.sandwichdemo.causes.LimitedRequest
-import com.skydoves.sandwichdemo.causes.WrongArgument
+import com.skydoves.sandwichdemo.errors.LimitedRequest
+import com.skydoves.sandwichdemo.errors.WrongArgument
 import com.skydoves.sandwichdemo.model.ErrorMessage
 import com.skydoves.sandwichdemo.operator.GlobalResponseOperator
 import kotlinx.serialization.json.Json
-import retrofit2.Response
 import timber.log.Timber
 
 class SandwichDemoApp : Application() {
