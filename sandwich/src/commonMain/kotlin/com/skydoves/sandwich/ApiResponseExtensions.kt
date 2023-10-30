@@ -61,5 +61,6 @@ public inline val ApiResponse<Any>.messageOrNull: String?
   get() = when (this) {
     is ApiResponse.Failure.Error -> payload.toString()
     is ApiResponse.Failure.Exception -> message
+    is ApiResponse.Failure.Cause -> payload.toString()
     else -> null
   }

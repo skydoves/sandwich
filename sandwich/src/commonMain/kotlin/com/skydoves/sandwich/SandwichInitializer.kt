@@ -15,6 +15,7 @@
  */
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.mappers.SandwichFailureMapper
 import com.skydoves.sandwich.operators.SandwichOperator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -51,14 +52,28 @@ public object SandwichInitializer {
    *
    * A list of global operators that is executed by [ApiResponse]s globally on each response.
    *
-   * [com.skydoves.sandwich.operators.ApiResponseOperator] which allows you to handle success and error response instead of
+   * [com.skydoves.sandwich.operators.ApiResponseOperator] allows you to handle success and error response instead of
    * the [ApiResponse.onSuccess], [ApiResponse.onError], [ApiResponse.onException] transformers.
    * [com.skydoves.sandwich.operators.ApiResponseSuspendOperator] can be used for suspension scope.
    *
-   * Via setting [sandwichOperators], you don't need to set operator for every [ApiResponse].
+   * By setting [sandwichOperators], you don't need to set operator for every [ApiResponse] by using [ApiResponse.of] function.
    */
   @JvmStatic
   public var sandwichOperators: MutableList<SandwichOperator> = mutableListOf()
+
+  /**
+   * @author skydoves (Jaewoong Eum)
+   *
+   * A list of global failure mappers that is executed by [ApiResponse]s globally on each response.
+   *
+   * [com.skydoves.sandwich.mappers.ApiResponseFailureMapper] allows you to map the failure responses
+   * to transform the payload, or changes to custom types.
+   * [com.skydoves.sandwich.mappers.ApiResponseFailureSuspendMapper] can be used for suspension scope.
+   *
+   * By setting [sandwichFailureMappers], Sandwich will automatically maps all [ApiResponse] by using [ApiResponse.of] function.
+   */
+  @JvmStatic
+  public var sandwichFailureMappers: MutableList<SandwichFailureMapper> = mutableListOf()
 
   /**
    * @author skydoves (Jaewoong Eum)

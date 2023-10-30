@@ -15,6 +15,7 @@
  */
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.ErrorEnvelopeMapper.map
 import com.skydoves.sandwich.retrofit.responseOf
 import com.skydoves.sandwich.retrofit.statusCode
 import kotlinx.coroutines.flow.first

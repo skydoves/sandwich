@@ -17,6 +17,8 @@
 
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.mappers.ApiResponseFailureMapper
+import com.skydoves.sandwich.mappers.ApiResponseFailureSuspendMapper
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
 import kotlinx.coroutines.launch
@@ -92,7 +94,7 @@ public sealed interface ApiResponse<out T> {
      * @return A [ApiResponse.Failure.Exception] based on the throwable.
      */
     public fun <T> exception(ex: Throwable): Failure.Exception<T> =
-      Failure.Exception<T>(ex).apply { operate() }
+      Failure.Exception<T>(ex).apply { operate().mapFailure() }
 
     /**
      * @author skydoves (Jaewoong Eum)
@@ -110,10 +112,10 @@ public sealed interface ApiResponse<out T> {
         Success(
           data = result,
           tag = tag,
-        ).operate()
+        )
       } catch (e: Exception) {
         exception(e)
-      }
+      }.operate().mapFailure()
     }
 
     /**
@@ -156,6 +158,25 @@ public sealed interface ApiResponse<out T> {
           }
         }
       }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    public fun <T> ApiResponse<T>.mapFailure(): ApiResponse<T> {
+      val mappers = SandwichInitializer.sandwichFailureMappers
+      var response: ApiResponse<T> = this
+      mappers.forEach { mapper ->
+        if (response is Failure) {
+          if (mapper is ApiResponseFailureMapper) {
+            response = mapper.map(response as Failure<T>) as ApiResponse<T>
+          } else if (mapper is ApiResponseFailureSuspendMapper) {
+            val scope = SandwichInitializer.sandwichScope
+            scope.launch {
+              response = mapper.map(response as Failure<T>) as ApiResponse<T>
+            }
+          }
+        }
+      }
+      return response
     }
   }
 }

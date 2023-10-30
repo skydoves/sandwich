@@ -13,13 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.skydoves.sandwich.operators
+package com.skydoves.sandwich.mappers
 
 import com.skydoves.sandwich.ApiResponse
 
 /**
  * @author skydoves (Jaewoong Eum)
  *
- * An interface of Operator which operates an [ApiResponse] which should be handled.
+ * A mapper interface for mapping [ApiResponse.Failure] response to the same [ApiResponse.Failure] type.
  */
-public interface SandwichOperator
+public interface ApiResponseFailureSuspendMapper : SandwichFailureMapper {
+
+  /**
+   * Maps an [ApiResponse.Failure].
+   *
+   * @param apiResponse The [ApiResponse.Failure] error response from the network request.
+   * @return The same type of the [ApiResponse.Failure].
+   */
+  public suspend fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*>
+}
