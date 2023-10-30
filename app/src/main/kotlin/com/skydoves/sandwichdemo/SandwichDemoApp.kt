@@ -23,7 +23,6 @@ import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwich.mappers.ApiResponseFailureMapper
 import com.skydoves.sandwichdemo.causes.LimitedRequest
-import com.skydoves.sandwichdemo.causes.WrongArgument
 import com.skydoves.sandwichdemo.operator.GlobalResponseOperator
 import retrofit2.Response
 import timber.log.Timber
@@ -39,18 +38,15 @@ class SandwichDemoApp : Application() {
     SandwichInitializer.sandwichFailureMappers += listOf(
       object : ApiResponseFailureMapper {
         override fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
-          return if (apiResponse is ApiResponse.Failure.Error<*> &&
+          if (apiResponse is ApiResponse.Failure.Error<*> &&
             apiResponse.payload is Response<*>
           ) {
             val response = apiResponse.payload as Response<*>
             if (response.errorBody().toString().contains("limited")) {
-              LimitedRequest
-            } else {
-              apiResponse
+              return LimitedRequest
             }
-          } else {
-            WrongArgument
           }
+          return apiResponse
         }
       },
     )
