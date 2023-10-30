@@ -15,6 +15,7 @@
  */
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.retrofit.responseOf
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
@@ -44,7 +45,7 @@ internal class SandwichInitializerTest {
   fun success() {
     val successResponse = Response.success("foo")
     val apiResponse =
-      ApiResponse.of { successResponse }
+      ApiResponse.responseOf { successResponse }
     assertThat(
       apiResponse,
       CoreMatchers.instanceOf(ApiResponse.Failure.Error::class.java),
@@ -61,14 +62,15 @@ internal class SandwichInitializerTest {
       onSuccess = { onSuccess = true },
       onError = { onError = true },
       onException = { onException = true },
+      onCause = {},
     )
 
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
-    ApiResponse.of(200..299) { response }
+    ApiResponse.responseOf(200..299) { response }
     assertThat(onSuccess, `is`(true))
 
     val successResponse = Response.success("foo")
-    ApiResponse.of { successResponse }
+    ApiResponse.responseOf { successResponse }
     assertThat(onError, `is`(true))
 
     ApiResponse.exception<Poster>(Throwable())

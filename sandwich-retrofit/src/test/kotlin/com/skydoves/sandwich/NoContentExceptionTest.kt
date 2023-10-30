@@ -17,6 +17,7 @@ package com.skydoves.sandwich
 
 import com.skydoves.sandwich.retrofit.headers
 import com.skydoves.sandwich.retrofit.raw
+import com.skydoves.sandwich.retrofit.responseOf
 import com.skydoves.sandwich.retrofit.statusCode
 import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.CoreMatchers.`is`
@@ -32,7 +33,7 @@ internal class NoContentExceptionTest {
   @Test
   fun `throw NoContentException when body is null without accessing data property`() {
     val response = Response.success<String?>(204, null)
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     assertThat(apiResponse, instanceOf(ApiResponse.Success::class.java))
 
     val success = apiResponse as ApiResponse.Success<String>
@@ -44,7 +45,7 @@ internal class NoContentExceptionTest {
   @Test
   fun `data should be Unit when body is null with accessing data property`() {
     val response = Response.success<String?>(204, null)
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     assertThat(apiResponse, instanceOf(ApiResponse.Success::class.java))
 
     val success = apiResponse as ApiResponse.Success<String>

@@ -16,6 +16,7 @@
 package com.skydoves.sandwich
 
 import com.skydoves.sandwich.retrofit.apiMessage
+import com.skydoves.sandwich.retrofit.responseOf
 import junit.framework.Assert.assertNull
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -32,7 +33,7 @@ internal class ApiResponseExtensionsTest {
   @Test
   fun `isSuccess test`() {
     val successResponse = Response.success("foo")
-    val apiResponse = ApiResponse.of { successResponse }
+    val apiResponse = ApiResponse.responseOf { successResponse }
 
     assertThat(apiResponse.isSuccess, `is`(true))
     assertThat(apiResponse.isFailure, `is`(false))
@@ -50,7 +51,7 @@ internal class ApiResponseExtensionsTest {
       ),
     )
 
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     assertThat(apiResponse.isFailure, `is`(true))
     assertThat(apiResponse.isSuccess, `is`(false))
   }
@@ -67,7 +68,7 @@ internal class ApiResponseExtensionsTest {
       ),
     )
 
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     assertThat(apiResponse.isError, `is`(true))
     assertThat(apiResponse.isException, `is`(false))
     assertThat(apiResponse.isSuccess, `is`(false))
@@ -92,11 +93,11 @@ internal class ApiResponseExtensionsTest {
         contentType = "text/plain".toMediaType(),
       ),
     )
-    val error = ApiResponse.of { errorBody }
+    val error = ApiResponse.responseOf { errorBody }
     assertThat(error.apiMessage, `is`("This is a custom error message"))
 
     val body = Response.success("foo")
-    val success = ApiResponse.of { body }
+    val success = ApiResponse.responseOf { body }
     assertNull(success.apiMessage)
   }
 }

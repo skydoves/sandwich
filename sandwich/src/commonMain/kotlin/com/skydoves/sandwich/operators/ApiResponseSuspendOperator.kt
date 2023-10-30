@@ -53,5 +53,5 @@ public abstract class ApiResponseSuspendOperator<T> : SandwichOperator {
    *
    * @param apiResponse The cause response.
    */
-  public abstract fun onCause(apiResponse: ApiResponse.Failure.Cause)
+  public abstract suspend fun onCause(apiResponse: ApiResponse.Failure.Cause)
 }

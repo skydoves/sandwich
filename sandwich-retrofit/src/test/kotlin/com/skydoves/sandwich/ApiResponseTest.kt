@@ -21,6 +21,7 @@ import com.skydoves.sandwich.retrofit.apiMessage
 import com.skydoves.sandwich.retrofit.apiResponseOf
 import com.skydoves.sandwich.retrofit.headers
 import com.skydoves.sandwich.retrofit.raw
+import com.skydoves.sandwich.retrofit.responseOf
 import com.skydoves.sandwich.retrofit.statusCode
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.CoreMatchers.instanceOf
@@ -50,7 +51,7 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
   @Throws(IOException::class)
   fun success() {
     val response = Response.success("foo")
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     assertThat(apiResponse, instanceOf(ApiResponse.Success::class.java))
 
     val success = apiResponse as ApiResponse.Success<String>
