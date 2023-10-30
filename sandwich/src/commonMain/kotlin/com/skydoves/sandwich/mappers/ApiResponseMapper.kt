@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.skydoves.sandwichdemo.mapper
+package com.skydoves.sandwich.mappers
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.mappers.ApiErrorModelMapper
-import com.skydoves.sandwich.message
-import com.skydoves.sandwich.retrofit.statusCode
-import com.skydoves.sandwichdemo.model.ErrorMessage
 
 /**
- * A mapper object for mapping [ApiResponse.Failure.Error] response as a custom [ErrorMessage] model.
+ * @author skydoves (Jaewoong Eum)
  *
- * @see [ApiErrorModelMapper](https://github.com/skydoves/sandwich#apierrormodelmapper)
+ * A mapper interface for mapping [ApiResponse] response as another type of [ApiResponse] .
  */
-object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorMessage> {
+public fun interface ApiResponseMapper<T, V> {
 
-  override fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): ErrorMessage {
-    return ErrorMessage(apiErrorResponse.statusCode.code, apiErrorResponse.message())
-  }
+  /**
+   * maps the [T] type of [ApiResponse] to the [V] type of [ApiResponse] using the mapper.
+   *
+   * @param apiResponse The [ApiResponse] error response from the network request.
+   * @return Another type of the [ApiResponse].
+   */
+  public fun map(apiResponse: ApiResponse<T>): ApiResponse<V>
 }

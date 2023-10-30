@@ -16,6 +16,7 @@
 package com.skydoves.sandwich.serialization
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.retrofit.responseOf
 import com.skydoves.sandwich.retrofit.serialization.deserializeErrorBody
 import com.skydoves.sandwich.retrofit.serialization.onErrorDeserialize
 import okhttp3.MediaType.Companion.toMediaType
@@ -42,7 +43,7 @@ internal class SerializationExtensionsTest {
       ),
     )
 
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     val errorBody = apiResponse.deserializeErrorBody<String, ErrorMessage>()
     assertThat(errorBody?.code, `is`(10001))
     assertThat(errorBody?.message, `is`("This is a custom error message"))
@@ -60,7 +61,7 @@ internal class SerializationExtensionsTest {
       ),
     )
 
-    val apiResponse = ApiResponse.of { response }
+    val apiResponse = ApiResponse.responseOf { response }
     apiResponse.onErrorDeserialize<String, ErrorMessage> { errorMessage ->
       assertThat(errorMessage.code, `is`(10001))
       assertThat(errorMessage.message, `is`("This is a custom error message"))

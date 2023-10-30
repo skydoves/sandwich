@@ -16,7 +16,7 @@
 package com.skydoves.sandwichdemo.mapper
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.ApiSuccessModelMapper
+import com.skydoves.sandwich.mappers.ApiSuccessModelMapper
 import com.skydoves.sandwichdemo.model.Poster
 
 /**

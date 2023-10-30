@@ -15,6 +15,7 @@
  */
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.mappers.ApiErrorModelMapper
 import com.skydoves.sandwich.retrofit.apiMessage
 import com.skydoves.sandwich.retrofit.statusCode
 
