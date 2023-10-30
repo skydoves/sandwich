@@ -17,6 +17,7 @@
 
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.annotations.InternalSandwichApi
 import com.skydoves.sandwich.mappers.ApiResponseFailureMapper
 import com.skydoves.sandwich.mappers.ApiResponseFailureSuspendMapper
 import com.skydoves.sandwich.operators.ApiResponseOperator
@@ -37,6 +38,7 @@ public sealed interface ApiResponse<out T> {
    * The [data] is a nullable generic type. (A response without data)
 
    * @property data The de-serialized response body of a successful data.
+   * @property tag An additional value that can be held to distinguish the origin of the [data] or to facilitate post-processing of successful data.
    */
   public data class Success<T>(public val data: T, public val tag: Any? = null) : ApiResponse<T>
 
@@ -51,6 +53,8 @@ public sealed interface ApiResponse<out T> {
      * API response error case.
      * API communication conventions do not match or applications need to handle errors.
      * e.g., internal server error.
+     *
+     * @property payload An error payload that can contain detailed error information.
      */
     public data class Error<T>(public val payload: Any?) : Failure<T>
 
@@ -65,8 +69,8 @@ public sealed interface ApiResponse<out T> {
      *
      * @property message The localized message from the exception.
      */
-    public data class Exception<T>(val exception: Throwable) : Failure<T> {
-      val message: String? = exception.message
+    public data class Exception<T>(public val exception: Throwable) : Failure<T> {
+      public val message: String? = exception.message
     }
 
     /**
@@ -94,7 +98,7 @@ public sealed interface ApiResponse<out T> {
      * @return A [ApiResponse.Failure.Exception] based on the throwable.
      */
     public fun <T> exception(ex: Throwable): Failure.Exception<T> =
-      Failure.Exception<T>(ex).apply { operate().mapFailure() }
+      Failure.Exception<T>(ex).apply { operate().maps() }
 
     /**
      * @author skydoves (Jaewoong Eum)
@@ -115,7 +119,7 @@ public sealed interface ApiResponse<out T> {
         )
       } catch (e: Exception) {
         exception(e)
-      }.operate().mapFailure()
+      }.operate().maps()
     }
 
     /**
@@ -145,6 +149,7 @@ public sealed interface ApiResponse<out T> {
      *
      * @return [ApiResponse] A target [ApiResponse].
      */
+    @InternalSandwichApi
     @Suppress("UNCHECKED_CAST")
     public fun <T> ApiResponse<T>.operate(): ApiResponse<T> = apply {
       val globalOperators = SandwichInitializer.sandwichOperators
@@ -160,8 +165,9 @@ public sealed interface ApiResponse<out T> {
       }
     }
 
+    @InternalSandwichApi
     @Suppress("UNCHECKED_CAST")
-    public fun <T> ApiResponse<T>.mapFailure(): ApiResponse<T> {
+    public fun <T> ApiResponse<T>.maps(): ApiResponse<T> {
       val mappers = SandwichInitializer.sandwichFailureMappers
       var response: ApiResponse<T> = this
       mappers.forEach { mapper ->

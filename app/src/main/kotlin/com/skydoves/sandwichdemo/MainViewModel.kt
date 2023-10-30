@@ -18,7 +18,9 @@ package com.skydoves.sandwichdemo
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.StatusCode
+import com.skydoves.sandwich.flatMap
 import com.skydoves.sandwich.getOrThrow
 import com.skydoves.sandwich.isSuccess
 import com.skydoves.sandwich.ktor.bodyString
@@ -33,6 +35,9 @@ import com.skydoves.sandwich.onSuccess
 import com.skydoves.sandwich.retrofit.statusCode
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
+import com.skydoves.sandwichdemo.causes.LimitedRequest
+import com.skydoves.sandwichdemo.causes.WrongArgument
+import com.skydoves.sandwichdemo.model.ErrorMessage
 import com.skydoves.sandwichdemo.model.PokemonResponse
 import com.skydoves.sandwichdemo.model.Poster
 import com.skydoves.sandwichdemo.network.KtorfitPokemonService
@@ -51,7 +56,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import okhttp3.Response
 import timber.log.Timber
 
 class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
@@ -137,6 +144,18 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
       Timber.d("ktor error: ${bodyString()}")
     }.onException {
       Timber.d("ktor exception: $messageOrNull")
+    }.flatMap {
+      if (this is ApiResponse.Failure.Error) {
+        val errorBody = (payload as? Response)?.body?.string()
+        if (errorBody != null) {
+          val errorMessage: ErrorMessage = Json.decodeFromString(errorBody)
+          when (errorMessage.code) {
+            10000 -> LimitedRequest
+            10001 -> WrongArgument
+          }
+        }
+      }
+      this
     }.onCause {
       Timber.d("ktor cause: $messageOrNull")
     }

@@ -15,6 +15,8 @@
  */
 
 import com.github.skydoves.sandwich.Configuration
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
   id(libs.plugins.kotlin.multiplatform.get().pluginId)
@@ -33,7 +35,8 @@ mavenPublishing {
 }
 
 kotlin {
-  jvm {libs.versions.jvmTarget.get().toInt()
+  jvm {
+    libs.versions.jvmTarget.get().toInt()
     compilations.all {
       kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
     }
@@ -45,7 +48,10 @@ kotlin {
   macosX64()
 
   sourceSets {
-    all { languageSettings.optIn("kotlin.contracts.ExperimentalContracts") }
+    all {
+      languageSettings.optIn("kotlin.contracts.ExperimentalContracts")
+      languageSettings.optIn("com.skydoves.sandwich.annotations.InternalSandwichApi")
+    }
     val commonMain by getting {
       dependencies {
         implementation(libs.coroutines)

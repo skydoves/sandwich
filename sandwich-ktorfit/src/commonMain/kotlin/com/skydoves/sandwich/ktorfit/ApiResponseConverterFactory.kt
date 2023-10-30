@@ -16,7 +16,7 @@
 package com.skydoves.sandwich.ktorfit
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.ApiResponse.Companion.mapFailure
+import com.skydoves.sandwich.ApiResponse.Companion.maps
 import com.skydoves.sandwich.ApiResponse.Companion.operate
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.converter.Converter
@@ -50,7 +50,7 @@ public class ApiResponseConverterFactory : Converter.Factory {
           } catch (e: Throwable) {
             ApiResponse.exception(e)
           }
-          return apiResponse.operate().mapFailure()
+          return apiResponse.operate().maps()
         }
       }
     }

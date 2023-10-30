@@ -4,7 +4,7 @@ public abstract interface class com/skydoves/sandwich/ApiResponse {
 
 public final class com/skydoves/sandwich/ApiResponse$Companion {
 	public final fun exception (Ljava/lang/Throwable;)Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;
-	public final fun mapFailure (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse;
+	public final fun maps (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse;
 	public final fun operate (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse;
 }
 
@@ -207,6 +207,9 @@ public final class com/skydoves/sandwich/StatusCode : java/lang/Enum {
 }
 
 public abstract interface annotation class com/skydoves/sandwich/SuspensionFunction : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class com/skydoves/sandwich/annotations/InternalSandwichApi : java/lang/annotation/Annotation {
 }
 
 public final class com/skydoves/sandwich/exceptions/NoContentException : java/lang/Throwable {

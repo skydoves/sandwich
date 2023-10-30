@@ -19,5 +19,5 @@ import com.skydoves.sandwich.ApiResponse
 
 object WrongArgument : ApiResponse.Failure.Cause() {
 
-  override val payload: Any = "request is limited"
+  override val payload: Any = "wrong argument"
 }

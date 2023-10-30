@@ -13,20 +13,20 @@
   <a href="https://skydoves.github.io/libraries/sandwich/html/sandwich/com.skydoves.sandwich/index.html"><img alt="Dokka" src="https://skydoves.github.io/badges/dokka-sandwich.svg"/></a>
 </p>
 
-🥪 Sandwich is an adaptable and lightweight sealed API library designed for Kotlin and Android, specializing in efficient Retrofit response modeling and exception handling.
+🥪  Sandwich is an adaptable and lightweight sealed API library designed for handling API responses and exceptions in Android for [Retrofit](https://github.com/square/retrofit), and Kotlin Multiplatform for [Ktor](https://github.com/ktorio/ktor), and [Ktorfit](https://github.com/Foso/Ktorfit).
 
 ## Why Sandwich?
 
-Sandwich was conceived to streamline the creation of standardized interfaces from Retrofit network responses in Kotlin. This library empowers you to handle body data, errors, and exceptional cases more succinctly, utilizing functional operators within a multi-layer architecture. With Sandwich, the need to create wrapper classes like `Resource` or `Result` is eliminated, allowing you to concentrate on your core business logic. Sandwich boasts features such as [global response handling](https://github.com/skydoves/sandwich#global-operator), [Mapper](https://github.com/skydoves/sandwich#mapper), [Operator](https://github.com/skydoves/sandwich#operator), and exceptional compatibility, including [toFlow](https://github.com/skydoves/sandwich#toflow). Moreover, Sandwich seamlessly integrates with [coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines) and [flow](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception) for even more versatile usage.
+Sandwich was conceived to streamline the creation of standardized interfaces to model responses from Retrofit, Ktor, and whatever. This library empowers you to handle body data, errors, and exceptional cases more succinctly, utilizing functional operators within a multi-layer architecture. With Sandwich, the need to create wrapper classes like Resource or Result is eliminated, allowing you to concentrate on your core business logic. Sandwich boasts features such as [global response handling](https://github.com/skydoves/sandwich#global-operator), [Mapper](https://github.com/skydoves/sandwich#mapper), [Operator](https://github.com/skydoves/sandwich#operator), and exceptional compatibility, including [toFlow](https://github.com/skydoves/sandwich#toflow). Moreover, Sandwich seamlessly integrates with [coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines) and [flow](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception) for even more versatile usage.
 
 ## Download
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
 
 Sandwich has achieved an impressive milestone, being downloaded in __over 200,000__ Android projects worldwide! <br>
 
-<img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224"/>
-
 ### Gradle
+
+<img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224"/>
 
 Add the dependency below into your **module**'s `build.gradle` file:
 

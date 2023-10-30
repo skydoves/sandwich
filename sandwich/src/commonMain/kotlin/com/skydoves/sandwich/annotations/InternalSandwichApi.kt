@@ -13,11 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.skydoves.sandwichdemo.causes
+package com.skydoves.sandwich.annotations
 
-import com.skydoves.sandwich.ApiResponse
-
-object LimitedRequest : ApiResponse.Failure.Cause() {
-
-  override val payload: Any = "your request is limited"
-}
+@Target(
+  AnnotationTarget.CLASS,
+  AnnotationTarget.PROPERTY,
+  AnnotationTarget.CONSTRUCTOR,
+  AnnotationTarget.FUNCTION,
+  AnnotationTarget.TYPEALIAS,
+)
+@RequiresOptIn(
+  message = "This is internal API for the sandwich libraries. Do not depend on " +
+    "this API in your own client code.",
+  level = RequiresOptIn.Level.ERROR,
+)
+public annotation class InternalSandwichApi

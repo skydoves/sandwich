@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+
 // Designed and developed by 2020 skydoves (Jaewoong Eum)
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,7 +63,8 @@ subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
       kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
       kotlinOptions.freeCompilerArgs += listOf(
-        "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+        "-opt-in=com.skydoves.sandwich.annotations.InternalSandwichApi",
+        "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
         "-Xexplicit-api=strict",
       )
     }
