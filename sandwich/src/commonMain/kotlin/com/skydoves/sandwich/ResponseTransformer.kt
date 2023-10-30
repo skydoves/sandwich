@@ -41,8 +41,7 @@ import kotlin.jvm.JvmSynthetic
 public fun <T> ApiResponse<T>.getOrNull(): T? {
   return when (this) {
     is ApiResponse.Success -> data
-    is ApiResponse.Failure.Error -> null
-    is ApiResponse.Failure.Exception -> null
+    is ApiResponse.Failure -> null
   }
 }
 
@@ -57,8 +56,7 @@ public fun <T> ApiResponse<T>.getOrNull(): T? {
 public fun <T> ApiResponse<T>.getOrElse(defaultValue: T): T {
   return when (this) {
     is ApiResponse.Success -> data
-    is ApiResponse.Failure.Error -> defaultValue
-    is ApiResponse.Failure.Exception -> defaultValue
+    is ApiResponse.Failure -> defaultValue
   }
 }
 
@@ -73,8 +71,7 @@ public fun <T> ApiResponse<T>.getOrElse(defaultValue: T): T {
 public inline fun <T> ApiResponse<T>.getOrElse(defaultValue: () -> T): T {
   return when (this) {
     is ApiResponse.Success -> data
-    is ApiResponse.Failure.Error -> defaultValue()
-    is ApiResponse.Failure.Exception -> defaultValue()
+    is ApiResponse.Failure -> defaultValue()
   }
 }
 
@@ -94,6 +91,7 @@ public fun <T> ApiResponse<T>.getOrThrow(): T {
     is ApiResponse.Success -> return data
     is ApiResponse.Failure.Error -> throw RuntimeException(message())
     is ApiResponse.Failure.Exception -> throw exception
+    is ApiResponse.Failure.Cause -> throw RuntimeException(payload?.toString())
   }
 }
 
@@ -590,6 +588,7 @@ public fun <T> ApiResponse.Failure<T>.message(): String {
   return when (this) {
     is ApiResponse.Failure.Error -> message()
     is ApiResponse.Failure.Exception -> message()
+    is ApiResponse.Failure.Cause -> message()
   }
 }
 
@@ -610,6 +609,13 @@ public fun <T> ApiResponse.Failure.Error<T>.message(): String = toString()
 public fun <T> ApiResponse.Failure.Exception<T>.message(): String = toString()
 
 /**
+ * Returns a payload message from the [ApiResponse.Failure.Cause] that consists of the localized message.
+ *
+ * @return A payload message from the [ApiResponse.Failure.Cause].
+ */
+public fun ApiResponse.Failure.Cause.message(): String = payload.toString()
+
+/**
  * @author skydoves (Jaewoong Eum)
  *
  * Operates on an [ApiResponse] and return an [ApiResponse].
@@ -624,6 +630,7 @@ public fun <T, V : ApiResponseOperator<T>> ApiResponse<T>.operator(
     is ApiResponse.Success -> apiResponseOperator.onSuccess(this)
     is ApiResponse.Failure.Error -> apiResponseOperator.onError(this)
     is ApiResponse.Failure.Exception -> apiResponseOperator.onException(this)
+    is ApiResponse.Failure.Cause -> apiResponseOperator.onCause(this)
   }
 }
 
@@ -643,6 +650,7 @@ public suspend fun <T, V : ApiResponseSuspendOperator<T>> ApiResponse<T>.suspend
     is ApiResponse.Success -> apiResponseOperator.onSuccess(this)
     is ApiResponse.Failure.Error -> apiResponseOperator.onError(this)
     is ApiResponse.Failure.Exception -> apiResponseOperator.onException(this)
+    is ApiResponse.Failure.Cause -> apiResponseOperator.onCause(this)
   }
 }
 

@@ -18,6 +18,11 @@ public final class com/skydoves/sandwich/ApiResponse$Companion {
 public abstract interface class com/skydoves/sandwich/ApiResponse$Failure : com/skydoves/sandwich/ApiResponse {
 }
 
+public abstract class com/skydoves/sandwich/ApiResponse$Failure$Cause : com/skydoves/sandwich/ApiResponse$Failure {
+	public fun <init> ()V
+	public abstract fun getPayload ()Ljava/lang/Object;
+}
+
 public final class com/skydoves/sandwich/ApiResponse$Failure$Error : com/skydoves/sandwich/ApiResponse$Failure {
 	public fun <init> (Ljava/lang/Object;)V
 	public final fun component1 ()Ljava/lang/Object;
@@ -94,6 +99,7 @@ public final class com/skydoves/sandwich/ResponseTransformer {
 	public static final fun map (Lcom/skydoves/sandwich/ApiResponse$Success;Lcom/skydoves/sandwich/ApiSuccessModelMapper;)Ljava/lang/Object;
 	public static final synthetic fun map (Lcom/skydoves/sandwich/ApiResponse$Success;Lcom/skydoves/sandwich/ApiSuccessModelMapper;Lkotlin/jvm/functions/Function1;)V
 	public static final fun map (Lcom/skydoves/sandwich/ApiResponse$Success;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+	public static final fun message (Lcom/skydoves/sandwich/ApiResponse$Failure$Cause;)Ljava/lang/String;
 	public static final fun message (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Ljava/lang/String;
 	public static final fun message (Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;)Ljava/lang/String;
 	public static final fun message (Lcom/skydoves/sandwich/ApiResponse$Failure;)Ljava/lang/String;
@@ -216,6 +222,7 @@ public final class com/skydoves/sandwich/exceptions/NoContentException : java/la
 
 public abstract class com/skydoves/sandwich/operators/ApiResponseOperator : com/skydoves/sandwich/operators/SandwichOperator {
 	public fun <init> ()V
+	public abstract fun onCause (Lcom/skydoves/sandwich/ApiResponse$Failure$Cause;)V
 	public abstract fun onError (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)V
 	public abstract fun onException (Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;)V
 	public abstract fun onSuccess (Lcom/skydoves/sandwich/ApiResponse$Success;)V
@@ -223,6 +230,7 @@ public abstract class com/skydoves/sandwich/operators/ApiResponseOperator : com/
 
 public abstract class com/skydoves/sandwich/operators/ApiResponseSuspendOperator : com/skydoves/sandwich/operators/SandwichOperator {
 	public fun <init> ()V
+	public abstract fun onCause (Lcom/skydoves/sandwich/ApiResponse$Failure$Cause;)V
 	public abstract fun onError (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun onException (Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun onSuccess (Lcom/skydoves/sandwich/ApiResponse$Success;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

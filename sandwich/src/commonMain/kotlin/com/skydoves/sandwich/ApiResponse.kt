@@ -66,6 +66,19 @@ public sealed interface ApiResponse<out T> {
     public data class Exception<T>(val exception: Throwable) : Failure<T> {
       val message: String? = exception.message
     }
+
+    /**
+     * @author skydoves (Jaewoong Eum)
+     *
+     * A customizable failure case.
+     * For any reasons, if you need to design your own error API models, you can build your own
+     * failure models by extending [Cause].
+     *
+     * @property payload A payload that [Cause] can contain.
+     */
+    public abstract class Cause : Failure<Nothing> {
+      public abstract val payload: Any?
+    }
   }
 
   public companion object {

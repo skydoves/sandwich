@@ -31,7 +31,7 @@ import timber.log.Timber
 /**
  * A global response operator for handling [ApiResponse]s regardless of its type.
  */
-class GlobalResponseOperator<T> constructor(
+class GlobalResponseOperator<T>(
   private val application: Application,
 ) : ApiResponseSuspendOperator<T>() {
 
@@ -71,6 +71,10 @@ class GlobalResponseOperator<T> constructor(
         toast(message())
       }
     }
+  }
+
+  override fun onCause(apiResponse: ApiResponse.Failure.Cause) {
+    TODO("Not yet implemented")
   }
 
   private fun toast(message: String) {
