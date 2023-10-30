@@ -39,7 +39,7 @@ class SandwichDemoApp : Application() {
     SandwichInitializer.sandwichFailureMappers += listOf(
       object : ApiResponseFailureMapper {
         override fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
-          return if (apiResponse is ApiResponse.Failure.Error<*>&&
+          return if (apiResponse is ApiResponse.Failure.Error<*> &&
             apiResponse.payload is Response<*>
           ) {
             val response = apiResponse.payload as Response<*>
