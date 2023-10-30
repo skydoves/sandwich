@@ -19,6 +19,9 @@
 
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.mappers.ApiErrorModelMapper
+import com.skydoves.sandwich.mappers.ApiResponseMapper
+import com.skydoves.sandwich.mappers.ApiSuccessModelMapper
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
 import kotlinx.coroutines.flow.Flow
@@ -458,6 +461,36 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnProcedure(
   this.suspendOnException(onException)
   this.suspendOnCause(onCause)
   return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps a [T] type of the [ApiResponse] to a [V] type of the [ApiResponse].
+ *
+ * @param transformer A transformer that receives [T] and returns [V].
+ *
+ * @return A [V] type of the [ApiResponse].
+ */
+public inline fun <reified T, reified V> ApiResponse<T>.map(
+  crossinline transformer: ApiResponse<T>.() -> ApiResponse<V>,
+): ApiResponse<V> {
+  return transformer.invoke(this)
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps a [T] type of the [ApiResponse] to a [V] type of the [ApiResponse].
+ *
+ * @param mapper A transformer that receives [T] and returns [V].
+ *
+ * @return A [V] type of the [ApiResponse].
+ */
+public inline fun <reified T, reified V> ApiResponse<T>.map(
+  mapper: ApiResponseMapper<T, V>,
+): ApiResponse<V> {
+  return mapper.map(this)
 }
 
 /**
