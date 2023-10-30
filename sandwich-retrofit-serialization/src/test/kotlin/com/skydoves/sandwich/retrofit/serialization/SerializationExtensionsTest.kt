@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.skydoves.sandwich.serialization
+package com.skydoves.sandwich.retrofit.serialization
 
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.retrofit.responseOf
-import com.skydoves.sandwich.retrofit.serialization.deserializeErrorBody
-import com.skydoves.sandwich.retrofit.serialization.onErrorDeserialize
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.hamcrest.MatcherAssert.assertThat

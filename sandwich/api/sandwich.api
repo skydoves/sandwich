@@ -11,20 +11,9 @@ public final class com/skydoves/sandwich/ApiResponse$Companion {
 public abstract interface class com/skydoves/sandwich/ApiResponse$Failure : com/skydoves/sandwich/ApiResponse {
 }
 
-public abstract class com/skydoves/sandwich/ApiResponse$Failure$Cause : com/skydoves/sandwich/ApiResponse$Failure {
-	public fun <init> ()V
-	public abstract fun getPayload ()Ljava/lang/Object;
-}
-
-public final class com/skydoves/sandwich/ApiResponse$Failure$Error : com/skydoves/sandwich/ApiResponse$Failure {
+public class com/skydoves/sandwich/ApiResponse$Failure$Error : com/skydoves/sandwich/ApiResponse$Failure {
 	public fun <init> (Ljava/lang/Object;)V
-	public final fun component1 ()Ljava/lang/Object;
-	public final fun copy (Ljava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse$Failure$Error;
-	public static synthetic fun copy$default (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;Ljava/lang/Object;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse$Failure$Error;
-	public fun equals (Ljava/lang/Object;)Z
 	public final fun getPayload ()Ljava/lang/Object;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/skydoves/sandwich/ApiResponse$Failure$Exception : com/skydoves/sandwich/ApiResponse$Failure {
@@ -84,20 +73,17 @@ public final class com/skydoves/sandwich/ResponseTransformer {
 	public static final fun map (Lcom/skydoves/sandwich/ApiResponse$Success;Lcom/skydoves/sandwich/mappers/ApiSuccessModelMapper;)Ljava/lang/Object;
 	public static final synthetic fun map (Lcom/skydoves/sandwich/ApiResponse$Success;Lcom/skydoves/sandwich/mappers/ApiSuccessModelMapper;Lkotlin/jvm/functions/Function1;)V
 	public static final fun map (Lcom/skydoves/sandwich/ApiResponse$Success;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public static final fun mapCause (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final fun mapFailure (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun merge (Lcom/skydoves/sandwich/ApiResponse;[Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiResponseMergePolicy;)Lcom/skydoves/sandwich/ApiResponse;
 	public static synthetic fun merge$default (Lcom/skydoves/sandwich/ApiResponse;[Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiResponseMergePolicy;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
-	public static final fun message (Lcom/skydoves/sandwich/ApiResponse$Failure$Cause;)Ljava/lang/String;
 	public static final fun message (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Ljava/lang/String;
 	public static final fun message (Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;)Ljava/lang/String;
 	public static final fun message (Lcom/skydoves/sandwich/ApiResponse$Failure;)Ljava/lang/String;
-	public static final synthetic fun onCause (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun onError (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/mappers/ApiErrorModelMapper;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun onError (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun onException (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun onFailure (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
-	public static final synthetic fun onProcedure (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun onProcedure (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun onSuccess (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/mappers/ApiSuccessModelMapper;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun onSuccess (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun operator (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/operators/ApiResponseOperator;)Lcom/skydoves/sandwich/ApiResponse;
@@ -105,14 +91,12 @@ public final class com/skydoves/sandwich/ResponseTransformer {
 	public static final synthetic fun suspendMap (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendMap (Lcom/skydoves/sandwich/ApiResponse$Success;Lcom/skydoves/sandwich/mappers/ApiSuccessModelMapper;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendMap (Lcom/skydoves/sandwich/ApiResponse$Success;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static final fun suspendMapCause (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendMapFailure (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static final synthetic fun suspendOnCause (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOnError (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/mappers/ApiErrorModelMapper;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOnError (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOnException (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOnFailure (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static final synthetic fun suspendOnProcedure (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun suspendOnProcedure (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOnSuccess (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/mappers/ApiSuccessModelMapper;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOnSuccess (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOperator (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/operators/ApiResponseSuspendOperator;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -244,7 +228,6 @@ public abstract interface class com/skydoves/sandwich/mappers/SandwichFailureMap
 
 public abstract class com/skydoves/sandwich/operators/ApiResponseOperator : com/skydoves/sandwich/operators/SandwichOperator {
 	public fun <init> ()V
-	public abstract fun onCause (Lcom/skydoves/sandwich/ApiResponse$Failure$Cause;)V
 	public abstract fun onError (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)V
 	public abstract fun onException (Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;)V
 	public abstract fun onSuccess (Lcom/skydoves/sandwich/ApiResponse$Success;)V
@@ -252,7 +235,6 @@ public abstract class com/skydoves/sandwich/operators/ApiResponseOperator : com/
 
 public abstract class com/skydoves/sandwich/operators/ApiResponseSuspendOperator : com/skydoves/sandwich/operators/SandwichOperator {
 	public fun <init> ()V
-	public abstract fun onCause (Lcom/skydoves/sandwich/ApiResponse$Failure$Cause;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun onError (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun onException (Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun onSuccess (Lcom/skydoves/sandwich/ApiResponse$Success;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

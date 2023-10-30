@@ -23,7 +23,10 @@ import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwich.mappers.ApiResponseFailureMapper
 import com.skydoves.sandwichdemo.causes.LimitedRequest
+import com.skydoves.sandwichdemo.causes.WrongArgument
+import com.skydoves.sandwichdemo.model.ErrorMessage
 import com.skydoves.sandwichdemo.operator.GlobalResponseOperator
+import kotlinx.serialization.json.Json
 import retrofit2.Response
 import timber.log.Timber
 
@@ -38,12 +41,14 @@ class SandwichDemoApp : Application() {
     SandwichInitializer.sandwichFailureMappers += listOf(
       object : ApiResponseFailureMapper {
         override fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
-          if (apiResponse is ApiResponse.Failure.Error<*> &&
-            apiResponse.payload is Response<*>
-          ) {
-            val response = apiResponse.payload as Response<*>
-            if (response.errorBody().toString().contains("limited")) {
-              return LimitedRequest
+          if (apiResponse is ApiResponse.Failure.Error) {
+            val errorBody = (apiResponse.payload as? okhttp3.Response)?.body?.string()
+            if (errorBody != null) {
+              val errorMessage: ErrorMessage = Json.decodeFromString(errorBody)
+              when (errorMessage.code) {
+                10000 -> LimitedRequest
+                10001 -> WrongArgument
+              }
             }
           }
           return apiResponse

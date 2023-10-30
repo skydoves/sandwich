@@ -28,7 +28,6 @@ import com.skydoves.sandwich.ktor.getApiResponse
 import com.skydoves.sandwich.ktorfit.ApiResponseConverterFactory
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.messageOrNull
-import com.skydoves.sandwich.onCause
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.onSuccess
@@ -56,7 +55,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.Response
 import timber.log.Timber
@@ -130,8 +128,6 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
       .onException {
         Timber.d("retrofit exception: $messageOrNull")
         toastLiveData.postValue(message)
-      }.onCause {
-        Timber.d("retrofit cause: $messageOrNull")
       }
   }
 
@@ -156,8 +152,6 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
         }
       }
       this
-    }.onCause {
-      Timber.d("ktor cause: $messageOrNull")
     }
   }
 
@@ -175,8 +169,6 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
       Timber.d("ktorfit error: ${bodyString()}")
     }.onException {
       Timber.d("ktorfit exception: $messageOrNull")
-    }.onCause {
-      Timber.d("ktorfit cause: $messageOrNull")
     }
   }
 }

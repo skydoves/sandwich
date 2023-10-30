@@ -32,5 +32,5 @@ public fun interface ApiErrorModelMapper<V> {
    * @param apiErrorResponse The [ApiResponse.Failure.Error] error response from the network request.
    * @return A custom [V] error response model.
    */
-  public fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): V
+  public fun map(apiErrorResponse: ApiResponse.Failure.Error): V
 }

@@ -17,7 +17,6 @@ package com.skydoves.sandwichdemo.causes
 
 import com.skydoves.sandwich.ApiResponse
 
-object LimitedRequest : ApiResponse.Failure.Cause() {
-
-  override val payload: Any = "your request is limited"
-}
+object LimitedRequest : ApiResponse.Failure.Error<Any>(
+  payload = "your request is limited",
+)

@@ -17,7 +17,6 @@ package com.skydoves.sandwichdemo.causes
 
 import com.skydoves.sandwich.ApiResponse
 
-object WrongArgument : ApiResponse.Failure.Cause() {
-
-  override val payload: Any = "wrong argument"
-}
+object WrongArgument : ApiResponse.Failure.Error<Any>(
+  payload = "wrong argument",
+)

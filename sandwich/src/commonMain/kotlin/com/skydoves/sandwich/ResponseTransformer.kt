@@ -94,7 +94,6 @@ public fun <T> ApiResponse<T>.getOrThrow(): T {
     is ApiResponse.Success -> return data
     is ApiResponse.Failure.Error -> throw RuntimeException(message())
     is ApiResponse.Failure.Exception -> throw exception
-    is ApiResponse.Failure.Cause -> throw RuntimeException(payload?.toString())
   }
 }
 
@@ -236,7 +235,7 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnFailure(
  */
 @JvmSynthetic
 public inline fun <T> ApiResponse<T>.onError(
-  crossinline onResult: ApiResponse.Failure.Error<T>.() -> Unit,
+  crossinline onResult: ApiResponse.Failure.Error.() -> Unit,
 ): ApiResponse<T> {
   contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Error) {
@@ -280,7 +279,7 @@ public inline fun <T, V> ApiResponse<T>.onError(
 @JvmSynthetic
 @SuspensionFunction
 public suspend inline fun <T> ApiResponse<T>.suspendOnError(
-  crossinline onResult: suspend ApiResponse.Failure.Error<T>.() -> Unit,
+  crossinline onResult: suspend ApiResponse.Failure.Error.() -> Unit,
 ): ApiResponse<T> {
   contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Error) {
@@ -324,7 +323,7 @@ public suspend inline fun <T, V> ApiResponse<T>.suspendOnError(
  */
 @JvmSynthetic
 public inline fun <T> ApiResponse<T>.onException(
-  crossinline onResult: ApiResponse.Failure.Exception<T>.() -> Unit,
+  crossinline onResult: ApiResponse.Failure.Exception.() -> Unit,
 ): ApiResponse<T> {
   contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Exception) {
@@ -345,51 +344,10 @@ public inline fun <T> ApiResponse<T>.onException(
 @JvmSynthetic
 @SuspensionFunction
 public suspend inline fun <T> ApiResponse<T>.suspendOnException(
-  crossinline onResult: suspend ApiResponse.Failure.Exception<T>.() -> Unit,
+  crossinline onResult: suspend ApiResponse.Failure.Exception.() -> Unit,
 ): ApiResponse<T> {
   contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Exception) {
-    onResult(this)
-  }
-  return this
-}
-
-/**
- * @author skydoves (Jaewoong Eum)
- *
- * A scope function that would be executed for handling cause responses if the request is failed.
- *
- * @param onResult The receiver function that receiving [ApiResponse.Failure.Cause] if the request is failed.
- *
- * @return The original [ApiResponse].
- */
-@JvmSynthetic
-public inline fun <T> ApiResponse<T>.onCause(
-  crossinline onResult: ApiResponse.Failure.Cause.() -> Unit,
-): ApiResponse<T> {
-  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
-  if (this is ApiResponse.Failure.Cause) {
-    onResult(this)
-  }
-  return this
-}
-
-/**
- * @author skydoves (Jaewoong Eum)
- *
- * A suspension scope function that would be executed for handling exception responses if the request get an exception.
- *
- * @param onResult The receiver function that receiving [ApiResponse.Failure.Cause] if the request get an exception.
- *
- * @return The original [ApiResponse].
- */
-@JvmSynthetic
-@SuspensionFunction
-public suspend inline fun <T> ApiResponse<T>.suspendOnCause(
-  crossinline onResult: suspend ApiResponse.Failure.Cause.() -> Unit,
-): ApiResponse<T> {
-  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
-  if (this is ApiResponse.Failure.Cause) {
     onResult(this)
   }
   return this
@@ -412,20 +370,17 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnCause(
 @JvmSynthetic
 public inline fun <T> ApiResponse<T>.onProcedure(
   crossinline onSuccess: ApiResponse.Success<T>.() -> Unit,
-  crossinline onError: ApiResponse.Failure.Error<T>.() -> Unit,
-  crossinline onException: ApiResponse.Failure.Exception<T>.() -> Unit,
-  crossinline onCause: ApiResponse.Failure.Cause.() -> Unit,
+  crossinline onError: ApiResponse.Failure.Error.() -> Unit,
+  crossinline onException: ApiResponse.Failure.Exception.() -> Unit,
 ): ApiResponse<T> {
   contract {
     callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
     callsInPlace(onError, InvocationKind.AT_MOST_ONCE)
     callsInPlace(onException, InvocationKind.AT_MOST_ONCE)
-    callsInPlace(onCause, InvocationKind.AT_MOST_ONCE)
   }
   this.onSuccess(onSuccess)
   this.onError(onError)
   this.onException(onException)
-  this.onCause(onCause)
   return this
 }
 
@@ -446,20 +401,17 @@ public inline fun <T> ApiResponse<T>.onProcedure(
 @SuspensionFunction
 public suspend inline fun <T> ApiResponse<T>.suspendOnProcedure(
   crossinline onSuccess: suspend ApiResponse.Success<T>.() -> Unit,
-  crossinline onError: suspend ApiResponse.Failure.Error<T>.() -> Unit,
-  crossinline onException: suspend ApiResponse.Failure.Exception<T>.() -> Unit,
-  crossinline onCause: suspend ApiResponse.Failure.Cause.() -> Unit,
+  crossinline onError: suspend ApiResponse.Failure.Error.() -> Unit,
+  crossinline onException: suspend ApiResponse.Failure.Exception.() -> Unit,
 ): ApiResponse<T> {
   contract {
     callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
     callsInPlace(onError, InvocationKind.AT_MOST_ONCE)
     callsInPlace(onException, InvocationKind.AT_MOST_ONCE)
-    callsInPlace(onCause, InvocationKind.AT_MOST_ONCE)
   }
   this.suspendOnSuccess(onSuccess)
   this.suspendOnError(onError)
   this.suspendOnException(onException)
-  this.suspendOnCause(onCause)
   return this
 }
 
@@ -563,9 +515,9 @@ public fun <T> ApiResponse<T>.mapFailure(
   transformer: Any?.() -> Any?,
 ): ApiResponse<T> {
   contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
-  if (this is ApiResponse.Failure.Error<T>) {
+  if (this is ApiResponse.Failure.Error) {
     return ApiResponse.Failure.Error(payload = transformer.invoke(payload))
-  } else if (this is ApiResponse.Failure.Exception<T>) {
+  } else if (this is ApiResponse.Failure.Exception) {
     return ApiResponse.exception(ex = (transformer.invoke(exception) as? Throwable) ?: exception)
   }
   return this
@@ -586,52 +538,10 @@ public suspend fun <T> ApiResponse<T>.suspendMapFailure(
   transformer: suspend Any?.() -> Any?,
 ): ApiResponse<T> {
   contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
-  if (this is ApiResponse.Failure.Error<T>) {
+  if (this is ApiResponse.Failure.Error) {
     return ApiResponse.Failure.Error(payload = transformer.invoke(payload))
-  } else if (this is ApiResponse.Failure.Exception<T>) {
+  } else if (this is ApiResponse.Failure.Exception) {
     return ApiResponse.exception(ex = (transformer.invoke(exception) as? Throwable) ?: exception)
-  }
-  return this
-}
-
-/**
- * @author skydoves (Jaewoong Eum)
- *
- * Maps [T] type of the [ApiResponse] to [ApiResponse.Failure.Cause] with the given payload
- * if the receiver is [ApiResponse.Failure].
- *
- * @param transformer A transformer that receives [Any] and returns [ApiResponse.Failure.Cause].
- *
- * @return A [T] type of the [ApiResponse].
- */
-public fun <T> ApiResponse<T>.mapCause(
-  transformer: (payload: Any?) -> ApiResponse.Failure.Cause,
-): ApiResponse<T> {
-  if (this is ApiResponse.Failure.Error) {
-    return transformer.invoke(payload)
-  } else if (this is ApiResponse.Failure.Exception) {
-    return transformer.invoke(exception)
-  }
-  return this
-}
-
-/**
- * @author skydoves (Jaewoong Eum)
- *
- * Maps [T] type of the [ApiResponse] to [ApiResponse.Failure.Cause] with the given payload
- * if the receiver is [ApiResponse.Failure].
- *
- * @param transformer A transformer that receives [Any] and returns [ApiResponse.Failure.Cause].
- *
- * @return A [T] type of the [ApiResponse].
- */
-public suspend fun <T> ApiResponse<T>.suspendMapCause(
-  transformer: suspend (payload: Any?) -> ApiResponse.Failure.Cause,
-): ApiResponse<T> {
-  if (this is ApiResponse.Failure.Error) {
-    return transformer.invoke(payload)
-  } else if (this is ApiResponse.Failure.Exception) {
-    return transformer.invoke(exception)
   }
   return this
 }
@@ -729,7 +639,7 @@ public suspend inline fun <T, V> ApiResponse.Success<T>.suspendMap(
  *
  * @return A mapped custom [V] error response model.
  */
-public fun <T, V> ApiResponse.Failure.Error<T>.map(mapper: ApiErrorModelMapper<V>): V {
+public fun <T> ApiResponse.Failure.Error.map(mapper: ApiErrorModelMapper<T>): T {
   return mapper.map(this)
 }
 
@@ -742,7 +652,7 @@ public fun <T, V> ApiResponse.Failure.Error<T>.map(mapper: ApiErrorModelMapper<V
  *
  * @return A mapped custom [V] error response model.
  */
-public fun <T, V> ApiResponse.Failure.Error<T>.map(mapper: (ApiResponse.Failure.Error<T>) -> V): V {
+public fun <T> ApiResponse.Failure.Error.map(mapper: (ApiResponse.Failure.Error) -> T): T {
   contract { callsInPlace(mapper, InvocationKind.AT_MOST_ONCE) }
   return mapper(this)
 }
@@ -758,9 +668,9 @@ public fun <T, V> ApiResponse.Failure.Error<T>.map(mapper: (ApiResponse.Failure.
  * @return A mapped custom [V] error response model.
  */
 @JvmSynthetic
-public inline fun <T, V> ApiResponse.Failure.Error<T>.map(
-  mapper: ApiErrorModelMapper<V>,
-  crossinline onResult: V.() -> Unit,
+public inline fun <T> ApiResponse.Failure.Error.map(
+  mapper: ApiErrorModelMapper<T>,
+  crossinline onResult: T.() -> Unit,
 ) {
   contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   onResult(mapper.map(this))
@@ -778,9 +688,9 @@ public inline fun <T, V> ApiResponse.Failure.Error<T>.map(
  */
 @JvmSynthetic
 @SuspensionFunction
-public suspend inline fun <T, V> ApiResponse.Failure.Error<T>.suspendMap(
-  mapper: ApiErrorModelMapper<V>,
-  crossinline onResult: suspend V.() -> Unit,
+public suspend inline fun <T> ApiResponse.Failure.Error.suspendMap(
+  mapper: ApiErrorModelMapper<T>,
+  crossinline onResult: suspend T.() -> Unit,
 ) {
   contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   onResult(mapper.map(this))
@@ -797,9 +707,9 @@ public suspend inline fun <T, V> ApiResponse.Failure.Error<T>.suspendMap(
  */
 @JvmSynthetic
 @SuspensionFunction
-public suspend inline fun <T, V> ApiResponse.Failure.Error<T>.suspendMap(
-  crossinline mapper: suspend (ApiResponse.Failure.Error<T>) -> V,
-): V {
+public suspend inline fun <T> ApiResponse.Failure.Error.suspendMap(
+  crossinline mapper: suspend (ApiResponse.Failure.Error) -> T,
+): T {
   return mapper(this)
 }
 
@@ -827,7 +737,6 @@ public fun <T> ApiResponse.Failure<T>.message(): String {
   return when (this) {
     is ApiResponse.Failure.Error -> message()
     is ApiResponse.Failure.Exception -> message()
-    is ApiResponse.Failure.Cause -> message()
   }
 }
 
@@ -838,21 +747,14 @@ public fun <T> ApiResponse.Failure<T>.message(): String {
  *
  * @return An error message from the [ApiResponse.Failure.Error].
  */
-public fun <T> ApiResponse.Failure.Error<T>.message(): String = toString()
+public fun ApiResponse.Failure.Error.message(): String = toString()
 
 /**
  * Returns an error message from the [ApiResponse.Failure.Exception] that consists of the localized message.
  *
  * @return An error message from the [ApiResponse.Failure.Exception].
  */
-public fun <T> ApiResponse.Failure.Exception<T>.message(): String = toString()
-
-/**
- * Returns a payload message from the [ApiResponse.Failure.Cause] that consists of the localized message.
- *
- * @return A payload message from the [ApiResponse.Failure.Cause].
- */
-public fun ApiResponse.Failure.Cause.message(): String = payload.toString()
+public fun ApiResponse.Failure.Exception.message(): String = toString()
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -869,7 +771,6 @@ public fun <T, V : ApiResponseOperator<T>> ApiResponse<T>.operator(
     is ApiResponse.Success -> apiResponseOperator.onSuccess(this)
     is ApiResponse.Failure.Error -> apiResponseOperator.onError(this)
     is ApiResponse.Failure.Exception -> apiResponseOperator.onException(this)
-    is ApiResponse.Failure.Cause -> apiResponseOperator.onCause(this)
   }
 }
 
@@ -889,7 +790,6 @@ public suspend fun <T, V : ApiResponseSuspendOperator<T>> ApiResponse<T>.suspend
     is ApiResponse.Success -> apiResponseOperator.onSuccess(this)
     is ApiResponse.Failure.Error -> apiResponseOperator.onError(this)
     is ApiResponse.Failure.Exception -> apiResponseOperator.onException(this)
-    is ApiResponse.Failure.Cause -> apiResponseOperator.onCause(this)
   }
 }
 

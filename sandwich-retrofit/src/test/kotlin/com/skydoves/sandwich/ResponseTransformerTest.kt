@@ -74,7 +74,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun getOrNullOnExceptionTest() {
     val exception = IllegalArgumentException("foo")
-    val apiResponse = ApiResponse.exception<String>(exception)
+    val apiResponse = ApiResponse.exception(exception)
     val data = apiResponse.getOrNull()
 
     assertNull(data)
@@ -109,7 +109,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun getOrElseOnExceptionTest() {
     val exception = IllegalArgumentException("foo")
-    val apiResponse = ApiResponse.exception<String>(exception)
+    val apiResponse = ApiResponse.exception(exception)
     val data = apiResponse.getOrElse("bar")
 
     assertThat(data, `is`("bar"))
@@ -144,7 +144,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun getOrElseLambdaOnExceptionTest() {
     val exception = IllegalArgumentException("foo")
-    val apiResponse = ApiResponse.exception<String>(exception)
+    val apiResponse = ApiResponse.exception(exception)
     val data = apiResponse.getOrElse { "bar" }
 
     assertThat(data, `is`("bar"))
@@ -177,7 +177,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test(expected = IllegalArgumentException::class)
   fun getOrThrowOnExceptionTest() {
     val exception = IllegalArgumentException("foo")
-    val apiResponse = ApiResponse.exception<String>(exception)
+    val apiResponse = ApiResponse.exception(exception)
     apiResponse.getOrThrow()
   }
 
@@ -209,9 +209,6 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       },
       onError = {
         onResult = false
-      },
-      onCause = {
-        var onResult = false
       },
     )
 
@@ -246,9 +243,6 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
           emit(false)
         },
         onException = {
-          emit(false)
-        },
-        onCause = {
           emit(false)
         },
       )
@@ -302,9 +296,6 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       onException = {
         onResult = false
       },
-      onCause = {
-        var onResult = false
-      },
     )
     assertThat(onResult, `is`(true))
   }
@@ -355,9 +346,6 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         onException = {
           emit(false)
         },
-        onCause = {
-          emit(false)
-        },
       )
     }.collect {
       assertThat(it, `is`(true))
@@ -367,7 +355,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun onExceptionTest() {
     var onResult = false
-    val apiResponse = ApiResponse.exception<Poster>(Throwable())
+    val apiResponse = ApiResponse.exception(Throwable())
 
     apiResponse.onException {
       onResult = true
@@ -379,7 +367,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun onExceptionInProcedureTest() {
     var onResult = false
-    val apiResponse = ApiResponse.exception<Poster>(Throwable())
+    val apiResponse = ApiResponse.exception(Throwable())
 
     apiResponse.onProcedure(
       onSuccess = {
@@ -391,9 +379,6 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       onException = {
         onResult = true
       },
-      onCause = {
-        onResult = false
-      },
     )
 
     assertThat(onResult, `is`(true))
@@ -401,7 +386,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
 
   @Test
   fun suspendOnExceptionTest() = runTest {
-    val apiResponse = ApiResponse.exception<Poster>(Throwable())
+    val apiResponse = ApiResponse.exception(Throwable())
 
     flow {
       apiResponse.suspendOnException {
@@ -414,7 +399,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
 
   @Test
   fun suspendOnExceptionInProcedureTest() = runTest {
-    val apiResponse = ApiResponse.exception<Poster>(Throwable())
+    val apiResponse = ApiResponse.exception(Throwable())
 
     flow {
       apiResponse.suspendOnProcedure(
@@ -426,9 +411,6 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         },
         onException = {
           emit(true)
-        },
-        onCause = {
-          emit(false)
         },
       )
     }.collect {
@@ -735,7 +717,6 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         onSuccess = { onSuccess = true },
         onError = {},
         onException = {},
-        onCause = {},
       ),
     )
 
@@ -757,20 +738,18 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         onSuccess = {},
         onError = { onError = true },
         onException = {},
-        onCause = {},
       ),
     )
 
     assertThat(onError, `is`(true))
 
     var onException = false
-    val apiException = ApiResponse.exception<Poster>(Throwable())
+    val apiException = ApiResponse.exception(Throwable())
     apiException.operator(
       TestApiResponseOperator(
         onSuccess = {},
         onError = {},
         onException = { onException = true },
-        onCause = {},
       ),
     )
 
@@ -788,7 +767,6 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
           onSuccess = { emit("100") },
           onError = {},
           onException = {},
-          onCause = {},
         ),
       )
     }.collect {
@@ -811,21 +789,19 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
           onSuccess = {},
           onError = { emit("404") },
           onException = {},
-          onCause = {},
         ),
       )
     }.collect {
       assertThat(it, `is`("404"))
     }
 
-    val apiException = ApiResponse.exception<Poster>(Throwable())
+    val apiException = ApiResponse.exception(Throwable())
     flow {
       apiException.suspendOperator(
         TestApiResponseSuspendOperator(
           onSuccess = {},
           onError = {},
           onException = { emit("201") },
-          onCause = {},
         ),
       )
     }.collect {
