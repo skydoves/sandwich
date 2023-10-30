@@ -146,7 +146,7 @@ public inline fun <T> apiResponseOf(
  */
 @JvmSynthetic
 @SuspensionFunction
-public suspend inline fun <T> apiResponseOfSuspend(
+public suspend inline fun <T> suspendApiResponseOf(
   successCodeRange: IntRange = SandwichInitializer.successCodeRange,
   crossinline f: suspend () -> Response<T>,
 ): ApiResponse<T> {
@@ -186,7 +186,7 @@ public inline fun <T> ApiResponse.Companion.responseOf(
  * @return An [ApiResponse] model which holds information about the response.
  */
 @SuspensionFunction
-public suspend inline fun <T> ApiResponse.Companion.responseOfSuspend(
+public suspend inline fun <T> ApiResponse.Companion.suspendResponseOf(
   successCodeRange: IntRange = SandwichInitializer.successCodeRange,
   crossinline f: suspend () -> Response<T>,
-): ApiResponse<T> = apiResponseOfSuspend(successCodeRange, f)
+): ApiResponse<T> = suspendApiResponseOf(successCodeRange, f)

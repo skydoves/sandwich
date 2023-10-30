@@ -127,7 +127,7 @@ public sealed interface ApiResponse<out T> {
      * If the [f] throws an exception, it creates [ApiResponse.Failure.Exception].
      */
     @SuspensionFunction
-    public suspend inline fun <reified T> ofSuspend(
+    public suspend inline fun <reified T> suspendOf(
       tag: Any? = null,
       crossinline f: suspend () -> T,
     ): ApiResponse<T> {

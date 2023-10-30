@@ -1,8 +1,6 @@
 public final class com/skydoves/sandwich/retrofit/ApiResponseExtensionsKt {
 	public static final synthetic fun apiResponseOf (Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function0;)Lcom/skydoves/sandwich/ApiResponse;
 	public static synthetic fun apiResponseOf$default (Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
-	public static final synthetic fun apiResponseOfSuspend (Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun apiResponseOfSuspend$default (Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static final fun getApiMessage (Lcom/skydoves/sandwich/ApiResponse;)Ljava/lang/String;
 	public static final fun getBody (Lcom/skydoves/sandwich/ApiResponse$Success;)Ljava/lang/Object;
 	public static final fun getErrorBody (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Lokhttp3/ResponseBody;
@@ -17,8 +15,10 @@ public final class com/skydoves/sandwich/retrofit/ApiResponseExtensionsKt {
 	public static final fun getTagResponse (Lcom/skydoves/sandwich/ApiResponse$Success;)Lretrofit2/Response;
 	public static final fun responseOf (Lcom/skydoves/sandwich/ApiResponse$Companion;Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function0;)Lcom/skydoves/sandwich/ApiResponse;
 	public static synthetic fun responseOf$default (Lcom/skydoves/sandwich/ApiResponse$Companion;Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
-	public static final fun responseOfSuspend (Lcom/skydoves/sandwich/ApiResponse$Companion;Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun responseOfSuspend$default (Lcom/skydoves/sandwich/ApiResponse$Companion;Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final synthetic fun suspendApiResponseOf (Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun suspendApiResponseOf$default (Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun suspendResponseOf (Lcom/skydoves/sandwich/ApiResponse$Companion;Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun suspendResponseOf$default (Lcom/skydoves/sandwich/ApiResponse$Companion;Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 
 public synthetic class com/skydoves/sandwich/retrofit/ApiResponseExtensionsKt$EntriesMappings {

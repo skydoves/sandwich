@@ -518,7 +518,7 @@ public fun <T> ApiResponse<T>.mapFailure(
   if (this is ApiResponse.Failure.Error<T>) {
     return ApiResponse.Failure.Error(payload = transformer.invoke(payload))
   } else if (this is ApiResponse.Failure.Exception<T>) {
-    return ApiResponse.exception(exception)
+    return ApiResponse.exception(ex = (transformer.invoke(exception) as? Throwable) ?: exception)
   }
   return this
 }
@@ -541,7 +541,49 @@ public suspend fun <T> ApiResponse<T>.suspendMapFailure(
   if (this is ApiResponse.Failure.Error<T>) {
     return ApiResponse.Failure.Error(payload = transformer.invoke(payload))
   } else if (this is ApiResponse.Failure.Exception<T>) {
-    return ApiResponse.exception(exception)
+    return ApiResponse.exception(ex = (transformer.invoke(exception) as? Throwable) ?: exception)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps [T] type of the [ApiResponse] to [ApiResponse.Failure.Cause] with the given payload
+ * if the receiver is [ApiResponse.Failure].
+ *
+ * @param transformer A transformer that receives [Any] and returns [ApiResponse.Failure.Cause].
+ *
+ * @return A [T] type of the [ApiResponse].
+ */
+public fun <T> ApiResponse<T>.mapCause(
+  transformer: (payload: Any?) -> ApiResponse.Failure.Cause,
+): ApiResponse<T> {
+  if (this is ApiResponse.Failure.Error) {
+    return transformer.invoke(payload)
+  } else if (this is ApiResponse.Failure.Exception) {
+    return transformer.invoke(exception)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Maps [T] type of the [ApiResponse] to [ApiResponse.Failure.Cause] with the given payload
+ * if the receiver is [ApiResponse.Failure].
+ *
+ * @param transformer A transformer that receives [Any] and returns [ApiResponse.Failure.Cause].
+ *
+ * @return A [T] type of the [ApiResponse].
+ */
+public suspend fun <T> ApiResponse<T>.suspendMapCause(
+  transformer: suspend (payload: Any?) -> ApiResponse.Failure.Cause,
+): ApiResponse<T> {
+  if (this is ApiResponse.Failure.Error) {
+    return transformer.invoke(payload)
+  } else if (this is ApiResponse.Failure.Exception) {
+    return transformer.invoke(exception)
   }
   return this
 }
