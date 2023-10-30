@@ -354,6 +354,47 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnException(
 /**
  * @author skydoves (Jaewoong Eum)
  *
+ * A scope function that would be executed for handling cause responses if the request is failed.
+ *
+ * @param onResult The receiver function that receiving [ApiResponse.Failure.Cause] if the request is failed.
+ *
+ * @return The original [ApiResponse].
+ */
+@JvmSynthetic
+public inline fun <T> ApiResponse<T>.onCause(
+  crossinline onResult: ApiResponse.Failure.Cause.() -> Unit,
+): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure.Cause) {
+    onResult(this)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * A suspension scope function that would be executed for handling exception responses if the request get an exception.
+ *
+ * @param onResult The receiver function that receiving [ApiResponse.Failure.Cause] if the request get an exception.
+ *
+ * @return The original [ApiResponse].
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T> ApiResponse<T>.suspendOnCause(
+  crossinline onResult: suspend ApiResponse.Failure.Cause.() -> Unit,
+): ApiResponse<T> {
+  contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure.Cause) {
+    onResult(this)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
  * A scope function that will be executed for handling successful, error, exception responses.
  *  This function receives and handles [ApiResponse.onSuccess], [ApiResponse.onError],
  *  and [ApiResponse.onException] in one scope.
@@ -361,6 +402,7 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnException(
  * @param onSuccess A scope function that would be executed for handling successful responses if the request succeeds.
  * @param onError A scope function that would be executed for handling error responses if the request failed.
  * @param onException A scope function that would be executed for handling exception responses if the request get an exception.
+ * @param onCause A scope function that would be executed for handling exception responses if the request get an exception.
  *
  *  @return The original [ApiResponse].
  */
@@ -369,15 +411,18 @@ public inline fun <T> ApiResponse<T>.onProcedure(
   crossinline onSuccess: ApiResponse.Success<T>.() -> Unit,
   crossinline onError: ApiResponse.Failure.Error<T>.() -> Unit,
   crossinline onException: ApiResponse.Failure.Exception<T>.() -> Unit,
+  crossinline onCause: ApiResponse.Failure.Cause.() -> Unit,
 ): ApiResponse<T> {
   contract {
     callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
     callsInPlace(onError, InvocationKind.AT_MOST_ONCE)
     callsInPlace(onException, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(onCause, InvocationKind.AT_MOST_ONCE)
   }
   this.onSuccess(onSuccess)
   this.onError(onError)
   this.onException(onException)
+  this.onCause(onCause)
   return this
 }
 
@@ -391,7 +436,7 @@ public inline fun <T> ApiResponse<T>.onProcedure(
  * @param onSuccess A suspension scope function that would be executed for handling successful responses if the request succeeds.
  * @param onError A suspension scope function that would be executed for handling error responses if the request failed.
  * @param onException A suspension scope function that would be executed for handling exception responses if the request get an exception.
- *
+ * @param onCause A suspension scope function that would be executed for handling exception responses if the request get an exception.
  *  @return The original [ApiResponse].
  */
 @JvmSynthetic
@@ -400,15 +445,18 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnProcedure(
   crossinline onSuccess: suspend ApiResponse.Success<T>.() -> Unit,
   crossinline onError: suspend ApiResponse.Failure.Error<T>.() -> Unit,
   crossinline onException: suspend ApiResponse.Failure.Exception<T>.() -> Unit,
+  crossinline onCause: suspend ApiResponse.Failure.Cause.() -> Unit,
 ): ApiResponse<T> {
   contract {
     callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
     callsInPlace(onError, InvocationKind.AT_MOST_ONCE)
     callsInPlace(onException, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(onCause, InvocationKind.AT_MOST_ONCE)
   }
   this.suspendOnSuccess(onSuccess)
   this.suspendOnError(onError)
   this.suspendOnException(onException)
+  this.suspendOnCause(onCause)
   return this
 }
 
