@@ -505,11 +505,11 @@ public suspend inline fun <reified T, reified V> ApiResponse<T>.suspendMapSucces
 /**
  * @author skydoves (Jaewoong Eum)
  *
- * Maps a [T] type of the [ApiResponse] to a [V] type of the [ApiResponse] if the [ApiResponse] is [ApiResponse.Failure].
+ * Maps [Any] type of the [ApiResponse.Failure.Error.payload] to another Any type.
  *
- * @param transformer A transformer that receives [T] and returns [V].
+ * @param transformer A transformer that receives [Any] and returns [Any].
  *
- * @return A [V] type of the [ApiResponse].
+ * @return A [T] type of the [ApiResponse].
  */
 public fun <T> ApiResponse<T>.mapFailure(
   transformer: Any?.() -> Any?,
@@ -526,11 +526,11 @@ public fun <T> ApiResponse<T>.mapFailure(
 /**
  * @author skydoves (Jaewoong Eum)
  *
- * Maps a [T] type of the [ApiResponse] to a [V] type of the [ApiResponse] if the [ApiResponse] is [ApiResponse.Failure].
+ * Maps [Any] type of the [ApiResponse.Failure.Error.payload] to another Any type.
  *
- * @param transformer A suspend transformer that receives [T] and returns [V].
+ * @param transformer A transformer that receives [Any] and returns [Any].
  *
- * @return A [V] type of the [ApiResponse].
+ * @return A [T] type of the [ApiResponse].
  */
 @JvmSynthetic
 @SuspensionFunction
