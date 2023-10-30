@@ -73,8 +73,7 @@ class GlobalResponseOperator<T>(
     }
   }
 
-  override fun onCause(apiResponse: ApiResponse.Failure.Cause) {
-    TODO("Not yet implemented")
+  override suspend fun onCause(apiResponse: ApiResponse.Failure.Cause) {
   }
 
   private fun toast(message: String) {

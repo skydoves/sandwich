@@ -72,7 +72,7 @@ class CommonResponseOperator<T>(
     }
   }
 
-  override fun onCause(apiResponse: ApiResponse.Failure.Cause) {
+  override suspend fun onCause(apiResponse: ApiResponse.Failure.Cause) {
   }
 
   private fun toast(message: String) {
