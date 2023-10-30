@@ -53,7 +53,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 
-class MainViewModel(mainRepository: MainRepository) : ViewModel() {
+class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
   val toastLiveData = MutableLiveData<String>()
 
@@ -72,36 +72,6 @@ class MainViewModel(mainRepository: MainRepository) : ViewModel() {
   private val _posterList2Flow = MutableStateFlow<List<Poster>?>(emptyList())
   val posterList2Flow: StateFlow<List<Poster>?> = _posterList2Flow
 
-  init {
-    Timber.plant(Timber.DebugTree())
-    Timber.d("initialized MainViewModel.")
-
-    viewModelScope.launch {
-      mainRepository.fetchPosters()
-        // handles the success scenario when the API request succeeds.
-        .suspendOnSuccess {
-          _posterList2Flow.emit(data)
-        }
-        // handles the error scenario when the API request fail.
-        // e.g., internal server error.
-        .onError {
-          // handles error cases depending on the status code.
-          val message = when (statusCode) {
-            StatusCode.InternalServerError -> "InternalServerError"
-            StatusCode.BadGateway -> "BadGateway"
-            else -> "$statusCode(${statusCode.code}): ${message()}"
-          }
-          toastLiveData.postValue(message)
-        }
-        // handles the error scenario when an unexpected exception happens.
-        // e.g., network connection error, timeout.
-        .onException {
-          toastLiveData.postValue(message)
-        }
-    }
-  }
-  // End (Use Case 2)
-
   private val client = HttpClient(OkHttp) {
     defaultRequest {
       contentType(ContentType.Application.Json)
@@ -119,15 +89,51 @@ class MainViewModel(mainRepository: MainRepository) : ViewModel() {
     }
   }
 
+  init {
+    Timber.plant(Timber.DebugTree())
+    Timber.d("initialized MainViewModel.")
+
+    ktor()
+    ktorfit()
+    retrofit()
+  }
+
+  private fun retrofit() = viewModelScope.launch {
+    mainRepository.fetchPosters()
+      // handles the success scenario when the API request succeeds.
+      .suspendOnSuccess {
+        Timber.d("retrofit success: $data")
+        _posterList2Flow.emit(data)
+      }
+      // handles the error scenario when the API request fail.
+      // e.g., internal server error.
+      .onError {
+        Timber.d("retrofit error: $messageOrNull")
+        // handles error cases depending on the status code.
+        val message = when (statusCode) {
+          StatusCode.InternalServerError -> "InternalServerError"
+          StatusCode.BadGateway -> "BadGateway"
+          else -> "$statusCode(${statusCode.code}): ${message()}"
+        }
+        toastLiveData.postValue(message)
+      }
+      // handles the error scenario when an unexpected exception happens.
+      // e.g., network connection error, timeout.
+      .onException {
+        Timber.d("retrofit exception: $messageOrNull")
+        toastLiveData.postValue(message)
+      }
+  }
+
   // Ktor example
   private fun ktor() = viewModelScope.launch {
     val response = client.getApiResponse<PokemonResponse>("https://pokeapi.co/api/v2/pokemon")
     response.onSuccess {
-      Timber.d("success: $data")
+      Timber.d("ktor success: $data")
     }.suspendOnError {
-      Timber.d("error: ${bodyString()}")
+      Timber.d("ktor error: ${bodyString()}")
     }.onException {
-      Timber.d("exception: $messageOrNull")
+      Timber.d("ktor exception: $messageOrNull")
     }
   }
 
@@ -140,11 +146,11 @@ class MainViewModel(mainRepository: MainRepository) : ViewModel() {
     val service = ktorfit.create<KtorfitPokemonService>()
     val response = service.getPokemon()
     response.onSuccess {
-      Timber.d("success: $data")
+      Timber.d("ktorfit success: $data")
     }.suspendOnError {
-      Timber.d("error: ${bodyString()}")
+      Timber.d("ktorfit error: ${bodyString()}")
     }.onException {
-      Timber.d("exception: $messageOrNull")
+      Timber.d("ktorfit exception: $messageOrNull")
     }
   }
 }

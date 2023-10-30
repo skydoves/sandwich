@@ -20,7 +20,6 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.skydoves.sandwich.retrofit.apiMessage
 import com.skydoves.sandwich.retrofit.apiResponseOf
 import com.skydoves.sandwich.retrofit.headers
-import com.skydoves.sandwich.retrofit.of
 import com.skydoves.sandwich.retrofit.raw
 import com.skydoves.sandwich.retrofit.statusCode
 import okhttp3.mockwebserver.MockResponse

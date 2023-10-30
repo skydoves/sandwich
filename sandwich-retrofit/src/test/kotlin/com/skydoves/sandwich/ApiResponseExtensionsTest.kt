@@ -16,7 +16,6 @@
 package com.skydoves.sandwich
 
 import com.skydoves.sandwich.retrofit.apiMessage
-import com.skydoves.sandwich.retrofit.of
 import junit.framework.Assert.assertNull
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody

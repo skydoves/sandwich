@@ -18,7 +18,6 @@ package com.skydoves.sandwich
 import com.skydoves.sandwich.retrofit.errorBody
 import com.skydoves.sandwich.retrofit.mapFailure
 import com.skydoves.sandwich.retrofit.mapSuccess
-import com.skydoves.sandwich.retrofit.of
 import com.skydoves.sandwich.retrofit.statusCode
 import com.skydoves.sandwich.retrofit.suspendMapSuccess
 import kotlinx.coroutines.flow.first
@@ -216,6 +215,9 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       onError = {
         onResult = false
       },
+      onCause = {
+        var onResult = false
+      },
     )
 
     assertThat(onResult, `is`(true))
@@ -249,6 +251,9 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
           emit(false)
         },
         onException = {
+          emit(false)
+        },
+        onCause = {
           emit(false)
         },
       )
@@ -302,6 +307,9 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       onException = {
         onResult = false
       },
+      onCause = {
+        var onResult = false
+      },
     )
     assertThat(onResult, `is`(true))
   }
@@ -352,6 +360,9 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         onException = {
           emit(false)
         },
+        onCause = {
+          emit(false)
+        },
       )
     }.collect {
       assertThat(it, `is`(true))
@@ -385,6 +396,9 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       onException = {
         onResult = true
       },
+      onCause = {
+        onResult = false
+      },
     )
 
     assertThat(onResult, `is`(true))
@@ -417,6 +431,9 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
         },
         onException = {
           emit(true)
+        },
+        onCause = {
+          emit(false)
         },
       )
     }.collect {

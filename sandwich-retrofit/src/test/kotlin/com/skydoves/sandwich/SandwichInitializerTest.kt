@@ -15,7 +15,6 @@
  */
 package com.skydoves.sandwich
 
-import com.skydoves.sandwich.retrofit.of
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`

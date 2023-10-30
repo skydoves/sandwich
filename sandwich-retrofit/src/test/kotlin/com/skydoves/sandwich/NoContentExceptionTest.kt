@@ -16,7 +16,6 @@
 package com.skydoves.sandwich
 
 import com.skydoves.sandwich.retrofit.headers
-import com.skydoves.sandwich.retrofit.of
 import com.skydoves.sandwich.retrofit.raw
 import com.skydoves.sandwich.retrofit.statusCode
 import org.hamcrest.CoreMatchers.instanceOf

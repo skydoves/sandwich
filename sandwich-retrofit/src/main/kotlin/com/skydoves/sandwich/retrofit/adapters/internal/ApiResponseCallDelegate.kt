@@ -16,7 +16,7 @@
 package com.skydoves.sandwich.retrofit.adapters.internal
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.retrofit.of
+import com.skydoves.sandwich.retrofit.responseOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -40,7 +40,7 @@ internal class ApiResponseCallDelegate<T>(
     coroutineScope.launch {
       try {
         val response = proxy.awaitResponse()
-        val apiResponse = ApiResponse.of { response }
+        val apiResponse = ApiResponse.responseOf { response }
         callback.onResponse(this@ApiResponseCallDelegate, Response.success(apiResponse))
       } catch (e: Exception) {
         callback.onResponse(
@@ -54,7 +54,7 @@ internal class ApiResponseCallDelegate<T>(
   override fun executeImpl(): Response<ApiResponse<T>> =
     runBlocking(coroutineScope.coroutineContext) {
       val response = proxy.execute()
-      val apiResponse = ApiResponse.of { response }
+      val apiResponse = ApiResponse.responseOf { response }
       Response.success(apiResponse)
     }
 

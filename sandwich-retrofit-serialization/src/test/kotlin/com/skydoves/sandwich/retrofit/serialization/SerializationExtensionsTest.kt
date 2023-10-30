@@ -16,7 +16,6 @@
 package com.skydoves.sandwich.serialization
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.retrofit.of
 import com.skydoves.sandwich.retrofit.serialization.deserializeErrorBody
 import com.skydoves.sandwich.retrofit.serialization.onErrorDeserialize
 import okhttp3.MediaType.Companion.toMediaType
