@@ -27,4 +27,5 @@ package com.skydoves.sandwich.annotations
     "this API in your own client code.",
   level = RequiresOptIn.Level.ERROR,
 )
+@DslMarker
 public annotation class InternalSandwichApi

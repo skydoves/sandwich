@@ -21,6 +21,6 @@ import de.jensklingenberg.ktorfit.http.GET
 
 public interface KtorfitPokemonService {
 
-  @GET("pokemonasdasd")
+  @GET("pokemon")
   suspend fun getPokemon(): ApiResponse<PokemonResponse>
 }
