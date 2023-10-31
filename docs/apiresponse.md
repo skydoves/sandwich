@@ -37,7 +37,7 @@ val apiResponse = ApiResponse.Failure.Error(payload = errorBody)
 val payload = apiResponse.payload
 ```
 
-You can also define custom error responses that extend `ApiResponse.Failure.Error`, as demonstrated in the example below:
+You can also define custom error responses that extend `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`, as demonstrated in the example below:
 
 ```kotlin
 data object LimitedRequest : ApiResponse.Failure.Error(
@@ -46,6 +46,10 @@ data object LimitedRequest : ApiResponse.Failure.Error(
 
 data object WrongArgument : ApiResponse.Failure.Error(
   payload = "wrong argument",
+)
+
+data object HttpException : ApiResponse.Failure.Exception(
+  throwable = RuntimeException("http exception")
 )
 ```
 

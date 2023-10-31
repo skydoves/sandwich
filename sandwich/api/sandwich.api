@@ -13,17 +13,17 @@ public abstract interface class com/skydoves/sandwich/ApiResponse$Failure : com/
 
 public class com/skydoves/sandwich/ApiResponse$Failure$Error : com/skydoves/sandwich/ApiResponse$Failure {
 	public fun <init> (Ljava/lang/Object;)V
+	public fun equals (Ljava/lang/Object;)Z
 	public final fun getPayload ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/skydoves/sandwich/ApiResponse$Failure$Exception : com/skydoves/sandwich/ApiResponse$Failure {
+public class com/skydoves/sandwich/ApiResponse$Failure$Exception : com/skydoves/sandwich/ApiResponse$Failure {
 	public fun <init> (Ljava/lang/Throwable;)V
-	public final fun component1 ()Ljava/lang/Throwable;
-	public final fun copy (Ljava/lang/Throwable;)Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;
-	public static synthetic fun copy$default (Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;Ljava/lang/Throwable;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getException ()Ljava/lang/Throwable;
 	public final fun getMessage ()Ljava/lang/String;
+	public final fun getThrowable ()Ljava/lang/Throwable;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }

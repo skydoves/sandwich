@@ -20,3 +20,11 @@ import com.skydoves.sandwich.ApiResponse
 data object LimitedRequest : ApiResponse.Failure.Error(
   payload = "your request is limited",
 )
+
+data object WrongArgument : ApiResponse.Failure.Error(
+  payload = "wrong argument",
+)
+
+data object HttpException : ApiResponse.Failure.Exception(
+  throwable = RuntimeException("http exception"),
+)

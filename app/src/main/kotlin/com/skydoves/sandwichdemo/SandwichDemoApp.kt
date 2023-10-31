@@ -23,7 +23,6 @@ import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwich.mappers.ApiResponseFailureMapper
 import com.skydoves.sandwichdemo.errors.LimitedRequest
-import com.skydoves.sandwichdemo.errors.WrongArgument
 import com.skydoves.sandwichdemo.model.ErrorMessage
 import com.skydoves.sandwichdemo.operator.GlobalResponseOperator
 import kotlinx.serialization.json.Json

@@ -85,7 +85,7 @@ public inline fun <T> ApiResponse<T>.getOrElse(defaultValue: () -> T): T {
  * throws the encapsulated Throwable exception if it is [ApiResponse.Failure.Error] or [ApiResponse.Failure.Exception].
  *
  * @throws RuntimeException if it is [ApiResponse.Failure.Error] or
- * the encapsulated Throwable exception if it is [ApiResponse.Failure.Exception.exception]
+ * the encapsulated Throwable exception if it is [ApiResponse.Failure.Exception.throwable]
  *
  * @return The encapsulated data.
  */
@@ -93,7 +93,7 @@ public fun <T> ApiResponse<T>.getOrThrow(): T {
   when (this) {
     is ApiResponse.Success -> return data
     is ApiResponse.Failure.Error -> throw RuntimeException(message())
-    is ApiResponse.Failure.Exception -> throw exception
+    is ApiResponse.Failure.Exception -> throw throwable
   }
 }
 
@@ -516,7 +516,7 @@ public fun <T> ApiResponse<T>.mapFailure(
   if (this is ApiResponse.Failure.Error) {
     return ApiResponse.Failure.Error(payload = transformer.invoke(payload))
   } else if (this is ApiResponse.Failure.Exception) {
-    return ApiResponse.exception(ex = (transformer.invoke(exception) as? Throwable) ?: exception)
+    return ApiResponse.exception(ex = (transformer.invoke(throwable) as? Throwable) ?: throwable)
   }
   return this
 }
@@ -539,7 +539,7 @@ public suspend fun <T> ApiResponse<T>.suspendMapFailure(
   if (this is ApiResponse.Failure.Error) {
     return ApiResponse.Failure.Error(payload = transformer.invoke(payload))
   } else if (this is ApiResponse.Failure.Exception) {
-    return ApiResponse.exception(ex = (transformer.invoke(exception) as? Throwable) ?: exception)
+    return ApiResponse.exception(ex = (transformer.invoke(throwable) as? Throwable) ?: throwable)
   }
   return this
 }

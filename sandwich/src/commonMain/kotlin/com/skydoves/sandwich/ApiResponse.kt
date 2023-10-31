@@ -56,7 +56,19 @@ public sealed interface ApiResponse<out T> {
      *
      * @property payload An error payload that can contain detailed error information.
      */
-    public open class Error(public val payload: Any?) : Failure<Nothing>
+    public open class Error(public val payload: Any?) : Failure<Nothing> {
+
+      override fun equals(other: Any?): Boolean = other is Error &&
+        payload == other.payload
+
+      override fun hashCode(): Int {
+        var result = 17
+        result = 31 * result + payload.hashCode()
+        return result
+      }
+
+      override fun toString(): String = payload.toString()
+    }
 
     /**
      * @author skydoves (Jaewoong Eum)
@@ -65,12 +77,23 @@ public sealed interface ApiResponse<out T> {
      * An unexpected exception occurs while creating requests or processing an response in the client side.
      * e.g., network connection error, timeout.
      *
-     * @param exception An throwable exception.
+     * @param throwable An throwable exception.
      *
      * @property message The localized message from the exception.
      */
-    public data class Exception(public val exception: Throwable) : Failure<Nothing> {
-      public val message: String? = exception.message
+    public open class Exception(public val throwable: Throwable) : Failure<Nothing> {
+      public val message: String? = throwable.message
+
+      override fun equals(other: Any?): Boolean = other is Exception &&
+        throwable == other.throwable
+
+      override fun hashCode(): Int {
+        var result = 17
+        result = 31 * result + throwable.hashCode()
+        return result
+      }
+
+      override fun toString(): String = message.orEmpty()
     }
   }
 
