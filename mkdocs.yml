@@ -12,7 +12,7 @@ nav:
   - 'Overview': index.md
   - 'Snapshot': snapshot.md
   - 'ApiResponse': apiresponse.md
-  - 'Retrofit': retrofit.md
+  - 'Retrofit': retrofit.mdg
   - 'Ktor': ktorgit.md
   - 'Retrieve': retrieve.md
   - 'Mapper': mapper.md
@@ -21,7 +21,6 @@ nav:
   - 'Operator': operator.md
   - 'Merge': merge.md
   - 'Empty Body': empty-body.md
-  - 'Serialization': serialization.md
   - 'Sponsor 🩷': sponsor.md
     
 # Repository
