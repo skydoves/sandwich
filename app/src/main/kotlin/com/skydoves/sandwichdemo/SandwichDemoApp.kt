@@ -19,14 +19,6 @@ package com.skydoves.sandwichdemo
 
 import android.app.Application
 import androidx.multidex.BuildConfig
-import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.SandwichInitializer
-import com.skydoves.sandwich.mappers.ApiResponseFailureMapper
-import com.skydoves.sandwichdemo.errors.LimitedRequest
-import com.skydoves.sandwichdemo.errors.WrongArgument
-import com.skydoves.sandwichdemo.model.ErrorMessage
-import com.skydoves.sandwichdemo.operator.GlobalResponseOperator
-import kotlinx.serialization.json.Json
 import timber.log.Timber
 
 class SandwichDemoApp : Application() {
@@ -36,24 +28,24 @@ class SandwichDemoApp : Application() {
 
     sandwichApp = this
 
-    SandwichInitializer.sandwichOperators += GlobalResponseOperator<Any>(this)
-    SandwichInitializer.sandwichFailureMappers += listOf(
-      object : ApiResponseFailureMapper {
-        override fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
-          if (apiResponse is ApiResponse.Failure.Error) {
-            val errorBody = (apiResponse.payload as? okhttp3.Response)?.body?.string()
-            if (errorBody != null) {
-              val errorMessage: ErrorMessage = Json.decodeFromString(errorBody)
-              when (errorMessage.code) {
-                10000 -> LimitedRequest
-                10001 -> WrongArgument
-              }
-            }
-          }
-          return apiResponse
-        }
-      },
-    )
+//    SandwichInitializer.sandwichOperators += GlobalResponseOperator<Any>(this)
+//    SandwichInitializer.sandwichFailureMappers += listOf(
+//      object : ApiResponseFailureMapper {
+//        override fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
+//          if (apiResponse is ApiResponse.Failure.Error) {
+//            val errorBody = (apiResponse.payload as? okhttp3.Response)?.body?.string()
+//            if (errorBody != null) {
+//              val errorMessage: ErrorMessage = Json.decodeFromString(errorBody)
+//              when (errorMessage.code) {
+//                10000 -> LimitedRequest
+//                10001 -> WrongArgument
+//              }
+//            }
+//          }
+//          return apiResponse
+//        }
+//      },
+//    )
 
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())

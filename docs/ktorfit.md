@@ -1,10 +1,10 @@
-# ApiResponse With Ktor
+# Ktorfit Integration
 
 Sandwich offers seamless extensions of `ApiResponse` for [Ktorfit](https://github.com/Foso/Ktorfit) by utilizing Sandwich's converter factory. Basically, Ktorfit was built top of the [Ktor](https://github.com/ktorio/ktor), so you can use [Ktor extensions](ktor.md) as well.
 
 To utilize these Ktorfit supports, simply add the following dependency:
 
-<img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224" alt="maven"/>
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
 
 === "Groovy"
 

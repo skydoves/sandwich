@@ -1,6 +1,6 @@
 # Retry
 
-Sandwich offers seamless ways to run and retry API requests. To execute and retry network requests, you can employ the `RetryPolicy` interface along with the `runAndRetry` extension, as demonstrated in the code below:
+Sandwich offers seamless ways to run and retry tasks. To execute and retry network or I/O requests, you can employ the `RetryPolicy` interface along with the `runAndRetry` extension, as demonstrated in the code below:
 
 ```kotlin
 val retryPolicy = object : RetryPolicy {

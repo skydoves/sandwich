@@ -12,7 +12,7 @@ nav:
   - 'Overview': index.md
   - 'Snapshot': snapshot.md
   - 'ApiResponse': apiresponse.md
-  - 'Retrofit': retrofit.mdg
+  - 'Retrofit': retrofit.md
   - 'Ktor': ktor.md
   - 'Ktorfit': ktorfit.md
   - 'Retrieve': retrieve.md

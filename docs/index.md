@@ -13,7 +13,7 @@
   <a href="https://skydoves.github.io/libraries/sandwich/html/sandwich/com.skydoves.sandwich/index.html"><img alt="Dokka" src="https://skydoves.github.io/badges/dokka-sandwich.svg"/></a>
 </p>
 
-🥪  Sandwich is an adaptable and lightweight sealed API library designed for handling API responses and exceptions in Android for [Retrofit](https://github.com/square/retrofit), and Kotlin Multiplatform for [Ktor](https://github.com/ktorio/ktor), and [Ktorfit](https://github.com/Foso/Ktorfit).
+🥪  Sandwich is an adaptable and lightweight sealed API library designed for handling API responses and exceptions in Android for [Retrofit](retrofit.md), and Kotlin Multiplatform for [Ktor](ktor.md), and [Ktorfit](ktorfit.md).
 
 ## Why Sandwich?
 

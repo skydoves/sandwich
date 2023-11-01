@@ -34,7 +34,7 @@ import com.skydoves.sandwich.onSuccess
 import com.skydoves.sandwich.retrofit.statusCode
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
-import com.skydoves.sandwichdemo.errors.LimitedRequest
+import com.skydoves.sandwichdemo.errors.HttpException
 import com.skydoves.sandwichdemo.model.PokemonResponse
 import com.skydoves.sandwichdemo.model.Poster
 import com.skydoves.sandwichdemo.network.KtorfitPokemonService
@@ -137,16 +137,14 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
       Timber.d("ktor success: $data")
     }.suspendOnError {
       Timber.d("ktor error: ${bodyString()}")
-    }.onException {
-      Timber.d("ktor exception: $messageOrNull")
     }.flatMap {
       if (this is ApiResponse.Failure) {
-        LimitedRequest
+        HttpException
       } else {
         this
       }
-    }.onError {
-      Timber.d("ktor error: $this")
+    }.onException {
+      Timber.d("ktor exception: $messageOrNull")
     }
   }
 

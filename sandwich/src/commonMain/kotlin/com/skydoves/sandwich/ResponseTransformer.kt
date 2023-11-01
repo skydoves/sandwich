@@ -633,9 +633,9 @@ public suspend inline fun <T, V> ApiResponse.Success<T>.suspendMap(
  *
  * Maps [ApiResponse.Failure.Error] to a customized error response model.
  *
- * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
+ * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [T] instance model.
  *
- * @return A mapped custom [V] error response model.
+ * @return A mapped custom [T] error response model.
  */
 public fun <T> ApiResponse.Failure.Error.map(mapper: ApiErrorModelMapper<T>): T {
   return mapper.map(this)
@@ -646,9 +646,9 @@ public fun <T> ApiResponse.Failure.Error.map(mapper: ApiErrorModelMapper<T>): T 
  *
  * Maps [ApiResponse.Failure.Error] to a customized error response model.
  *
- * @param mapper An executable lambda for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
+ * @param mapper An executable lambda for mapping [ApiResponse.Failure.Error] response as a custom [T] instance model.
  *
- * @return A mapped custom [V] error response model.
+ * @return A mapped custom [T] error response model.
  */
 public fun <T> ApiResponse.Failure.Error.map(mapper: (ApiResponse.Failure.Error) -> T): T {
   contract { callsInPlace(mapper, InvocationKind.AT_MOST_ONCE) }
@@ -660,10 +660,10 @@ public fun <T> ApiResponse.Failure.Error.map(mapper: (ApiResponse.Failure.Error)
  *
  * Maps [ApiResponse.Failure.Error] to a customized error response model with a receiver scope lambda.
  *
- * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
- * @param onResult A receiver scope lambda of the mapped custom [V] error response model.
+ * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [T] instance model.
+ * @param onResult A receiver scope lambda of the mapped custom [T] error response model.
  *
- * @return A mapped custom [V] error response model.
+ * @return A mapped custom [T] error response model.
  */
 @JvmSynthetic
 public inline fun <T> ApiResponse.Failure.Error.map(
@@ -679,10 +679,10 @@ public inline fun <T> ApiResponse.Failure.Error.map(
  *
  * Maps [ApiResponse.Failure.Error] to a customized error response model with a suspension receiver scope lambda.
  *
- * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
- * @param onResult A suspension receiver scope lambda of the mapped custom [V] error response model.
+ * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [T] instance model.
+ * @param onResult A suspension receiver scope lambda of the mapped custom [T] error response model.
  *
- * @return A mapped custom [V] error response model.
+ * @return A mapped custom [T] error response model.
  */
 @JvmSynthetic
 @SuspensionFunction
@@ -699,9 +699,9 @@ public suspend inline fun <T> ApiResponse.Failure.Error.suspendMap(
  *
  * Maps [ApiResponse.Failure.Error] to a customized error response model with a suspension receiver scope lambda.
  *
- * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [V] instance model.
+ * @param mapper A mapper interface for mapping [ApiResponse.Failure.Error] response as a custom [T] instance model.
  *
- * @return A mapped custom [V] error response model.
+ * @return A mapped custom [T] error response model.
  */
 @JvmSynthetic
 @SuspensionFunction

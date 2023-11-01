@@ -4,7 +4,7 @@ Sandwich provides seamless ways to integrate the `ApiResponse<*>` type into your
 
 To utilize these Retrofit supports, simply add the following dependency:
 
-<img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224" alt="maven"/>
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
 
 === "Groovy"
 
@@ -118,7 +118,7 @@ val retrofit = Retrofit.Builder()
 
 By following these guidelines, you can effectively manage coroutine scopes within Sandwich, making it suitable for a variety of use cases and ensuring robustness in unit testing scenarios.
 
-# Serialization for Retrofit
+## Serialization for Retrofit
 
 Sandwich facilitates the deserialization of your Retrofit response's error body into your customized error class, utilizing [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html).
 
@@ -146,7 +146,7 @@ Add the dependency below to your **module**'s `build.gradle` file:
     }
     ```
 
-## Error Body Deserialization
+### Error Body Deserialization
 
 To deserialize your error body, utilize the `deserializeErrorBody` extension along with your custom error class. Begin by defining your custom error class adhering to the formats of your RESTful API, as shown below:
 
@@ -172,4 +172,13 @@ val apiResponse = mainRepository.fetchPosters()
 apiResponse.onErrorDeserialize<List<Poster>, ErrorMessage> { errorMessage ->
   // Handle the error message
 }
+```
+
+### Creating ApiResponse from Retrofit Response
+
+If you need to create an `ApiResponse` from the Retrofit's `Response<T>` class, you can utilize `apiResponseOf` or `suspendApiResponseOf` extensions below:
+
+```kotlin
+val response: retrofit2.Response<Pokemon> = service.fetchPokemon()
+val apiResponse = apiResponseOf { response }
 ```

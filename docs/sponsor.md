@@ -1,6 +1,6 @@
 # Sponsor 🩷
 
-Jaewoong has created and contributed more than +75 open-source projects and libraries related to Android and Kotlin. With over his open-source projects and libraries, his work has left a significant impact on the development landscape. These projects have been widely embraced by millions of projects, software engineers, and end-users worldwide, with prominent organizations like PayPal, Twitter, Wikipedia, and others benefiting from their creations.
+[Jaewoong](https://github.com/skydoves) has created and contributed more than +75 open-source projects and libraries related to Android and Kotlin. With over his open-source projects and libraries, his work has left a significant impact on the development landscape. These projects have been widely embraced by millions of projects, software engineers, and end-users worldwide, with prominent organizations like PayPal, Twitter, Wikipedia, and others benefiting from their creations.
 
 If your team or personal projects have benefited from reduced development costs by using this library, you can show your appreciation and support by sponsoring him through the links below:
 

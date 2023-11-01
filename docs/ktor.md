@@ -1,10 +1,10 @@
-# ApiResponse With Ktor
+# Ktor Integration
 
-Sandwich offers seamless extensions of `ApiResponse` for [Ktor](https://github.com/ktorio/ktor). You can obtain `ApiResponse` from the `HttpClient` by utilizing the `_ApiResponse` extensions:
+Sandwich provides seamless extensions for `ApiResponse` when working with [Ktor](https://github.com/ktorio/ktor). If you're developing a Kotlin Multiplatform project, it's strongly advised to use **Sandwich Ktor** because Retrofit is limited to Android. You can access `ApiResponse` through the `_ApiResponse` extensions when working with the `HttpClient`.
 
 To utilize these Ktor supports, simply add the following dependency:
 
-<img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224" alt="maven"/>
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
 
 === "Groovy"
 

@@ -6,7 +6,7 @@ You can streamline the handling of `onSuccess`, `onError`, and `onException` sce
 
 ```kotlin
 /** A common response operator for handling [ApiResponse]s regardless of its type. */
-class CommonResponseOperator<T> constructor(
+class CommonResponseOperator<T>(
   private val success: suspend (ApiResponse.Success<T>) -> Unit
 ) : ApiResponseOperator<T>() {
 
@@ -52,7 +52,7 @@ By embracing the **Operator** pattern, you can significantly simplify the manage
 For scenarios where you aim to delegate and operate a suspension lambda using the operator pattern, the `suspendOperator` extension and the `ApiResponseSuspendOperator` class come into play. These tools facilitate the process, as showcased in the examples below:
 
 ```kotlin
-class CommonResponseOperator<T> constructor(
+class CommonResponseOperator<T>(
   private val success: suspend (ApiResponse.Success<T>) -> Unit
 ) : ApiResponseSuspendOperator<T>() {
 
