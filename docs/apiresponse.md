@@ -87,7 +87,7 @@ apiResponse.onError {
 }
 ```
 
-You might not want to use the `flatMap` extension for all API requests. If you aim to standardize custom error types across all API requests, you can explore the [ApiResponseMapper](mapper.md).
+You might not want to use the `flatMap` extension for all API requests. If you aim to standardize custom error types across all API requests, you can explore the [Global Failure Mapper](https://skydoves.github.io/sandwich/mapper/#global-failure-mapper).
 
 ### Creation of ApiResponse
 

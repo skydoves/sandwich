@@ -20,12 +20,16 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 
-data object LimitedRequest : ApiResponse.Failure.Error(
-  payload = "your request is limited",
+data object UnKnownError : ApiResponse.Failure.Exception(
+  throwable = RuntimeException("unknwon error")
 )
 
-data object WrongArgument : ApiResponse.Failure.Error(
-  payload = "wrong argument",
+data object LimitedRequest : ApiResponse.Failure.Exception(
+  throwable = RuntimeException("your request is limited")
+)
+
+data object WrongArgument : ApiResponse.Failure.Exception(
+  throwable = RuntimeException("wrong argument")
 )
 
 data object HttpException : ApiResponse.Failure.Exception(
