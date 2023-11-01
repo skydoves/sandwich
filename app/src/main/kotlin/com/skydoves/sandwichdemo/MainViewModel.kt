@@ -130,7 +130,9 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
   // Ktor example
   private fun ktor() = viewModelScope.launch {
-    val response = client.getApiResponse<PokemonResponse>("https://pokeapi.co/api/v2/pokemon")
+    val response = client.getApiResponse<PokemonResponse>("https://pokeapi.co/api/v2/pokemon") {
+      contentType(ContentType.Application.Json)
+    }
     response.onSuccess {
       Timber.d("ktor success: $data")
     }.suspendOnError {

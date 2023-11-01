@@ -12,7 +12,8 @@ nav:
   - 'Overview': index.md
   - 'Snapshot': snapshot.md
   - 'ApiResponse': apiresponse.md
-  - 'Coroutines': coroutines.md
+  - 'Retrofit': retrofit.md
+  - 'Ktor': ktorgit.md
   - 'Retrieve': retrieve.md
   - 'Mapper': mapper.md
   - 'Sequential': sequential.md

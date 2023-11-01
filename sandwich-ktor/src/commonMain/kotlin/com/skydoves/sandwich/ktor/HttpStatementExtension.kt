@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.skydoves.sandwichdemo.errors
+package com.skydoves.sandwich.ktor
 
 import com.skydoves.sandwich.ApiResponse
+import io.ktor.client.statement.HttpStatement
 
-data object LimitedRequest : ApiResponse.Failure.Error(
-  payload = "your request is limited",
-)
-
-data object WrongArgument : ApiResponse.Failure.Error(
-  payload = "wrong argument",
-)
-
-data object HttpException : ApiResponse.Failure.Exception(
-  throwable = RuntimeException("http exception"),
-)
+/**
+ * Executes this statement and download the response. After the method execution finishes,
+ * the client downloads the response body in memory and release the connection.
+ *
+ * @return [ApiResponse]
+ */
+public suspend inline fun <reified T> HttpStatement.executeApiResponse(): ApiResponse<T> {
+  val response = execute()
+  return apiResponseOf { response }
+}

@@ -1,8 +1,30 @@
-# ApiResponse With Coroutines
+# Retrofit Integration
 
-You can seamlessly integrate the `ApiResponse<*>` type into your Retrofit services by using the `suspend` keyword. Here's how to set it up:
+Sandwich provides seamless ways to integrate the `ApiResponse<*>` type into your Retrofit services with [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html).
 
-First, build your `Retrofit` instance using the `ApiResponseCallAdapterFactory` call adapter factory:
+To utilize these Retrofit supports, simply add the following dependency:
+
+<img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224" alt="maven"/>
+
+=== "Groovy"
+
+    ```Groovy
+    dependencies {
+        implementation "com.github.skydoves:sandwich-retrofit:$version"
+    }
+    ```
+
+=== "KTS"
+
+    ```kotlin
+    dependencies {
+        implementation("com.github.skydoves:sandwich-retrofit:$version")
+    }
+    ```
+
+## ApiResponseCallAdapterFactory
+
+First, build your `Retrofit` instance with the `ApiResponseCallAdapterFactory` call adapter factory:
 
 ```kotlin
 val retrofit = Retrofit.Builder()
@@ -40,57 +62,31 @@ By following these steps, you can easily utilize the `ApiResponse` type in your 
 
 > **Note**: If you're interested in injecting your own coroutine scope and unit testing with a test coroutine scope, check out the [Injecting a custom CoroutineScope and Unit Tests](https://github.com/skydoves/sandwich#injecting-a-custom-coroutinescope-and-unit-tests).
 
-## ApiResponse Extensions With Coroutines
+## ApiResponse Extensions for Retrofit
 
-With the `ApiResponse` type, you can leverage coroutines extensions to handle responses seamlessly within coroutine scopes. These extensions provide a convenient way to process different response types. Here's how you can use them:
+The *sandwich-retrofit* package provides valuable property extensions for `ApiResponse`.
 
-- **suspendOnSuccess**: This extension runs if the `ApiResponse` is of type `ApiResponse.Success`. You can access the body data directly within this scope.
+### ApiResponse.Success
 
-- **suspendOnError**: This extension is executed if the `ApiResponse` is of type `ApiResponse.Failure.Error`. You can access the error message and the error body in this scope.
-
-- **suspendOnException**: If the `ApiResponse` is of type `ApiResponse.Failure.Exception`, this extension is triggered. You can access the exception message in this scope.
-
-- **suspendOnFailure**: This extension is executed if the `ApiResponse` is either `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`. You can access the error message in this scope.
-
-Each extension scope operates based on the corresponding `ApiResponse` type. By utilizing these extensions, you can handle responses effectively within different coroutine contexts.
+This indicates a successful network request. From the `ApiResponse.Success`, you can retrieve the response's body data as well as supplementary details such as `StatusCode`, `Headers`, and more.
 
 ```kotlin
-flow {
-  val response = disneyService.fetchDisneyPosterList()
-  response.suspendOnSuccess {
-    posterDao.insertPosterList(data) // insertPosterList(data) is a suspend function.
-    emit(data)
-  }.suspendOnError {
-    // handles error cases
-  }.suspendOnException {
-    // handles exceptional cases
-  }
-}.flowOn(Dispatchers.IO)
+val data: List<Poster> = response.data // or response.body 
+val statusCode: StatusCode = response.statusCode
+val headers: Headers = response.headers
+val raw: okhttp3.Response = response.raw
 ```
 
-## Flow
+### ApiResponse.Failure.Error
 
-Sandwich offers some useful extensions to transform your `ApiResponse` into a [Flow](https://kotlinlang.org/docs/flow.html) by using the `toFlow` extension:
-
-```kotlin
-val flow = disneyService.fetchDisneyPosterList()
-  .onError {
-    // handles error cases when the API request gets an error response.
-  }.onException {
-    // handles exceptional cases when the API request gets an exception response.
-  }.toFlow() // returns a coroutines flow
-  .flowOn(Dispatchers.IO)
-```
-
-If you want to transform the original data and work with a `Flow` containing the transformed data, you can do so as shown in the examples below:
+This denotes a failed network request, typically due to bad requests or internal server errors. You can access error messages and additional information like `StatusCode`, `Headers`, and more from the `ApiResponse.Failure.Error`.
 
 ```kotlin
-val response = pokedexClient.fetchPokemonList(page = page)
-response.toFlow { pokemons ->
-  pokemons.forEach { pokemon -> pokemon.page = page }
-  pokemonDao.insertPokemonList(pokemons)
-  pokemonDao.getAllPokemonList(page)
-}.flowOn(Dispatchers.IO)
+val message: String = response.message()
+val errorBody: ResponseBody? = response.errorBody
+val statusCode: StatusCode = response.statusCode
+val headers: Headers = response.headers
+val raw: okhttp3.Response = response.raw
 ```
 
 ## Injecting a Custom CoroutineScope and Unit Tests

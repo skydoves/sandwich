@@ -87,7 +87,7 @@ apiResponse.onError {
 }
 ```
 
-You might not want to use the `flatMap` extension for all API requests. If you aim to standardize custom error types across all API requests, you can explore the [ApiResponseMapper]().
+You might not want to use the `flatMap` extension for all API requests. If you aim to standardize custom error types across all API requests, you can explore the [ApiResponseMapper](mapper.md).
 
 ### Creation of ApiResponse
 
@@ -107,7 +107,7 @@ val apiResponse = suspendApiResponseOf { service.request() }
 
 !!! note
 
-    If you intend to utilize the global operator or global ApiResponse mapper in Sandwich, you should create an ApiResponse using the `ApiResponse.of` methods to ensure the application of these global functions.
+    If you intend to utilize the global operator or global ApiResponse mapper in Sandwich, you should create an `ApiResponse` using the `ApiResponse.of` method to ensure the application of these global functions.
 
 ## ApiResponse Extensions
 
@@ -144,4 +144,57 @@ response.onSuccess {
   }.onFailure {
       
   }
+```
+
+## ApiResponse Extensions With Coroutines
+
+With the `ApiResponse` type, you can leverage [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) extensions to handle responses seamlessly within coroutine scopes. These extensions provide a convenient way to process different response types. Here's how you can use them:
+
+- **suspendOnSuccess**: This extension runs if the `ApiResponse` is of type `ApiResponse.Success`. You can access the body data directly within this scope.
+
+- **suspendOnError**: This extension is executed if the `ApiResponse` is of type `ApiResponse.Failure.Error`. You can access the error message and the error body in this scope.
+
+- **suspendOnException**: If the `ApiResponse` is of type `ApiResponse.Failure.Exception`, this extension is triggered. You can access the exception message in this scope.
+
+- **suspendOnFailure**: This extension is executed if the `ApiResponse` is either `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`. You can access the error message in this scope.
+
+Each extension scope operates based on the corresponding `ApiResponse` type. By utilizing these extensions, you can handle responses effectively within different coroutine contexts.
+
+```kotlin
+flow {
+  val response = disneyService.fetchDisneyPosterList()
+  response.suspendOnSuccess {
+    posterDao.insertPosterList(data) // insertPosterList(data) is a suspend function.
+    emit(data)
+  }.suspendOnError {
+    // handles error cases
+  }.suspendOnException {
+    // handles exceptional cases
+  }
+}.flowOn(Dispatchers.IO)
+```
+
+## Flow
+
+Sandwich offers some useful extensions to transform your `ApiResponse` into a [Flow](https://kotlinlang.org/docs/flow.html) by using the `toFlow` extension:
+
+```kotlin
+val flow = disneyService.fetchDisneyPosterList()
+  .onError {
+    // handles error cases when the API request gets an error response.
+  }.onException {
+    // handles exceptional cases when the API request gets an exception response.
+  }.toFlow() // returns a coroutines flow
+  .flowOn(Dispatchers.IO)
+```
+
+If you want to transform the original data and work with a `Flow` containing the transformed data, you can do so as shown in the examples below:
+
+```kotlin
+val response = pokedexClient.fetchPokemonList(page = page)
+response.toFlow { pokemons ->
+  pokemons.forEach { pokemon -> pokemon.page = page }
+  pokemonDao.insertPokemonList(pokemons)
+  pokemonDao.getAllPokemonList(page)
+}.flowOn(Dispatchers.IO)
 ```
