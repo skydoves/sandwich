@@ -21,6 +21,7 @@ nav:
   - 'Retry': retry.md
   - 'Operator': operator.md
   - 'Merge': merge.md
+  - 'Global Handling': global.md
   - 'Empty Body': empty-body.md
   - 'Sponsor 🩷': sponsor.md
     

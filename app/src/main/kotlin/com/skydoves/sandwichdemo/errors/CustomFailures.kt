@@ -21,15 +21,15 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 
 data object UnKnownError : ApiResponse.Failure.Exception(
-  throwable = RuntimeException("unknwon error")
+  throwable = RuntimeException("unknwon error"),
 )
 
 data object LimitedRequest : ApiResponse.Failure.Exception(
-  throwable = RuntimeException("your request is limited")
+  throwable = RuntimeException("your request is limited"),
 )
 
 data object WrongArgument : ApiResponse.Failure.Exception(
-  throwable = RuntimeException("wrong argument")
+  throwable = RuntimeException("wrong argument"),
 )
 
 data object HttpException : ApiResponse.Failure.Exception(
