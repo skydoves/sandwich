@@ -23,6 +23,7 @@ import de.jensklingenberg.ktorfit.converter.Converter
 import de.jensklingenberg.ktorfit.internal.TypeData
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
+import kotlin.jvm.JvmStatic
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -36,7 +37,7 @@ import io.ktor.client.statement.HttpResponse
  * suspend fun fetchDisneyPosterList(): ApiResponse<List<Poster>>
  * ```
  */
-public class ApiResponseConverterFactory : Converter.Factory {
+public class ApiResponseConverterFactory internal constructor() : Converter.Factory {
 
   override fun suspendResponseConverter(
     typeData: TypeData,
@@ -56,5 +57,12 @@ public class ApiResponseConverterFactory : Converter.Factory {
     }
 
     return null
+  }
+
+  public companion object {
+    @JvmStatic
+    public fun create(): ApiResponseConverterFactory {
+      return ApiResponseConverterFactory()
+    }
   }
 }

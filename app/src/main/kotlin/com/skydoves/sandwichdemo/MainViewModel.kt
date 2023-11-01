@@ -153,7 +153,7 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
   // Ktorfit example
   private fun ktorfit() = viewModelScope.launch {
     val ktorfit = Ktorfit.Builder().baseUrl("https://pokeapi.co/api/v2/")
-      .converterFactories(ApiResponseConverterFactory())
+      .converterFactories(ApiResponseConverterFactory.create())
       .httpClient(client)
       .build()
     val service = ktorfit.create<KtorfitPokemonService>()

@@ -13,7 +13,8 @@ nav:
   - 'Snapshot': snapshot.md
   - 'ApiResponse': apiresponse.md
   - 'Retrofit': retrofit.mdg
-  - 'Ktor': ktorgit.md
+  - 'Ktor': ktor.md
+  - 'Ktorfit': ktorfit.md
   - 'Retrieve': retrieve.md
   - 'Mapper': mapper.md
   - 'Sequential': sequential.md
