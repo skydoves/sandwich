@@ -23,6 +23,7 @@ nav:
   - 'Merge': merge.md
   - 'Global Handling': global.md
   - 'Empty Body': empty-body.md
+  - 'Migration Guide': migration.md
   - 'Sponsor 🩷': sponsor.md
     
 # Repository
