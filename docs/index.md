@@ -17,12 +17,12 @@
 
 ## Why Sandwich?
 
-Sandwich was conceived to streamline the creation of standardized interfaces to model responses from Retrofit, Ktor, and whatever. This library empowers you to handle body data, errors, and exceptional cases more succinctly, utilizing functional operators within a multi-layer architecture. With Sandwich, the need to create wrapper classes like Resource or Result is eliminated, allowing you to concentrate on your core business logic. Sandwich boasts features such as [global response handling](https://github.com/skydoves/sandwich#global-operator), [Mapper](https://github.com/skydoves/sandwich#mapper), [Operator](https://github.com/skydoves/sandwich#operator), and exceptional compatibility, including [toFlow](https://github.com/skydoves/sandwich#toflow). Moreover, Sandwich seamlessly integrates with [coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines) and [flow](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception) for even more versatile usage.
+Sandwich was conceived to streamline the creation of standardized interfaces to model responses from Retrofit, Ktor, and whatever. This library empowers you to handle body data, errors, and exceptional cases more succinctly, utilizing functional operators within a multi-layer architecture. With Sandwich, the need to create wrapper classes like Resource or Result is eliminated, allowing you to concentrate on your core business logic. Sandwich boasts features such as [global response handling](global.md), [Mapper](mapper.md), [Operator](operator.md), and exceptional compatibility, including [ApiResponse With Coroutines](https://skydoves.github.io/sandwich/sandwich/apiresponse/#apiresponse-extensions-with-coroutines).
 
 ## Download
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
 
-Sandwich has achieved an impressive milestone, being downloaded in __over 200,000__ Android projects worldwide! <br>
+Sandwich has achieved an impressive milestone, being downloaded in __over 300,000__ Android projects worldwide! <br>
 
 ### Gradle
 

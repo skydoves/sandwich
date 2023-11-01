@@ -12,12 +12,12 @@
 </p>
 
 ## Why Sandwich?
-Sandwich was conceived to streamline the creation of standardized interfaces from Retrofit network responses in Kotlin. This library empowers you to handle body data, errors, and exceptional cases more succinctly, utilizing functional operators within a multi-layer architecture. With Sandwich, the need to create wrapper classes like `Resource` or `Result` is eliminated, allowing you to concentrate on your core business logic. Sandwich boasts features such as [global response handling](https://github.com/skydoves/sandwich#global-operator), [Mapper](https://github.com/skydoves/sandwich#mapper), [Operator](https://github.com/skydoves/sandwich#operator), and exceptional compatibility, including [toFlow](https://github.com/skydoves/sandwich#toflow). Moreover, Sandwich seamlessly integrates with [coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines) and [flow](https://github.com/skydoves/sandwich#suspendonsuccess-suspendonerror-suspendonexception) for even more versatile usage.
+Sandwich was conceived to streamline the creation of standardized interfaces to model responses from [Retrofit](https://skydoves.github.io/sandwich/sandwich/retrofit/), [Ktor](https://skydoves.github.io/sandwich/sandwich/ktor/), and whatever. This library empowers you to handle body data, errors, and exceptional cases more succinctly, utilizing functional operators within a multi-layer architecture. With Sandwich, the need to create wrapper classes like Resource or Result is eliminated, allowing you to concentrate on your core business logic. Sandwich boasts features such as [global response handling](https://skydoves.github.io/sandwich/operator#global-operator), [Mapper](https://skydoves.github.io/sandwich/mapper), [Operator](https://skydoves.github.io/sandwich/operator), and exceptional compatibility, including [ApiResponse With Coroutines](https://skydoves.github.io/sandwich/apiresponse/#apiresponse-extensions-with-coroutines).
 
 ## Download
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
 
-🥪 Sandwich has been downloaded in more than __200k__ Android projects all over the globe! <br>
+Sandwich has achieved an impressive milestone, being downloaded in __over 300,000__ Android projects worldwide! <br>
 
 <img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224"/>
 
@@ -27,7 +27,7 @@ Add the dependency below into your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:1.3.9"
+    implementation "com.github.skydoves:sandwich:2.0.0"
 }
 ```
 
@@ -41,6 +41,7 @@ dependencies {
 Snapshots of the current development version of Sandwich are available, which track [the latest versions](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/sandwich/).
 
 To import snapshot versions on your project, add the code snippet below on your gradle file:
+
 ```Gradle
 repositories {
    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
@@ -55,7 +56,6 @@ dependencies {
 ```
 
 </details>
-
 
 ## R8 / ProGuard
 The specific rules are [already bundled](sandwich/src/main/resources/META-INF/proguard/sandwich.pro) into the JAR which can be interpreted by R8 automatically.
@@ -73,159 +73,173 @@ You can also check out nice use cases of this library in the repositories below:
 - [Neko](https://github.com/CarlosEsco/Neko): Free, open source, unofficial MangaDex reader for Android.
 - [TheMovies2](https://github.com/skydoves/TheMovies2): 🎬 A demo project using The Movie DB based on Kotlin MVVM architecture and material design & animations.
 
-## Table of contents
-- [ApiResponse](https://github.com/skydoves/sandwich#apiresponse)
-- [onSuccess, onError, onException](https://github.com/skydoves/sandwich#apiresponse-extensions)
-- [ApiResponse for coroutines](https://github.com/skydoves/sandwich#apiresponse-for-coroutines)
-- [ApiResponse Extensions for Coroutines](https://github.com/skydoves/sandwich#apiresponse-extensions-for-coroutines)
-- [Retrieve success data](https://github.com/skydoves/sandwich#retrieve-success-data)
-- [Mapper](https://github.com/skydoves/sandwich#mapper)
-- [Run and Retry](https://github.com/skydoves/sandwich#run-and-retry)
-- [Operator](https://github.com/skydoves/sandwich#operator), [Operator for coroutines](https://github.com/skydoves/sandwich#operator-with-coroutines), [Global Operator](https://github.com/skydoves/sandwich#global-operator)
-- [Merge](https://github.com/skydoves/sandwich#merge)
-- [toFlow](https://github.com/skydoves/sandwich#toflow)
-- [ResponseDataSource](https://github.com/skydoves/sandwich#responsedatasource)
-
 ## Usage
+
+For comprehensive details about Sandwich, please refer to the complete [documentation available here](https://skydoves.github.io/sandwich/).
+
+- [Retrofit Integration](https://skydoves.github.io/sandwich/retrofit)
+- [Ktor Integration](https://skydoves.github.io/sandwich/ktor)
+- [Ktorfit Integration](https://skydoves.github.io/sandwich/ktorfit)
+
 ### ApiResponse
-`ApiResponse` is an interface to construct standardized responses from [Retrofit](https://github.com/square/retrofit) calls. It provides useful extensions for handling network payload such as body data and exceptional cases. You can get `ApiResponse` with the `request` scope extension from the [Call](https://square.github.io/retrofit/2.x/retrofit/retrofit2/Call.html). The example below shows how to get an `ApiResponse` from an instance of the `Call`.
+
+`ApiResponse` serves as an interface designed to create consistent responses from API or I/O calls, such as network, database, or whatever. It offers convenient extensions to manage your payloads, encompassing both body data and exceptional scenarios. `ApiResponse` encompasses three distinct types: **Success**, **Failure.Error**, and **Failure.Exception**.
+
+#### ApiResponse.Success
+
+This represents a successful response from API or I/O tasks. You can create an instance of [ApiResponse.Success] by giving the generic type and data.
 
 ```kotlin
-interface DisneyService {
-  @GET("/")
-  fun fetchDisneyPosterList(): Call<List<Poster>>
-}
+val apiResponse = Apiresponse.Success(data = myData)
+val data = apiResponse.data
+```
 
-val disneyService = retrofit.create(DisneyService::class.java)
-// fetches a model list from the network and getting [ApiResponse] asynchronously.
-disneyService.fetchDisneyPosterList().request { response ->
-      when (response) {
-        // handles the success case when the API request gets a successful response.
-        is ApiResponse.Success -> {
-          posterDao.insertPosterList(response.data)
-          livedata.post(response.data)
-        }
-        // handles error cases when the API request gets an error response.
-        // e.g., internal server error.
-        is ApiResponse.Failure.Error -> {
-          // stub error case
-          Timber.d(message())
+Depending on your model designs, you can also utilize `tag` property. The `tag` is an additional value that can be held to distinguish the origin of the [data] or to facilitate post-processing of successful data.
 
-          // handles error cases depending on the status code.
-          when (statusCode) {
-            StatusCode.InternalServerError -> toastLiveData.postValue("InternalServerError")
-            StatusCode.BadGateway -> toastLiveData.postValue("BadGateway")
-            else -> toastLiveData.postValue("$statusCode(${statusCode.code}): ${message()}")
-          }
-        }
-        // handles exceptional cases when the API request gets an exception response.
-        // e.g., network connection error, timeout.
-        is ApiResponse.Failure.Exception -> {
-          // stub exception case
-        }
+```kotlin
+val apiResponse = Apiresponse.Success(data = myData, tag = myTag)
+val tag = apiResponse.tag
+```
+
+#### ApiResponse.Failure.Exception
+
+This signals a failed tasks captured by unexpected exceptions during API request creation or response processing on the client side, such as a network connection failure. You can obtain exception details from the `ApiResponse.Failure.Exception`.
+
+```kotlin
+val apiResponse = Apiresponse.Failure.Exception(exception = HttpTimeoutException())
+val exception = apiResponse.exception
+val message = apiResponse.message
+```
+
+#### ApiResponse.Failure.Error
+
+This denotes a failed API or I/O request, typically due to bad requests or internal server errors. You can additionally put an error payload that can contain detailed error information.
+
+```kotlin
+val apiResponse = ApiResponse.Failure.Error(payload = errorBody)
+val payload = apiResponse.payload
+```
+
+You can also define custom error responses that extend `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`, as demonstrated in the example below:
+
+```kotlin
+data object LimitedRequest : ApiResponse.Failure.Error(
+  payload = "your request is limited",
+)
+
+data object WrongArgument : ApiResponse.Failure.Error(
+  payload = "wrong argument",
+)
+
+data object HttpException : ApiResponse.Failure.Exception(
+  throwable = RuntimeException("http exception")
+)
+```
+
+The custom error response is very useful when you want to explicitly define and handle error responses, especially when working with map extensions.
+
+```kotlin
+val apiResponse = service.fetchMovieList()
+apiResponse.onSuccess {
+    // ..
+}.flatMap {
+  // if the ApiResponse is Failure.Error and contains error body, then maps it to a custom error response.  
+  if (this is ApiResponse.Failure.Error) {
+    val errorBody = (payload as? Response)?.body?.string()
+    if (errorBody != null) {
+      val errorMessage: ErrorMessage = Json.decodeFromString(errorBody)
+      when (errorMessage.code) {
+        10000 -> LimitedRequest
+        10001 -> WrongArgument
       }
     }
+  }
+  this
+}
 ```
 
-ApiResponse has three types; **Success**, **Failure.Error**, and **Failure.Exception**.
-
-### ApiResponse.Success
-This represents the network request has been successful. You can get the body data of the response, and additional information such as `StatusCode`, `Headers`, and more from the `ApiResponse.Success`.
+Then you can handle the errors based on your custom message in other layers:
 
 ```kotlin
-val data: List<Poster>? = response.data
-val statusCode: StatusCode = response.statusCode
-val headers: Headers = response.headers
+val apiResponse = repository.fetchMovieList()
+apiResponse.onError {
+  when (this) {
+    LimitedRequest -> // update your UI
+    WrongArgument -> // update your UI
+  }
+}
 ```
 
-### ApiResponse.Failure.Error
-This represents the network request has been failed with bad requests or internal server errors. You can get an error message and additional information such as `StatusCode`, `Headers`, and more from the `ApiResponse.Failure.Error`. 
+You might not want to use the `flatMap` extension for all API requests. If you aim to standardize custom error types across all API requests, you can explore the [Global Failure Mapper](https://skydoves.github.io/sandwich/mapper/#global-failure-mapper).
+
+#### Creation of ApiResponse
+
+Sandwich provides convenient ways to create an `ApiResponse` using functions such as `ApiResponse.of` or `apiResponseOf`, as shown below:
 
 ```kotlin
-val message: String = response.message()
-val errorBody: ResponseBody? = response.errorBody
-val statusCode: StatusCode = response.statusCode
-val headers: Headers = response.headers
+val apiResponse = ApiResponse.of { service.request() }
+val apiResponse = apiResponseOf { service.request() }
 ```
 
-### ApiResponse.Failure.Exception 
-This represents the network request has been failed when unexpected exceptions occur while creating requests or processing a response from the client-side such as network connection failed. You can get an exception message from the `ApiResponse.Failure.Exception`. 
-
-### ApiResponse Extensions
-You can handle the `ApiResponse` with the extensions below:
-
-- **onSuccess**: Executes if the `ApiResponse` is `ApiResponse.Success`. You can access body data directly in this scope.
-- **onError**: Executes if the `ApiResponse` is `ApiResponse.Failure.Error`. You can access `message()` and `errorBody` in this scope.
-- **onException**: Executes if the `ApiResponse` is `ApiResponse.Failure.Exception`. You can access `message()` in this scope.
-- **onFailure**: Executes if the `ApiResponse` is `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`. You can access `message()` in this scope.
-
-Each scope runs depending on its dedicated `ApiResponse` type:
+If you need to run suspend functions inside the lambda, you can use `ApiResponse.suspendOf` or `suspendApiResponseOf` instead:
 
 ```kotlin
-disneyService.fetchDisneyPosterList().request { response ->
-    response.onSuccess {
-     // this scope will be executed if the request successful.
-     // handle the success case
-    }.onError {
-      // this scope will be executed when the request failed with errors.
-      // handle the error case
-    }.onException {
-     // this scope will be executed when the request failed with exceptions.
-     // handle the exception case
-    }
+val apiResponse = ApiResponse.suspendOf { service.request() }
+val apiResponse = suspendApiResponseOf { service.request() }
+```
+
+> **Note**: If you intend to utilize the global operator or global ApiResponse mapper in Sandwich, you should create an `ApiResponse` using the `ApiResponse.of` method to ensure the application of these global functions.
+
+#### ApiResponse Extensions
+
+You can effectively handling `ApiResponse` using the following extensions:
+
+- **onSuccess**: Executes when the `ApiResponse` is of type `ApiResponse.Success`. Within this scope, you can directly access the body data.
+- **onError**: Executes when the `ApiResponse` is of type `ApiResponse.Failure.Error`. Here, you can access the `messareOrNull` and `payload` here.
+- **onException**: Executes when the `ApiResponse` is of type `ApiResponse.Failure.Exception`. You can access the `messareOrNull` and `exception` here.
+- **onFailure**: Executes when the `ApiResponse` is either `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`. You can access the `messareOrNull` here.
+
+Each scope operates according to its corresponding `ApiResponse` type:
+
+```kotlin
+val response = disneyService.fetchDisneyPosterList()
+response.onSuccess {
+    // this scope will be executed if the request successful.
+    // handle the success case
+  }.onError {
+    // this scope will be executed when the request failed with errors.
+    // handle the error case
+  }.onException {
+   // this scope will be executed when the request failed with exceptions.
+   // handle the exception case
   }
 ```
 
-### ApiResponse for Coroutines
-You can use the `suspend` keyword in your Retrofit services with `ApiResponse<*>` as a response type. First, build your `Retrofit` with the `ApiResponseCallAdapterFactory` call adapter factory:
+If you don't want to specify each failure case, you can simplify it by using the `onFailure` extension:
 
 ```kotlin
-.addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
+val response = disneyService.fetchDisneyPosterList()
+response.onSuccess {
+    // this scope will be executed if the request successful.
+    // handle the success case
+  }.onFailure {
+      
+  }
 ```
 
-Next, you should define the service interface with the suspend keyword and `ApiResponse<*>` as a response type. So eventually you will get the `ApiResponse` from the Retrofit service call like the examples below:
+#### ApiResponse Extensions With Coroutines
 
-```kotlin
-interface DisneyCoroutinesService {
+With the `ApiResponse` type, you can leverage [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) extensions to handle responses seamlessly within coroutine scopes. These extensions provide a convenient way to process different response types. Here's how you can use them:
 
-  @GET("DisneyPosters.json")
-  suspend fun fetchDisneyPosterList(): ApiResponse<List<Poster>>
-}
-```
+- **suspendOnSuccess**: This extension runs if the `ApiResponse` is of type `ApiResponse.Success`. You can access the body data directly within this scope.
 
-Finally, you can execute the defined service like the examples below:
+- **suspendOnError**: This extension is executed if the `ApiResponse` is of type `ApiResponse.Failure.Error`. You can access the error message and the error body in this scope.
 
-```kotlin
-class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService) : ViewModel() {
+- **suspendOnException**: If the `ApiResponse` is of type `ApiResponse.Failure.Exception`, this extension is triggered. You can access the exception message in this scope.
 
-  val posterListLiveData: MutableLiveData<List<Poster>>
+- **suspendOnFailure**: This extension is executed if the `ApiResponse` is either `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`. You can access the error message in this scope.
 
-  init {
-     val response = disneyService.fetchDisneyPosterList()
-     response.onSuccess {
-       // handles the success case when the API request gets a successful response.
-       posterListLiveData.post(data)
-      }.onError {
-       // handles error cases when the API request gets an error response.
-      }.onException {
-       // handles exceptional cases when the API request gets an exception response.
-      }
-   }
-}
-```
-
-> **Note**: If you're interested in injecting your own coroutine scope and unit testing with a test coroutine scope, check out the [Injecting a custom CoroutineScope and Unit Tests](https://github.com/skydoves/sandwich#injecting-a-custom-coroutinescope-and-unit-tests).
-
-### ApiResponse Extensions for Coroutines
-
-You can handle the `ApiResponse` with coroutines extensions below, which allows you can launch your suspend functions on the scopes.
-
-- **suspendOnSuccess**: Executes if the `ApiResponse` is `ApiResponse.Success`. You can access body data directly in this scope.
-- **suspendOnError**: Executes if the `ApiResponse` is `ApiResponse.Failure.Error`. You can access `message()` and `errorBody` in this scope.
-- **suspendOnException**: Executes if the `ApiResponse` is `ApiResponse.Failure.Exception`. You can access `message()` in this scope.
-- **suspendOnFailure**: Executes if the `ApiResponse` is `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`. You can access `message()` in this scope.
-
-Each scope runs depending on the its dedicated `ApiResponse` type:
+Each extension scope operates based on the corresponding `ApiResponse` type. By utilizing these extensions, you can handle responses effectively within different coroutine contexts.
 
 ```kotlin
 flow {
@@ -241,8 +255,34 @@ flow {
 }.flowOn(Dispatchers.IO)
 ```
 
-### Retrieve success data
-If you want to retrieve the encapsulated body data from the `ApiResponse` directly, you can use the functionalities below.
+#### Flow
+
+Sandwich offers some useful extensions to transform your `ApiResponse` into a [Flow](https://kotlinlang.org/docs/flow.html) by using the `toFlow` extension:
+
+```kotlin
+val flow = disneyService.fetchDisneyPosterList()
+  .onError {
+    // handles error cases when the API request gets an error response.
+  }.onException {
+    // handles exceptional cases when the API request gets an exception response.
+  }.toFlow() // returns a coroutines flow
+  .flowOn(Dispatchers.IO)
+```
+
+If you want to transform the original data and work with a `Flow` containing the transformed data, you can do so as shown in the examples below:
+
+```kotlin
+val response = pokedexClient.fetchPokemonList(page = page)
+response.toFlow { pokemons ->
+  pokemons.forEach { pokemon -> pokemon.page = page }
+  pokemonDao.insertPokemonList(pokemons)
+  pokemonDao.getAllPokemonList(page)
+}.flowOn(Dispatchers.IO)
+```
+
+### Retrieving
+
+Sandwich provides effortless methods to directly extract the encapsulated body data from the `ApiResponse`. You can take advantage of the following functionalities:
 
 #### getOrNull
 Returns the encapsulated data if this instance represents `ApiResponse.Success` or returns null if this is failed.
@@ -255,7 +295,7 @@ val data: List<Poster>? = disneyService.fetchDisneyPosterList().getOrNull()
 Returns the encapsulated data if this instance represents `ApiResponse.Success` or returns a default value if this is failed.
 
 ```kotlin
-val data: List<Poster>? = disneyService.fetchDisneyPosterList().getOrElse(emptyList())
+val data: List<Poster> = disneyService.fetchDisneyPosterList().getOrElse(emptyList())
 ```
 
 #### getOrThrow
@@ -263,87 +303,15 @@ Returns the encapsulated data if this instance represents `ApiResponse.Success` 
 
 ```kotlin
 try {
-  val data: List<Poster>? = disneyService.fetchDisneyPosterList().getOrThrow()
+  val data: List<Poster> = disneyService.fetchDisneyPosterList().getOrThrow()
 } catch (e: Exception) {
   e.printStackTrace()
 }
 ```
 
-### Mapper
-Mapper is useful when you want to transform the `ApiResponse.Success` or `ApiResponse.Failure.Error` to your custom model in `ApiResponse` extension scopes.
+### Retry
 
-#### ApiSuccessModelMapper
-You can map the `ApiResponse.Success` model to your custom model with the `SuccessPosterMapper<T, R>` and `map` extension like the examples below:
-
-```kotlin
-object SuccessPosterMapper : ApiSuccessModelMapper<List<Poster>, Poster?> {
-
-  override fun map(apiErrorResponse: ApiResponse.Success<List<Poster>>): Poster? {
-    return apiErrorResponse.data.first()
-  }
-}
-
-// Maps the success response data.
-val poster: Poster? = map(SuccessPosterMapper)
-```
-
-You can use the `map` extension with a lambda like the examples below:
-
-```kotlin
-// Maps the success response data using a lambda.
-map(SuccessPosterMapper) { poster ->
-  emit(poster) // you can use the `this` keyword instead of the poster.
-}
-```
-
-If you want to receive transformed body data in the scope, you can use the mapper as a parameter with the `onSuccess` or `suspendOnSuccess` extensions like the examples below:
-
-```kotlin
-.suspendOnSuccess(SuccessPosterMapper) {
-    val poster = this
-}
-```
-
-#### ApiErrorModelMapper
-You can map the `ApiResponse.Failure.Error` model to your custom error model using the `ApiErrorModelMapper<T>` and `map` extension as the examples bleow:
-
-```kotlin
-// Create your custom error model.
-data class ErrorEnvelope(
-  val code: Int,
-  val message: String
-)
-
-// An error response mapper.
-// Create an instance of your custom model using the `ApiResponse.Failure.Error` in the `map`.
-object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorEnvelope> {
-
-  override fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): ErrorEnvelope {
-    return ErrorEnvelope(apiErrorResponse.statusCode.code, apiErrorResponse.message())
-  }
-}
-
-// Maps an error response.
-response.onError {
-  // Maps an ApiResponse.Failure.Error to a custom error model using the mapper.
-  map(ErrorEnvelopeMapper) {
-     val code = this.code
-     val message = this.message
-  }
-}
-```
-
-If you want to receive transformed data from in the scope, you can use the mapper as a parameter with the `onError` or `suspendOnError` extensions as the examples below:
-
-```kotlin
-.suspendOnError(ErrorEnvelopeMapper) {
-    val message = this.message
-}
-```
-
-### Run and Retry
-
-You can run and retry network requests by using `RetryPolicy` interface and `runAndRetry` extension like the code below:
+Sandwich offers seamless ways to run and retry tasks. To execute and retry network or I/O requests, you can employ the `RetryPolicy` interface along with the `runAndRetry` extension, as demonstrated in the code below:
 
 ```kotlin
 val retryPolicy = object : RetryPolicy {
@@ -355,37 +323,44 @@ val retryPolicy = object : RetryPolicy {
 val apiResponse = runAndRetry(retryPolicy) { attempt, reason ->
   mainRepository.fetchPosters()
 }.onSuccess {
-  // handle a success case
+  // Handle a success case
 }.onFailure {
-  // handle failure cases
+  // Handle failure cases
+}
+```
+
+### Sequential
+
+Sandwich provides sequential solutions for scenarios where you require sequential execution of network requests.
+
+#### then and suspendThen
+
+If you have a scenario where you need to execute tasks A, B, and C in a dependent sequence, for example, where task B depends on the completion of task A, and task C depends on the completion of task B, you can effectively utilize the `then` or `suspendThen` extensions, as demonstrated in the example below:
+
+```kotlin
+service.getUserToken(id) suspendThen { tokenResponse ->
+    service.getUserDetails(tokenResponse.token) 
+} suspendThen { userResponse ->
+    service.queryPosters(userResponse.user.name)
+}.mapSuccess { posterResponse ->
+  posterResponse.posters
+}.onSuccess {
+    posterStateFlow.value = data
+}.onFailure {
+    Log.e("sequential", message())
 }
 ```
 
 ### Operator
-You can delegate the `onSuccess`, `onError`, and `onException` with the `operator` extension and `ApiResponseOperator`. **Operator** is very useful if you want to handle `ApiResponse`-s globally  and reduce the boilerplates for your `ViewModel` and `Repository` classes. Here are some examples below:
 
-#### ViewModel
-We can delegate and operate the `CommonResponseOperator` using the `operate` extension.
-```kotlin
-disneyService.fetchDisneyPosterList().operator(
-      CommonResponseOperator(
-        success = {
-          emit(data)
-          Timber.d("success data: $data")
-        },
-        application = getApplication()
-      )
-    )
-```
+The **Operator** feature stands out as one of the most powerful capabilities provided by Sandwich. It empowers you to establish well-defined, preconfigured processors for your `ApiResponse` instances. This enables you to encapsulate and reuse a consistent sequence of procedures across your API requests.
 
-#### CommonResponseOperator
-The `CommonResponseOperator` extends `ApiResponseOperator` with the `onSuccess`, `onError`, and `onException` override methods. They will be executed depending on the `ApiResponse`.
+You can streamline the handling of `onSuccess`, `onError`, and `onException` scenarios by utilizing the `operator` extension alongside the `ApiResponseOperator`. **Operator** proves particularly valuable when you're aiming for global handling of `ApiResponse` instances and wish to minimize boilerplate code within your `ViewModel` and `Repository` classes. Here are a few illustrative examples:
 
 ```kotlin
 /** A common response operator for handling [ApiResponse]s regardless of its type. */
-class CommonResponseOperator<T> constructor(
-  private val success: suspend (ApiResponse.Success<T>) -> Unit,
-  private val application: Application
+class CommonResponseOperator<T>(
+  private val success: suspend (ApiResponse.Success<T>) -> Unit
 ) : ApiResponseOperator<T>() {
 
   // handles error cases when the API request gets an error response.
@@ -409,52 +384,60 @@ class CommonResponseOperator<T> constructor(
   override fun onException(apiResponse: ApiResponse.Failure.Exception) {
     apiResponse.run {
       Timber.d(message())
-      toast(message())
     }
   }
 }
-```
 
-### Operator for coroutines
-If you want to operate and delegate a suspension lambda to the operator, you can use the `suspendOperator` extension and `ApiResponseSuspendOperator` class as the examples below:
-
-#### ViewModel
-You can use suspension functions like `emit` in the `success` scope.
-
-```kotlin
-flow {
-  disneyService.fetchDisneyPosterList().suspendOperator(
-      CommonResponseOperator(
-        success = {
-          emit(data)
-          Timber.d("success data: $data")
-        },
-        application = getApplication()
-      )
+disneyService.fetchDisneyPosterList().operator(
+    CommonResponseOperator(
+      success = {
+        emit(data)
+        Timber.d("success data: $data")
+     }
     )
-}.flowOn(Dispatchers.IO)
+)
 ```
 
-#### CommonResponseOperator
-The `CommonResponseOperator` extends `ApiResponseSuspendOperator` with suspend override methods as the examples below:
+By embracing the **Operator** pattern, you can significantly simplify the management of various `ApiResponse` outcomes and promote cleaner, more maintainable code within your application's architecture.
+
+#### Operator With Coroutines
+
+For scenarios where you aim to delegate and operate a suspension lambda using the operator pattern, the `suspendOperator` extension and the `ApiResponseSuspendOperator` class come into play. These tools facilitate the process, as showcased in the examples below:
 
 ```kotlin
-class CommonResponseOperator<T> constructor(
-  private val success: suspend (ApiResponse.Success<T>) -> Unit,
-  private val application: Application
+class CommonResponseOperator<T>(
+  private val success: suspend (ApiResponse.Success<T>) -> Unit
 ) : ApiResponseSuspendOperator<T>() {
 
   // handles the success case when the API request gets a successful response.
   override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) = success(apiResponse)
 
   // ... //
+}
 ```
 
-### Global operator
-You can operate an operator globally whole `ApiResponse`-s in your application with the `SandwichInitializer`. So you don't need to create every instance of the **Operator**s or use dependency injection for handling common operations. Here are some examples of handling a global operator for the `ApiResponse.Failure.Error` and `ApiResponse.Failure.Exception`.
+You can use suspend functions like `emit` in the `success` scope.
 
-#### Application class
-First, you should initialize the global operator to the `SandwichInitializer.sandwichOperator`. It's highly recommended to initialize this in the Application class.
+```kotlin
+val response = disneyService.fetchDisneyPosterList().suspendOperator(
+    CommonResponseOperator(
+      success = {
+        emit(data)
+        Timber.d("success data: $data")
+      }
+    )
+)
+```
+
+Incorporating the **suspendOperator** extension alongside the **ApiResponseSuspendOperator** class allows you to efficiently manage suspension lambdas in conjunction with the operator pattern, promoting a more concise and maintainable approach within your codebase.
+
+#### Global Operator
+
+The global operator is undoubtedly a robust feature offered by Sandwich. It empowers you to operate on operators globally across all `ApiResponse` instances in your application by employing the `SandwichInitializer`. This way, you can avoid the necessity of creating operator instances for every API call or employing dependency injection for common operations. The following examples illustrate how to use a global operator to handle both `ApiResponse.Failure.Error` and `ApiResponse.Failure.Exception` scenarios. You can leverage the global operator to refresh your user token or implement any other additional processes necessary for specific API requests within your application. The example below demonstrates how you can automatically check and refresh the user token depending on the response status using Sandwich's global operator:
+
+##### Initialize Global Operator
+
+First, it's highly recommended to initialize the global operator in the Application class or using another initialization solution like [App Startup](https://developer.android.com/topic/libraries/app-startup). This ensures that the global operator is set up before any API requests are made.
 
 ```kotlin
 class SandwichDemoApp : Application() {
@@ -464,492 +447,153 @@ class SandwichDemoApp : Application() {
     
     // We will handle only the error and exceptional cases,
     // so we don't need to mind the generic type of the operator.
-    SandwichInitializer.sandwichOperators += GlobalResponseOperator<Any>(this)
+    SandwichInitializer.sandwichOperators += listOf(TokenRefreshGlobalOperator<Any>(this))
 
     // ... //
+  }
+}
 ```
 
-#### GlobalResponseOperator
-Next, create your own `GlobalResponseOperator`, which extends operators such as `ApiResponseSuspendOperator` and `ApiResponseOperator` as the examples below:
+By configuring the global operator within `SandwichInitializer`, you enable your application to consistently process and handle various `ApiResponse` situations. This can include tasks such as managing success cases, handling errors, or dealing with exceptions, all on a global scale.
+
+##### Implement Your Global Operator
+
+Create your custom `GlobalResponseOperator` class that extends operators such as `ApiResponseSuspendOperator` and `ApiResponseOperator`. This operator will allow you to define common response handling logic that can be applied globally.
 
 ```kotlin
-class GlobalResponseOperator<T> constructor(
-  private val application: Application
+class TokenRefreshGlobalOperator<T> @Inject constructor(
+  private val context: Context,
+  private val authService: AuthService,
+  private val userDataStore: UserDataStore,
+  coroutineScope: CoroutineScope,
 ) : ApiResponseSuspendOperator<T>() {
 
-  // The body is empty, because we will handle the success case manually.
-  override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) { }
+  private var userToken: UserToken? = null
 
-  // handles error cases when the API request gets an error response.
-  // e.g., internal server error.
+  init {
+    coroutineScope.launch {
+      userDataStore.tokenFlow.collect { token ->
+        userToken = token
+      }
+    }
+  }
+
   override suspend fun onError(apiResponse: ApiResponse.Failure.Error) {
-    withContext(Dispatchers.Main) {
-      apiResponse.run {
-        Timber.d(message())
-
-        // handling error based on status code.
-        when (statusCode) {
-          StatusCode.InternalServerError -> toast("InternalServerError")
-          StatusCode.BadGateway -> toast("BadGateway")
-          else -> toast("$statusCode(${statusCode.code}): ${message()}")
-        }
-
-        // map the ApiResponse.Failure.Error to a customized error model using the mapper.
-        map(ErrorEnvelopeMapper) {
-          Timber.d("[Code: $code]: $message")
-        }
-      }
-    }
-  }
-
-  // handles exceptional cases when the API request gets an exception response.
-  // e.g., network connection error, timeout.
-  override suspend fun onException(apiResponse: ApiResponse.Failure.Exception) {
-    withContext(Dispatchers.Main) {
-      apiResponse.run {
-        Timber.d(message())
-        toast(message())
-      }
-    }
-  }
-
-  private fun toast(message: String) {
-    Toast.makeText(application, message, Toast.LENGTH_SHORT).show()
-  }
-}
-```
-
-#### ViewModel
-Finally, you don't need to use the `operator` expression anymore. The global operator will be operated, so you should handle only the `ApiResponse.Success`.
-
-> Note: This example didn't implement for the `onSuccess` case.
-
-```kotlin
-flow {
-  disneyService.fetchDisneyPosterList().
-    suspendOnSuccess {
-      emit(data)
-    }
-}.flowOn(Dispatchers.IO).asLiveData()
-```
-
-### Merge
-You can merge multiple `ApiResponse`s as a single `ApiResponse` depending on policies. The example below shows how to merge three `ApiResponse` as a single one if each three `ApiResponse`s are successful.
-
-```kotlin
-disneyService.fetchDisneyPosterList(page = 0).merge(
-   disneyService.fetchDisneyPosterList(page = 1),
-   disneyService.fetchDisneyPosterList(page = 2),
-   mergePolicy = ApiResponseMergePolicy.PREFERRED_FAILURE
-).onSuccess { 
-  // handles the success case when the API request gets a successful response.
-}.onError { 
-  // handles error cases when the API request gets an error response.
-}
-```
-
-#### ApiResponseMergePolicy
-`ApiResponseMergePolicy` is a policy for merging response data depend on the success or not.
-- **IGNORE_FAILURE**: Regardless of the merging sequences, ignores failure responses in the responses.
-- **PREFERRED_FAILURE** (default): Regardless of the merging sequences, prefers failure responses in the responses.
-
-### toFlow
-You can get a `Flow` that emits body data if the response is an `ApiResponse.Success` and the data is not null.
-
-```kotlin
-disneyService.fetchDisneyPosterList()
-  .onError {
-    // handles error cases when the API request gets an error response.
-  }.onException {
-    // handles exceptional cases when the API request gets an exception response.
-  }.toFlow() // returns a coroutines flow
-  .flowOn(Dispatchers.IO)
-```
-
-If you want to transform the original data and take a `flow` that contains transformed data, you can follow as the examples below:
-
-```kotlin
-val response = pokedexClient.fetchPokemonList(page = page)
-response.toFlow { pokemons ->
-  pokemons.forEach { pokemon -> pokemon.page = page }
-  pokemonDao.insertPokemonList(pokemons)
-  pokemonDao.getAllPokemonList(page)
-}.flowOn(Dispatchers.IO)
-```
-
-### Injecting a custom CoroutineScope and Unit Tests
-
-Sandwich uses an internal coroutine scope to execute network requests in the background thread, but can inject your custom `CoroutineScope` by setting your scope on your `ApiResponseCallAdapterFactory` like the below:
-
-```kotlin
-.addCallAdapterFactory(ApiResponseCallAdapterFactory.create(
-  coroutineScope = `Your Coroutine Scope`
-))
-```
-
-You can apply your coroutine scope globally for the `ApiResponseCallAdapterFactory` by setting your scope on `SandwichInitializer` as the below:
-
-```kotlin
-SandwichInitializer.sandwichScope = `Your Coroutine Scope`
-```
-
-Also, you can inject a test coroutine scope into the `ApiResponseCallAdapterFactory` in your unit test cases.
-
-```kotlin
-val testScope = TestScope(coroutinesRule.testDispatcher)
-val retrofit = Retrofit.Builder()
-      .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
-      .addCallAdapterFactory(ApiResponseCallAdapterFactory.create(testScope))
-      .build()
-```
-
-<img align="right" width="90px" src="https://user-images.githubusercontent.com/24237865/178630165-76855349-ac04-4474-8bcf-8eb5f8c41095.png"/>
-
-## Kotlin Serialization
-
-This library allows you to deserialize your error body of the Retrofit response as your custom error class with [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html).
-
-> For more information about setting up the plugin and dependency, check out [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html).
-
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
-
-Add the dependency below to your **module**'s `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation "com.github.skydoves:sandwich-serialization:<version>"
-}
-```
-
-### Deserialize Error Body
-
-You can deserialize your error body with `deserializeErrorBody` extension and your custom error class. First, define your custom error class following your RESTful API formats as seen in the below:
-
-```kotlin
-@Serializable
-public data class ErrorMessage(
-  val code: Int,
-  val message: String
-)
-```
-
-Next, gets the result of the error class from the `ApiResponse` instance with the `deserializeErrorBody` extension like the below:
-
-```kotlin
-val apiResponse = pokemonService.fetchPokemonList()
-val errorModel: ErrorMessage? = apiResponse.deserializeErrorBody()
-```
-
-Or you can get deserialized error response directly with `onErrorDeserialize` extension like the below:
-
-```kotlin
-val apiResponse = mainRepository.fetchPosters()
-apiResponse.onErrorDeserialize<List<Poster>, ErrorMessage> { errorMessage ->
-  ..
-}
-```
-
-## Sandwich DataSource
-
-This library provides additional solutions `DataSource` for handing network responses.
-
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
-
-Add the dependency below to your **module**'s `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation "com.github.skydoves:sandwich-datasource:<version>"
-}
-```
-
-### ResponseDataSource
-ResponseDataSource is an implementation of the `DataSource` interface. <br>
- * Asynchronously send requests.
- * A temporarily response data holder from the REST API call for caching data on memory.
- * Observable for every response.
- * Retry fetching data when the request gets failure.
- * Concat another `DataSource` and request sequentially.
- * Disposable of executing works.
-
- #### Combine
-Combine a `Call` and lambda scope for constructing the DataSource.
-```kotlin
-val disneyService = retrofit.create(DisneyService::class.java)
-
-val dataSource = ResponseDataSource<List<Poster>>()
-dataSource.combine(disneyService.fetchDisneyPosterList()) { response ->
-    // stubs
-}
-```
-
-#### Request
-Request API network call asynchronously. <br>
-If the request is successful, this data source will hold the success response model.<br>
-In the next request after the success, request() returns the cached API response. <br>
-If we need to fetch a new response data or refresh, we can use `invalidate()`.
-
-```kotlin
-dataSource.request()
-```
-
-#### Retry
-Retry fetching data (re-request) if your request got failure.
-```kotlin
-// retry fetching data 3 times with 5000 milli-seconds time interval when the request gets failure.
-dataSource.retry(3, 5000L)
-```
-
-#### ObserveResponse
-Observes every response data `ApiResponse` from the API call request.
-```kotlin
-dataSource.observeResponse {
-   Timber.d("observeResponse: $it")
-}
-```
-
-#### RetainPolicy
-We can limit the policy for retaining data on the temporarily internal storage.<br>
-The default policy is no retaining any fetched data from the network, but we can set the policy using `dataRetainPolicy` method.
-```kotlin
-// Retain fetched data on the memory storage temporarily.
-// If request again, returns the retained data instead of re-fetching from the network.
-dataSource.dataRetainPolicy(DataRetainPolicy.RETAIN)
-```
-
-#### Invalidate
-Invalidate a cached (holding) data and re-fetching the API request.
-
-```kotlin
-dataSource.invalidate()
-```
-
-#### Concat
-Concat an another `DataSource` and request API call sequentially if the API call getting successful.
-
-```kotlin
-val dataSource2 = ResponseDataSource<List<PosterDetails>>()
-dataSource2.retry(3, 5000L).combine(disneyService.fetchDetails()) {
-    // stubs handling dataSource2 response
-}
-
-dataSource1
-   .request() // request() must be called before concat. 
-   .concat(dataSource2) // request dataSource2's API call after the success of the dataSource1.
-   .concat(dataSource3) // request dataSource3's API call after the success of the dataSource2.
-```
-
-#### asLiveData
-we can observe fetched data via `DataSource` as a `LiveData`.
-```kotlin
-val posterListLiveData: LiveData<List<Poster>>
-
-init {
-    posterListLiveData = disneyService.fetchDisneyPosterList().toResponseDataSource()
-      .retry(3, 5000L)
-      .dataRetainPolicy(DataRetainPolicy.RETAIN)
-      .request {
-        // ... //
-      }.asLiveData()
-}
-```
-
-#### Disposable
-We can make it joins onto `CompositeDisposable` as a disposable using the `joinDisposable` function. It must be called before `request()` method. The below example is using in ViewModel. We can clear the `CompositeDisposable` in the `onCleared()` override method.
-```kotlin
-private val disposable = CompositeDisposable()
-
-init {
-    disneyService.fetchDisneyPosterList().toResponseDataSource()
-      // retry fetching data 3 times with 5000L interval when the request gets failure.
-      .retry(3, 5000L)
-      // joins onto CompositeDisposable as a disposable and dispose onCleared().
-      .joinDisposable(disposable)
-      .request {
-        // ... //
-      }
-}
-
-override fun onCleared() {
-    super.onCleared()
-    if (!disposable.disposed) {
-      disposable.clear()
-    }
-  }
-```
-
-Here is the example of the `ResponseDataSource` in the `MainViewModel`.
-```kotlin
-class MainViewModel constructor(
-  private val disneyService: DisneyService
-) : ViewModel() {
-
-  // request API call Asynchronously and holding successful response data.
-  private val dataSource = ResponseDataSource<List<Poster>>()
-
-  val posterListLiveData = MutableLiveData<List<Poster>>()
-  val toastLiveData = MutableLiveData<String>()
-  private val disposable = CompositeDisposable()
-
-  /** fetch poster list data from the network. */
-  fun fetchDisneyPosters() {
-    dataSource
-      // retry fetching data 3 times with 5000 time interval when the request gets failure.
-      .retry(3, 5000L)
-      // joins onto CompositeDisposable as a disposable and dispose onCleared().
-      .joinDisposable(disposable)
-      // combine network service to the data source.
-      .combine(disneyService.fetchDisneyPosterList()) { response ->
-        // handles the success case when the API request gets a successful response.
-        response.onSuccess {
-          Timber.d("$data")
-          posterListLiveData.postValue(data)
-        }
-          // handles error cases when the API request gets an error response.
-          // e.g. internal server error.
-          .onError {
-            Timber.d(message())
-
-            // handling error based on status code.
-            when (statusCode) {
-              StatusCode.InternalServerError -> toastLiveData.postValue("InternalServerError")
-              StatusCode.BadGateway -> toastLiveData.postValue("BadGateway")
-              else -> toastLiveData.postValue("$statusCode(${statusCode.code}): ${message()}")
-            }
-
-            // map the ApiResponse.Failure.Error to a customized error model using the mapper.
-            map(ErrorEnvelopeMapper) {
-              Timber.d(this.toString())
-            }
-          }
-          // handles exceptional cases when the API request gets an exception response.
-          // e.g. network connection error, timeout.
-          .onException {
-            Timber.d(message())
-            toastLiveData.postValue(message())
-          }
-      }
-      // observe every API request responses.
-      .observeResponse {
-        Timber.d("observeResponse: $it")
-      }
-      // request API network call asynchronously.
-      // if the request is successful, the data source will hold the success data.
-      // in the next request after success, returns the cached API response.
-      // if you want to fetch a new response data, use invalidate().
-      .request()
-  }
-
-  override fun onCleared() {
-    super.onCleared()
-    if (!disposable.disposed) {
-      disposable.clear()
-    }
-  }
-}
-```
-
-### DataSourceCallAdapterFactory
-
-You can get the `DataSource` directly from the Retrofit service. Add the `DataSourceCallAdapterFactory` call adapter factory to your Retrofit builder. And change the return type of your Retrfot services `Call` to `DataSource`.
-
-```kotlin
-Retrofit.Builder()
-    ...
-    .addCallAdapterFactory(DataSourceCallAdapterFactory.create())
-    .build()
-
-interface DisneyService {
-  @GET("DisneyPosters.json")
-  fun fetchDisneyPosterList(): DataSource<List<Poster>>
-}
-```
-Here is an example of the `DataSource` in the MainViewModel.
-```kotlin
-class MainViewModel constructor(disneyService: DisneyService) : ViewModel() {
-
-  // request API call Asynchronously and holding successful response data.
-  private val dataSource: DataSource<List<Poster>>
-
-    init {
-    Timber.d("initialized MainViewModel.")
-
-    dataSource = disneyService.fetchDisneyPosterList()
-      // retry fetching data 3 times with 5000L interval when the request gets failure.
-      .retry(3, 5000L)
-      .observeResponse(object : ResponseObserver<List<Poster>> {
-        override fun observe(response: ApiResponse<List<Poster>>) {
-          // handle the case when the API request gets a success response.
-          response.onSuccess {
-            Timber.d("$data")
-            posterListLiveData.postValue(data)
+    // verify whether the current request was previously issued as an authenticated request
+    apiResponse.headers["Authorization"] ?: return
+
+    // refresh an access token if the error response is Unauthorized or Forbidden
+    when (apiResponse.statusCode) {
+      StatusCode.Unauthorized, StatusCode.Forbidden -> {
+        userToken?.let { token ->
+          val result = authService.refreshToken(token)
+          result.onSuccessSuspend { data ->
+            userDataStore.updateToken(
+              UserToken(
+                accessToken = data.accessToken,
+                refreshToken = data.refreshToken,
+              ),
+            )
+            toast(R.string.toast_refresh_token_succeed)
+          }.onFailureSuspend {
+            toast(R.string.toast_refresh_token_failed)
           }
         }
-      })
-      .request() // must call request()
-```
+      }
+      else -> Unit
+    }
+  }
 
-### DataSource with Coroutines
+  override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) = Unit
 
-You can use the `DataSource` in Retrofit services with `suspend` keyword. <br>
+  override suspend fun onException(apiResponse: ApiResponse.Failure.Exception) = Unit
 
-```kotlin
-Retrofit.Builder()
-    ...
-    .addCallAdapterFactory(DataSourceCallAdapterFactory.create())
-    .build()
-
-interface DisneyService {
-  @GET("DisneyPosters.json")
-  suspend fun fetchDisneyPosterList(): DataSource<List<Poster>>
+  private suspend fun toast(@StringRes resource: Int) = withContext(Dispatchers.Main) {
+    Toast.makeText(context, resource, Toast.LENGTH_SHORT).show()
+  }
 }
 ```
 
-This is an exmaple of the `DataSource` in the MainViewModel:
+In this example, the global operator's `onError` function is used to automatically check for `Unauthorized` and `Forbidden` status code (HTTP 401 and 403) in the error response. If an unauthorized error occurs, the user token is refreshed, and the failed request is retried with the updated token using runAndRetry. This way, you can seamlessly manage token expiration and refresh for your API requests.
+
+#### Global Operator With Hilt and App Startup
+
+If you want to initialize the global operator by using with [Hilt](https://dagger.dev/hilt/) and [App Startup](https://developer.android.com/topic/libraries/app-startup), you can follow the instructions below.
+
+
+##### 1. Implement an Entry Point
+
+First, you should implement an entry point for injecting the global operator into an App Startup initializer.
 
 ```kotlin
-class MainCoroutinesViewModel constructor(disneyService: DisneyCoroutinesService) : ViewModel() {
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface NetworkEntryPoint {
 
-  val posterListLiveData: LiveData<List<Poster>>
+  fun inject(networkInitializer: NetworkInitializer)
 
-  init {
-    Timber.d("initialized MainViewModel.")
+  companion object {
 
-    posterListLiveData = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
-      emitSource(disneyService.fetchDisneyPosterList().toResponseDataSource()
-        // retry fetching data 3 times with 5000L interval when the request gets failure.
-        .retry(3, 5000L)
-        // a retain policy for retaining data on the internal storage
-        .dataRetainPolicy(DataRetainPolicy.RETAIN)
-        // request API network call asynchronously.
-        .request {
-          // handle the case when the API request gets a success response.
-          onSuccess {
-            Timber.d("$data")
-          }.onError { // handle the case when the API request gets a error response.
-              Timber.d(message())
-            }.onException {  // handle the case when the API request gets a exception response.
-              Timber.d(message())
-            }
-        }.asLiveData())
+    fun resolve(context: Context): NetworkEntryPoint {
+      val appContext = context.applicationContext ?: throw IllegalStateException(
+        "applicationContext was not found in NetworkEntryPoint",
+      )
+      return EntryPointAccessors.fromApplication(
+        appContext,
+        NetworkEntryPoint::class.java,
+      )
     }
   }
 }
 ```
 
-#### toResponseDataSource
-We can change `DataSource` to `ResponseDataSource` after getting instance from network call using the below method.
+##### 2. Provide Global Operator Dependency
+
+Next, provide your global operator with Hilt like the exambple below:
+
 ```kotlin
-private val dataSource: ResponseDataSource<List<Poster>>
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
 
-  init {
-    dataSource = disneyService.fetchDisneyPosterList().toResponseDataSource()
-
-    //...
+  @Provides
+  @Singleton
+  fun provideTokenRefreshGlobalOperator(
+    @ApplicationContext context: Context,
+    authService: AuthService,
+    userDataStore: UserDataStore
+  ): TokenRefreshGlobalOperator<Any> {
+    return TokenRefreshGlobalOperator(
+      context = context,
+      authService = authService,
+      userDataStore = userDataStore,
+      coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
+    )
   }
+}
 ```
 
+##### 3. Implement App Startup Initializer
+
+Finally, implement the App Startup Initializer and initialize the Initializer following the [App Startup guidance](https://developer.android.com/topic/libraries/app-startup#manual).
+
+```kotlin
+public class NetworkInitializer : Initializer<Unit> {
+
+  @set:Inject
+  internal lateinit var tokenRefreshGlobalOperator: TokenRefreshGlobalOperator<Any>
+
+  override fun create(context: Context) {
+    NetworkEntryPoint.resolve(context).inject(this)
+
+    SandwichInitializer.sandwichOperators += listOf(tokenRefreshGlobalOperator)
+  }
+
+  override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
+}
+```
+
+This setup allows you to define a retry policy that determines whether a retry attempt should occur and specifies the retry timeout. The `runAndRetry` extension then encapsulates the execution logic, applying the defined policy, and providing the response in a clean and structured manner.
 
 ## Find this library useful? :heart:
 Support it by joining __[stargazers](https://github.com/skydoves/sandwich/stargazers)__ for this repository. :star: <br>
