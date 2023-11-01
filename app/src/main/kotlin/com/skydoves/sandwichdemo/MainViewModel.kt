@@ -18,7 +18,9 @@ package com.skydoves.sandwichdemo
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.StatusCode
+import com.skydoves.sandwich.flatMap
 import com.skydoves.sandwich.getOrThrow
 import com.skydoves.sandwich.isSuccess
 import com.skydoves.sandwich.ktor.bodyString
@@ -26,13 +28,13 @@ import com.skydoves.sandwich.ktor.getApiResponse
 import com.skydoves.sandwich.ktorfit.ApiResponseConverterFactory
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.messageOrNull
-import com.skydoves.sandwich.onCause
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.onSuccess
 import com.skydoves.sandwich.retrofit.statusCode
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
+import com.skydoves.sandwichdemo.errors.HttpException
 import com.skydoves.sandwichdemo.model.PokemonResponse
 import com.skydoves.sandwichdemo.model.Poster
 import com.skydoves.sandwichdemo.network.KtorfitPokemonService
@@ -123,29 +125,33 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
       .onException {
         Timber.d("retrofit exception: $messageOrNull")
         toastLiveData.postValue(message)
-      }.onCause {
-        Timber.d("retrofit cause: $messageOrNull")
       }
   }
 
   // Ktor example
   private fun ktor() = viewModelScope.launch {
-    val response = client.getApiResponse<PokemonResponse>("https://pokeapi.co/api/v2/pokemon")
+    val response = client.getApiResponse<PokemonResponse>("https://pokeapi.co/api/v2/pokemon") {
+      contentType(ContentType.Application.Json)
+    }
     response.onSuccess {
       Timber.d("ktor success: $data")
     }.suspendOnError {
       Timber.d("ktor error: ${bodyString()}")
+    }.flatMap {
+      if (this is ApiResponse.Failure) {
+        HttpException
+      } else {
+        this
+      }
     }.onException {
       Timber.d("ktor exception: $messageOrNull")
-    }.onCause {
-      Timber.d("ktor cause: $messageOrNull")
     }
   }
 
   // Ktorfit example
   private fun ktorfit() = viewModelScope.launch {
     val ktorfit = Ktorfit.Builder().baseUrl("https://pokeapi.co/api/v2/")
-      .converterFactories(ApiResponseConverterFactory())
+      .converterFactories(ApiResponseConverterFactory.create())
       .httpClient(client)
       .build()
     val service = ktorfit.create<KtorfitPokemonService>()
@@ -156,8 +162,6 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
       Timber.d("ktorfit error: ${bodyString()}")
     }.onException {
       Timber.d("ktorfit exception: $messageOrNull")
-    }.onCause {
-      Timber.d("ktorfit cause: $messageOrNull")
     }
   }
 }

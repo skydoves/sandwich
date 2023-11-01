@@ -16,7 +16,7 @@
 package com.skydoves.sandwich.ktor
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.ApiResponse.Companion.mapFailure
+import com.skydoves.sandwich.ApiResponse.Companion.maps
 import com.skydoves.sandwich.ApiResponse.Companion.operate
 import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwich.StatusCode
@@ -52,9 +52,9 @@ internal val <T> ApiResponse.Success<T>.tagResponse: HttpResponse
   )
 
 @PublishedApi
-internal val <T> ApiResponse.Failure.Error<T>.payloadResponse: HttpResponse
+internal val ApiResponse.Failure.Error.payloadResponse: HttpResponse
   inline get() = (payload as? HttpResponse) ?: throw IllegalArgumentException(
-    "You can access the `payload` only for the encapsulated ApiResponse.Failure.Error<T> " +
+    "You can access the `payload` only for the encapsulated ApiResponse.Failure.Error " +
       "using the Response class.",
   )
 
@@ -77,24 +77,24 @@ public val <T> ApiResponse.Success<T>.httpResponse: HttpResponse
 
 /**
  * The [ByteReadChannel] can be consumed only once. */
-public suspend fun <T> ApiResponse.Failure.Error<T>.bodyChannel(): ByteReadChannel {
+public suspend fun ApiResponse.Failure.Error.bodyChannel(): ByteReadChannel {
   return payloadResponse.bodyAsChannel()
 }
 
 /**
  * The [ByteReadChannel] can be consumed only once. */
-public suspend fun <T> ApiResponse.Failure.Error<T>.bodyString(
+public suspend fun ApiResponse.Failure.Error.bodyString(
   fallbackCharset: Charset = Charsets.UTF_8,
 ): String {
   return payloadResponse.bodyAsText(fallbackCharset = fallbackCharset)
 }
 
 /** [StatusCode] is Hypertext Transfer Protocol (HTTP) response status codes. */
-public val <T> ApiResponse.Failure.Error<T>.statusCode: StatusCode
+public val ApiResponse.Failure.Error.statusCode: StatusCode
   inline get() = payloadResponse.getStatusCode()
 
 /** The header fields of a single HTTP message. */
-public val <T> ApiResponse.Failure.Error<T>.headers: Headers
+public val ApiResponse.Failure.Error.headers: Headers
   inline get() = payloadResponse.headers
 
 /**
@@ -127,7 +127,7 @@ public suspend inline fun <reified T> apiResponseOf(
   }
 } catch (ex: Exception) {
   ApiResponse.Failure.Exception(ex)
-}.operate().mapFailure()
+}.operate().maps()
 
 /**
  * @author skydoves (Jaewoong Eum)

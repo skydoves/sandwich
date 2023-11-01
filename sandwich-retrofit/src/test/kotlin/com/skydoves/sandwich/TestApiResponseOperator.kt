@@ -21,14 +21,11 @@ internal class TestApiResponseOperator<T>(
   private val onSuccess: () -> Unit,
   private val onError: () -> Unit,
   private val onException: () -> Unit,
-  private val onCause: () -> Unit,
 ) : ApiResponseOperator<T>() {
 
   override fun onSuccess(apiResponse: ApiResponse.Success<T>) = onSuccess()
 
-  override fun onError(apiResponse: ApiResponse.Failure.Error<T>) = onError()
+  override fun onError(apiResponse: ApiResponse.Failure.Error) = onError()
 
-  override fun onException(apiResponse: ApiResponse.Failure.Exception<T>) = onException()
-
-  override fun onCause(apiResponse: ApiResponse.Failure.Cause) = onCause()
+  override fun onException(apiResponse: ApiResponse.Failure.Exception) = onException()
 }

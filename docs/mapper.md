@@ -1,4 +1,4 @@
-# Map
+# Mapper
 
 Sandwich provides versatile mapping extensions for `ApiResponse`.
 
@@ -39,7 +39,7 @@ val apiResponse2 = apiResponse1.mapFailure { responseBody ->
     }
 ```
 
-## Mapper
+## Model Mapper
 
 Mappers are especially useful when you need to transform the `ApiResponse.Success` or `ApiResponse.Failure.Error` into your custom model within the extension scopes of `ApiResponse`.
 
@@ -111,5 +111,67 @@ If you intend to obtain transformed data within the scope, you can use the mappe
 ```kotlin
 apiResponse.suspendOnError(ErrorEnvelopeMapper) {
     val message = this.message
+}
+```
+
+## Global Failure Mapper
+
+You can map `ApiResponse.Failure` responses into your custom error response by using `flatMap` as described [ApiResponse.Failure.Error documentation](https://skydoves.github.io/sandwich/apiresponse/#apiresponsefailureerror).
+
+Alternatively, Sandwich provides a robust solution for mapping responses, enabling you to transform all `ApiResponse.Failure` responses into your preferred `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception` types. This can be applied globally without the need for using `flatMap` extensions across all network and I/O requests or when creating `ApiResponse` instances.
+
+You can implement this globally by using `SandwichInitializer.sandwichFailureMappers`. The example below shows how to map all your `ApiResponse.Failure.Error` to your custom `ApiResponse.Failure.Exception`.
+
+```kotlin
+data object UnKnownError : ApiResponse.Failure.Exception(
+  throwable = RuntimeException("unknwon error")
+)
+
+data object LimitedRequest : ApiResponse.Failure.Exception(
+  throwable = RuntimeException("your request is limited")
+)
+
+data object WrongArgument : ApiResponse.Failure.Exception(
+  throwable = RuntimeException("wrong argument")
+)
+
+data object HttpException : ApiResponse.Failure.Exception(
+  throwable = RuntimeException("http exception"),
+)
+
+SandwichInitializer.sandwichFailureMappers += listOf(
+  object : ApiResponseFailureMapper {
+    override fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
+      if (apiResponse is ApiResponse.Failure.Error) {
+        val errorBody = (apiResponse.payload as? okhttp3.Response)?.body?.string()
+        if (errorBody != null) {
+          val errorMessage: ErrorMessage = Json.decodeFromString(errorBody)
+          when (errorMessage.code) {
+            10000 -> LimitedRequest
+            10001 -> WrongArgument
+            10002 -> HttpException
+            else -> UnKnownError
+          }
+        }
+      }
+      return apiResponse
+    }
+  },
+)
+```
+
+Given the example above, which maps all `ApiResponse.Failure.Error` to your custom `ApiResponse.Failure.Exception` according to your preferences, you'll only need to focus on handling exceptional cases when dealing with your `ApiResponse`. 
+
+```kotlin
+val apiResponse = service.fetchMovieList()
+apiResponse.onSuccess {
+  // ..
+}.onException {
+  when (this) {
+    LimitedRequest -> // ..
+    WrongArgument -> // ..
+    HttpException -> // ..
+    UnKnownError -> // ..
+  }
 }
 ```

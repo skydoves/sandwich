@@ -39,19 +39,12 @@ public abstract class ApiResponseSuspendOperator<T> : SandwichOperator {
    *
    * @param apiResponse The failed response.
    */
-  public abstract suspend fun onError(apiResponse: ApiResponse.Failure.Error<T>)
+  public abstract suspend fun onError(apiResponse: ApiResponse.Failure.Error)
 
   /**
    * Operates the [ApiResponse.Failure.Exception] for handling exception responses if the request get an exception.
    *
    * @param apiResponse The exception response.
    */
-  public abstract suspend fun onException(apiResponse: ApiResponse.Failure.Exception<T>)
-
-  /**
-   * Operates the [ApiResponse.Failure.Cause] for handling custom failure responses.
-   *
-   * @param apiResponse The cause response.
-   */
-  public abstract suspend fun onCause(apiResponse: ApiResponse.Failure.Cause)
+  public abstract suspend fun onException(apiResponse: ApiResponse.Failure.Exception)
 }

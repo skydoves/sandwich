@@ -42,7 +42,7 @@ class GlobalResponseOperator<T>(
 
   // handle the case when the API request gets a error response.
   // e.g., internal server error.
-  override suspend fun onError(apiResponse: ApiResponse.Failure.Error<T>) {
+  override suspend fun onError(apiResponse: ApiResponse.Failure.Error) {
     withContext(Dispatchers.Main.immediate) {
       apiResponse.run {
         Timber.d(message())
@@ -64,16 +64,13 @@ class GlobalResponseOperator<T>(
 
   // handle the case when the API request gets a exception response.
   // e.g., network connection error, timeout.
-  override suspend fun onException(apiResponse: ApiResponse.Failure.Exception<T>) {
+  override suspend fun onException(apiResponse: ApiResponse.Failure.Exception) {
     withContext(Dispatchers.Main.immediate) {
       apiResponse.run {
         Timber.d(message())
         toast(message())
       }
     }
-  }
-
-  override suspend fun onCause(apiResponse: ApiResponse.Failure.Cause) {
   }
 
   private fun toast(message: String) {

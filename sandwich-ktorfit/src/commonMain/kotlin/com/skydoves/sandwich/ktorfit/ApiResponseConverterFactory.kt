@@ -16,13 +16,14 @@
 package com.skydoves.sandwich.ktorfit
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.ApiResponse.Companion.mapFailure
+import com.skydoves.sandwich.ApiResponse.Companion.maps
 import com.skydoves.sandwich.ApiResponse.Companion.operate
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.converter.Converter
 import de.jensklingenberg.ktorfit.internal.TypeData
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
+import kotlin.jvm.JvmStatic
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -36,7 +37,7 @@ import io.ktor.client.statement.HttpResponse
  * suspend fun fetchDisneyPosterList(): ApiResponse<List<Poster>>
  * ```
  */
-public class ApiResponseConverterFactory : Converter.Factory {
+public class ApiResponseConverterFactory internal constructor() : Converter.Factory {
 
   override fun suspendResponseConverter(
     typeData: TypeData,
@@ -50,11 +51,18 @@ public class ApiResponseConverterFactory : Converter.Factory {
           } catch (e: Throwable) {
             ApiResponse.exception(e)
           }
-          return apiResponse.operate().mapFailure()
+          return apiResponse.operate().maps()
         }
       }
     }
 
     return null
+  }
+
+  public companion object {
+    @JvmStatic
+    public fun create(): ApiResponseConverterFactory {
+      return ApiResponseConverterFactory()
+    }
   }
 }

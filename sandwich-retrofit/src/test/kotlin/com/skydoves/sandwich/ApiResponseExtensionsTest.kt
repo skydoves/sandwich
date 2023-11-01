@@ -76,7 +76,7 @@ internal class ApiResponseExtensionsTest {
 
   @Test
   fun `isException test`() {
-    val apiResponse = ApiResponse.exception<String>(RuntimeException("RuntimeException"))
+    val apiResponse = ApiResponse.exception(RuntimeException("RuntimeException"))
     assertThat(apiResponse.isException, `is`(true))
     assertThat(apiResponse.isError, `is`(false))
     assertThat(apiResponse.isSuccess, `is`(false))
@@ -84,7 +84,7 @@ internal class ApiResponseExtensionsTest {
 
   @Test
   fun `messageOrNull test`() {
-    val exception = ApiResponse.exception<String>(RuntimeException("RuntimeException"))
+    val exception = ApiResponse.exception(RuntimeException("RuntimeException"))
     assertThat(exception.apiMessage, `is`("RuntimeException"))
 
     val errorBody = Response.error<String>(

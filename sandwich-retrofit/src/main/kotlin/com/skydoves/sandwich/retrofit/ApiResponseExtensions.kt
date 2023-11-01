@@ -16,7 +16,7 @@
 package com.skydoves.sandwich.retrofit
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.ApiResponse.Companion.mapFailure
+import com.skydoves.sandwich.ApiResponse.Companion.maps
 import com.skydoves.sandwich.ApiResponse.Companion.operate
 import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwich.StatusCode
@@ -46,11 +46,10 @@ internal val <T> ApiResponse.Success<T>.tagResponse: Response<T>
       "using the Response class.",
   )
 
-@Suppress("UNCHECKED_CAST")
 @PublishedApi
-internal val <T> ApiResponse.Failure.Error<T>.payloadResponse: Response<T>
-  inline get() = (payload as? Response<T>) ?: throw IllegalArgumentException(
-    "You can access the `payload` only for the encapsulated ApiResponse.Failure.Error<T> " +
+internal val ApiResponse.Failure.Error.payloadResponse: Response<*>
+  inline get() = (payload as? Response<*>) ?: throw IllegalArgumentException(
+    "You can access the `payload` only for the encapsulated ApiResponse.Failure.Error " +
       "using the Response class.",
   )
 
@@ -72,19 +71,19 @@ public val <T> ApiResponse.Success<T>.raw: okhttp3.Response
 
 /**
  * The [ResponseBody] can be consumed only once. */
-public val <T> ApiResponse.Failure.Error<T>.errorBody: ResponseBody?
+public val ApiResponse.Failure.Error.errorBody: ResponseBody?
   inline get() = payloadResponse.errorBody()
 
 /** [StatusCode] is Hypertext Transfer Protocol (HTTP) response status codes. */
-public val <T> ApiResponse.Failure.Error<T>.statusCode: StatusCode
+public val ApiResponse.Failure.Error.statusCode: StatusCode
   inline get() = payloadResponse.getStatusCode()
 
 /** The header fields of a single HTTP message. */
-public val <T> ApiResponse.Failure.Error<T>.headers: Headers
+public val ApiResponse.Failure.Error.headers: Headers
   inline get() = payloadResponse.headers()
 
 /** The raw response from the HTTP client. */
-public val <T> ApiResponse.Failure.Error<T>.raw: okhttp3.Response
+public val ApiResponse.Failure.Error.raw: okhttp3.Response
   inline get() = payloadResponse.raw()
 
 /**
@@ -130,7 +129,7 @@ public inline fun <T> apiResponseOf(
   }
 } catch (ex: Exception) {
   ApiResponse.Failure.Exception(ex)
-}.operate().mapFailure()
+}.operate().maps()
 
 /**
  * @author skydoves (Jaewoong Eum)

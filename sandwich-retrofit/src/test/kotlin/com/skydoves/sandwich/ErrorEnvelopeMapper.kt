@@ -21,7 +21,7 @@ import com.skydoves.sandwich.retrofit.statusCode
 
 internal object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorEnvelope> {
 
-  override fun map(apiErrorResponse: ApiResponse.Failure.Error<*>): ErrorEnvelope {
+  override fun map(apiErrorResponse: ApiResponse.Failure.Error): ErrorEnvelope {
     return ErrorEnvelope(apiErrorResponse.statusCode.code, apiErrorResponse.apiMessage.orEmpty())
   }
 }

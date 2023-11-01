@@ -12,15 +12,17 @@ nav:
   - 'Overview': index.md
   - 'Snapshot': snapshot.md
   - 'ApiResponse': apiresponse.md
-  - 'Coroutines': coroutines.md
+  - 'Retrofit': retrofit.md
+  - 'Ktor': ktor.md
+  - 'Ktorfit': ktorfit.md
   - 'Retrieve': retrieve.md
   - 'Mapper': mapper.md
   - 'Sequential': sequential.md
   - 'Retry': retry.md
   - 'Operator': operator.md
   - 'Merge': merge.md
+  - 'Global Handling': global.md
   - 'Empty Body': empty-body.md
-  - 'Serialization': serialization.md
   - 'Sponsor 🩷': sponsor.md
     
 # Repository

@@ -62,7 +62,6 @@ internal class SandwichInitializerTest {
       onSuccess = { onSuccess = true },
       onError = { onError = true },
       onException = { onException = true },
-      onCause = {},
     )
 
     val response = Response.success(listOf(Poster.create(), Poster.create(), Poster.create()))
@@ -73,7 +72,7 @@ internal class SandwichInitializerTest {
     ApiResponse.responseOf { successResponse }
     assertThat(onError, `is`(true))
 
-    ApiResponse.exception<Poster>(Throwable())
+    ApiResponse.exception(Throwable())
     assertThat(onException, `is`(true))
   }
 }

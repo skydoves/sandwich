@@ -46,6 +46,9 @@ kotlin {
   macosX64()
 
   sourceSets {
+    all {
+      languageSettings.optIn("com.skydoves.sandwich.annotations.InternalSandwichApi")
+    }
     val commonMain by getting {
       dependencies {
         api(project(":sandwich-ktor"))
