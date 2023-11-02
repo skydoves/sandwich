@@ -40,7 +40,8 @@ kotlin {
     }
     withJava()
   }
-  ios()
+  iosX64()
+  iosArm64()
   iosSimulatorArm64()
   macosArm64()
   macosX64()
@@ -59,7 +60,6 @@ kotlin {
 
     val commonTest by getting {
       dependencies {
-        dependsOn(commonMain)
       }
     }
 
@@ -68,9 +68,6 @@ kotlin {
 
     val appleMain by creating {
       dependsOn(commonMain)
-    }
-    val iosMain by getting {
-      dependsOn(appleMain)
     }
     val macosArm64Main by getting {
       dependsOn(appleMain)
@@ -90,9 +87,6 @@ kotlin {
 
     val appleTest by creating {
       dependsOn(commonTest)
-    }
-    val iosTest by getting {
-      dependsOn(appleTest)
     }
     val iosArm64Test by getting {
       dependsOn(appleTest)
