@@ -90,14 +90,14 @@ For comprehensive details about Sandwich, please refer to the complete [document
 This represents a successful response from API or I/O tasks. You can create an instance of [ApiResponse.Success] by giving the generic type and data.
 
 ```kotlin
-val apiResponse = Apiresponse.Success(data = myData)
+val apiResponse = ApiResponse.Success(data = myData)
 val data = apiResponse.data
 ```
 
 Depending on your model designs, you can also utilize `tag` property. The `tag` is an additional value that can be held to distinguish the origin of the [data] or to facilitate post-processing of successful data.
 
 ```kotlin
-val apiResponse = Apiresponse.Success(data = myData, tag = myTag)
+val apiResponse = ApiResponse.Success(data = myData, tag = myTag)
 val tag = apiResponse.tag
 ```
 
@@ -106,7 +106,7 @@ val tag = apiResponse.tag
 This signals a failed tasks captured by unexpected exceptions during API request creation or response processing on the client side, such as a network connection failure. You can obtain exception details from the `ApiResponse.Failure.Exception`.
 
 ```kotlin
-val apiResponse = Apiresponse.Failure.Exception(exception = HttpTimeoutException())
+val apiResponse = ApiResponse.Failure.Exception(exception = HttpTimeoutException())
 val exception = apiResponse.exception
 val message = apiResponse.message
 ```
