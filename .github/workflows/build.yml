@@ -14,13 +14,12 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@v2
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v1
         with:
           distribution: zulu
           java-version: 17
-      - uses: gradle/gradle-build-action@v2.9.0
       - name: spotless
         run: ./gradlew spotlessCheck
 
@@ -29,28 +28,41 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@v2
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v1
         with:
           distribution: zulu
           java-version: 17
-      - uses: gradle/gradle-build-action@v2.9.0
       - name: API check
         run: ./gradlew apiCheck
 
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@v2
+
       - name: set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v1
         with:
           distribution: zulu
           java-version: 17
-      - uses: gradle/gradle-build-action@v2.9.0
+
+      - name: Cache Gradle and wrapper
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Make Gradle executable
         run: chmod +x ./gradlew
-      - name: Build with Gradle
-        run: ./gradlew build
 
+      - name: Build with Gradle
+        run: |
+          ./gradlew --scan --stacktrace \
+              assemble -x :baselineprofile:pixel6api31Setup -x :baselineprofile:pixel6api31NonMinifiedReleaseAndroidTest -x :baselineprofile:collectNonMinifiedReleaseBaselineProfile
+        
