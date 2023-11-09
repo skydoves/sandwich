@@ -45,11 +45,6 @@ kotlin {
     }
   }
 
-  js(IR) {
-    browser()
-    binaries.executable()
-  }
-
   androidTarget {
     publishLibraryVariants("release")
   }

@@ -19,6 +19,7 @@ import com.skydoves.sandwich.mappers.SandwichFailureMapper
 import com.skydoves.sandwich.operators.SandwichOperator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.SupervisorJob
 import okio.Timeout
 import kotlin.jvm.JvmStatic
@@ -81,7 +82,7 @@ public object SandwichInitializer {
    * A [CoroutineScope] for executing and operating the overall Retrofit network requests.
    */
   @JvmSynthetic
-  public var sandwichScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+  public var sandwichScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
   /**
    * @author skydoves (Jaewoong Eum)
