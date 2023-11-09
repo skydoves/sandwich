@@ -20,6 +20,7 @@ plugins {
   id(libs.plugins.android.library.get().pluginId)
   id(libs.plugins.kotlin.multiplatform.get().pluginId)
   id(libs.plugins.kotlin.serialization.get().pluginId)
+  id(libs.plugins.baseline.profile.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
 }
 
@@ -96,6 +97,17 @@ android {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
   }
+}
+
+baselineProfile {
+  baselineProfileOutputDir = "../../src/androidMain"
+  filter {
+    include("com.skydoves.sandwich.**")
+  }
+}
+
+dependencies {
+  baselineProfile(project(":baselineprofile"))
 }
 
 java {

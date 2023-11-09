@@ -24,6 +24,7 @@ plugins {
   id(libs.plugins.kotlin.kapt.get().pluginId)
   id(libs.plugins.ktorfit.get().pluginId)
   id(libs.plugins.ksp.get().pluginId)
+  id(libs.plugins.baseline.profile.get().pluginId)
 }
 
 android {
@@ -50,6 +51,15 @@ android {
 
   lint {
     abortOnError = false
+  }
+
+  buildTypes {
+    create("benchmark") {
+      initWith(buildTypes.getByName("release"))
+      signingConfig = signingConfigs.getByName("debug")
+      matchingFallbacks += listOf("release")
+      isDebuggable = false
+    }
   }
 }
 
@@ -85,4 +95,6 @@ dependencies {
   implementation(libs.ktorfit)
 
   implementation("androidx.multidex:multidex:2.0.1")
+
+  baselineProfile(project(":baselineprofile"))
 }
