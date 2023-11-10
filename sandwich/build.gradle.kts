@@ -103,6 +103,10 @@ baselineProfile {
   baselineProfileOutputDir = "../../src/androidMain"
   filter {
     include("com.skydoves.sandwich.**")
+    exclude("com.skydoves.sandwich.sandwichdemo.**")
+    exclude("com.skydoves.sandwich.retrofit.**")
+    exclude("com.skydoves.sandwich.ktor.**")
+    exclude("com.skydoves.sandwich.ktorfit.**")
   }
 }
 
