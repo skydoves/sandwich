@@ -72,6 +72,7 @@ dependencies {
   implementation(libs.moshi)
   ksp(libs.moshi.codegen)
 
+  implementation(libs.okhttp)
   implementation(libs.ktor.negotiation)
   implementation(libs.ktor.okhttp)
   implementation(libs.ktor.json)
