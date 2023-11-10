@@ -38,7 +38,7 @@ android {
     versionName = Configuration.versionName
     multiDexEnabled = true
   }
-gi
+
   buildFeatures {
     buildConfig = true
     dataBinding = true
