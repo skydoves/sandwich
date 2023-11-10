@@ -59,9 +59,9 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Make Gradle executable
-        run: chmod +x ./gradlew
+        run: chmod +x ./gradlewgit
 
       - name: Build with Gradle
         run: |
           ./gradlew --scan --stacktrace \
-       qwe       assembleDebug -x :baselineprofile:pixel6api31Setup -x :baselineprofile:pixel6api31NonMinifiedReleaseAndroidTest -x :baselineprofile:collectNonMinifiedReleaseBaselineProfile
+              assembleDebug -x :baselineprofile:pixel6api31Setup -x :baselineprofile:pixel6api31NonMinifiedReleaseAndroidTest -x :baselineprofile:collectNonMinifiedReleaseBaselineProfile
