@@ -95,6 +95,9 @@ baselineProfile {
   }
 }
 
+dependencies {
+  baselineProfile(project(":baselineprofile"))
+}
 
 java {
   sourceCompatibility = JavaVersion.VERSION_11
