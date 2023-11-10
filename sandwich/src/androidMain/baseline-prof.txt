@@ -208,7 +208,7 @@ HSPLcom/skydoves/sandwichdemo/databinding/ItemPosterBindingImpl;->invalidateAll(
 HSPLcom/skydoves/sandwichdemo/databinding/ItemPosterBindingImpl;->setPoster(Lcom/skydoves/sandwichdemo/model/Poster;)V
 Lcom/skydoves/sandwichdemo/model/Pokemon;
 HSPLcom/skydoves/sandwichdemo/model/Pokemon;-><clinit>()V
-HPLcom/skydoves/sandwichdemo/model/Pokemon;-><init>(ILjava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+HSPLcom/skydoves/sandwichdemo/model/Pokemon;-><init>(ILjava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
 HSPLcom/skydoves/sandwichdemo/model/Pokemon;->toString()Ljava/lang/String;
 Lcom/skydoves/sandwichdemo/model/Pokemon$$serializer;
 HSPLcom/skydoves/sandwichdemo/model/Pokemon$$serializer;-><clinit>()V

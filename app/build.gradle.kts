@@ -52,15 +52,6 @@ android {
   lint {
     abortOnError = false
   }
-
-  buildTypes {
-    create("benchmark") {
-      isDebuggable = false
-      matchingFallbacks += listOf("release")
-      signingConfig = signingConfigs.getByName("debug")
-      proguardFiles("benchmark-rules.pro")
-    }
-  }
 }
 
 dependencies {
