@@ -64,5 +64,5 @@ jobs:
       - name: Build with Gradle
         run: |
           ./gradlew --scan --stacktrace \
-              assemble -x :baselineprofile:pixel6api31Setup -x :baselineprofile:pixel6api31NonMinifiedReleaseAndroidTest -x :baselineprofile:collectNonMinifiedReleaseBaselineProfile -x :baselineprofile:dexBuilderBenchmarkRelease
+              assemble -x :baselineprofile:pixel6api31Setup -x :baselineprofile:pixel6api31NonMinifiedReleaseAndroidTest -x :baselineprofile:collectNonMinifiedReleaseBaselineProfile -x :baselineprofile:dexBuilderBenchmarkRelease -x :app:minifyBenchmarkReleaseWithR8 -x :app:shrinkBenchmarkBenchmarkRes
         
