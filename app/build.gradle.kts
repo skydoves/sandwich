@@ -40,7 +40,7 @@ android {
   }
 
   buildFeatures {
-    buildConfig = true
+   git buildConfig = true
     dataBinding = true
   }
 
