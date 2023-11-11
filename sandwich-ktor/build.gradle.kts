@@ -17,10 +17,11 @@
 import com.github.skydoves.sandwich.Configuration
 
 plugins {
+  id(libs.plugins.android.library.get().pluginId)
   id(libs.plugins.kotlin.multiplatform.get().pluginId)
   id(libs.plugins.kotlin.serialization.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
-  java
+  id(libs.plugins.baseline.profile.get().pluginId)
 }
 
 apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
@@ -33,18 +34,30 @@ mavenPublishing {
 }
 
 kotlin {
-  jvmToolchain(libs.versions.jvmTarget.get().toInt())
+  listOf(
+    iosX64(),
+    iosArm64(),
+    iosSimulatorArm64(),
+    macosArm64(),
+    macosX64(),
+  ).forEach {
+    it.binaries.framework {
+      baseName = "common"
+    }
+  }
+
   jvm {
+    libs.versions.jvmTarget.get().toInt()
     compilations.all {
       kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
     }
-    withJava()
   }
-  iosX64()
-  iosArm64()
-  iosSimulatorArm64()
-  macosArm64()
-  macosX64()
+
+  androidTarget {
+    publishLibraryVariants("release")
+  }
+
+  applyDefaultHierarchyTemplate()
 
   sourceSets {
     all {
@@ -57,55 +70,34 @@ kotlin {
         implementation(libs.coroutines)
       }
     }
-
-    val commonTest by getting {
-      dependencies {
-      }
-    }
-
-    val jvmMain by getting
-    val jvmTest by getting
-
-    val appleMain by creating {
-      dependsOn(commonMain)
-    }
-    val macosArm64Main by getting {
-      dependsOn(appleMain)
-    }
-    val macosX64Main by getting {
-      dependsOn(appleMain)
-    }
-    val iosSimulatorArm64Main by getting {
-      dependsOn(appleMain)
-    }
-    val iosArm64Main by getting {
-      dependsOn(appleMain)
-    }
-    val iosX64Main by getting {
-      dependsOn(appleMain)
-    }
-
-    val appleTest by creating {
-      dependsOn(commonTest)
-    }
-    val iosArm64Test by getting {
-      dependsOn(appleTest)
-    }
-    val iosX64Test by getting {
-      dependsOn(appleTest)
-    }
-    val iosSimulatorArm64Test by getting {
-      dependsOn(appleTest)
-    }
-    val macosX64Test by getting {
-      dependsOn(appleTest)
-    }
-    val macosArm64Test by getting {
-      dependsOn(appleTest)
-    }
   }
 
   explicitApi()
+}
+
+android {
+  compileSdk = Configuration.compileSdk
+  namespace = "com.skydoves.sandwich.ktor"
+  defaultConfig {
+    minSdk = Configuration.minSdk
+    consumerProguardFiles("consumer-rules.pro")
+  }
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+  }
+}
+
+baselineProfile {
+  baselineProfileOutputDir = "../../src/androidMain"
+  filter {
+    include("com.skydoves.sandwich.ktor.**")
+  }
+}
+
+dependencies {
+  baselineProfile(project(":baselineprofile"))
 }
 
 java {

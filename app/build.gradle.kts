@@ -52,15 +52,6 @@ android {
   lint {
     abortOnError = false
   }
-
-  buildTypes {
-    create("benchmark") {
-      initWith(buildTypes.getByName("release"))
-      signingConfig = signingConfigs.getByName("debug")
-      matchingFallbacks += listOf("release")
-      isDebuggable = false
-    }
-  }
 }
 
 dependencies {
@@ -81,6 +72,7 @@ dependencies {
   implementation(libs.moshi)
   ksp(libs.moshi.codegen)
 
+  implementation(libs.okhttp)
   implementation(libs.ktor.negotiation)
   implementation(libs.ktor.okhttp)
   implementation(libs.ktor.json)
