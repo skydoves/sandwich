@@ -32,8 +32,7 @@ import io.ktor.http.Url
 public suspend inline fun <reified T> HttpClient.requestApiResponse(
   builder: HttpRequestBuilder = HttpRequestBuilder(),
 ): ApiResponse<T> {
-  val response = HttpStatement(builder, this).execute()
-  return apiResponseOf { response }
+  return apiResponseOf { HttpStatement(builder, this).execute() }
 }
 
 /**
@@ -42,10 +41,9 @@ public suspend inline fun <reified T> HttpClient.requestApiResponse(
  * @return [ApiResponse]
  */
 public suspend inline fun <reified T> HttpClient.requestApiResponse(
-  block: HttpRequestBuilder.() -> Unit,
+  crossinline block: HttpRequestBuilder.() -> Unit,
 ): ApiResponse<T> {
-  val response = request(HttpRequestBuilder().apply(block))
-  return apiResponseOf { response }
+  return apiResponseOf { request(HttpRequestBuilder().apply(block)) }
 }
 
 /**
@@ -55,13 +53,14 @@ public suspend inline fun <reified T> HttpClient.requestApiResponse(
  */
 public suspend inline fun <reified T> HttpClient.requestApiResponse(
   urlString: String,
-  block: HttpRequestBuilder.() -> Unit = {},
+  crossinline block: HttpRequestBuilder.() -> Unit = {},
 ): ApiResponse<T> {
-  val response = request {
-    url(urlString)
-    block()
+  return apiResponseOf {
+    request {
+      url(urlString)
+      block()
+    }
   }
-  return apiResponseOf { response }
 }
 
 /**
@@ -71,13 +70,14 @@ public suspend inline fun <reified T> HttpClient.requestApiResponse(
  */
 public suspend inline fun <reified T> HttpClient.requestApiResponse(
   url: Url,
-  block: HttpRequestBuilder.() -> Unit = {},
+  crossinline block: HttpRequestBuilder.() -> Unit = {},
 ): ApiResponse<T> {
-  val response = request {
-    url(url)
-    block()
+  return apiResponseOf {
+    request {
+      url(url)
+      block()
+    }
   }
-  return apiResponseOf { response }
 }
 
 /**
@@ -89,8 +89,7 @@ public suspend inline fun <reified T> HttpClient.getApiResponse(
   builder: HttpRequestBuilder,
 ): ApiResponse<T> {
   builder.method = HttpMethod.Get
-  val response = request(builder)
-  return apiResponseOf { response }
+  return apiResponseOf { request(builder) }
 }
 
 /**
@@ -102,8 +101,7 @@ public suspend inline fun <reified T> HttpClient.postApiResponse(
   builder: HttpRequestBuilder,
 ): ApiResponse<T> {
   builder.method = HttpMethod.Post
-  val response = request(builder)
-  return apiResponseOf { response }
+  return apiResponseOf { request(builder) }
 }
 
 /**
@@ -115,8 +113,7 @@ public suspend inline fun <reified T> HttpClient.putApiResponse(
   builder: HttpRequestBuilder,
 ): ApiResponse<T> {
   builder.method = HttpMethod.Put
-  val response = request(builder)
-  return apiResponseOf { response }
+  return apiResponseOf { request(builder) }
 }
 
 /**
@@ -128,8 +125,7 @@ public suspend inline fun <reified T> HttpClient.deleteApiResponse(
   builder: HttpRequestBuilder,
 ): ApiResponse<T> {
   builder.method = HttpMethod.Delete
-  val response = request(builder)
-  return apiResponseOf { response }
+  return apiResponseOf { request(builder) }
 }
 
 /**
@@ -141,8 +137,7 @@ public suspend inline fun <reified T> HttpClient.optionsApiResponse(
   builder: HttpRequestBuilder,
 ): ApiResponse<T> {
   builder.method = HttpMethod.Options
-  val response = request(builder)
-  return apiResponseOf { response }
+  return apiResponseOf { request(builder) }
 }
 
 /**
@@ -154,8 +149,7 @@ public suspend inline fun <reified T> HttpClient.patchApiResponse(
   builder: HttpRequestBuilder,
 ): ApiResponse<T> {
   builder.method = HttpMethod.Patch
-  val response = request(builder)
-  return apiResponseOf { response }
+  return apiResponseOf { request(builder) }
 }
 
 /**
@@ -167,8 +161,7 @@ public suspend inline fun <reified T> HttpClient.headApiResponse(
   builder: HttpRequestBuilder,
 ): ApiResponse<T> {
   builder.method = HttpMethod.Head
-  val response = request(builder)
-  return apiResponseOf { response }
+  return apiResponseOf { request(builder) }
 }
 
 /**
