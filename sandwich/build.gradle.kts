@@ -91,6 +91,7 @@ android {
   namespace = "com.skydoves.sandwich"
   defaultConfig {
     minSdk = Configuration.minSdk
+    consumerProguardFiles("consumer-rules.pro")
   }
 
   compileOptions {
