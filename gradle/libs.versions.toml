@@ -1,6 +1,6 @@
 [versions]
 agp = "8.1.4"
-kotlin = "1.9.20"
+kotlin = "1.9.21"
 dokka = "1.9.10"
 jvmTarget = "11"
 nexusPlugin = "0.25.3"
