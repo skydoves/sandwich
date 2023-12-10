@@ -27,7 +27,7 @@ Add the dependency below into your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:2.0.4"
+    implementation "com.github.skydoves:sandwich:2.0.5"
 }
 ```
 

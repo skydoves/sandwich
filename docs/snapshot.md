@@ -32,7 +32,7 @@ Next, add the dependency below to your **module**'s `build.gradle` file:
 
     ```Groovy
     dependencies {
-        implementation "com.github.skydoves:sandwich:2.0.5-SNAPSHOT"
+        implementation "com.github.skydoves:sandwich:2.0.6-SNAPSHOT"
     }
     ```
 
@@ -40,6 +40,6 @@ Next, add the dependency below to your **module**'s `build.gradle` file:
 
     ```kotlin
     dependencies {
-        implementation("com.github.skydoves:sandwich:2.0.5-SNAPSHOT")
+        implementation("com.github.skydoves:sandwich:2.0.6-SNAPSHOT")
     }
     ```
