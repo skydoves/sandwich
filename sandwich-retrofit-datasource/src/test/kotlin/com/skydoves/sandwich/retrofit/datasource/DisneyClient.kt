@@ -23,15 +23,11 @@ internal class DisneyClient constructor(
   private val dataSource: ResponseDataSource<List<Poster>>,
 ) {
 
-  fun fetchDisneyPosters(
-    onResult: (response: ApiResponse<List<Poster>>) -> Unit,
-  ) {
+  fun fetchDisneyPosters(onResult: (response: ApiResponse<List<Poster>>) -> Unit) {
     this.disneyService.fetchDisneyPosterList().request(onResult)
   }
 
-  fun combineDataSource(
-    onResult: (response: ApiResponse<List<Poster>>) -> Unit,
-  ) {
+  fun combineDataSource(onResult: (response: ApiResponse<List<Poster>>) -> Unit) {
     this.dataSource
       .retry(3, 3000L)
       .combine(disneyService.fetchDisneyPosterList(), onResult)

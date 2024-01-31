@@ -151,8 +151,7 @@ public class ResponseDataSource<T> : DataSource<T> {
   public inline fun combine(
     call: Call<T>,
     crossinline onResult: (response: ApiResponse<T>) -> Unit,
-  ): ResponseDataSource<T> =
-    combine(call, getCallbackFromOnResult(onResult))
+  ): ResponseDataSource<T> = combine(call, getCallbackFromOnResult(onResult))
 
   /** combine a call and callback instances for caching data on a [CoroutineScope]. */
   @JvmSynthetic
@@ -171,8 +170,7 @@ public class ResponseDataSource<T> : DataSource<T> {
     call: Call<T>,
     context: CoroutineContext = EmptyCoroutineContext,
     crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
-  ): ResponseDataSource<T> =
-    combine(call, getCallbackFromOnResultWithContext(context, onResult))
+  ): ResponseDataSource<T> = combine(call, getCallbackFromOnResultWithContext(context, onResult))
 
   /** Retry requesting API call when the request gets failure. */
   public override fun retry(retryCount: Int, interval: Long): ResponseDataSource<T> = apply {
@@ -207,13 +205,12 @@ public class ResponseDataSource<T> : DataSource<T> {
   @JvmSynthetic
   public inline fun request(
     crossinline action: (ApiResponse<T>).() -> Unit,
-  ): ResponseDataSource<T> =
-    apply {
-      if (call != null && callback == null) {
-        combine(requireNotNull(call), action)
-      }
-      request()
+  ): ResponseDataSource<T> = apply {
+    if (call != null && callback == null) {
+      combine(requireNotNull(call), action)
     }
+    request()
+  }
 
   /** extension method for requesting and observing response at once on a [CoroutineScope]. */
   @JvmSynthetic
@@ -327,6 +324,5 @@ public class ResponseDataSource<T> : DataSource<T> {
     crossinline action: (
       ApiResponse<T>,
     ) -> Unit,
-  ): ResponseDataSource<T> =
-    observeResponse(ResponseObserver { response -> action(response) })
+  ): ResponseDataSource<T> = observeResponse(ResponseObserver { response -> action(response) })
 }

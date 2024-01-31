@@ -509,9 +509,7 @@ public suspend inline fun <reified T, reified V> ApiResponse<T>.suspendMapSucces
  *
  * @return A [T] type of the [ApiResponse].
  */
-public fun <T> ApiResponse<T>.mapFailure(
-  transformer: Any?.() -> Any?,
-): ApiResponse<T> {
+public fun <T> ApiResponse<T>.mapFailure(transformer: Any?.() -> Any?): ApiResponse<T> {
   contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Error) {
     return ApiResponse.Failure.Error(payload = transformer.invoke(payload))
@@ -853,9 +851,7 @@ public fun <T> ApiResponse<T>.toFlow(): Flow<T> {
  * @return A coroutines [Flow] which emits successful data.
  */
 @JvmSynthetic
-public inline fun <T, R> ApiResponse<T>.toFlow(
-  crossinline transformer: T.() -> R,
-): Flow<R> {
+public inline fun <T, R> ApiResponse<T>.toFlow(crossinline transformer: T.() -> R): Flow<R> {
   contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
   return if (this is ApiResponse.Success) {
     flowOf(data.transformer())

@@ -36,8 +36,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 public inline fun <T> Call<T>.combineDataSource(
   dataSource: DataSource<T>,
   crossinline onResult: (response: ApiResponse<T>) -> Unit,
-): DataSource<T> =
-  dataSource.combine(this, getCallbackFromOnResult(onResult))
+): DataSource<T> = dataSource.combine(this, getCallbackFromOnResult(onResult))
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -62,8 +61,7 @@ public inline fun <T> Call<T>.suspendCombineDataSource(
   dataSource: DataSource<T>,
   context: CoroutineContext = EmptyCoroutineContext,
   crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
-): DataSource<T> =
-  dataSource.combine(this, getCallbackFromOnResultWithContext(context, onResult))
+): DataSource<T> = dataSource.combine(this, getCallbackFromOnResultWithContext(context, onResult))
 
 /**
  * @author skydoves (Jaewoong Eum)

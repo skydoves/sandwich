@@ -21,9 +21,7 @@ internal class DisneyClient(
   private val disneyService: DisneyService,
 ) {
 
-  fun fetchDisneyPosters(
-    onResult: (response: ApiResponse<List<Poster>>) -> Unit,
-  ) {
+  fun fetchDisneyPosters(onResult: (response: ApiResponse<List<Poster>>) -> Unit) {
     this.disneyService.fetchDisneyPosterList().request(onResult)
   }
 }
