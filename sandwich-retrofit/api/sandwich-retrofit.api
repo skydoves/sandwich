@@ -21,10 +21,6 @@ public final class com/skydoves/sandwich/retrofit/ApiResponseExtensionsKt {
 	public static synthetic fun suspendResponseOf$default (Lcom/skydoves/sandwich/ApiResponse$Companion;Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 
-public synthetic class com/skydoves/sandwich/retrofit/ApiResponseExtensionsKt$EntriesMappings {
-	public static final synthetic field entries$0 Lkotlin/enums/EnumEntries;
-}
-
 public final class com/skydoves/sandwich/retrofit/ResponseTransformerKt {
 	public static final synthetic fun getCallbackFromOnResult (Lkotlin/jvm/functions/Function1;)Lretrofit2/Callback;
 	public static final synthetic fun getCallbackFromOnResultOnCoroutinesScope (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;)Lretrofit2/Callback;
