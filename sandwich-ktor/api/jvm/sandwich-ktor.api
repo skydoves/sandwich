@@ -12,7 +12,3 @@ public final class com/skydoves/sandwich/ktor/ApiResponseExtensionKt {
 	public static final fun getTagResponse (Lcom/skydoves/sandwich/ApiResponse$Success;)Lio/ktor/client/statement/HttpResponse;
 }
 
-public synthetic class com/skydoves/sandwich/ktor/ApiResponseExtensionKt$EntriesMappings {
-	public static final synthetic field entries$0 Lkotlin/enums/EnumEntries;
-}
-
