@@ -27,7 +27,7 @@ jobs:
         run: ./gradlew assembleRelease --scan -x :baselineprofile:pixel6api31Setup -x :baselineprofile:pixel6api31NonMinifiedReleaseAndroidTest -x :baselineprofile:collectNonMinifiedReleaseBaselineProfile
 
       - name: Publish to MavenCentral
-        run: ./gradlew publishToMavenCentral --no-daemon --no-parallel
+        run: ./gradlew publishAllPublicationsToMavenCentral --no-daemon --no-parallel
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}
