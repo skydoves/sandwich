@@ -27,7 +27,21 @@ Add the dependency below into your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:sandwich:2.0.6"
+    implementation("com.github.skydoves:sandwich:2.0.6")
+}
+```
+
+For Kotlin Multiplatform, add the dependency below to your module's `build.gradle.kts` file:
+
+```kotlin
+sourceSets {
+    val commonMain by getting {
+        dependencies {
+            implementation("com.github.skydoves:sandwich:$version")
+            implementation("com.github.skydoves:sandwich-ktor:$version")
+            implementation("com.github.skydoves:sandwich-ktorfit:$version")
+        }
+    }
 }
 ```
 

@@ -22,6 +22,18 @@ To utilize these Ktor supports, simply add the following dependency:
     }
     ```
 
+For Kotlin Multiplatform, add the dependency below to your module's `build.gradle.kts` file:
+
+```kotlin
+sourceSets {
+    val commonMain by getting {
+        dependencies {
+            implementation("com.github.skydoves:sandwich-ktor:$version")
+        }
+    }
+}
+```
+
 ## ApiResponse from the HttpClient
 
 ```kotlin

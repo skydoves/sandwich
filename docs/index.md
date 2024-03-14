@@ -46,6 +46,18 @@ Add the dependency below into your **module**'s `build.gradle` file:
     }
     ```
 
+For Kotlin Multiplatform, add the dependency below to your module's `build.gradle.kts` file:
+
+```kotlin
+sourceSets {
+    val commonMain by getting {
+        dependencies {
+            implementation("com.github.skydoves:sandwich:$version")
+        }
+    }
+}
+```
+
 ## References
 
 You can delve deeper into the art of modeling Retrofit responses through the following resources:
