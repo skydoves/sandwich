@@ -15,11 +15,14 @@
  */
 
 import com.github.skydoves.sandwich.Configuration
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinMultiplatform
 
 plugins {
   id(libs.plugins.kotlin.multiplatform.get().pluginId)
   id(libs.plugins.kotlin.serialization.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
+  id(libs.plugins.dokka.get().pluginId)
   java
 }
 
@@ -30,6 +33,14 @@ mavenPublishing {
     version = rootProject.extra.get("libVersion").toString()
     group = Configuration.artifactGroup
   }
+
+  configure(
+    KotlinMultiplatform(
+      javadocJar = JavadocJar.Dokka("dokkaHtml"),
+      sourcesJar = true,
+      androidVariantsToPublish = listOf("release"),
+    )
+  )
 }
 
 kotlin {
