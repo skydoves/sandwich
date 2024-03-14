@@ -21,6 +21,11 @@
       "automerge": true,
       "automergeType": "pr",
       "platformAutomerge": true
+    },
+    {
+      "description": "Exclude Maven Plugin",
+      "matchPackagePrefixes": ["com.vanniktech.maven.publish"],
+      "enabled": false
     }
   ]
 }
