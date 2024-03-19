@@ -108,7 +108,7 @@ val apiResponse = ApiResponse.Success(data = myData)
 val data = apiResponse.data
 ```
 
-Depending on your model designs, you can also utilize `tag` property. The `tag` is an additional value that can be held to distinguish the origin of the [data] or to facilitate post-processing of successful data.
+Depending on your model designs, you can also utilize `tag` property. The `tag` is an additional value that can be held to distinguish the origin of the data or to facilitate post-processing of successful data.
 
 ```kotlin
 val apiResponse = ApiResponse.Success(data = myData, tag = myTag)
