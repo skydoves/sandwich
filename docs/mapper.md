@@ -50,8 +50,8 @@ You can map the `ApiResponse.Success` model to your custom model using the `Succ
 ```kotlin
 object SuccessPosterMapper : ApiSuccessModelMapper<List<Poster>, Poster?> {
 
-  override fun map(apiErrorResponse: ApiResponse.Success<List<Poster>>): Poster? {
-    return apiErrorResponse.data.first()
+  override fun map(apiSuccessResponse: ApiResponse.Success<List<Poster>>): Poster? {
+    return apiSuccessResponse.data.first()
   }
 }
 
