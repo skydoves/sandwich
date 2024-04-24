@@ -108,7 +108,7 @@ public sealed interface ApiResponse<out T> {
      * @return A [ApiResponse.Failure.Exception] based on the throwable.
      */
     public fun exception(ex: Throwable): Failure.Exception =
-      Failure.Exception(ex).apply { operate().maps() }
+      Failure.Exception(ex).operate().maps() as Failure.Exception
 
     /**
      * @author skydoves (Jaewoong Eum)
