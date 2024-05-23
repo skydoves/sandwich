@@ -27,8 +27,8 @@ Add the dependency below into your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation("com.github.skydoves:sandwich:2.0.7")
-    implementation("com.github.skydoves:sandwich-retrofit:2.0.7") // For Retrofit (Android)
+    implementation("com.github.skydoves:sandwich:2.0.8")
+    implementation("com.github.skydoves:sandwich-retrofit:2.0.8") // For Retrofit (Android)
 }
 ```
 
