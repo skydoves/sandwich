@@ -1,5 +1,5 @@
 [versions]
-agp = "8.4.2"
+agp = "8.5.0"
 kotlin = "2.0.0"
 dokka = "1.9.20"
 jvmTarget = "11"
