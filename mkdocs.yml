@@ -10,7 +10,6 @@ docs_dir: docs
 # Navigation
 nav:
   - 'Overview': index.md
-  - 'Snapshot': snapshot.md
   - 'ApiResponse': apiresponse.md
   - 'Retrofit': retrofit.md
   - 'Ktor': ktor.md

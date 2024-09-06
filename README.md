@@ -28,8 +28,8 @@ Add the dependency below into your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation("com.github.skydoves:sandwich:2.0.8")
-    implementation("com.github.skydoves:sandwich-retrofit:2.0.8") // For Retrofit (Android)
+    implementation("com.github.skydoves:sandwich:2.0.9")
+    implementation("com.github.skydoves:sandwich-retrofit:2.0.9") // For Retrofit (Android)
 }
 ```
 
@@ -46,32 +46,6 @@ sourceSets {
     }
 }
 ```
-
-## SNAPSHOT 
-[![Sandwich](https://img.shields.io/static/v1?label=snapshot&message=sandwich&logo=apache%20maven&color=C71A36)](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/sandwich/) <br>
-
-<details>
- <summary>See how to import the snapshot</summary>
-
-### Including the SNAPSHOT
-Snapshots of the current development version of Sandwich are available, which track [the latest versions](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/sandwich/).
-
-To import snapshot versions on your project, add the code snippet below on your gradle file:
-
-```Gradle
-repositories {
-   maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-}
-```
-
-Next, add the dependency below to your **module**'s `build.gradle` file:
-```gradle
-dependencies {
-    implementation "com.github.skydoves:sandwich:1.3.10-SNAPSHOT"
-}
-```
-
-</details>
 
 ## R8 / ProGuard
 The specific rules are [already bundled](sandwich/src/main/resources/META-INF/proguard/sandwich.pro) into the JAR which can be interpreted by R8 automatically.
