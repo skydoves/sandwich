@@ -2,8 +2,8 @@ public final class com/skydoves/sandwich/ktorfit/ApiResponseConverterFactory : d
 	public static final field Companion Lcom/skydoves/sandwich/ktorfit/ApiResponseConverterFactory$Companion;
 	public static final fun create ()Lcom/skydoves/sandwich/ktorfit/ApiResponseConverterFactory;
 	public fun requestParameterConverter (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)Lde/jensklingenberg/ktorfit/converter/Converter$RequestParameterConverter;
-	public fun responseConverter (Lde/jensklingenberg/ktorfit/internal/TypeData;Lde/jensklingenberg/ktorfit/Ktorfit;)Lde/jensklingenberg/ktorfit/converter/Converter$ResponseConverter;
-	public fun suspendResponseConverter (Lde/jensklingenberg/ktorfit/internal/TypeData;Lde/jensklingenberg/ktorfit/Ktorfit;)Lde/jensklingenberg/ktorfit/converter/Converter$SuspendResponseConverter;
+	public fun responseConverter (Lde/jensklingenberg/ktorfit/converter/TypeData;Lde/jensklingenberg/ktorfit/Ktorfit;)Lde/jensklingenberg/ktorfit/converter/Converter$ResponseConverter;
+	public fun suspendResponseConverter (Lde/jensklingenberg/ktorfit/converter/TypeData;Lde/jensklingenberg/ktorfit/Ktorfit;)Lde/jensklingenberg/ktorfit/converter/Converter$SuspendResponseConverter;
 }
 
 public final class com/skydoves/sandwich/ktorfit/ApiResponseConverterFactory$Companion {

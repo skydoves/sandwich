@@ -20,7 +20,8 @@ import com.skydoves.sandwich.ApiResponse.Companion.maps
 import com.skydoves.sandwich.ApiResponse.Companion.operate
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.converter.Converter
-import de.jensklingenberg.ktorfit.internal.TypeData
+import de.jensklingenberg.ktorfit.converter.KtorfitResult
+import de.jensklingenberg.ktorfit.converter.TypeData
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import kotlin.jvm.JvmStatic
@@ -45,9 +46,14 @@ public class ApiResponseConverterFactory internal constructor() : Converter.Fact
   ): Converter.SuspendResponseConverter<HttpResponse, ApiResponse<Any>>? {
     if (typeData.typeInfo.type == ApiResponse::class) {
       return object : Converter.SuspendResponseConverter<HttpResponse, ApiResponse<Any>> {
-        override suspend fun convert(response: HttpResponse): ApiResponse<Any> {
+        override suspend fun convert(result: KtorfitResult): ApiResponse<Any> {
           val apiResponse: ApiResponse<Any> = try {
-            ApiResponse.Success(response.body(typeData.typeArgs.first().typeInfo))
+            when (result) {
+              is KtorfitResult.Success ->
+                ApiResponse.Success(result.response.body(typeData.typeArgs.first().typeInfo))
+
+              is KtorfitResult.Failure -> ApiResponse.exception(result.throwable)
+            }
           } catch (e: Throwable) {
             ApiResponse.exception(e)
           }
