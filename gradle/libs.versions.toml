@@ -1,6 +1,6 @@
 [versions]
 agp = "8.6.0"
-kotlin = "2.0.10"
+kotlin = "2.0.20"
 dokka = "1.9.20"
 jvmTarget = "11"
 nexusPlugin = "0.26.0"
@@ -11,10 +11,11 @@ retrofit = "2.11.0"
 okio = "3.9.0"
 okhttp = "4.12.0"
 ktor = "2.3.12"
-ktorfit = "1.14.0"
+ktorfit = "2.1.0"
+ktorfitKSP = "2.1.0-1.0.24"
 coroutines = "1.8.1"
 kotlinSerialization = "1.7.1"
-ksp = "2.0.10-1.0.24"
+ksp = "2.0.20-1.0.25"
 moshi = "1.15.1"
 glide = "4.16.0"
 androidxLifecycle = "2.8.5"
@@ -24,6 +25,7 @@ androidxTest = "1.6.2"
 androidxJunit = "1.2.1"
 androidxArchTest = "2.2.0"
 mockito = "5.13.0"
+mockitoInline = "5.2.0"
 mockitoKotlin = "2.2.0"
 timber = "5.0.1"
 spotless = "6.25.0"
@@ -63,7 +65,7 @@ ktor-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "k
 ktor-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktorfit = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-lib", version.ref = "ktorfit" }
 ktorfit-light = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-lib-light", version.ref = "ktorfit" }
-ktorfit-ksp = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-ksp", version.ref = "ktorfit" }
+ktorfit-ksp = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-ksp", version.ref = "ktorfitKSP" }
 coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
@@ -75,7 +77,7 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 
 arch-test = { group = "androidx.arch.core", name = "core-testing", version.ref = "androidxArchTest" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
-mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
+mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockitoInline" }
 mockito-kotlin = { group = "com.nhaarman.mockitokotlin2", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
 mock-webserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
 coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
