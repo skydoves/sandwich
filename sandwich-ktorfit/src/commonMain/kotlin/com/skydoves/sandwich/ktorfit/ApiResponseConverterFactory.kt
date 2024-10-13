@@ -18,12 +18,15 @@ package com.skydoves.sandwich.ktorfit
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ApiResponse.Companion.maps
 import com.skydoves.sandwich.ApiResponse.Companion.operate
+import com.skydoves.sandwich.SandwichInitializer
+import com.skydoves.sandwich.ktor.getStatusCode
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.converter.Converter
 import de.jensklingenberg.ktorfit.converter.KtorfitResult
 import de.jensklingenberg.ktorfit.converter.TypeData
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 import kotlin.jvm.JvmStatic
 
 /**
@@ -49,8 +52,13 @@ public class ApiResponseConverterFactory internal constructor() : Converter.Fact
         override suspend fun convert(result: KtorfitResult): ApiResponse<Any> {
           val apiResponse: ApiResponse<Any> = try {
             when (result) {
-              is KtorfitResult.Success ->
-                ApiResponse.Success(result.response.body(typeData.typeArgs.first().typeInfo))
+              is KtorfitResult.Success -> {
+                if (result.response.getStatusCode().code in SandwichInitializer.successCodeRange) {
+                  ApiResponse.Success(result.response.body(typeData.typeArgs.first().typeInfo))
+                } else {
+                  ApiResponse.Failure.Error(result.response.bodyAsText())
+                }
+              }
 
               is KtorfitResult.Failure -> ApiResponse.exception(result.throwable)
             }
