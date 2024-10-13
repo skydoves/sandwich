@@ -1,5 +1,5 @@
 [versions]
-agp = "8.7.0"
+agp = "8.6.1"
 kotlin = "2.0.20"
 dokka = "1.9.20"
 jvmTarget = "11"
@@ -63,8 +63,8 @@ ktor-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation"
 ktor-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
-ktorfit = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-lib", version.ref = "ktorfit" }
-ktorfit-light = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-lib-light", version.ref = "ktorfit" }
+ktorfit = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-lib-ktor-3.0.0", version.ref = "ktorfit" }
+ktorfit-light = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-lib-light-ktor-3.0.0", version.ref = "ktorfit" }
 ktorfit-ksp = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-ksp", version.ref = "ktorfitKSP" }
 coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
