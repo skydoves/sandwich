@@ -39,9 +39,9 @@ sourceSets {
 First, build your `Ktorfit` instance with the `ApiResponseConverterFactory` call adapter factory:
 
 ```kotlin
-val retrofit = Ktorfit.Builder()
+val ktorfit = Ktorfit.Builder()
     .baseUrl(BASE_URL)
-    .addCallAdapterFactory(ApiResponseConverterFactory.create())
+    .converterFactories(ApiResponseConverterFactory.create())
     .build()
 ```
 
@@ -58,7 +58,7 @@ interface MyApiService {
 Lastly, execute the defined service to receive the `ApiResponse`:
 
 ```kotlin
-val apiService = ktorfit.create<MyApiService>()
+val apiService = ktorfit.createMyApiService()
 val response: ApiResponse<List<Poster>> = apiService.fetchData()
 response.onSuccess {
     // handles the success case when the API request gets a successful response.
