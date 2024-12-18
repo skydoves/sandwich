@@ -37,7 +37,7 @@ import com.skydoves.sandwich.suspendOnSuccess
 import com.skydoves.sandwichdemo.errors.HttpException
 import com.skydoves.sandwichdemo.model.PokemonResponse
 import com.skydoves.sandwichdemo.model.Poster
-import com.skydoves.sandwichdemo.network.KtorfitPokemonService
+import com.skydoves.sandwichdemo.network.createKtorfitPokemonService
 import de.jensklingenberg.ktorfit.Ktorfit
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -154,7 +154,7 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
       .converterFactories(ApiResponseConverterFactory.create())
       .httpClient(client)
       .build()
-    val service = ktorfit.create<KtorfitPokemonService>()
+    val service = ktorfit.createKtorfitPokemonService()
     val response = service.getPokemon()
     response.onSuccess {
       Timber.d("ktorfit success: $data")
