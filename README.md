@@ -318,6 +318,7 @@ val apiResponse = runAndRetry(retryPolicy) { attempt, reason ->
   // Handle failure cases
 }
 ```
+This setup allows you to define a retry policy that determines whether a retry attempt should occur and specifies the retry timeout. The `runAndRetry` extension then encapsulates the execution logic, applying the defined policy, and providing the response in a clean and structured manner.
 
 ### Sequential
 
@@ -583,7 +584,6 @@ public class NetworkInitializer : Initializer<Unit> {
 }
 ```
 
-This setup allows you to define a retry policy that determines whether a retry attempt should occur and specifies the retry timeout. The `runAndRetry` extension then encapsulates the execution logic, applying the defined policy, and providing the response in a clean and structured manner.
 
 ## Find this library useful? :heart:
 Support it by joining __[stargazers](https://github.com/skydoves/sandwich/stargazers)__ for this repository. :star: <br>
