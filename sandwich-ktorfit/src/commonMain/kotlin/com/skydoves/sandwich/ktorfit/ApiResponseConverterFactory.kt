@@ -56,7 +56,7 @@ public class ApiResponseConverterFactory internal constructor() : Converter.Fact
                 if (result.response.getStatusCode().code in SandwichInitializer.successCodeRange) {
                   ApiResponse.Success(result.response.body(typeData.typeArgs.first().typeInfo))
                 } else {
-                  ApiResponse.Failure.Error(result.response.bodyAsText())
+                  ApiResponse.Failure.Error(result.response)
                 }
               }
 
