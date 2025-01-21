@@ -23,7 +23,7 @@ object Configuration {
   const val minSdkDemo = 21
   const val majorVersion = 2
   const val minorVersion = 0
-  const val patchVersion = 10
+  const val patchVersion = 11
   const val versionName = "$majorVersion.$minorVersion.$patchVersion"
   const val versionCode = 43
   const val snapshotVersionName = "$majorVersion.$minorVersion.${patchVersion + 1}-SNAPSHOT"
