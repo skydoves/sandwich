@@ -19,7 +19,6 @@ import com.skydoves.sandwich.mappers.ApiSuccessModelMapper
 
 internal object SuccessPosterMapper : ApiSuccessModelMapper<List<Poster>, Poster?> {
 
-  override fun map(apiErrorResponse: ApiResponse.Success<List<Poster>>): Poster {
-    return apiErrorResponse.data.first()
-  }
+  override fun map(apiErrorResponse: ApiResponse.Success<List<Poster>>): Poster =
+    apiErrorResponse.data.first()
 }

@@ -33,10 +33,10 @@ import retrofit2.Response
  *
  * @return A [StatusCode] from the network callback response.
  */
-public fun <T> Response<T>.getStatusCode(): StatusCode {
-  return StatusCode.entries.find { it.code == code() }
-    ?: StatusCode.Unknown
+public fun <T> Response<T>.getStatusCode(): StatusCode = StatusCode.entries.find {
+  it.code == code()
 }
+  ?: StatusCode.Unknown
 
 @Suppress("UNCHECKED_CAST")
 @PublishedApi

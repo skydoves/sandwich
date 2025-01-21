@@ -31,9 +31,8 @@ import timber.log.Timber
 /**
  * A global response operator for handling [ApiResponse]s regardless of its type.
  */
-class GlobalResponseOperator<T>(
-  private val application: Application,
-) : ApiResponseSuspendOperator<T>() {
+class GlobalResponseOperator<T>(private val application: Application) :
+  ApiResponseSuspendOperator<T>() {
 
   // handle the case when the API request gets a success response.
   override suspend fun onSuccess(apiResponse: ApiResponse.Success<T>) {

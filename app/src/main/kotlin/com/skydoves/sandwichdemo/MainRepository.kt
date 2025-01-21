@@ -21,9 +21,7 @@ import com.skydoves.sandwichdemo.network.DisneyService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class MainRepository(
-  private val disneyService: DisneyService,
-) {
+class MainRepository(private val disneyService: DisneyService) {
 
   fun fetchPostersFlow(): Flow<ApiResponse<List<Poster>>> = flow {
     val response = disneyService.fetchDisneyPosters()

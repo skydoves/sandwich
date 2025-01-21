@@ -28,7 +28,6 @@ import com.skydoves.sandwichdemo.model.ErrorMessage
  */
 object ErrorEnvelopeMapper : ApiErrorModelMapper<ErrorMessage> {
 
-  override fun map(apiErrorResponse: ApiResponse.Failure.Error): ErrorMessage {
-    return ErrorMessage(apiErrorResponse.statusCode.code, apiErrorResponse.message())
-  }
+  override fun map(apiErrorResponse: ApiResponse.Failure.Error): ErrorMessage =
+    ErrorMessage(apiErrorResponse.statusCode.code, apiErrorResponse.message())
 }

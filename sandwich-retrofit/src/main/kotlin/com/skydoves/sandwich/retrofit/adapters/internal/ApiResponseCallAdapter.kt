@@ -33,11 +33,8 @@ internal class ApiResponseCallAdapter(
   private val coroutineScope: CoroutineScope,
 ) : CallAdapter<Type, Call<ApiResponse<Type>>> {
 
-  override fun responseType(): Type {
-    return resultType
-  }
+  override fun responseType(): Type = resultType
 
-  override fun adapt(call: Call<Type>): Call<ApiResponse<Type>> {
-    return ApiResponseCallDelegate(call, coroutineScope)
-  }
+  override fun adapt(call: Call<Type>): Call<ApiResponse<Type>> =
+    ApiResponseCallDelegate(call, coroutineScope)
 }

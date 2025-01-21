@@ -120,8 +120,8 @@ public sealed interface ApiResponse<out T> {
      * If the [f] doesn't throw any exceptions, it creates [ApiResponse.Success].
      * If the [f] throws an exception, it creates [ApiResponse.Failure.Exception].
      */
-    public inline fun <reified T> of(tag: Any? = null, crossinline f: () -> T): ApiResponse<T> {
-      return try {
+    public inline fun <reified T> of(tag: Any? = null, crossinline f: () -> T): ApiResponse<T> =
+      try {
         val result = f()
         Success(
           data = result,
@@ -130,7 +130,6 @@ public sealed interface ApiResponse<out T> {
       } catch (e: Exception) {
         exception(e)
       }.operate().maps()
-    }
 
     /**
      * @author skydoves (Jaewoong Eum)

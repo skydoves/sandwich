@@ -39,10 +39,10 @@ import kotlin.jvm.JvmSynthetic
  *
  * @return A [StatusCode] from the network callback response.
  */
-public fun HttpResponse.getStatusCode(): StatusCode {
-  return StatusCode.entries.find { it.code == status.value }
-    ?: StatusCode.Unknown
+public fun HttpResponse.getStatusCode(): StatusCode = StatusCode.entries.find {
+  it.code == status.value
 }
+  ?: StatusCode.Unknown
 
 @PublishedApi
 internal val <T> ApiResponse.Success<T>.tagResponse: HttpResponse
@@ -59,9 +59,8 @@ internal val ApiResponse.Failure.Error.payloadResponse: HttpResponse
   )
 
 /** The de-serialized response body of a successful data. */
-public suspend inline fun <reified T> ApiResponse.Success<T>.body(): T {
-  return tagResponse.body() ?: throw NoContentException(tagResponse.getStatusCode().code)
-}
+public suspend inline fun <reified T> ApiResponse.Success<T>.body(): T =
+  tagResponse.body() ?: throw NoContentException(tagResponse.getStatusCode().code)
 
 /** [StatusCode] is Hypertext Transfer Protocol (HTTP) response status codes. */
 public val <T> ApiResponse.Success<T>.statusCode: StatusCode
@@ -77,17 +76,14 @@ public val <T> ApiResponse.Success<T>.httpResponse: HttpResponse
 
 /**
  * The [ByteReadChannel] can be consumed only once. */
-public suspend fun ApiResponse.Failure.Error.bodyChannel(): ByteReadChannel {
-  return payloadResponse.bodyAsChannel()
-}
+public suspend fun ApiResponse.Failure.Error.bodyChannel(): ByteReadChannel =
+  payloadResponse.bodyAsChannel()
 
 /**
  * The [ByteReadChannel] can be consumed only once. */
 public suspend fun ApiResponse.Failure.Error.bodyString(
   fallbackCharset: Charset = Charsets.UTF_8,
-): String {
-  return payloadResponse.bodyAsText(fallbackCharset = fallbackCharset)
-}
+): String = payloadResponse.bodyAsText(fallbackCharset = fallbackCharset)
 
 /** [StatusCode] is Hypertext Transfer Protocol (HTTP) response status codes. */
 public val ApiResponse.Failure.Error.statusCode: StatusCode

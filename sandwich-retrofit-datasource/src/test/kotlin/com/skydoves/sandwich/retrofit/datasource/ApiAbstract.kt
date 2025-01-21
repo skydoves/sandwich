@@ -58,12 +58,10 @@ internal abstract class ApiAbstract<T> {
     mockWebServer.enqueue(mockResponse.setBody(source.readString(StandardCharsets.UTF_8)))
   }
 
-  fun createService(clazz: Class<T>): T {
-    return Retrofit.Builder()
-      .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
-      .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
-      .build()
-      .create(clazz)
-  }
+  fun createService(clazz: Class<T>): T = Retrofit.Builder()
+    .baseUrl(mockWebServer.url("/"))
+    .addConverterFactory(MoshiConverterFactory.create())
+    .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
+    .build()
+    .create(clazz)
 }

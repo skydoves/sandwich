@@ -25,9 +25,8 @@ import com.skydoves.sandwichdemo.model.Poster
 import com.skydoves.sandwichdemo.network.DisneyService
 import timber.log.Timber
 
-class MainOperatorViewModel(
-  disneyService: DisneyService,
-) : AndroidViewModel(SandwichDemoApp.sandwichApp) {
+class MainOperatorViewModel(disneyService: DisneyService) :
+  AndroidViewModel(SandwichDemoApp.sandwichApp) {
 
   val posterListLiveData: LiveData<List<Poster>>
 

@@ -26,7 +26,6 @@ import de.jensklingenberg.ktorfit.converter.KtorfitResult
 import de.jensklingenberg.ktorfit.converter.TypeData
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.bodyAsText
 import kotlin.jvm.JvmStatic
 
 /**
@@ -75,8 +74,6 @@ public class ApiResponseConverterFactory internal constructor() : Converter.Fact
 
   public companion object {
     @JvmStatic
-    public fun create(): ApiResponseConverterFactory {
-      return ApiResponseConverterFactory()
-    }
+    public fun create(): ApiResponseConverterFactory = ApiResponseConverterFactory()
   }
 }

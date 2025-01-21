@@ -26,7 +26,6 @@ import com.skydoves.sandwichdemo.model.Poster
  */
 object SuccessPosterMapper : ApiSuccessModelMapper<List<Poster>, Poster?> {
 
-  override fun map(apiSuccessResponse: ApiResponse.Success<List<Poster>>): Poster? {
-    return apiSuccessResponse.data.firstOrNull()
-  }
+  override fun map(apiSuccessResponse: ApiResponse.Success<List<Poster>>): Poster? =
+    apiSuccessResponse.data.firstOrNull()
 }

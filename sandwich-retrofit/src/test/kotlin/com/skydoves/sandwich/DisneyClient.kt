@@ -17,9 +17,7 @@ package com.skydoves.sandwich
 
 import com.skydoves.sandwich.retrofit.request
 
-internal class DisneyClient(
-  private val disneyService: DisneyService,
-) {
+internal class DisneyClient(private val disneyService: DisneyService) {
 
   fun fetchDisneyPosters(onResult: (response: ApiResponse<List<Poster>>) -> Unit) {
     this.disneyService.fetchDisneyPosterList().request(onResult)

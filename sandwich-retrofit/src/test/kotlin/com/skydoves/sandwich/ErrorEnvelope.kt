@@ -18,7 +18,4 @@ package com.skydoves.sandwich
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class ErrorEnvelope(
-  val code: Int,
-  val message: String,
-)
+internal data class ErrorEnvelope(val code: Int, val message: String)

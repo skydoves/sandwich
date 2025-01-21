@@ -24,7 +24,4 @@ import kotlinx.serialization.Serializable
  * @param message Http error response body message.
  */
 @Serializable
-data class ErrorMessage(
-  val code: Int,
-  val message: String,
-)
+data class ErrorMessage(val code: Int, val message: String)

@@ -16,7 +16,4 @@
 package com.skydoves.sandwich.retrofit.serialization
 
 @kotlinx.serialization.Serializable
-internal data class ErrorMessage(
-  val code: Int,
-  val message: String,
-)
+internal data class ErrorMessage(val code: Int, val message: String)

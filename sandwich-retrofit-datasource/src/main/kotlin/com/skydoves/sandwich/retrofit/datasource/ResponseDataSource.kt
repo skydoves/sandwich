@@ -102,9 +102,8 @@ public class ResponseDataSource<T> : DataSource<T> {
   // runnable for retry response data from disk thread.
   private val retryRunnable = Runnable {
     if (retryCount > 0) {
-      synchronized(retryCount--) {
-        enqueue()
-      }
+      retryCount--
+      enqueue()
     }
   }
 
@@ -257,14 +256,12 @@ public class ResponseDataSource<T> : DataSource<T> {
    * this live data can be observable from the network requests.
    */
   @Suppress("UNCHECKED_CAST")
-  public fun asLiveData(): LiveData<T> {
-    return MutableLiveData<T>().apply {
-      liveData = this
-      if (data != empty) {
-        val data = data as ApiResponse<T>
-        if (data is ApiResponse.Success<T>) {
-          postValue((data.tag as Response<T>).body())
-        }
+  public fun asLiveData(): LiveData<T> = MutableLiveData<T>().apply {
+    liveData = this
+    if (data != empty) {
+      val data = data as ApiResponse<T>
+      if (data is ApiResponse.Success<T>) {
+        postValue((data.tag as Response<T>).body())
       }
     }
   }

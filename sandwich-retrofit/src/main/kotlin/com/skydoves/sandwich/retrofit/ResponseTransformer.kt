@@ -61,15 +61,13 @@ public inline fun <T> Call<T>.request(
 @JvmSynthetic
 internal inline fun <T> getCallbackFromOnResult(
   crossinline onResult: (response: ApiResponse<T>) -> Unit,
-): Callback<T> {
-  return object : Callback<T> {
-    override fun onResponse(call: Call<T>, response: Response<T>) {
-      onResult(ApiResponse.responseOf { response })
-    }
+): Callback<T> = object : Callback<T> {
+  override fun onResponse(call: Call<T>, response: Response<T>) {
+    onResult(ApiResponse.responseOf { response })
+  }
 
-    override fun onFailure(call: Call<T>, throwable: Throwable) {
-      onResult(ApiResponse.exception(throwable))
-    }
+  override fun onFailure(call: Call<T>, throwable: Throwable) {
+    onResult(ApiResponse.exception(throwable))
   }
 }
 
@@ -87,18 +85,16 @@ internal inline fun <T> getCallbackFromOnResult(
 internal inline fun <T> getCallbackFromOnResultOnCoroutinesScope(
   coroutineScope: CoroutineScope,
   crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
-): Callback<T> {
-  return object : Callback<T> {
-    override fun onResponse(call: Call<T>, response: Response<T>) {
-      coroutineScope.launch {
-        onResult(ApiResponse.responseOf { response })
-      }
+): Callback<T> = object : Callback<T> {
+  override fun onResponse(call: Call<T>, response: Response<T>) {
+    coroutineScope.launch {
+      onResult(ApiResponse.responseOf { response })
     }
+  }
 
-    override fun onFailure(call: Call<T>, throwable: Throwable) {
-      coroutineScope.launch {
-        onResult(ApiResponse.exception(throwable))
-      }
+  override fun onFailure(call: Call<T>, throwable: Throwable) {
+    coroutineScope.launch {
+      onResult(ApiResponse.exception(throwable))
     }
   }
 }
@@ -117,20 +113,18 @@ internal inline fun <T> getCallbackFromOnResultOnCoroutinesScope(
 internal inline fun <T> getCallbackFromOnResultWithContext(
   context: CoroutineContext = EmptyCoroutineContext,
   crossinline onResult: suspend (response: ApiResponse<T>) -> Unit,
-): Callback<T> {
-  return object : Callback<T> {
-    val supervisorJob = SupervisorJob(context[Job])
-    val scope = CoroutineScope(context + supervisorJob)
-    override fun onResponse(call: Call<T>, response: Response<T>) {
-      scope.launch {
-        onResult(ApiResponse.responseOf { response })
-      }
+): Callback<T> = object : Callback<T> {
+  val supervisorJob = SupervisorJob(context[Job])
+  val scope = CoroutineScope(context + supervisorJob)
+  override fun onResponse(call: Call<T>, response: Response<T>) {
+    scope.launch {
+      onResult(ApiResponse.responseOf { response })
     }
+  }
 
-    override fun onFailure(call: Call<T>, throwable: Throwable) {
-      scope.launch {
-        onResult(ApiResponse.exception(throwable))
-      }
+  override fun onFailure(call: Call<T>, throwable: Throwable) {
+    scope.launch {
+      onResult(ApiResponse.exception(throwable))
     }
   }
 }

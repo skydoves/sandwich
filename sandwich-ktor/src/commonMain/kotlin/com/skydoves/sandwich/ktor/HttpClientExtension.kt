@@ -31,9 +31,7 @@ import io.ktor.http.Url
  */
 public suspend inline fun <reified T> HttpClient.requestApiResponse(
   builder: HttpRequestBuilder = HttpRequestBuilder(),
-): ApiResponse<T> {
-  return apiResponseOf { HttpStatement(builder, this).execute() }
-}
+): ApiResponse<T> = apiResponseOf { HttpStatement(builder, this).execute() }
 
 /**
  * Executes an [HttpClient]'s request with the parameters specified in [block].
@@ -42,9 +40,7 @@ public suspend inline fun <reified T> HttpClient.requestApiResponse(
  */
 public suspend inline fun <reified T> HttpClient.requestApiResponse(
   crossinline block: HttpRequestBuilder.() -> Unit,
-): ApiResponse<T> {
-  return apiResponseOf { request(HttpRequestBuilder().apply(block)) }
-}
+): ApiResponse<T> = apiResponseOf { request(HttpRequestBuilder().apply(block)) }
 
 /**
  * Executes an [HttpClient]'s request with the [urlString] and the parameters configured in [block].
@@ -54,12 +50,10 @@ public suspend inline fun <reified T> HttpClient.requestApiResponse(
 public suspend inline fun <reified T> HttpClient.requestApiResponse(
   urlString: String,
   crossinline block: HttpRequestBuilder.() -> Unit = {},
-): ApiResponse<T> {
-  return apiResponseOf {
-    request {
-      url(urlString)
-      block()
-    }
+): ApiResponse<T> = apiResponseOf {
+  request {
+    url(urlString)
+    block()
   }
 }
 
@@ -71,12 +65,10 @@ public suspend inline fun <reified T> HttpClient.requestApiResponse(
 public suspend inline fun <reified T> HttpClient.requestApiResponse(
   url: Url,
   crossinline block: HttpRequestBuilder.() -> Unit = {},
-): ApiResponse<T> {
-  return apiResponseOf {
-    request {
-      url(url)
-      block()
-    }
+): ApiResponse<T> = apiResponseOf {
+  request {
+    url(url)
+    block()
   }
 }
 

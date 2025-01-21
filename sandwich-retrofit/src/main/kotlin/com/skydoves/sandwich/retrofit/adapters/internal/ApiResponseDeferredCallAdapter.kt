@@ -38,9 +38,7 @@ internal class ApiResponseDeferredCallAdapter<T>(
   private val coroutineScope: CoroutineScope,
 ) : CallAdapter<T, Deferred<ApiResponse<T>>> {
 
-  override fun responseType(): Type {
-    return resultType
-  }
+  override fun responseType(): Type = resultType
 
   @Suppress("DeferredIsResult")
   override fun adapt(call: Call<T>): Deferred<ApiResponse<T>> {

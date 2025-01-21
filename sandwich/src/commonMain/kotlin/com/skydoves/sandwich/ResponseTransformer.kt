@@ -41,11 +41,9 @@ import kotlin.jvm.JvmSynthetic
  *
  * @return The encapsulated data or null.
  */
-public fun <T> ApiResponse<T>.getOrNull(): T? {
-  return when (this) {
-    is ApiResponse.Success -> data
-    is ApiResponse.Failure -> null
-  }
+public fun <T> ApiResponse<T>.getOrNull(): T? = when (this) {
+  is ApiResponse.Success -> data
+  is ApiResponse.Failure -> null
 }
 
 /**
@@ -56,11 +54,9 @@ public fun <T> ApiResponse<T>.getOrNull(): T? {
  *
  * @return The encapsulated data or [defaultValue].
  */
-public fun <T> ApiResponse<T>.getOrElse(defaultValue: T): T {
-  return when (this) {
-    is ApiResponse.Success -> data
-    is ApiResponse.Failure -> defaultValue
-  }
+public fun <T> ApiResponse<T>.getOrElse(defaultValue: T): T = when (this) {
+  is ApiResponse.Success -> data
+  is ApiResponse.Failure -> defaultValue
 }
 
 /**
@@ -71,11 +67,9 @@ public fun <T> ApiResponse<T>.getOrElse(defaultValue: T): T {
  *
  * @return The encapsulated data or [defaultValue].
  */
-public inline fun <T> ApiResponse<T>.getOrElse(defaultValue: () -> T): T {
-  return when (this) {
-    is ApiResponse.Success -> data
-    is ApiResponse.Failure -> defaultValue()
-  }
+public inline fun <T> ApiResponse<T>.getOrElse(defaultValue: () -> T): T = when (this) {
+  is ApiResponse.Success -> data
+  is ApiResponse.Failure -> defaultValue()
 }
 
 /**
@@ -424,9 +418,7 @@ public suspend inline fun <T> ApiResponse<T>.suspendOnProcedure(
  */
 public inline fun <reified T, reified V> ApiResponse<T>.flatMap(
   crossinline transformer: ApiResponse<T>.() -> ApiResponse<V>,
-): ApiResponse<V> {
-  return transformer.invoke(this)
-}
+): ApiResponse<V> = transformer.invoke(this)
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -439,9 +431,7 @@ public inline fun <reified T, reified V> ApiResponse<T>.flatMap(
  */
 public suspend inline fun <reified T, reified V> ApiResponse<T>.suspendFlatMap(
   crossinline transformer: suspend ApiResponse<T>.() -> ApiResponse<V>,
-): ApiResponse<V> {
-  return transformer.invoke(this)
-}
+): ApiResponse<V> = transformer.invoke(this)
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -454,9 +444,7 @@ public suspend inline fun <reified T, reified V> ApiResponse<T>.suspendFlatMap(
  */
 public inline fun <reified T, reified V> ApiResponse<T>.flatmap(
   mapper: ApiResponseMapper<T, V>,
-): ApiResponse<V> {
-  return mapper.map(this)
-}
+): ApiResponse<V> = mapper.map(this)
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -551,9 +539,8 @@ public suspend fun <T> ApiResponse<T>.suspendMapFailure(
  *
  * @return A mapped custom [V] error response model.
  */
-public fun <T, V> ApiResponse.Success<T>.map(mapper: ApiSuccessModelMapper<T, V>): V {
-  return mapper.map(this)
-}
+public fun <T, V> ApiResponse.Success<T>.map(mapper: ApiSuccessModelMapper<T, V>): V =
+  mapper.map(this)
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -635,9 +622,7 @@ public suspend inline fun <T, V> ApiResponse.Success<T>.suspendMap(
  *
  * @return A mapped custom [T] error response model.
  */
-public fun <T> ApiResponse.Failure.Error.map(mapper: ApiErrorModelMapper<T>): T {
-  return mapper.map(this)
-}
+public fun <T> ApiResponse.Failure.Error.map(mapper: ApiErrorModelMapper<T>): T = mapper.map(this)
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -705,9 +690,7 @@ public suspend inline fun <T> ApiResponse.Failure.Error.suspendMap(
 @SuspensionFunction
 public suspend inline fun <T> ApiResponse.Failure.Error.suspendMap(
   crossinline mapper: suspend (ApiResponse.Failure.Error) -> T,
-): T {
-  return mapper(this)
-}
+): T = mapper(this)
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -716,12 +699,10 @@ public suspend inline fun <T> ApiResponse.Failure.Error.suspendMap(
  *
  * @return The encapsulated data.
  */
-public fun <T> ApiResponse<T>.tagOrNull(): Any? {
-  return if (this is ApiResponse.Success) {
-    tag
-  } else {
-    null
-  }
+public fun <T> ApiResponse<T>.tagOrNull(): Any? = if (this is ApiResponse.Success) {
+  tag
+} else {
+  null
 }
 
 /**
@@ -729,11 +710,9 @@ public fun <T> ApiResponse<T>.tagOrNull(): Any? {
  *
  * @return An error message from the [ApiResponse.Failure].
  */
-public fun <T> ApiResponse.Failure<T>.message(): String {
-  return when (this) {
-    is ApiResponse.Failure.Error -> message()
-    is ApiResponse.Failure.Exception -> message()
-  }
+public fun <T> ApiResponse.Failure<T>.message(): String = when (this) {
+  is ApiResponse.Failure.Error -> message()
+  is ApiResponse.Failure.Exception -> message()
 }
 
 /**
@@ -832,12 +811,10 @@ public fun <T> ApiResponse<List<T>>.merge(
  * @return A coroutines [Flow] which emits successful data.
  */
 @JvmSynthetic
-public fun <T> ApiResponse<T>.toFlow(): Flow<T> {
-  return if (this is ApiResponse.Success) {
-    flowOf(data)
-  } else {
-    emptyFlow()
-  }
+public fun <T> ApiResponse<T>.toFlow(): Flow<T> = if (this is ApiResponse.Success) {
+  flowOf(data)
+} else {
+  emptyFlow()
 }
 
 /**

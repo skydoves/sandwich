@@ -18,6 +18,4 @@ package com.skydoves.sandwich
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class Message(
-  val message: String,
-)
+internal data class Message(val message: String)

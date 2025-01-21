@@ -28,9 +28,7 @@ import retrofit2.Response
  * CallDelegate is a delegate [Call] proxy for handling and transforming one to another generic types
  * between the two different types of [Call] requests.
  */
-internal abstract class CallDelegate<TIn, TOut>(
-  protected val proxy: Call<TIn>,
-) : Call<TOut> {
+internal abstract class CallDelegate<TIn, TOut>(protected val proxy: Call<TIn>) : Call<TOut> {
   final override fun enqueue(callback: Callback<TOut>) = enqueueImpl(callback)
   final override fun execute(): Response<TOut> = executeImpl()
   final override fun clone(): Call<TOut> = cloneImpl()
