@@ -33,9 +33,8 @@ public object EmptyBodyInterceptor : Interceptor {
 
   override fun intercept(chain: Interceptor.Chain): Response {
     val response = chain.proceed(chain.request())
-    if (!response.isSuccessful || response.code.let {
-        it != StatusCode.NoContent.code && it != StatusCode.ResetContent.code
-      }
+    if (!response.isSuccessful ||
+      (response.code != StatusCode.NoContent.code && response.code != StatusCode.ResetContent.code)
     ) {
       return response
     }
