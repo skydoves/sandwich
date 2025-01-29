@@ -34,17 +34,62 @@ mavenPublishing {
 
 kotlin {
   jvmToolchain(libs.versions.jvmTarget.get().toInt())
+
   jvm {
+    libs.versions.jvmTarget.get().toInt()
     compilations.all {
       kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
     }
     withJava()
   }
+
+  wasmJs {
+    browser {
+      testTask {
+        enabled = false
+      }
+    }
+    nodejs {
+      testTask {
+        enabled = false
+      }
+    }
+    binaries.library()
+  }
+
   iosX64()
   iosArm64()
   iosSimulatorArm64()
-  macosArm64()
+
   macosX64()
+  macosArm64()
+
+  @Suppress("OPT_IN_USAGE")
+  applyHierarchyTemplate {
+    common {
+      group("jvm") {
+        withAndroidTarget()
+        withJvm()
+      }
+      group("skia") {
+        group("darwin") {
+          group("apple") {
+            group("ios") {
+              withIosX64()
+              withIosArm64()
+              withIosSimulatorArm64()
+            }
+            group("macos") {
+              withMacosX64()
+              withMacosArm64()
+            }
+          }
+          withJs()
+          withWasmJs()
+        }
+      }
+    }
+  }
 
   sourceSets {
     all {
@@ -56,51 +101,6 @@ kotlin {
         api(libs.ktorfit.light)
         implementation(libs.coroutines)
       }
-    }
-
-    val commonTest by getting {
-      dependencies {
-      }
-    }
-
-    val jvmMain by getting
-    val jvmTest by getting
-
-    val appleMain by creating {
-      dependsOn(commonMain)
-    }
-    val appleTest by creating {
-      dependsOn(commonTest)
-    }
-    val macosArm64Main by getting {
-      dependsOn(appleMain)
-    }
-    val macosX64Main by getting {
-      dependsOn(appleMain)
-    }
-    val iosSimulatorArm64Main by getting {
-      dependsOn(appleMain)
-    }
-    val iosArm64Main by getting {
-      dependsOn(appleMain)
-    }
-    val iosX64Main by getting {
-      dependsOn(appleMain)
-    }
-    val iosArm64Test by getting {
-      dependsOn(appleTest)
-    }
-    val iosX64Test by getting {
-      dependsOn(appleTest)
-    }
-    val iosSimulatorArm64Test by getting {
-      dependsOn(appleTest)
-    }
-    val macosX64Test by getting {
-      dependsOn(appleTest)
-    }
-    val macosArm64Test by getting {
-      dependsOn(appleTest)
     }
   }
 

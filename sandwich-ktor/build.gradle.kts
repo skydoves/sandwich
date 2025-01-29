@@ -34,17 +34,7 @@ mavenPublishing {
 }
 
 kotlin {
-  listOf(
-    iosX64(),
-    iosArm64(),
-    iosSimulatorArm64(),
-    macosArm64(),
-    macosX64(),
-  ).forEach {
-    it.binaries.framework {
-      baseName = "common"
-    }
-  }
+  androidTarget { publishLibraryVariants("release") }
 
   jvm {
     libs.versions.jvmTarget.get().toInt()
@@ -53,11 +43,53 @@ kotlin {
     }
   }
 
-  androidTarget {
-    publishLibraryVariants("release")
+  wasmJs {
+    browser {
+      testTask {
+        enabled = false
+      }
+    }
+    nodejs {
+      testTask {
+        enabled = false
+      }
+    }
+    binaries.library()
   }
 
-  applyDefaultHierarchyTemplate()
+  iosX64()
+  iosArm64()
+  iosSimulatorArm64()
+
+  macosX64()
+  macosArm64()
+
+  @Suppress("OPT_IN_USAGE")
+  applyHierarchyTemplate {
+    common {
+      group("jvm") {
+        withAndroidTarget()
+        withJvm()
+      }
+      group("skia") {
+        group("darwin") {
+          group("apple") {
+            group("ios") {
+              withIosX64()
+              withIosArm64()
+              withIosSimulatorArm64()
+            }
+            group("macos") {
+              withMacosX64()
+              withMacosArm64()
+            }
+          }
+          withJs()
+          withWasmJs()
+        }
+      }
+    }
+  }
 
   sourceSets {
     all {

@@ -21,6 +21,7 @@ import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.TimeUnit
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -37,7 +38,9 @@ internal abstract class CallDelegate<TIn, TOut>(protected val proxy: Call<TIn>) 
   override fun request(): Request = proxy.request()
   override fun isExecuted() = proxy.isExecuted
   override fun isCanceled() = proxy.isCanceled
-  override fun timeout(): Timeout = SandwichInitializer.sandwichTimeout ?: proxy.timeout()
+  override fun timeout(): Timeout = SandwichInitializer.sandwichTimeout?.let {
+    Timeout().timeout(it, TimeUnit.MILLISECONDS)
+  } ?: proxy.timeout()
 
   abstract fun enqueueImpl(callback: Callback<TOut>)
   abstract fun executeImpl(): Response<TOut>

@@ -17,11 +17,9 @@ package com.skydoves.sandwich
 
 import com.skydoves.sandwich.mappers.SandwichFailureMapper
 import com.skydoves.sandwich.operators.SandwichOperator
+import com.skydoves.sandwich.platform.platformCoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.SupervisorJob
-import okio.Timeout
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 import kotlin.native.concurrent.ThreadLocal
@@ -82,17 +80,18 @@ public object SandwichInitializer {
    * A [CoroutineScope] for executing and operating the overall Retrofit network requests.
    */
   @JvmSynthetic
-  public var sandwichScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+  public var sandwichScope: CoroutineScope =
+    CoroutineScope(SupervisorJob() + platformCoroutineDispatcher)
 
   /**
    * @author skydoves (Jaewoong Eum)
    *
-   * A global [Timeout] for operating the [com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory].
+   * A global timeout for operating the [com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory].
    *
    * Returns a timeout that spans the entire call: resolving DNS, connecting, writing the request
    * body, server processing, and reading the response body. If the call requires redirects or
    * retries all must complete within one timeout period.
    */
   @JvmStatic
-  public var sandwichTimeout: Timeout? = null
+  public var sandwichTimeout: Long? = null
 }
