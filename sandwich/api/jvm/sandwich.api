@@ -113,12 +113,12 @@ public final class com/skydoves/sandwich/SandwichInitializer {
 	public static final fun getSandwichFailureMappers ()Ljava/util/List;
 	public static final fun getSandwichOperators ()Ljava/util/List;
 	public final fun getSandwichScope ()Lkotlinx/coroutines/CoroutineScope;
-	public static final fun getSandwichTimeout ()Lokio/Timeout;
+	public static final fun getSandwichTimeout ()Ljava/lang/Long;
 	public static final fun getSuccessCodeRange ()Lkotlin/ranges/IntRange;
 	public static final fun setSandwichFailureMappers (Ljava/util/List;)V
 	public static final fun setSandwichOperators (Ljava/util/List;)V
 	public final fun setSandwichScope (Lkotlinx/coroutines/CoroutineScope;)V
-	public static final fun setSandwichTimeout (Lokio/Timeout;)V
+	public static final fun setSandwichTimeout (Ljava/lang/Long;)V
 	public static final fun setSuccessCodeRange (Lkotlin/ranges/IntRange;)V
 }
 
