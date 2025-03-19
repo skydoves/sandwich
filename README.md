@@ -18,7 +18,7 @@ Sandwich was conceived to streamline the creation of standardized interfaces to 
 ## Download
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/sandwich.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22sandwich%22)
 
-Sandwich has achieved an impressive milestone, being downloaded in __over 500,000__ Android projects worldwide! <br>
+Sandwich has achieved an impressive milestone, being downloaded in __over 1200,000__ Android projects worldwide! <br>
 
 <img src="https://user-images.githubusercontent.com/24237865/103460609-f18ee000-4d5a-11eb-81e2-17696e3a5804.png" width="774" height="224"/>
 
