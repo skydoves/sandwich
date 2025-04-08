@@ -907,3 +907,60 @@ public suspend inline infix fun <T : Any, V : Any> ApiResponse<T>.suspendThen(
   }
   return this as ApiResponse<V>
 }
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Returns the result of [onSuccess] for the encapsulated value if this instance represents [ApiResponse.Success]
+ * or the result of [onFailure] function for the encapsulated [ApiResponse.Failure.Error] or [ApiResponse.Failure.Exception].
+ *
+ * @param onSuccess A scope function that would be executed for handling successful responses if the request succeeds.
+ * @param onError A scope function that would be executed for handling error responses if the request failed.
+ *
+ * @return A coroutines [Flow] which emits successful data.
+ */
+@JvmSynthetic
+public inline fun <T, R> ApiResponse<T>.fold(
+  onSuccess: (value: T) -> R,
+  onFailure: (message: String) -> R,
+): R {
+  contract {
+    callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(onFailure, InvocationKind.AT_MOST_ONCE)
+  }
+  return if (this is ApiResponse.Success) {
+    onSuccess.invoke(data)
+  } else {
+    val failure = this as ApiResponse.Failure
+    onFailure.invoke(failure.message())
+  }
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Returns the result of [onSuccess] for the encapsulated value if this instance represents [ApiResponse.Success]
+ * or the result of [onFailure] function for the encapsulated [ApiResponse.Failure.Error] or [ApiResponse.Failure.Exception].
+ *
+ * @param onSuccess A scope function that would be executed for handling successful responses if the request succeeds.
+ * @param onError A scope function that would be executed for handling error responses if the request failed.
+ *
+ * @return A coroutines [Flow] which emits successful data.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T, R> ApiResponse<T>.suspendFold(
+  onSuccess: suspend (value: T) -> R,
+  onFailure: suspend (message: String) -> R,
+): R {
+  contract {
+    callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(onFailure, InvocationKind.AT_MOST_ONCE)
+  }
+  return if (this is ApiResponse.Success) {
+    onSuccess.invoke(data)
+  } else {
+    val failure = this as ApiResponse.Failure
+    onFailure.invoke(failure.message())
+  }
+}
