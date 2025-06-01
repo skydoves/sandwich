@@ -17,10 +17,10 @@
 import com.github.skydoves.sandwich.Configuration
 
 plugins {
+  id(libs.plugins.android.library.get().pluginId)
   id(libs.plugins.kotlin.multiplatform.get().pluginId)
   id(libs.plugins.kotlin.serialization.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
-  java
 }
 
 apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
@@ -33,29 +33,14 @@ mavenPublishing {
 }
 
 kotlin {
-  jvmToolchain(libs.versions.jvmTarget.get().toInt())
-
-  jvm {
-    libs.versions.jvmTarget.get().toInt()
-    compilations.all {
-      kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
-    }
-    withJava()
+  androidTarget {
+    publishLibraryVariants("release", "debug")
   }
 
-  wasmJs {
-    browser {
-      testTask {
-        enabled = false
-      }
-    }
-    nodejs {
-      testTask {
-        enabled = false
-      }
-    }
-    binaries.library()
-  }
+  jvm()
+
+  @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+  wasmJs()
 
   iosX64()
   iosArm64()
@@ -105,6 +90,20 @@ kotlin {
   }
 
   explicitApi()
+}
+
+android {
+  compileSdk = Configuration.compileSdk
+  namespace = "com.skydoves.sandwich.ktorfit"
+  defaultConfig {
+    minSdk = Configuration.minSdk
+    consumerProguardFiles("consumer-rules.pro")
+  }
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+  }
 }
 
 java {
