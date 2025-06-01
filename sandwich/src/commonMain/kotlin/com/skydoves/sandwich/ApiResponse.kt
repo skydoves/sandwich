@@ -182,7 +182,7 @@ public sealed interface ApiResponse<out T> {
       mappers.forEach { mapper ->
         if (response is Failure) {
           if (mapper is ApiResponseFailureMapper) {
-            response = mapper.map(response as Failure<T>) as ApiResponse<T>
+            response = mapper.map(response) as ApiResponse<T>
           } else if (mapper is ApiResponseFailureSuspendMapper) {
             val scope = SandwichInitializer.sandwichScope
             scope.launch {
