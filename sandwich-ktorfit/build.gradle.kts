@@ -97,7 +97,6 @@ android {
   namespace = "com.skydoves.sandwich.ktorfit"
   defaultConfig {
     minSdk = Configuration.minSdk
-    consumerProguardFiles("consumer-rules.pro")
   }
 
   compileOptions {
