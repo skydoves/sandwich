@@ -722,14 +722,14 @@ public fun <T> ApiResponse.Failure<T>.message(): String = when (this) {
  *
  * @return An error message from the [ApiResponse.Failure.Error].
  */
-public fun ApiResponse.Failure.Error.message(): String = toString()
+public fun ApiResponse.Failure.Error.message(): String = payload?.toString() ?: toString()
 
 /**
  * Returns an error message from the [ApiResponse.Failure.Exception] that consists of the localized message.
  *
  * @return An error message from the [ApiResponse.Failure.Exception].
  */
-public fun ApiResponse.Failure.Exception.message(): String = toString()
+public fun ApiResponse.Failure.Exception.message(): String = message ?: toString()
 
 /**
  * @author skydoves (Jaewoong Eum)
