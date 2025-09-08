@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 // Designed and developed by 2020 skydoves (Jaewoong Eum)
 //
@@ -63,12 +63,16 @@ subprojects {
 
   if (!name.contains("app")) {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
-      kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
-      kotlinOptions.freeCompilerArgs += listOf(
-        "-opt-in=com.skydoves.sandwich.annotations.InternalSandwichApi",
-        "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-        "-Xexplicit-api=strict",
-      )
+      compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvmTarget.get().toString()))
+        freeCompilerArgs.addAll(
+          listOf(
+            "-opt-in=com.skydoves.sandwich.annotations.InternalSandwichApi",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-Xexplicit-api=strict",
+          )
+        )
+      }
     }
   }
 

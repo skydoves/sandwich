@@ -15,6 +15,7 @@
  */
 
 import com.github.skydoves.sandwich.Configuration
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
   id(libs.plugins.android.library.get().pluginId)
@@ -38,8 +39,8 @@ kotlin {
 
   jvm {
     libs.versions.jvmTarget.get().toInt()
-    compilations.all {
-      kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
+    compilerOptions {
+      jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvmTarget.get().toString()))
     }
   }
 
