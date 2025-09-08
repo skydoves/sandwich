@@ -16,6 +16,7 @@
 
 import com.github.skydoves.sandwich.Configuration
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.targets.js.JS
 
 plugins {
   id(libs.plugins.android.library.get().pluginId)
@@ -43,6 +44,8 @@ kotlin {
       jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvmTarget.get().toString()))
     }
   }
+
+  js { }
 
   wasmJs {
     browser {
