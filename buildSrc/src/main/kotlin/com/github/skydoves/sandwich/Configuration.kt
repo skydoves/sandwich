@@ -17,15 +17,15 @@
 package com.github.skydoves.sandwich
 
 object Configuration {
-  const val compileSdk = 35
-  const val targetSdk = 35
+  const val compileSdk = 36
+  const val targetSdk = 36
   const val minSdk = 21
   const val minSdkDemo = 21
   const val majorVersion = 2
   const val minorVersion = 1
-  const val patchVersion = 2
+  const val patchVersion = 3
   const val versionName = "$majorVersion.$minorVersion.$patchVersion"
-  const val versionCode = 45
+  const val versionCode = 46
   const val snapshotVersionName = "$majorVersion.$minorVersion.${patchVersion + 1}-SNAPSHOT"
   const val artifactGroup = "com.github.skydoves"
 }
