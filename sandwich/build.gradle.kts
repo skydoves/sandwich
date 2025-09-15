@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalWasmDsl::class)
+
 import com.github.skydoves.sandwich.Configuration
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.JS
 
@@ -45,7 +48,10 @@ kotlin {
     }
   }
 
-  js { }
+  js {
+    browser()
+    nodejs()
+  }
 
   wasmJs {
     browser {
