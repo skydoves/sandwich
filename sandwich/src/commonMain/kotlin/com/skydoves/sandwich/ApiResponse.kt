@@ -22,6 +22,7 @@ import com.skydoves.sandwich.mappers.ApiResponseFailureMapper
 import com.skydoves.sandwich.mappers.ApiResponseFailureSuspendMapper
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
 /**
@@ -145,10 +146,17 @@ public sealed interface ApiResponse<out T> {
     public suspend inline fun <reified T> suspendOf(
       tag: Any? = null,
       crossinline f: suspend () -> T,
-    ): ApiResponse<T> {
+    ): ApiResponse<T> = try {
       val result = f()
-      return of(tag = tag) { result }
-    }
+      Success(
+        data = result,
+        tag = tag,
+      )
+    } catch (e: CancellationException) {
+      throw e
+    } catch (e: Exception) {
+      exception(e)
+    }.operate().maps()
 
     /**
      * @author skydoves (Jaewoong Eum)
