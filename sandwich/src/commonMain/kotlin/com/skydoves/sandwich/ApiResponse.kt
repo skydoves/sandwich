@@ -143,6 +143,7 @@ public sealed interface ApiResponse<out T> {
      * If the [f] throws an exception, it creates [ApiResponse.Failure.Exception].
      */
     @SuspensionFunction
+    @Throws(CancellationException::class)
     public suspend inline fun <reified T> suspendOf(
       tag: Any? = null,
       crossinline f: suspend () -> T,
