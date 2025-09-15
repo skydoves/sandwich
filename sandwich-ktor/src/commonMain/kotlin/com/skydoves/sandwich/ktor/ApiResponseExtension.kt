@@ -30,6 +30,7 @@ import io.ktor.http.Headers
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.charsets.Charset
 import io.ktor.utils.io.charsets.Charsets
+import kotlinx.coroutines.CancellationException
 import kotlin.jvm.JvmSynthetic
 
 /**
@@ -108,6 +109,7 @@ public val ApiResponse.Failure.Error.headers: Headers
  */
 @JvmSynthetic
 @SuspensionFunction
+@Throws(CancellationException::class)
 public suspend inline fun <reified T> apiResponseOf(
   successCodeRange: IntRange = SandwichInitializer.successCodeRange,
   crossinline f: suspend () -> HttpResponse,
@@ -121,6 +123,8 @@ public suspend inline fun <reified T> apiResponseOf(
   } else {
     ApiResponse.Failure.Error(response)
   }
+} catch (e: CancellationException) {
+  throw e
 } catch (ex: Exception) {
   ApiResponse.Failure.Exception(ex)
 }.operate().maps()
