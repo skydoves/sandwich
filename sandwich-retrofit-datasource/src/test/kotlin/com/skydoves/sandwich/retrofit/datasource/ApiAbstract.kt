@@ -16,6 +16,8 @@
 package com.skydoves.sandwich.retrofit.datasource
 
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okio.buffer
@@ -30,6 +32,10 @@ import java.nio.charset.StandardCharsets
 
 @RunWith(JUnit4::class)
 internal abstract class ApiAbstract<T> {
+
+  protected val moshi: Moshi = Moshi.Builder()
+    .addLast(KotlinJsonAdapterFactory())
+    .build()
 
   lateinit var mockWebServer: MockWebServer
 
@@ -60,7 +66,7 @@ internal abstract class ApiAbstract<T> {
 
   fun createService(clazz: Class<T>): T = Retrofit.Builder()
     .baseUrl(mockWebServer.url("/"))
-    .addConverterFactory(MoshiConverterFactory.create())
+    .addConverterFactory(MoshiConverterFactory.create(moshi))
     .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
     .build()
     .create(clazz)

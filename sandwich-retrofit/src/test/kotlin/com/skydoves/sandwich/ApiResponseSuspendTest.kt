@@ -43,7 +43,7 @@ internal class ApiResponseSuspendTest : ApiAbstract<DisneyCoroutinesService>() {
     val testScope = TestScope(coroutinesRule.testDispatcher)
     val retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .addCallAdapterFactory(ApiResponseCallAdapterFactory.create(testScope))
       .build()
     service = retrofit.create()

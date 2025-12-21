@@ -15,8 +15,8 @@
  */
 
 import com.github.skydoves.sandwich.Configuration
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   id(libs.plugins.android.application.get().pluginId)
   id(libs.plugins.kotlin.android.get().pluginId)
@@ -52,6 +52,16 @@ android {
   lint {
     abortOnError = false
   }
+}
+
+kotlin {
+  compilerOptions {
+    jvmTarget.set(JvmTarget.JVM_17)
+  }
+}
+
+ktorfit {
+  compilerPluginVersion.set("2.3.3")
 }
 
 dependencies {

@@ -15,7 +15,6 @@
  */
 import com.github.skydoves.sandwich.Configuration
 
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
   id(libs.plugins.android.test.get().pluginId)
   id(libs.plugins.kotlin.android.get().pluginId)
@@ -29,10 +28,6 @@ android {
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
-  }
-
-  kotlinOptions {
-    jvmTarget = libs.versions.jvmTarget.get()
   }
 
   defaultConfig {

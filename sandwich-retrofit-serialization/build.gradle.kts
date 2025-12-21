@@ -16,7 +16,6 @@
 
 import com.github.skydoves.sandwich.Configuration
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   id("kotlin")
   id(libs.plugins.kotlin.serialization.get().pluginId)

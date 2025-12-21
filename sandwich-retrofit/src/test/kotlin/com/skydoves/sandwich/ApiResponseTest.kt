@@ -116,7 +116,7 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
   fun error() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -132,7 +132,7 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
   fun errorFromRequest() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -163,7 +163,7 @@ internal class ApiResponseTest : ApiAbstract<DisneyService>() {
   fun errorExtensionFromRequest() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
