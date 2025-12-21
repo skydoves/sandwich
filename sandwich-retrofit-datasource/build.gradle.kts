@@ -15,7 +15,6 @@
  */
 import com.github.skydoves.sandwich.Configuration
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   id(libs.plugins.android.library.get().pluginId)
   id(libs.plugins.kotlin.android.get().pluginId)
@@ -73,6 +72,7 @@ dependencies {
   testImplementation(libs.mockito.kotlin)
   testImplementation(libs.mock.webserver)
   testImplementation(libs.retrofit.moshi)
+  testImplementation(libs.moshi)
   testImplementation(libs.coroutines.test)
   testImplementation(libs.arch.test)
 }

@@ -63,6 +63,7 @@ dependencies {
   testImplementation(libs.mockito.kotlin)
   testImplementation(libs.mock.webserver)
   testImplementation(libs.retrofit.moshi)
+  testImplementation(libs.moshi)
   testImplementation(libs.coroutines.test)
   testImplementation(libs.serialization)
 }

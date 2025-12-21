@@ -30,7 +30,7 @@ internal class DataSourceRawCallAdapterTest : ApiAbstract<DisneyService>() {
   fun fetchDataSourceTypeResponse() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .addCallAdapterFactory(DataSourceCallAdapterFactory.create())
       .build()
 

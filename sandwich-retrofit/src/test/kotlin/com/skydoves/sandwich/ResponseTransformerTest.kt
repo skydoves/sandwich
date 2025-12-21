@@ -58,7 +58,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun getOrNullOnErrorTest() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -93,7 +93,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun getOrElseOnErrorTest() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -128,7 +128,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun getOrElseLambdaOnErrorTest() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -163,7 +163,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun getOrThrowOnErrorTest() {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -256,7 +256,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     var onResult = false
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -277,7 +277,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     var onResult = false
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -304,7 +304,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun onSuspendErrorTest() = runBlocking {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -326,7 +326,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun onSuspendErrorInProcedureTest() = runBlocking {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -553,7 +553,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     var onResult: String? = null
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -575,7 +575,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     var onResult: String? = null
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -598,7 +598,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     var onResult: String? = null
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -621,7 +621,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     var onResult: String? = null
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -641,7 +641,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun mapSuspendErrorWithLambdaTest() = runBlocking {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -665,7 +665,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun mapSuspendErrorWithExecutableLambdaTest() = runBlocking {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -689,7 +689,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun mapSuspendErrorWithParameterTest() = runBlocking {
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -725,7 +725,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     var onError = false
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
@@ -775,7 +775,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
 
     val retrofit: Retrofit = Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .build()
 
     val service = retrofit.create(DisneyService::class.java)
