@@ -964,3 +964,659 @@ public suspend inline fun <T, R> ApiResponse<T>.suspendFold(
     onFailure.invoke(failure.message())
   }
 }
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Recovers the [ApiResponse.Failure] to [ApiResponse.Success] with a given [fallback] value.
+ *
+ * @param fallback A fallback value that will be used to recover the failure.
+ *
+ * @return An [ApiResponse.Success] with the fallback value if this is a failure, otherwise the original success.
+ */
+@JvmSynthetic
+public fun <T> ApiResponse<T>.recover(fallback: T): ApiResponse<T> {
+  if (this is ApiResponse.Failure) {
+    return ApiResponse.Success(data = fallback)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Recovers the [ApiResponse.Failure] to [ApiResponse.Success] with a lazily evaluated fallback value.
+ *
+ * @param fallback A lambda that provides the fallback value when the response is a failure.
+ *
+ * @return An [ApiResponse.Success] with the fallback value if this is a failure, otherwise the original success.
+ */
+@JvmSynthetic
+public inline fun <T> ApiResponse<T>.recover(crossinline fallback: () -> T): ApiResponse<T> {
+  contract { callsInPlace(fallback, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure) {
+    return ApiResponse.Success(data = fallback())
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Recovers the [ApiResponse.Failure] by executing an alternative [ApiResponse] from the given [fallback] lambda.
+ *
+ * @param fallback A lambda that receives the [ApiResponse.Failure] and returns an alternative [ApiResponse].
+ *
+ * @return The alternative [ApiResponse] if this is a failure, otherwise the original success.
+ */
+@JvmSynthetic
+public inline fun <T> ApiResponse<T>.recoverWith(
+  crossinline fallback: (ApiResponse.Failure<T>) -> ApiResponse<T>,
+): ApiResponse<T> {
+  contract { callsInPlace(fallback, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure) {
+    return fallback(this)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Recovers the [ApiResponse.Failure] to [ApiResponse.Success] with a suspend fallback lambda.
+ *
+ * @param fallback A suspend lambda that provides the fallback value when the response is a failure.
+ *
+ * @return An [ApiResponse.Success] with the fallback value if this is a failure, otherwise the original success.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T> ApiResponse<T>.suspendRecover(
+  crossinline fallback: suspend () -> T,
+): ApiResponse<T> {
+  contract { callsInPlace(fallback, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure) {
+    return ApiResponse.Success(data = fallback())
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Recovers the [ApiResponse.Failure] by executing an alternative suspend [ApiResponse] from the given [fallback] lambda.
+ *
+ * @param fallback A suspend lambda that receives the [ApiResponse.Failure] and returns an alternative [ApiResponse].
+ *
+ * @return The alternative [ApiResponse] if this is a failure, otherwise the original success.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T> ApiResponse<T>.suspendRecoverWith(
+  crossinline fallback: suspend (ApiResponse.Failure<T>) -> ApiResponse<T>,
+): ApiResponse<T> {
+  contract { callsInPlace(fallback, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure) {
+    return fallback(this)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Validates the success data with the given [predicate].
+ * If the predicate returns false, the response is converted to [ApiResponse.Failure.Error].
+ *
+ * @param predicate A predicate function that validates the success data.
+ * @param errorMessage A lambda that provides the error message when validation fails.
+ *
+ * @return The original [ApiResponse.Success] if validation passes, otherwise [ApiResponse.Failure.Error].
+ */
+@JvmSynthetic
+public inline fun <T> ApiResponse<T>.validate(
+  crossinline predicate: (T) -> Boolean,
+  crossinline errorMessage: () -> String = { "Validation failed" },
+): ApiResponse<T> {
+  contract {
+    callsInPlace(predicate, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(errorMessage, InvocationKind.AT_MOST_ONCE)
+  }
+  if (this is ApiResponse.Success && !predicate(data)) {
+    return ApiResponse.Failure.Error(payload = errorMessage())
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Validates the success data with the given suspend [predicate].
+ * If the predicate returns false, the response is converted to [ApiResponse.Failure.Error].
+ *
+ * @param predicate A suspend predicate function that validates the success data.
+ * @param errorMessage The error message when validation fails.
+ *
+ * @return The original [ApiResponse.Success] if validation passes, otherwise [ApiResponse.Failure.Error].
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T> ApiResponse<T>.suspendValidate(
+  crossinline predicate: suspend (T) -> Boolean,
+  errorMessage: String = "Validation failed",
+): ApiResponse<T> {
+  contract { callsInPlace(predicate, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Success && !predicate(data)) {
+    return ApiResponse.Failure.Error(payload = errorMessage)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Requires a non-null value from the success data using the given [selector].
+ * If the selected value is null, the response is converted to [ApiResponse.Failure.Error].
+ *
+ * @param selector A selector function that extracts a nullable value from the success data.
+ * @param errorMessage A lambda that provides the error message when the selected value is null.
+ *
+ * @return An [ApiResponse] with the non-null selected value, or [ApiResponse.Failure.Error] if null.
+ */
+@Suppress("UNCHECKED_CAST")
+@JvmSynthetic
+public inline fun <T, R> ApiResponse<T>.requireNotNull(
+  crossinline selector: (T) -> R?,
+  crossinline errorMessage: () -> String = { "Required value was null" },
+): ApiResponse<R> {
+  contract {
+    callsInPlace(selector, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(errorMessage, InvocationKind.AT_MOST_ONCE)
+  }
+  if (this is ApiResponse.Success) {
+    val selected = selector(data)
+    return if (selected != null) {
+      ApiResponse.Success(data = selected, tag = tag)
+    } else {
+      ApiResponse.Failure.Error(payload = errorMessage())
+    }
+  }
+  return this as ApiResponse<R>
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Requires a non-null value from the success data using the given suspend [selector].
+ * If the selected value is null, the response is converted to [ApiResponse.Failure.Error].
+ *
+ * @param selector A suspend selector function that extracts a nullable value from the success data.
+ * @param errorMessage The error message when the selected value is null.
+ *
+ * @return An [ApiResponse] with the non-null selected value, or [ApiResponse.Failure.Error] if null.
+ */
+@Suppress("UNCHECKED_CAST")
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T, R> ApiResponse<T>.suspendRequireNotNull(
+  crossinline selector: suspend (T) -> R?,
+  errorMessage: String = "Required value was null",
+): ApiResponse<R> {
+  contract { callsInPlace(selector, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Success) {
+    val selected = selector(data)
+    return if (selected != null) {
+      ApiResponse.Success(data = selected, tag = tag)
+    } else {
+      ApiResponse.Failure.Error(payload = errorMessage)
+    }
+  }
+  return this as ApiResponse<R>
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Filters the items in the success data list with the given [predicate].
+ * This is useful when the success data is a [List] and you want to filter its elements.
+ *
+ * @param predicate A predicate function that filters each item in the list.
+ *
+ * @return An [ApiResponse.Success] with the filtered list, or the original failure.
+ */
+@JvmSynthetic
+public inline fun <T> ApiResponse<List<T>>.filter(
+  crossinline predicate: (T) -> Boolean,
+): ApiResponse<List<T>> {
+  contract { callsInPlace(predicate, InvocationKind.UNKNOWN) }
+  if (this is ApiResponse.Success) {
+    return ApiResponse.Success(data = data.filter(predicate), tag = tag)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Filters the items in the success data list with the given suspend [predicate].
+ * This is useful when the success data is a [List] and you want to filter its elements.
+ *
+ * @param predicate A suspend predicate function that filters each item in the list.
+ *
+ * @return An [ApiResponse.Success] with the filtered list, or the original failure.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T> ApiResponse<List<T>>.suspendFilter(
+  crossinline predicate: suspend (T) -> Boolean,
+): ApiResponse<List<T>> {
+  if (this is ApiResponse.Success) {
+    val filtered = data.filter { predicate(it) }
+    return ApiResponse.Success(data = filtered, tag = tag)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Filters the success data list to exclude items that match the given [predicate].
+ * This is useful when the success data is a [List] and you want to exclude certain elements.
+ *
+ * @param predicate A predicate function that determines which items to exclude.
+ *
+ * @return An [ApiResponse.Success] with the filtered list excluding matching items, or the original failure.
+ */
+@JvmSynthetic
+public inline fun <T> ApiResponse<List<T>>.filterNot(
+  crossinline predicate: (T) -> Boolean,
+): ApiResponse<List<T>> {
+  contract { callsInPlace(predicate, InvocationKind.UNKNOWN) }
+  if (this is ApiResponse.Success) {
+    return ApiResponse.Success(data = data.filterNot(predicate), tag = tag)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Filters the success data list to exclude items that match the given suspend [predicate].
+ * This is useful when the success data is a [List] and you want to exclude certain elements.
+ *
+ * @param predicate A suspend predicate function that determines which items to exclude.
+ *
+ * @return An [ApiResponse.Success] with the filtered list excluding matching items, or the original failure.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T> ApiResponse<List<T>>.suspendFilterNot(
+  crossinline predicate: suspend (T) -> Boolean,
+): ApiResponse<List<T>> {
+  if (this is ApiResponse.Success) {
+    val filtered = data.filterNot { predicate(it) }
+    return ApiResponse.Success(data = filtered, tag = tag)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Combines two [ApiResponse]s into a single [ApiResponse] using the given [transform] function.
+ * If both responses are successful, the transform function is applied to combine the data.
+ * If either response is a failure, the first failure is returned.
+ *
+ * @param other The other [ApiResponse] to combine with.
+ * @param transform A function that combines the data from both successful responses.
+ *
+ * @return A combined [ApiResponse] with the transformed data, or the first failure.
+ */
+@Suppress("UNCHECKED_CAST")
+@JvmSynthetic
+public inline fun <T, U, R> ApiResponse<T>.zip(
+  other: ApiResponse<U>,
+  crossinline transform: (T, U) -> R,
+): ApiResponse<R> {
+  contract { callsInPlace(transform, InvocationKind.AT_MOST_ONCE) }
+  return when {
+    this is ApiResponse.Success && other is ApiResponse.Success -> {
+      ApiResponse.Success(data = transform(this.data, other.data), tag = this.tag)
+    }
+    this is ApiResponse.Failure -> this as ApiResponse<R>
+    else -> other as ApiResponse<R>
+  }
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Combines two [ApiResponse]s into a single [ApiResponse] using the given suspend [transform] function.
+ * If both responses are successful, the transform function is applied to combine the data.
+ * If either response is a failure, the first failure is returned.
+ *
+ * @param other The other [ApiResponse] to combine with.
+ * @param transform A suspend function that combines the data from both successful responses.
+ *
+ * @return A combined [ApiResponse] with the transformed data, or the first failure.
+ */
+@Suppress("UNCHECKED_CAST")
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T, U, R> ApiResponse<T>.suspendZip(
+  other: ApiResponse<U>,
+  crossinline transform: suspend (T, U) -> R,
+): ApiResponse<R> {
+  contract { callsInPlace(transform, InvocationKind.AT_MOST_ONCE) }
+  return when {
+    this is ApiResponse.Success && other is ApiResponse.Success -> {
+      ApiResponse.Success(data = transform(this.data, other.data), tag = this.tag)
+    }
+    this is ApiResponse.Failure -> this as ApiResponse<R>
+    else -> other as ApiResponse<R>
+  }
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Combines three [ApiResponse]s into a single [ApiResponse] using the given [transform] function.
+ * If all responses are successful, the transform function is applied to combine the data.
+ * If any response is a failure, the first failure is returned.
+ *
+ * @param second The second [ApiResponse] to combine with.
+ * @param third The third [ApiResponse] to combine with.
+ * @param transform A function that combines the data from all successful responses.
+ *
+ * @return A combined [ApiResponse] with the transformed data, or the first failure.
+ */
+@Suppress("UNCHECKED_CAST")
+@JvmSynthetic
+public inline fun <T, U, V, R> ApiResponse<T>.zip3(
+  second: ApiResponse<U>,
+  third: ApiResponse<V>,
+  crossinline transform: (T, U, V) -> R,
+): ApiResponse<R> {
+  contract { callsInPlace(transform, InvocationKind.AT_MOST_ONCE) }
+  return when {
+    this is ApiResponse.Success &&
+      second is ApiResponse.Success &&
+      third is ApiResponse.Success -> {
+      ApiResponse.Success(
+        data = transform(this.data, second.data, third.data),
+        tag = this.tag,
+      )
+    }
+    this is ApiResponse.Failure -> this as ApiResponse<R>
+    second is ApiResponse.Failure -> second as ApiResponse<R>
+    else -> third as ApiResponse<R>
+  }
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Combines three [ApiResponse]s into a single [ApiResponse] using the given suspend [transform]
+ * function.
+ * If all responses are successful, the transform function is applied to combine the data.
+ * If any response is a failure, the first failure is returned.
+ *
+ * @param second The second [ApiResponse] to combine with.
+ * @param third The third [ApiResponse] to combine with.
+ * @param transform A suspend function that combines the data from all successful responses.
+ *
+ * @return A combined [ApiResponse] with the transformed data, or the first failure.
+ */
+@Suppress("UNCHECKED_CAST")
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T, U, V, R> ApiResponse<T>.suspendZip3(
+  second: ApiResponse<U>,
+  third: ApiResponse<V>,
+  crossinline transform: suspend (T, U, V) -> R,
+): ApiResponse<R> {
+  contract { callsInPlace(transform, InvocationKind.AT_MOST_ONCE) }
+  return when {
+    this is ApiResponse.Success &&
+      second is ApiResponse.Success &&
+      third is ApiResponse.Success -> {
+      ApiResponse.Success(
+        data = transform(this.data, second.data, third.data),
+        tag = this.tag,
+      )
+    }
+    this is ApiResponse.Failure -> this as ApiResponse<R>
+    second is ApiResponse.Failure -> second as ApiResponse<R>
+    else -> third as ApiResponse<R>
+  }
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Combines two [ApiResponse]s into a [Pair] of their data.
+ * If both responses are successful, returns an [ApiResponse.Success] containing the paired data.
+ * If either response is a failure, the first failure is returned.
+ *
+ * @param other The other [ApiResponse] to combine with.
+ *
+ * @return An [ApiResponse] containing a [Pair] of data, or the first failure.
+ */
+@Suppress("UNCHECKED_CAST")
+@JvmSynthetic
+public fun <T, U> ApiResponse<T>.zip(other: ApiResponse<U>): ApiResponse<Pair<T, U>> = when {
+  this is ApiResponse.Success && other is ApiResponse.Success -> {
+    ApiResponse.Success(data = Pair(this.data, other.data), tag = this.tag)
+  }
+  this is ApiResponse.Failure -> this as ApiResponse<Pair<T, U>>
+  else -> other as ApiResponse<Pair<T, U>>
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Performs the given [action] on the [ApiResponse] without modifying it.
+ * This is useful for logging or debugging purposes.
+ *
+ * @param action An action to perform on the [ApiResponse].
+ *
+ * @return The original [ApiResponse] unchanged.
+ */
+@JvmSynthetic
+public inline fun <T> ApiResponse<T>.peek(
+  crossinline action: (ApiResponse<T>) -> Unit,
+): ApiResponse<T> {
+  contract { callsInPlace(action, InvocationKind.EXACTLY_ONCE) }
+  action(this)
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Performs the given suspend [action] on the [ApiResponse] without modifying it.
+ * This is useful for logging or debugging purposes.
+ *
+ * @param action A suspend action to perform on the [ApiResponse].
+ *
+ * @return The original [ApiResponse] unchanged.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T> ApiResponse<T>.suspendPeek(
+  crossinline action: suspend (ApiResponse<T>) -> Unit,
+): ApiResponse<T> {
+  contract { callsInPlace(action, InvocationKind.EXACTLY_ONCE) }
+  action(this)
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Performs the given [action] on the success data if this is an [ApiResponse.Success].
+ * This is useful for logging or side effects without modifying the response.
+ *
+ * @param action An action to perform on the success data.
+ *
+ * @return The original [ApiResponse] unchanged.
+ */
+@JvmSynthetic
+public inline fun <T> ApiResponse<T>.peekSuccess(crossinline action: (T) -> Unit): ApiResponse<T> {
+  contract { callsInPlace(action, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Success) {
+    action(data)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Performs the given suspend [action] on the success data if this is an [ApiResponse.Success].
+ * This is useful for logging or side effects without modifying the response.
+ *
+ * @param action A suspend action to perform on the success data.
+ *
+ * @return The original [ApiResponse] unchanged.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T> ApiResponse<T>.suspendPeekSuccess(
+  crossinline action: suspend (T) -> Unit,
+): ApiResponse<T> {
+  contract { callsInPlace(action, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Success) {
+    action(data)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Performs the given [action] on the failure if this is an [ApiResponse.Failure].
+ * This is useful for logging or side effects without modifying the response.
+ *
+ * @param action An action to perform on the failure.
+ *
+ * @return The original [ApiResponse] unchanged.
+ */
+@JvmSynthetic
+public inline fun <T> ApiResponse<T>.peekFailure(
+  crossinline action: (ApiResponse.Failure<T>) -> Unit,
+): ApiResponse<T> {
+  contract { callsInPlace(action, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure) {
+    action(this)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Performs the given suspend [action] on the failure if this is an [ApiResponse.Failure].
+ * This is useful for logging or side effects without modifying the response.
+ *
+ * @param action A suspend action to perform on the failure.
+ *
+ * @return The original [ApiResponse] unchanged.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T> ApiResponse<T>.suspendPeekFailure(
+  crossinline action: suspend (ApiResponse.Failure<T>) -> Unit,
+): ApiResponse<T> {
+  contract { callsInPlace(action, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure) {
+    action(this)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Performs the given [action] on the error if this is an [ApiResponse.Failure.Error].
+ * This is useful for logging or side effects without modifying the response.
+ *
+ * @param action An action to perform on the error.
+ *
+ * @return The original [ApiResponse] unchanged.
+ */
+@JvmSynthetic
+public inline fun <T> ApiResponse<T>.peekError(
+  crossinline action: (ApiResponse.Failure.Error) -> Unit,
+): ApiResponse<T> {
+  contract { callsInPlace(action, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure.Error) {
+    action(this)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Performs the given suspend [action] on the error if this is an [ApiResponse.Failure.Error].
+ * This is useful for logging or side effects without modifying the response.
+ *
+ * @param action A suspend action to perform on the error.
+ *
+ * @return The original [ApiResponse] unchanged.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T> ApiResponse<T>.suspendPeekError(
+  crossinline action: suspend (ApiResponse.Failure.Error) -> Unit,
+): ApiResponse<T> {
+  contract { callsInPlace(action, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure.Error) {
+    action(this)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Performs the given [action] on the exception if this is an [ApiResponse.Failure.Exception].
+ * This is useful for logging or side effects without modifying the response.
+ *
+ * @param action An action to perform on the exception.
+ *
+ * @return The original [ApiResponse] unchanged.
+ */
+@JvmSynthetic
+public inline fun <T> ApiResponse<T>.peekException(
+  crossinline action: (ApiResponse.Failure.Exception) -> Unit,
+): ApiResponse<T> {
+  contract { callsInPlace(action, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure.Exception) {
+    action(this)
+  }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Performs the given suspend [action] on the exception if this is an [ApiResponse.Failure.Exception].
+ * This is useful for logging or side effects without modifying the response.
+ *
+ * @param action A suspend action to perform on the exception.
+ *
+ * @return The original [ApiResponse] unchanged.
+ */
+@JvmSynthetic
+@SuspensionFunction
+public suspend inline fun <T> ApiResponse<T>.suspendPeekException(
+  crossinline action: suspend (ApiResponse.Failure.Exception) -> Unit,
+): ApiResponse<T> {
+  contract { callsInPlace(action, InvocationKind.AT_MOST_ONCE) }
+  if (this is ApiResponse.Failure.Exception) {
+    action(this)
+  }
+  return this
+}

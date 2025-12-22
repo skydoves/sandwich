@@ -63,6 +63,8 @@ public abstract interface class com/skydoves/sandwich/ResponseObserver {
 }
 
 public final class com/skydoves/sandwich/ResponseTransformer {
+	public static final synthetic fun filter (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun filterNot (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun fold (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 	public static final fun getOrElse (Lcom/skydoves/sandwich/ApiResponse;Ljava/lang/Object;)Ljava/lang/Object;
 	public static final fun getOrElse (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
@@ -88,6 +90,18 @@ public final class com/skydoves/sandwich/ResponseTransformer {
 	public static final synthetic fun onSuccess (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/mappers/ApiSuccessModelMapper;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun onSuccess (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun operator (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/operators/ApiResponseOperator;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun peek (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun peekError (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun peekException (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun peekFailure (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun peekSuccess (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun recover (Lcom/skydoves/sandwich/ApiResponse;Ljava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun recover (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function0;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun recoverWith (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun requireNotNull (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)Lcom/skydoves/sandwich/ApiResponse;
+	public static synthetic fun requireNotNull$default (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun suspendFilter (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun suspendFilterNot (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendFold (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendMap (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;Lcom/skydoves/sandwich/mappers/ApiErrorModelMapper;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendMap (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -102,12 +116,30 @@ public final class com/skydoves/sandwich/ResponseTransformer {
 	public static final synthetic fun suspendOnSuccess (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/mappers/ApiSuccessModelMapper;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOnSuccess (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final synthetic fun suspendOperator (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/operators/ApiResponseSuspendOperator;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun suspendPeek (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun suspendPeekError (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun suspendPeekException (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun suspendPeekFailure (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun suspendPeekSuccess (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun suspendRecover (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun suspendRecoverWith (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun suspendRequireNotNull (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun suspendRequireNotNull$default (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static final synthetic fun suspendThen (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun suspendValidate (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun suspendValidate$default (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final synthetic fun suspendZip (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun suspendZip3 (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function4;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun tagOrNull (Lcom/skydoves/sandwich/ApiResponse;)Ljava/lang/Object;
 	public static final synthetic fun then (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse;
 	public static final synthetic fun toFlow (Lcom/skydoves/sandwich/ApiResponse;)Lkotlinx/coroutines/flow/Flow;
 	public static final synthetic fun toFlow (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/flow/Flow;
 	public static final synthetic fun toSuspendFlow (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun validate (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)Lcom/skydoves/sandwich/ApiResponse;
+	public static synthetic fun validate$default (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun zip (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun zip (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function2;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun zip3 (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function3;)Lcom/skydoves/sandwich/ApiResponse;
 }
 
 public final class com/skydoves/sandwich/SandwichInitializer {
