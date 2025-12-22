@@ -853,4 +853,546 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
 
     assertThat(apiResponse3.getOrThrow(), `is`("bar"))
   }
+
+  // ========== Recovery Extension Tests ==========
+
+  @Test
+  fun recoverOnSuccessTest() {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.responseOf { response }
+    val recovered = apiResponse.recover("bar")
+
+    assertThat(recovered.getOrNull(), `is`("foo"))
+  }
+
+  @Test
+  @Suppress("UNCHECKED_CAST")
+  fun recoverOnFailureTest() {
+    val apiResponse = ApiResponse.exception(Throwable("error")) as ApiResponse<String>
+    val recovered = apiResponse.recover("bar")
+
+    assertThat(recovered.getOrNull(), `is`("bar"))
+  }
+
+  @Test
+  @Suppress("UNCHECKED_CAST")
+  fun recoverLambdaOnFailureTest() {
+    val apiResponse = ApiResponse.exception(Throwable("error")) as ApiResponse<String>
+    val recovered = apiResponse.recover { "bar" }
+
+    assertThat(recovered.getOrNull(), `is`("bar"))
+  }
+
+  @Test
+  fun recoverWithOnSuccessTest() {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.responseOf { response }
+    val recovered = apiResponse.recoverWith { ApiResponse.Success("bar") }
+
+    assertThat(recovered.getOrNull(), `is`("foo"))
+  }
+
+  @Test
+  @Suppress("UNCHECKED_CAST")
+  fun recoverWithOnFailureTest() {
+    val apiResponse = ApiResponse.exception(Throwable("error")) as ApiResponse<String>
+    val recovered = apiResponse.recoverWith { ApiResponse.Success("bar") }
+
+    assertThat(recovered.getOrNull(), `is`("bar"))
+  }
+
+  @Test
+  @Suppress("UNCHECKED_CAST")
+  fun suspendRecoverOnFailureTest() = runTest {
+    val apiResponse = ApiResponse.exception(Throwable("error")) as ApiResponse<String>
+    val recovered = apiResponse.suspendRecover { "bar" }
+
+    assertThat(recovered.getOrNull(), `is`("bar"))
+  }
+
+  @Test
+  @Suppress("UNCHECKED_CAST")
+  fun suspendRecoverWithOnFailureTest() = runTest {
+    val apiResponse = ApiResponse.exception(Throwable("error")) as ApiResponse<String>
+    val recovered = apiResponse.suspendRecoverWith { ApiResponse.Success("bar") }
+
+    assertThat(recovered.getOrNull(), `is`("bar"))
+  }
+
+  // ========== Validation Extension Tests ==========
+
+  @Test
+  fun validateOnSuccessPassTest() {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.responseOf { response }
+    val validated = apiResponse.validate({ it.length > 2 }) { "Too short" }
+
+    assertThat(validated.getOrNull(), `is`("foo"))
+  }
+
+  @Test
+  fun validateOnSuccessFailTest() {
+    val response = Response.success("fo")
+    val apiResponse = ApiResponse.responseOf { response }
+    val validated = apiResponse.validate({ it.length > 2 }) { "Too short" }
+
+    assertThat(validated is ApiResponse.Failure.Error, `is`(true))
+  }
+
+  @Test
+  fun validateOnFailureTest() {
+    val apiResponse = ApiResponse.exception(Throwable("error"))
+    val validated = apiResponse.validate({ true }) { "Error" }
+
+    assertThat(validated is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  fun suspendValidateOnSuccessPassTest() = runTest {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.responseOf { response }
+    val validated = apiResponse.suspendValidate({ it.length > 2 })
+
+    assertThat(validated.getOrNull(), `is`("foo"))
+  }
+
+  @Test
+  fun suspendValidateOnSuccessFailTest() = runTest {
+    val response = Response.success("fo")
+    val apiResponse = ApiResponse.responseOf { response }
+    val validated = apiResponse.suspendValidate({ it.length > 2 }, "Too short")
+
+    assertThat(validated is ApiResponse.Failure.Error, `is`(true))
+  }
+
+  @Test
+  fun requireNotNullOnSuccessWithValueTest() {
+    val response = Response.success("foo" to "bar")
+    val apiResponse = ApiResponse.responseOf { response }
+    val required = apiResponse.requireNotNull({ it.first }) { "Value is null" }
+
+    assertThat(required.getOrNull(), `is`("foo"))
+  }
+
+  @Test
+  fun requireNotNullOnSuccessWithNullTest() {
+    val response = Response.success("foo" to null as String?)
+    val apiResponse = ApiResponse.responseOf { response }
+    val required = apiResponse.requireNotNull({ it.second }) { "Value is null" }
+
+    assertThat(required is ApiResponse.Failure.Error, `is`(true))
+  }
+
+  @Test
+  fun requireNotNullOnFailureTest() {
+    val apiResponse = ApiResponse.exception(Throwable("error"))
+    val required = apiResponse.requireNotNull({ it }) { "Value is null" }
+
+    assertThat(required is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  fun suspendRequireNotNullOnSuccessWithValueTest() = runTest {
+    val response = Response.success("foo" to "bar")
+    val apiResponse = ApiResponse.responseOf { response }
+    val required = apiResponse.suspendRequireNotNull({ it.first })
+
+    assertThat(required.getOrNull(), `is`("foo"))
+  }
+
+  // ========== Filter Extension Tests ==========
+
+  @Test
+  fun filterOnSuccessTest() {
+    val response = Response.success(listOf(1, 2, 3, 4, 5))
+    val apiResponse = ApiResponse.responseOf { response }
+    val filtered = apiResponse.filter { it > 2 }
+
+    assertThat(filtered.getOrNull(), `is`(listOf(3, 4, 5)))
+  }
+
+  @Test
+  fun filterOnSuccessEmptyResultTest() {
+    val response = Response.success(listOf(1, 2, 3))
+    val apiResponse = ApiResponse.responseOf { response }
+    val filtered = apiResponse.filter { it > 10 }
+
+    assertThat(filtered.getOrNull(), `is`(emptyList()))
+  }
+
+  @Test
+  @Suppress("UNCHECKED_CAST")
+  fun filterOnFailureTest() {
+    val apiResponse = ApiResponse.exception(Throwable("error")) as ApiResponse<List<Int>>
+    val filtered = apiResponse.filter { it > 2 }
+
+    assertThat(filtered is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  fun suspendFilterOnSuccessTest() = runTest {
+    val response = Response.success(listOf(1, 2, 3, 4, 5))
+    val apiResponse = ApiResponse.responseOf { response }
+    val filtered = apiResponse.suspendFilter { it > 2 }
+
+    assertThat(filtered.getOrNull(), `is`(listOf(3, 4, 5)))
+  }
+
+  @Test
+  fun filterNotOnSuccessTest() {
+    val response = Response.success(listOf(1, 2, 3, 4, 5))
+    val apiResponse = ApiResponse.responseOf { response }
+    val filtered = apiResponse.filterNot { it > 2 }
+
+    assertThat(filtered.getOrNull(), `is`(listOf(1, 2)))
+  }
+
+  @Test
+  @Suppress("UNCHECKED_CAST")
+  fun filterNotOnFailureTest() {
+    val apiResponse = ApiResponse.exception(Throwable("error")) as ApiResponse<List<Int>>
+    val filtered = apiResponse.filterNot { it > 2 }
+
+    assertThat(filtered is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  fun suspendFilterNotOnSuccessTest() = runTest {
+    val response = Response.success(listOf(1, 2, 3, 4, 5))
+    val apiResponse = ApiResponse.responseOf { response }
+    val filtered = apiResponse.suspendFilterNot { it > 2 }
+
+    assertThat(filtered.getOrNull(), `is`(listOf(1, 2)))
+  }
+
+  // ========== Zip/Combine Extension Tests ==========
+
+  @Test
+  fun zipTwoSuccessResponsesTest() {
+    val response1 = Response.success("foo")
+    val response2 = Response.success(123)
+    val apiResponse1 = ApiResponse.responseOf { response1 }
+    val apiResponse2 = ApiResponse.responseOf { response2 }
+
+    val zipped = apiResponse1.zip(apiResponse2) { s, i -> "$s-$i" }
+
+    assertThat(zipped.getOrNull(), `is`("foo-123"))
+  }
+
+  @Test
+  fun zipTwoSuccessResponsesToPairTest() {
+    val response1 = Response.success("foo")
+    val response2 = Response.success(123)
+    val apiResponse1 = ApiResponse.responseOf { response1 }
+    val apiResponse2 = ApiResponse.responseOf { response2 }
+
+    val zipped = apiResponse1.zip(apiResponse2)
+
+    assertThat(zipped.getOrNull(), `is`(Pair("foo", 123)))
+  }
+
+  @Test
+  @Suppress("UNCHECKED_CAST")
+  fun zipFirstFailureTest() {
+    val apiResponse1 = ApiResponse.exception(Throwable("error")) as ApiResponse<String>
+    val response2 = Response.success(123)
+    val apiResponse2 = ApiResponse.responseOf { response2 }
+
+    val zipped = apiResponse1.zip(apiResponse2) { s, i -> "$s-$i" }
+
+    assertThat(zipped is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  @Suppress("UNCHECKED_CAST")
+  fun zipSecondFailureTest() {
+    val response1 = Response.success("foo")
+    val apiResponse1 = ApiResponse.responseOf { response1 }
+    val apiResponse2 = ApiResponse.exception(Throwable("error")) as ApiResponse<Int>
+
+    val zipped = apiResponse1.zip(apiResponse2) { s, i -> "$s-$i" }
+
+    assertThat(zipped is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  fun suspendZipTwoSuccessResponsesTest() = runTest {
+    val response1 = Response.success("foo")
+    val response2 = Response.success(123)
+    val apiResponse1 = ApiResponse.responseOf { response1 }
+    val apiResponse2 = ApiResponse.responseOf { response2 }
+
+    val zipped = apiResponse1.suspendZip(apiResponse2) { s, i -> "$s-$i" }
+
+    assertThat(zipped.getOrNull(), `is`("foo-123"))
+  }
+
+  @Test
+  fun zip3SuccessResponsesTest() {
+    val response1 = Response.success("foo")
+    val response2 = Response.success(123)
+    val response3 = Response.success(true)
+    val apiResponse1 = ApiResponse.responseOf { response1 }
+    val apiResponse2 = ApiResponse.responseOf { response2 }
+    val apiResponse3 = ApiResponse.responseOf { response3 }
+
+    val zipped = apiResponse1.zip3(apiResponse2, apiResponse3) { s, i, b -> "$s-$i-$b" }
+
+    assertThat(zipped.getOrNull(), `is`("foo-123-true"))
+  }
+
+  @Test
+  @Suppress("UNCHECKED_CAST")
+  fun zip3FirstFailureTest() {
+    val apiResponse1 = ApiResponse.exception(Throwable("error")) as ApiResponse<String>
+    val response2 = Response.success(123)
+    val response3 = Response.success(true)
+    val apiResponse2 = ApiResponse.responseOf { response2 }
+    val apiResponse3 = ApiResponse.responseOf { response3 }
+
+    val zipped = apiResponse1.zip3(apiResponse2, apiResponse3) { s, i, b -> "$s-$i-$b" }
+
+    assertThat(zipped is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  @Suppress("UNCHECKED_CAST")
+  fun zip3SecondFailureTest() {
+    val response1 = Response.success("foo")
+    val response3 = Response.success(true)
+    val apiResponse1 = ApiResponse.responseOf { response1 }
+    val apiResponse2 = ApiResponse.exception(Throwable("error")) as ApiResponse<Int>
+    val apiResponse3 = ApiResponse.responseOf { response3 }
+
+    val zipped = apiResponse1.zip3(apiResponse2, apiResponse3) { s, i, b -> "$s-$i-$b" }
+
+    assertThat(zipped is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  @Suppress("UNCHECKED_CAST")
+  fun zip3ThirdFailureTest() {
+    val response1 = Response.success("foo")
+    val response2 = Response.success(123)
+    val apiResponse1 = ApiResponse.responseOf { response1 }
+    val apiResponse2 = ApiResponse.responseOf { response2 }
+    val apiResponse3 = ApiResponse.exception(Throwable("error")) as ApiResponse<Boolean>
+
+    val zipped = apiResponse1.zip3(apiResponse2, apiResponse3) { s, i, b -> "$s-$i-$b" }
+
+    assertThat(zipped is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  fun suspendZip3SuccessResponsesTest() = runTest {
+    val response1 = Response.success("foo")
+    val response2 = Response.success(123)
+    val response3 = Response.success(true)
+    val apiResponse1 = ApiResponse.responseOf { response1 }
+    val apiResponse2 = ApiResponse.responseOf { response2 }
+    val apiResponse3 = ApiResponse.responseOf { response3 }
+
+    val zipped = apiResponse1.suspendZip3(apiResponse2, apiResponse3) { s, i, b -> "$s-$i-$b" }
+
+    assertThat(zipped.getOrNull(), `is`("foo-123-true"))
+  }
+
+  // ========== Peek/Tap Extension Tests ==========
+
+  @Test
+  fun peekOnSuccessTest() {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.responseOf { response }
+    var peeked = false
+
+    val result = apiResponse.peek { peeked = true }
+
+    assertThat(peeked, `is`(true))
+    assertThat(result.getOrNull(), `is`("foo"))
+  }
+
+  @Test
+  fun peekOnFailureTest() {
+    val apiResponse = ApiResponse.exception(Throwable("error"))
+    var peeked = false
+
+    val result = apiResponse.peek { peeked = true }
+
+    assertThat(peeked, `is`(true))
+    assertThat(result is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  fun suspendPeekTest() = runTest {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.responseOf { response }
+    var peeked = false
+
+    val result = apiResponse.suspendPeek { peeked = true }
+
+    assertThat(peeked, `is`(true))
+    assertThat(result.getOrNull(), `is`("foo"))
+  }
+
+  @Test
+  fun peekSuccessOnSuccessTest() {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.responseOf { response }
+    var peekedValue: String? = null
+
+    val result = apiResponse.peekSuccess { peekedValue = it }
+
+    assertThat(peekedValue, `is`("foo"))
+    assertThat(result.getOrNull(), `is`("foo"))
+  }
+
+  @Test
+  fun peekSuccessOnFailureTest() {
+    val apiResponse = ApiResponse.exception(Throwable("error"))
+    var peeked = false
+
+    val result = apiResponse.peekSuccess { peeked = true }
+
+    assertThat(peeked, `is`(false))
+    assertThat(result is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  fun suspendPeekSuccessTest() = runTest {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.responseOf { response }
+    var peekedValue: String? = null
+
+    val result = apiResponse.suspendPeekSuccess { peekedValue = it }
+
+    assertThat(peekedValue, `is`("foo"))
+    assertThat(result.getOrNull(), `is`("foo"))
+  }
+
+  @Test
+  fun peekFailureOnSuccessTest() {
+    val response = Response.success("foo")
+    val apiResponse = ApiResponse.responseOf { response }
+    var peeked = false
+
+    val result = apiResponse.peekFailure { peeked = true }
+
+    assertThat(peeked, `is`(false))
+    assertThat(result.getOrNull(), `is`("foo"))
+  }
+
+  @Test
+  fun peekFailureOnFailureTest() {
+    val apiResponse = ApiResponse.exception(Throwable("error"))
+    var peeked = false
+
+    val result = apiResponse.peekFailure { peeked = true }
+
+    assertThat(peeked, `is`(true))
+    assertThat(result is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  fun suspendPeekFailureTest() = runTest {
+    val apiResponse = ApiResponse.exception(Throwable("error"))
+    var peeked = false
+
+    val result = apiResponse.suspendPeekFailure { peeked = true }
+
+    assertThat(peeked, `is`(true))
+    assertThat(result is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  fun peekErrorOnErrorTest() {
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
+    var peeked = false
+
+    val result = apiResponse.peekError { peeked = true }
+
+    assertThat(peeked, `is`(true))
+    assertThat(result is ApiResponse.Failure.Error, `is`(true))
+  }
+
+  @Test
+  fun peekErrorOnExceptionTest() {
+    val apiResponse = ApiResponse.exception(Throwable("error"))
+    var peeked = false
+
+    val result = apiResponse.peekError { peeked = true }
+
+    assertThat(peeked, `is`(false))
+    assertThat(result is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  fun suspendPeekErrorTest() = runTest {
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
+    var peeked = false
+
+    val result = apiResponse.suspendPeekError { peeked = true }
+
+    assertThat(peeked, `is`(true))
+    assertThat(result is ApiResponse.Failure.Error, `is`(true))
+  }
+
+  @Test
+  fun peekExceptionOnExceptionTest() {
+    val apiResponse = ApiResponse.exception(Throwable("error"))
+    var peeked = false
+
+    val result = apiResponse.peekException { peeked = true }
+
+    assertThat(peeked, `is`(true))
+    assertThat(result is ApiResponse.Failure.Exception, `is`(true))
+  }
+
+  @Test
+  fun peekExceptionOnErrorTest() {
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
+      .build()
+
+    val service = retrofit.create(DisneyService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val responseBody = requireNotNull(service.fetchDisneyPosterList().execute().errorBody())
+    val apiResponse = ApiResponse.responseOf { Response.error<Poster>(404, responseBody) }
+    var peeked = false
+
+    val result = apiResponse.peekException { peeked = true }
+
+    assertThat(peeked, `is`(false))
+    assertThat(result is ApiResponse.Failure.Error, `is`(true))
+  }
+
+  @Test
+  fun suspendPeekExceptionTest() = runTest {
+    val apiResponse = ApiResponse.exception(Throwable("error"))
+    var peeked = false
+
+    val result = apiResponse.suspendPeekException { peeked = true }
+
+    assertThat(peeked, `is`(true))
+    assertThat(result is ApiResponse.Failure.Exception, `is`(true))
+  }
 }
