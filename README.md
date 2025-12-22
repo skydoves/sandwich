@@ -28,8 +28,8 @@ Add the dependency below into your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation("com.github.skydoves:sandwich:2.1.3")
-    implementation("com.github.skydoves:sandwich-retrofit:2.1.3") // For Retrofit (Android)
+    implementation("com.github.skydoves:sandwich:2.2.0")
+    implementation("com.github.skydoves:sandwich-retrofit:2.2.0") // For Retrofit (Android)
 }
 ```
 
@@ -182,12 +182,12 @@ val apiResponse = suspendApiResponseOf { service.request() }
 
 #### ApiResponse Extensions
 
-You can effectively handling `ApiResponse` using the following extensions:
+You can effectively handle `ApiResponse` using the following extensions:
 
 - **onSuccess**: Executes when the `ApiResponse` is of type `ApiResponse.Success`. Within this scope, you can directly access the body data.
-- **onError**: Executes when the `ApiResponse` is of type `ApiResponse.Failure.Error`. Here, you can access the `messareOrNull` and `payload` here.
-- **onException**: Executes when the `ApiResponse` is of type `ApiResponse.Failure.Exception`. You can access the `messareOrNull` and `exception` here.
-- **onFailure**: Executes when the `ApiResponse` is either `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`. You can access the `messareOrNull` here.
+- **onError**: Executes when the `ApiResponse` is of type `ApiResponse.Failure.Error`. You can access `messageOrNull` and `payload` here.
+- **onException**: Executes when the `ApiResponse` is of type `ApiResponse.Failure.Exception`. You can access `messageOrNull` and `exception` here.
+- **onFailure**: Executes when the `ApiResponse` is either `ApiResponse.Failure.Error` or `ApiResponse.Failure.Exception`. You can access `messageOrNull` here.
 
 Each scope operates according to its corresponding `ApiResponse` type:
 
@@ -269,6 +269,26 @@ response.toFlow { pokemons ->
   pokemonDao.getAllPokemonList(page)
 }.flowOn(Dispatchers.IO)
 ```
+
+#### Functional Extensions
+
+Sandwich provides a variety of functional extensions for transforming and composing `ApiResponse`:
+
+- **Recovery**: `recover`, `recoverWith` - Transform failures back into successes with fallback data
+- **Validation**: `validate`, `requireNotNull` - Validate success data and convert it to failure if invalid
+- **Filter**: `filter`, `filterNot` - Filter items in list data within a successful response
+- **Zip/Combine**: `zip`, `zip3` - Combine multiple `ApiResponse` instances into one
+- **Peek/Tap**: `peek`, `peekSuccess`, `peekFailure`, `peekError`, `peekException` - Observe responses without modifying them
+
+```kotlin
+val response = disneyService.fetchDisneyPosterList()
+  .validate({ it.isNotEmpty() }) { "List cannot be empty" }  // Validate data
+  .filter { poster -> poster.isActive }                       // Filter list items
+  .recover(emptyList())                                       // Recover with fallback
+  .peekSuccess { posters -> analytics.track(posters.size) }   // Side effects
+```
+
+All extensions have corresponding `suspend` variants (e.g., `suspendRecover`, `suspendValidate`) for coroutine support. For comprehensive details, refer to the [ApiResponse documentation](https://skydoves.github.io/sandwich/apiresponse/).
 
 ### Retrieving
 
@@ -540,7 +560,7 @@ interface NetworkEntryPoint {
 
 ##### 2. Provide Global Operator Dependency
 
-Next, provide your global operator with Hilt like the exambple below:
+Next, provide your global operator with Hilt like the example below:
 
 ```kotlin
 @Module
