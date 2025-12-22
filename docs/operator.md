@@ -196,7 +196,7 @@ interface NetworkEntryPoint {
 
 ### 2. Provide Global Operator Dependency
 
-Next, provide your global operator with Hilt like the exambple below:
+Next, provide your global operator with Hilt like the example below:
 
 ```kotlin
 @Module
