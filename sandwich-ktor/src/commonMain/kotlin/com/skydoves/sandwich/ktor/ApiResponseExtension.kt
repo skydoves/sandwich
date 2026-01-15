@@ -16,8 +16,8 @@
 package com.skydoves.sandwich.ktor
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.ApiResponse.Companion.maps
-import com.skydoves.sandwich.ApiResponse.Companion.operate
+import com.skydoves.sandwich.ApiResponse.Companion.suspendMaps
+import com.skydoves.sandwich.ApiResponse.Companion.suspendOperate
 import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwich.StatusCode
 import com.skydoves.sandwich.SuspensionFunction
@@ -127,7 +127,7 @@ public suspend inline fun <reified T> apiResponseOf(
   throw e
 } catch (ex: Exception) {
   ApiResponse.Failure.Exception(ex)
-}.operate().maps()
+}.suspendOperate().suspendMaps()
 
 /**
  * @author skydoves (Jaewoong Eum)
