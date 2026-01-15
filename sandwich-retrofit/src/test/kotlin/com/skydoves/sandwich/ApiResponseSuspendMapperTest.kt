@@ -118,7 +118,9 @@ internal class ApiResponseSuspendMapperTest {
       override suspend fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
         callOrder.add(1)
         delay(50)
-        return ApiResponse.Failure.Error("first: ${(apiResponse as ApiResponse.Failure.Error).payload}")
+        return ApiResponse.Failure.Error(
+          "first: ${(apiResponse as ApiResponse.Failure.Error).payload}",
+        )
       }
     }
 
@@ -126,7 +128,9 @@ internal class ApiResponseSuspendMapperTest {
       override suspend fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
         callOrder.add(2)
         delay(50)
-        return ApiResponse.Failure.Error("second: ${(apiResponse as ApiResponse.Failure.Error).payload}")
+        return ApiResponse.Failure.Error(
+          "second: ${(apiResponse as ApiResponse.Failure.Error).payload}",
+        )
       }
     }
 
@@ -156,7 +160,9 @@ internal class ApiResponseSuspendMapperTest {
     }
 
     // Create an exception failure response
-    val response: ApiResponse<String> = ApiResponse.Failure.Exception(IllegalStateException("original"))
+    val response: ApiResponse<String> = ApiResponse.Failure.Exception(
+      IllegalStateException("original"),
+    )
     val mapped = response.suspendMaps()
 
     // Verify mapper was called and response was properly mapped
