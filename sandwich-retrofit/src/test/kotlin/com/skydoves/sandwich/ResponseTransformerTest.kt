@@ -1395,4 +1395,82 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
     assertThat(peeked, `is`(true))
     assertThat(result is ApiResponse.Failure.Exception, `is`(true))
   }
+
+  // ========== CancellationException Handling Tests ==========
+
+  @Test(expected = kotlinx.coroutines.CancellationException::class)
+  fun `suspendOnException should re-throw CancellationException`() = runTest {
+    val cancellationException = kotlinx.coroutines.CancellationException("cancelled")
+    val apiResponse = ApiResponse.Failure.Exception(cancellationException)
+
+    apiResponse.suspendOnException {
+      // This block should never be called
+      throw AssertionError("onException block should not be called for CancellationException")
+    }
+  }
+
+  @Test
+  fun `suspendOnException should handle regular exceptions normally`() = runTest {
+    val regularException = IllegalStateException("error")
+    val apiResponse = ApiResponse.Failure.Exception(regularException)
+    var handlerCalled = false
+
+    apiResponse.suspendOnException {
+      handlerCalled = true
+      assertThat(throwable, `is`(regularException))
+    }
+
+    assertThat(handlerCalled, `is`(true))
+  }
+
+  @Test(expected = kotlinx.coroutines.CancellationException::class)
+  fun `suspendOnFailure should re-throw CancellationException from Exception`() = runTest {
+    val cancellationException = kotlinx.coroutines.CancellationException("cancelled")
+    val apiResponse: ApiResponse<String> = ApiResponse.Failure.Exception(cancellationException)
+
+    apiResponse.suspendOnFailure {
+      // This block should never be called
+      throw AssertionError("onFailure block should not be called for CancellationException")
+    }
+  }
+
+  @Test
+  fun `suspendOnFailure should handle regular exceptions normally`() = runTest {
+    val regularException = IllegalStateException("error")
+    val apiResponse: ApiResponse<String> = ApiResponse.Failure.Exception(regularException)
+    var handlerCalled = false
+
+    apiResponse.suspendOnFailure {
+      handlerCalled = true
+    }
+
+    assertThat(handlerCalled, `is`(true))
+  }
+
+  @Test
+  fun `suspendOnFailure should handle Error responses normally`() = runTest {
+    val apiResponse: ApiResponse<String> = ApiResponse.Failure.Error("error payload")
+    var handlerCalled = false
+
+    apiResponse.suspendOnFailure {
+      handlerCalled = true
+    }
+
+    assertThat(handlerCalled, `is`(true))
+  }
+
+  @Test(expected = kotlinx.coroutines.CancellationException::class)
+  fun `suspendOnProcedure should re-throw CancellationException`() = runTest {
+    val cancellationException = kotlinx.coroutines.CancellationException("cancelled")
+    val apiResponse: ApiResponse<String> = ApiResponse.Failure.Exception(cancellationException)
+
+    apiResponse.suspendOnProcedure(
+      onSuccess = {},
+      onError = {},
+      onException = {
+        // This block should never be called
+        throw AssertionError("onException block should not be called for CancellationException")
+      },
+    )
+  }
 }
