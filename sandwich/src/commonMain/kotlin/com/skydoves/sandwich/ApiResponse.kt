@@ -157,7 +157,7 @@ public sealed interface ApiResponse<out T> {
       throw e
     } catch (e: Exception) {
       exception(e)
-    }.operate().maps()
+    }.suspendOperate().suspendMaps()
 
     /**
      * @author skydoves (Jaewoong Eum)
@@ -197,6 +197,56 @@ public sealed interface ApiResponse<out T> {
             scope.launch {
               response = mapper.map(response as Failure<T>) as ApiResponse<T>
             }
+          }
+        }
+      }
+      return response
+    }
+
+    /**
+     * @author skydoves (Jaewoong Eum)
+     *
+     * Operates if there is a global [com.skydoves.sandwich.operators.SandwichOperator]
+     * which operates on [ApiResponse]s globally on each response and returns the target [ApiResponse].
+     *
+     * This suspend version properly awaits [ApiResponseSuspendOperator] operations.
+     *
+     * @return [ApiResponse] A target [ApiResponse].
+     */
+    @InternalSandwichApi
+    @Suppress("UNCHECKED_CAST")
+    public suspend fun <T> ApiResponse<T>.suspendOperate(): ApiResponse<T> = apply {
+      val globalOperators = SandwichInitializer.sandwichOperators
+      globalOperators.forEach { globalOperator ->
+        if (globalOperator is ApiResponseOperator<*>) {
+          operator(globalOperator as ApiResponseOperator<T>)
+        } else if (globalOperator is ApiResponseSuspendOperator<*>) {
+          suspendOperator(globalOperator as ApiResponseSuspendOperator<T>)
+        }
+      }
+    }
+
+    /**
+     * @author skydoves (Jaewoong Eum)
+     *
+     * Maps [ApiResponse.Failure] using global [SandwichInitializer.sandwichFailureMappers].
+     *
+     * This suspend version properly awaits [ApiResponseFailureSuspendMapper] operations,
+     * ensuring the mapped response is returned correctly.
+     *
+     * @return [ApiResponse] The mapped [ApiResponse].
+     */
+    @InternalSandwichApi
+    @Suppress("UNCHECKED_CAST")
+    public suspend fun <T> ApiResponse<T>.suspendMaps(): ApiResponse<T> {
+      val mappers = SandwichInitializer.sandwichFailureMappers
+      var response: ApiResponse<T> = this
+      mappers.forEach { mapper ->
+        if (response is Failure) {
+          if (mapper is ApiResponseFailureMapper) {
+            response = mapper.map(response) as ApiResponse<T>
+          } else if (mapper is ApiResponseFailureSuspendMapper) {
+            response = mapper.map(response) as ApiResponse<T>
           }
         }
       }
