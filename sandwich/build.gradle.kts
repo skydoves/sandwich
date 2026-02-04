@@ -22,8 +22,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.JS
 
 plugins {
-  id(libs.plugins.android.library.get().pluginId)
   id(libs.plugins.kotlin.multiplatform.get().pluginId)
+  id(libs.plugins.android.library.get().pluginId)
   id(libs.plugins.kotlin.serialization.get().pluginId)
   id(libs.plugins.baseline.profile.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
