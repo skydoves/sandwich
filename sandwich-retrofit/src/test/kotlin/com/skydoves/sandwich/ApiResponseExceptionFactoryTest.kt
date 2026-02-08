@@ -326,32 +326,31 @@ internal class ApiResponseExceptionFactoryTest {
   }
 
   @Test
-  fun `suspendException should chain multiple suspend mappers and return final result`() =
-    runTest {
-      SandwichInitializer.sandwichFailureMappers += object : ApiResponseFailureSuspendMapper {
-        override suspend fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
-          delay(50)
-          val original = (apiResponse as ApiResponse.Failure.Exception).throwable
-          return ApiResponse.Failure.Exception(
-            RuntimeException("first: ${original.message}"),
-          )
-        }
+  fun `suspendException should chain multiple suspend mappers and return final result`() = runTest {
+    SandwichInitializer.sandwichFailureMappers += object : ApiResponseFailureSuspendMapper {
+      override suspend fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
+        delay(50)
+        val original = (apiResponse as ApiResponse.Failure.Exception).throwable
+        return ApiResponse.Failure.Exception(
+          RuntimeException("first: ${original.message}"),
+        )
       }
-
-      SandwichInitializer.sandwichFailureMappers += object : ApiResponseFailureSuspendMapper {
-        override suspend fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
-          delay(50)
-          val previous = (apiResponse as ApiResponse.Failure.Exception).throwable
-          return ApiResponse.Failure.Exception(
-            RuntimeException("second: ${previous.message}"),
-          )
-        }
-      }
-
-      val result = ApiResponse.suspendException(RuntimeException("original"))
-
-      assertThat(result.throwable.message, `is`("second: first: original"))
     }
+
+    SandwichInitializer.sandwichFailureMappers += object : ApiResponseFailureSuspendMapper {
+      override suspend fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
+        delay(50)
+        val previous = (apiResponse as ApiResponse.Failure.Exception).throwable
+        return ApiResponse.Failure.Exception(
+          RuntimeException("second: ${previous.message}"),
+        )
+      }
+    }
+
+    val result = ApiResponse.suspendException(RuntimeException("original"))
+
+    assertThat(result.throwable.message, `is`("second: first: original"))
+  }
 
   // endregion
 
