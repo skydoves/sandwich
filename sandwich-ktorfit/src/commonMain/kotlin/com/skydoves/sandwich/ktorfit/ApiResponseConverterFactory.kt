@@ -59,10 +59,10 @@ public class ApiResponseConverterFactory internal constructor() : Converter.Fact
                 }
               }
 
-              is KtorfitResult.Failure -> ApiResponse.exception(result.throwable)
+              is KtorfitResult.Failure -> ApiResponse.suspendException(result.throwable)
             }
           } catch (e: Throwable) {
-            ApiResponse.exception(e)
+            ApiResponse.suspendException(e)
           }
           return apiResponse.suspendOperate().suspendMaps()
         }

@@ -540,7 +540,10 @@ public suspend fun <T> ApiResponse<T>.suspendMapFailure(
   if (this is ApiResponse.Failure.Error) {
     return ApiResponse.Failure.Error(payload = transformer.invoke(payload))
   } else if (this is ApiResponse.Failure.Exception) {
-    return ApiResponse.exception(ex = (transformer.invoke(throwable) as? Throwable) ?: throwable)
+    return ApiResponse.suspendException(
+      ex =
+      (transformer.invoke(throwable) as? Throwable) ?: throwable,
+    )
   }
   return this
 }
