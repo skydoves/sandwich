@@ -24,6 +24,7 @@ import com.skydoves.sandwich.mappers.ApiResponseMapper
 import com.skydoves.sandwich.mappers.ApiSuccessModelMapper
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
@@ -202,17 +203,24 @@ public inline fun <T> ApiResponse<T>.onFailure(
  *
  * A suspension function that would be executed for handling error responses if the request failed or get an exception.
  *
+ * Note: If the failure is an [ApiResponse.Failure.Exception] caused by a [CancellationException],
+ * the [CancellationException] will be re-thrown to ensure proper coroutine cancellation handling.
+ *
  * @param onResult The receiver function that receiving [ApiResponse.Failure] if the request failed or get an exception.
  *
  * @return The original [ApiResponse].
  */
 @JvmSynthetic
 @SuspensionFunction
+@Throws(CancellationException::class)
 public suspend inline fun <T> ApiResponse<T>.suspendOnFailure(
   crossinline onResult: suspend ApiResponse.Failure<T>.() -> Unit,
 ): ApiResponse<T> {
   contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure<T>) {
+    if (this is ApiResponse.Failure.Exception && throwable is CancellationException) {
+      throw throwable
+    }
     onResult(this)
   }
   return this
@@ -331,17 +339,24 @@ public inline fun <T> ApiResponse<T>.onException(
  *
  * A suspension scope function that would be executed for handling exception responses if the request get an exception.
  *
+ * Note: If the wrapped [ApiResponse.Failure.Exception.throwable] is a [CancellationException],
+ * it will be re-thrown to preserve coroutine cancellation semantics.
+ *
  * @param onResult The receiver function that receiving [ApiResponse.Failure.Exception] if the request get an exception.
  *
  * @return The original [ApiResponse].
  */
 @JvmSynthetic
 @SuspensionFunction
+@Throws(CancellationException::class)
 public suspend inline fun <T> ApiResponse<T>.suspendOnException(
   crossinline onResult: suspend ApiResponse.Failure.Exception.() -> Unit,
 ): ApiResponse<T> {
   contract { callsInPlace(onResult, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Failure.Exception) {
+    if (throwable is CancellationException) {
+      throw throwable
+    }
     onResult(this)
   }
   return this
