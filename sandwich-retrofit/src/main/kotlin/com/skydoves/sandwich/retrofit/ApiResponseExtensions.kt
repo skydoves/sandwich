@@ -19,6 +19,7 @@ import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ApiResponse.Companion.maps
 import com.skydoves.sandwich.ApiResponse.Companion.operate
 import com.skydoves.sandwich.SandwichInitializer
+import kotlinx.coroutines.CancellationException
 import com.skydoves.sandwich.StatusCode
 import com.skydoves.sandwich.SuspensionFunction
 import com.skydoves.sandwich.exceptions.NoContentException
@@ -127,6 +128,8 @@ public inline fun <T> apiResponseOf(
   } else {
     ApiResponse.Failure.Error(response)
   }
+} catch (ex: CancellationException) {
+  throw ex
 } catch (ex: Exception) {
   ApiResponse.Failure.Exception(ex)
 }.operate().maps()

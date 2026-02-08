@@ -17,6 +17,7 @@ package com.skydoves.sandwich.retrofit.adapters.internal
 
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.retrofit.responseOf
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -55,6 +56,8 @@ internal class ApiResponseDeferredCallAdapter<T>(
         val response = call.awaitResponse()
         val apiResponse = ApiResponse.responseOf { response }
         deferred.complete(apiResponse)
+      } catch (e: CancellationException) {
+        throw e
       } catch (e: Exception) {
         val apiResponse = ApiResponse.exception(e)
         deferred.complete(apiResponse)
