@@ -160,7 +160,7 @@ SandwichInitializer.sandwichFailureMappers += listOf(
 )
 ```
 
-Given the example above, which maps all `ApiResponse.Failure.Error` to your custom `ApiResponse.Failure.Exception` according to your preferences, you'll only need to focus on handling exceptional cases when dealing with your `ApiResponse`. 
+Given the example above, which maps all `ApiResponse.Failure.Error` to your custom `ApiResponse.Failure.Exception` according to your preferences, you'll only need to focus on handling exceptional cases when dealing with your `ApiResponse`.
 
 ```kotlin
 val apiResponse = service.fetchMovieList()
@@ -175,3 +175,33 @@ apiResponse.onSuccess {
   }
 }
 ```
+
+### Suspend Global Failure Mapper (Ktor/Ktorfit)
+
+If you're using **Ktor** or **Ktorfit**, parsing the error response body requires suspend functions (e.g., `bodyAsText()`). In this case, use `ApiResponseFailureSuspendMapper` instead of `ApiResponseFailureMapper`. The suspend mapper is properly awaited in suspend contexts, ensuring the mapped response is correctly returned to callers.
+
+```kotlin
+SandwichInitializer.sandwichFailureMappers += listOf(
+  object : ApiResponseFailureSuspendMapper {
+    override suspend fun map(apiResponse: ApiResponse.Failure<*>): ApiResponse.Failure<*> {
+      if (apiResponse is ApiResponse.Failure.Error) {
+        val errorBody = (apiResponse.payload as? HttpResponse)?.bodyAsText()
+        if (errorBody != null) {
+          val errorMessage: ErrorMessage = Json.decodeFromString(errorBody)
+          return when (errorMessage.code) {
+            10000 -> LimitedRequest
+            10001 -> WrongArgument
+            10002 -> HttpException
+            else -> UnKnownError
+          }
+        }
+      }
+      return apiResponse
+    }
+  },
+)
+```
+
+!!! note
+
+    `ApiResponseFailureSuspendMapper` is designed for suspend contexts (Ktor, Ktorfit, and `suspendOf`). If you're using Retrofit with synchronous response handling, use `ApiResponseFailureMapper` instead.
