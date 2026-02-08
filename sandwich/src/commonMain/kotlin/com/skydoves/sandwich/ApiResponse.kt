@@ -114,6 +114,18 @@ public sealed interface ApiResponse<out T> {
     /**
      * @author skydoves (Jaewoong Eum)
      *
+     * [Failure] factory function. Only receives [Throwable] as an argument.
+     *
+     * @param ex A throwable.
+     *
+     * @return A [ApiResponse.Failure.Exception] based on the throwable.
+     */
+    public suspend fun suspendException(ex: Throwable): Failure.Exception =
+      Failure.Exception(ex).suspendOperate().suspendMaps() as Failure.Exception
+
+    /**
+     * @author skydoves (Jaewoong Eum)
+     *
      * ApiResponse Factory.
      *
      * Create an [ApiResponse] from the given executable [f].
@@ -129,7 +141,7 @@ public sealed interface ApiResponse<out T> {
           tag = tag,
         )
       } catch (e: Exception) {
-        exception(e)
+        Failure.Exception(e)
       }.operate().maps()
 
     /**
@@ -156,7 +168,7 @@ public sealed interface ApiResponse<out T> {
     } catch (e: CancellationException) {
       throw e
     } catch (e: Exception) {
-      exception(e)
+      Failure.Exception(e)
     }.suspendOperate().suspendMaps()
 
     /**

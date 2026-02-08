@@ -48,7 +48,7 @@ internal class ApiResponseCallDelegate<T>(
       } catch (e: Exception) {
         callback.onResponse(
           this@ApiResponseCallDelegate,
-          Response.success(ApiResponse.exception(e)),
+          Response.success(ApiResponse.suspendException(e)),
         )
       }
     }

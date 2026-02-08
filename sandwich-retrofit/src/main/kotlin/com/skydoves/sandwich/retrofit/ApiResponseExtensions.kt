@@ -19,10 +19,10 @@ import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ApiResponse.Companion.maps
 import com.skydoves.sandwich.ApiResponse.Companion.operate
 import com.skydoves.sandwich.SandwichInitializer
-import kotlinx.coroutines.CancellationException
 import com.skydoves.sandwich.StatusCode
 import com.skydoves.sandwich.SuspensionFunction
 import com.skydoves.sandwich.exceptions.NoContentException
+import kotlinx.coroutines.CancellationException
 import okhttp3.Headers
 import okhttp3.ResponseBody
 import retrofit2.Response

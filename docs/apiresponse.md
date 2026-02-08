@@ -107,7 +107,7 @@ val apiResponse = suspendApiResponseOf { service.request() }
 
 !!! note
 
-    If you intend to utilize the global operator or global ApiResponse mapper in Sandwich, you should create an `ApiResponse` using the `ApiResponse.of` method to ensure the application of these global functions.
+    If you intend to utilize the global operator or global ApiResponse mapper in Sandwich, you should create an `ApiResponse` using the `ApiResponse.of` or `ApiResponse.suspendOf` method to ensure the application of these global functions. If you're using `ApiResponseFailureSuspendMapper` or `ApiResponseSuspendOperator` (common with Ktor/Ktorfit), use `ApiResponse.suspendOf` to ensure suspend mappers and operators are properly awaited.
 
 ## ApiResponse Extensions
 

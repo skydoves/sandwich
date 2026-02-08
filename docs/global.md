@@ -8,7 +8,12 @@ You can execute your [Operator](operator.md)s globally when creating `ApiRespons
 
 ## Global Error/Exception Mapper
 
-You can map all your failure type (ApiResponse.Failure.Error and ApiResponse.Failure.Exception) into your preferred custom error types. For more information, check out the [Global Failure Mapper](https://skydoves.github.io/sandwich/mapper/#global-failure-mapper).
+You can map all your failure type (ApiResponse.Failure.Error and ApiResponse.Failure.Exception) into your preferred custom error types. Sandwich provides two mapper interfaces:
+
+- **`ApiResponseFailureMapper`**: For non-suspend contexts (Retrofit).
+- **`ApiResponseFailureSuspendMapper`**: For suspend contexts (Ktor/Ktorfit) where error body parsing requires suspend functions. Suspend mappers are properly awaited and their mapped results are correctly returned to callers.
+
+For more information, check out the [Global Failure Mapper](https://skydoves.github.io/sandwich/mapper/#global-failure-mapper).
 
 ## Define Network Code Ranges
 

@@ -386,7 +386,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
 
   @Test
   fun suspendOnExceptionTest() = runTest {
-    val apiResponse = ApiResponse.exception(Throwable())
+    val apiResponse = ApiResponse.suspendException(Throwable())
 
     flow {
       apiResponse.suspendOnException {
@@ -399,7 +399,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
 
   @Test
   fun suspendOnExceptionInProcedureTest() = runTest {
-    val apiResponse = ApiResponse.exception(Throwable())
+    val apiResponse = ApiResponse.suspendException(Throwable())
 
     flow {
       apiResponse.suspendOnProcedure(
@@ -795,7 +795,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       assertThat(it, `is`("404"))
     }
 
-    val apiException = ApiResponse.exception(Throwable())
+    val apiException = ApiResponse.suspendException(Throwable())
     flow {
       apiException.suspendOperator(
         TestApiResponseSuspendOperator(
@@ -904,7 +904,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   @Suppress("UNCHECKED_CAST")
   fun suspendRecoverOnFailureTest() = runTest {
-    val apiResponse = ApiResponse.exception(Throwable("error")) as ApiResponse<String>
+    val apiResponse = ApiResponse.suspendException(Throwable("error")) as ApiResponse<String>
     val recovered = apiResponse.suspendRecover { "bar" }
 
     assertThat(recovered.getOrNull(), `is`("bar"))
@@ -913,7 +913,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   @Suppress("UNCHECKED_CAST")
   fun suspendRecoverWithOnFailureTest() = runTest {
-    val apiResponse = ApiResponse.exception(Throwable("error")) as ApiResponse<String>
+    val apiResponse = ApiResponse.suspendException(Throwable("error")) as ApiResponse<String>
     val recovered = apiResponse.suspendRecoverWith { ApiResponse.Success("bar") }
 
     assertThat(recovered.getOrNull(), `is`("bar"))
@@ -1294,7 +1294,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
 
   @Test
   fun suspendPeekFailureTest() = runTest {
-    val apiResponse = ApiResponse.exception(Throwable("error"))
+    val apiResponse = ApiResponse.suspendException(Throwable("error"))
     var peeked = false
 
     val result = apiResponse.suspendPeekFailure { peeked = true }
@@ -1387,7 +1387,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
 
   @Test
   fun suspendPeekExceptionTest() = runTest {
-    val apiResponse = ApiResponse.exception(Throwable("error"))
+    val apiResponse = ApiResponse.suspendException(Throwable("error"))
     var peeked = false
 
     val result = apiResponse.suspendPeekException { peeked = true }
