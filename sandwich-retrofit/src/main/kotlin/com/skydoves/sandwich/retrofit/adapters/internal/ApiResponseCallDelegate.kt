@@ -17,6 +17,7 @@ package com.skydoves.sandwich.retrofit.adapters.internal
 
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.retrofit.responseOf
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -42,6 +43,8 @@ internal class ApiResponseCallDelegate<T>(
         val response = proxy.awaitResponse()
         val apiResponse = ApiResponse.responseOf { response }
         callback.onResponse(this@ApiResponseCallDelegate, Response.success(apiResponse))
+      } catch (e: CancellationException) {
+        throw e
       } catch (e: Exception) {
         callback.onResponse(
           this@ApiResponseCallDelegate,
