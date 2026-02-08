@@ -16,8 +16,8 @@
 package com.skydoves.sandwich.ktorfit
 
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.ApiResponse.Companion.maps
-import com.skydoves.sandwich.ApiResponse.Companion.operate
+import com.skydoves.sandwich.ApiResponse.Companion.suspendMaps
+import com.skydoves.sandwich.ApiResponse.Companion.suspendOperate
 import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwich.ktor.getStatusCode
 import de.jensklingenberg.ktorfit.Ktorfit
@@ -64,7 +64,7 @@ public class ApiResponseConverterFactory internal constructor() : Converter.Fact
           } catch (e: Throwable) {
             ApiResponse.exception(e)
           }
-          return apiResponse.operate().maps()
+          return apiResponse.suspendOperate().suspendMaps()
         }
       }
     }
