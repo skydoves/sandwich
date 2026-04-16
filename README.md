@@ -30,6 +30,7 @@ Add the dependency below into your **module**'s `build.gradle` file:
 dependencies {
     implementation("com.github.skydoves:sandwich:2.2.1")
     implementation("com.github.skydoves:sandwich-retrofit:2.2.1") // For Retrofit (Android)
+    testImplementation("com.github.skydoves:sandwich-test:2.2.1") // For Testing
 }
 ```
 
@@ -42,6 +43,11 @@ sourceSets {
             implementation("com.github.skydoves:sandwich:$version")
             implementation("com.github.skydoves:sandwich-ktor:$version")
             implementation("com.github.skydoves:sandwich-ktorfit:$version")
+        }
+    }
+    val commonTest by getting {
+        dependencies {
+            implementation("com.github.skydoves:sandwich-test:$version")
         }
     }
 }
@@ -70,6 +76,7 @@ For comprehensive details about Sandwich, please refer to the complete [document
 - [Retrofit Integration](https://skydoves.github.io/sandwich/retrofit)
 - [Ktor Integration](https://skydoves.github.io/sandwich/ktor)
 - [Ktorfit Integration](https://skydoves.github.io/sandwich/ktorfit)
+- [Testing](https://skydoves.github.io/sandwich/testing)
 
 ### ApiResponse
 

@@ -58,6 +58,24 @@ sourceSets {
 }
 ```
 
+For [testing](testing.md) utilities (fake factories and assertion DSL), add the following dependency to your test source set:
+
+=== "Groovy"
+
+    ```Groovy
+    dependencies {
+        testImplementation "com.github.skydoves:sandwich-test:$version"
+    }
+    ```
+
+=== "KTS"
+
+    ```kotlin
+    dependencies {
+        testImplementation("com.github.skydoves:sandwich-test:$version")
+    }
+    ```
+
 ## References
 
 You can delve deeper into the art of modeling Retrofit responses through the following resources:

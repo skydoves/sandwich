@@ -21,6 +21,7 @@ nav:
   - 'Operator': operator.md
   - 'Merge': merge.md
   - 'Global Handling': global.md
+  - 'Testing': testing.md
   - 'Empty Body': empty-body.md
   - 'Migration Guide': migration.md
   - 'Sponsor 🩷': sponsor.md
