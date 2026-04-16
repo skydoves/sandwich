@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-@file:OptIn(ExperimentalWasmDsl::class)
-
 import com.github.skydoves.sandwich.Configuration
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.targets.js.JS
 
 plugins {
-  id(libs.plugins.kotlin.multiplatform.get().pluginId)
   id(libs.plugins.android.library.get().pluginId)
-  id(libs.plugins.kotlin.serialization.get().pluginId)
-  id(libs.plugins.baseline.profile.get().pluginId)
+  id(libs.plugins.kotlin.multiplatform.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
 }
 
@@ -103,23 +97,17 @@ kotlin {
 
   sourceSets {
     all {
-      languageSettings.optIn("kotlin.contracts.ExperimentalContracts")
       languageSettings.optIn("com.skydoves.sandwich.annotations.InternalSandwichApi")
+      languageSettings.optIn("kotlin.contracts.ExperimentalContracts")
     }
     val commonMain by getting {
       dependencies {
-        implementation(libs.coroutines)
+        api(project(":sandwich"))
       }
     }
-
     val commonTest by getting {
       dependencies {
-        implementation(libs.coroutines.test)
-        implementation(libs.junit)
-        implementation(libs.mockito.core)
-        implementation(libs.mockito.inline)
-        implementation(libs.mockito.kotlin)
-        implementation(libs.serialization)
+        implementation(kotlin("test"))
       }
     }
   }
@@ -129,32 +117,15 @@ kotlin {
 
 android {
   compileSdk = Configuration.compileSdk
-  namespace = "com.skydoves.sandwich"
+  namespace = "com.skydoves.sandwich.test"
   defaultConfig {
     minSdk = Configuration.minSdk
-    consumerProguardFiles("consumer-rules.pro")
   }
 
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
   }
-}
-
-baselineProfile {
-  baselineProfileOutputDir = "../../src/androidMain"
-  filter {
-    include("com.skydoves.sandwich.**")
-    exclude("com.skydoves.sandwich.sandwichdemo.**")
-    exclude("com.skydoves.sandwich.retrofit.**")
-    exclude("com.skydoves.sandwich.ktor.**")
-    exclude("com.skydoves.sandwich.ktorfit.**")
-    exclude("com.skydoves.sandwich.test.**")
-  }
-}
-
-dependencies {
-  baselineProfile(project(":baselineprofile"))
 }
 
 java {

@@ -1,0 +1,22 @@
+public final class com/skydoves/sandwich/test/ApiResponseAssertionsKt {
+	public static final fun assertError (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse$Failure$Error;
+	public static final fun assertError (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse$Failure$Error;
+	public static final fun assertException (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;
+	public static final fun assertException (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;
+	public static final fun assertExceptionMessage (Lcom/skydoves/sandwich/ApiResponse;Ljava/lang/String;)Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;
+	public static final fun assertFailure (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse$Failure;
+	public static final fun assertFailure (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse$Failure;
+	public static final fun assertSuccess (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse$Success;
+	public static final fun assertSuccess (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/sandwich/ApiResponse$Success;
+	public static final fun assertSuccessData (Lcom/skydoves/sandwich/ApiResponse;Ljava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse$Success;
+}
+
+public final class com/skydoves/sandwich/test/FakeApiResponseKt {
+	public static final fun fakeError (Lcom/skydoves/sandwich/ApiResponse$Companion;Ljava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse$Failure$Error;
+	public static synthetic fun fakeError$default (Lcom/skydoves/sandwich/ApiResponse$Companion;Ljava/lang/Object;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse$Failure$Error;
+	public static final fun fakeException (Lcom/skydoves/sandwich/ApiResponse$Companion;Ljava/lang/String;)Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;
+	public static final fun fakeException (Lcom/skydoves/sandwich/ApiResponse$Companion;Ljava/lang/Throwable;)Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;
+	public static final fun fakeSuccess (Lcom/skydoves/sandwich/ApiResponse$Companion;Ljava/lang/Object;Ljava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse$Success;
+	public static synthetic fun fakeSuccess$default (Lcom/skydoves/sandwich/ApiResponse$Companion;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse$Success;
+}
+
