@@ -28,9 +28,9 @@ Add the dependency below into your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation("com.github.skydoves:sandwich:2.2.1")
-    implementation("com.github.skydoves:sandwich-retrofit:2.2.1") // For Retrofit (Android)
-    testImplementation("com.github.skydoves:sandwich-test:2.2.1") // For Testing
+    implementation("com.github.skydoves:sandwich:2.2.2")
+    implementation("com.github.skydoves:sandwich-retrofit:2.2.2") // For Retrofit (Android)
+    testImplementation("com.github.skydoves:sandwich-test:2.2.2") // For Testing
 }
 ```
 
