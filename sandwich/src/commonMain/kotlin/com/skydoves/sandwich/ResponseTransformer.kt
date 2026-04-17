@@ -24,7 +24,7 @@ import com.skydoves.sandwich.mappers.ApiResponseMapper
 import com.skydoves.sandwich.mappers.ApiSuccessModelMapper
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
-import kotlinx.coroutines.CancellationException
+import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf

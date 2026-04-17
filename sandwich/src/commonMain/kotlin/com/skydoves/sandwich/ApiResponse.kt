@@ -22,7 +22,7 @@ import com.skydoves.sandwich.mappers.ApiResponseFailureMapper
 import com.skydoves.sandwich.mappers.ApiResponseFailureSuspendMapper
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
-import kotlinx.coroutines.CancellationException
+import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.launch
 
 /**
