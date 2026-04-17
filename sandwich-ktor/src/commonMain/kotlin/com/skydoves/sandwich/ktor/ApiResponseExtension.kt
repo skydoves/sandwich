@@ -30,7 +30,7 @@ import io.ktor.http.Headers
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.charsets.Charset
 import io.ktor.utils.io.charsets.Charsets
-import kotlinx.coroutines.CancellationException
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.jvm.JvmSynthetic
 
 /**
