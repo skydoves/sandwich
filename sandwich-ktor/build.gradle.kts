@@ -118,7 +118,7 @@ android {
   namespace = "com.skydoves.sandwich.ktor"
   defaultConfig {
     minSdk = Configuration.minSdk
-    consumerProguardFiles("src/androidMain/consumer-rules.pro")
+    consumerProguardFiles("consumer-rules.pro")
   }
 
   compileOptions {
