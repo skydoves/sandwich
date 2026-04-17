@@ -26,15 +26,11 @@ plugins {
 apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
 
 mavenPublishing {
-  val artifactId = "sandwich-test"
-  coordinates(
-    Configuration.artifactGroup,
-    artifactId,
-    rootProject.extra.get("libVersion").toString()
-  )
-
   pom {
-    name.set(artifactId)
+    version = rootProject.extra.get("libVersion").toString()
+    group = Configuration.artifactGroup
+
+    name.set("sandwich-test")
     description.set(
       "A lightweight and pluggable sealed API library for modeling Retrofit " +
         "responses and handling exceptions on Kotlin and Android."
