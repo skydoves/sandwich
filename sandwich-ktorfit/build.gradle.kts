@@ -51,7 +51,7 @@ kotlin {
   iosArm64()
   iosSimulatorArm64()
 
-  macosX64()
+  // ktorfit-lib-light does not publish a macosX64 variant, so it is omitted here.
   macosArm64()
 
   @Suppress("OPT_IN_USAGE")
@@ -70,7 +70,6 @@ kotlin {
               withIosSimulatorArm64()
             }
             group("macos") {
-              withMacosX64()
               withMacosArm64()
             }
           }
