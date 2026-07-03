@@ -32,7 +32,7 @@ android {
   compileSdk = Configuration.compileSdk
   defaultConfig {
     applicationId = "com.skydoves.sandwichdemo"
-    minSdk = Configuration.minSdk
+    minSdk = Configuration.minSdkDemo
     targetSdk = Configuration.targetSdk
     versionCode = Configuration.versionCode
     versionName = Configuration.versionName
@@ -61,7 +61,7 @@ kotlin {
 }
 
 ktorfit {
-  compilerPluginVersion.set("2.3.3")
+  compilerPluginVersion.set("2.3.5")
 }
 
 dependencies {
