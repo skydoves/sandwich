@@ -1087,21 +1087,18 @@ public suspend inline fun <T> ApiResponse<T>.suspendRecoverWith(
  * If the predicate returns false, the response is converted to [ApiResponse.Failure.Error].
  *
  * @param predicate A predicate function that validates the success data.
- * @param errorMessage A lambda that provides the error message when validation fails.
+ * @param errorMessage The error message when validation fails.
  *
  * @return The original [ApiResponse.Success] if validation passes, otherwise [ApiResponse.Failure.Error].
  */
 @JvmSynthetic
 public inline fun <T> ApiResponse<T>.validate(
   crossinline predicate: (T) -> Boolean,
-  crossinline errorMessage: () -> String = { "Validation failed" },
+  errorMessage: String = "Validation failed",
 ): ApiResponse<T> {
-  contract {
-    callsInPlace(predicate, InvocationKind.AT_MOST_ONCE)
-    callsInPlace(errorMessage, InvocationKind.AT_MOST_ONCE)
-  }
+  contract { callsInPlace(predicate, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Success && !predicate(data)) {
-    return ApiResponse.Failure.Error(payload = errorMessage())
+    return ApiResponse.Failure.Error(payload = errorMessage)
   }
   return this
 }
@@ -1137,7 +1134,7 @@ public suspend inline fun <T> ApiResponse<T>.suspendValidate(
  * If the selected value is null, the response is converted to [ApiResponse.Failure.Error].
  *
  * @param selector A selector function that extracts a nullable value from the success data.
- * @param errorMessage A lambda that provides the error message when the selected value is null.
+ * @param errorMessage The error message when the selected value is null.
  *
  * @return An [ApiResponse] with the non-null selected value, or [ApiResponse.Failure.Error] if null.
  */
@@ -1145,18 +1142,15 @@ public suspend inline fun <T> ApiResponse<T>.suspendValidate(
 @JvmSynthetic
 public inline fun <T, R> ApiResponse<T>.requireNotNull(
   crossinline selector: (T) -> R?,
-  crossinline errorMessage: () -> String = { "Required value was null" },
+  errorMessage: String = "Required value was null",
 ): ApiResponse<R> {
-  contract {
-    callsInPlace(selector, InvocationKind.AT_MOST_ONCE)
-    callsInPlace(errorMessage, InvocationKind.AT_MOST_ONCE)
-  }
+  contract { callsInPlace(selector, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Success) {
     val selected = selector(data)
     return if (selected != null) {
       ApiResponse.Success(data = selected, tag = tag)
     } else {
-      ApiResponse.Failure.Error(payload = errorMessage())
+      ApiResponse.Failure.Error(payload = errorMessage)
     }
   }
   return this as ApiResponse<R>
