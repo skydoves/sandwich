@@ -20,6 +20,8 @@ package com.skydoves.sandwich
 import com.skydoves.sandwich.annotations.InternalSandwichApi
 import com.skydoves.sandwich.mappers.ApiResponseFailureMapper
 import com.skydoves.sandwich.mappers.ApiResponseFailureSuspendMapper
+import com.skydoves.sandwich.mappers.ApiResponseSuccessMapper
+import com.skydoves.sandwich.mappers.ApiResponseSuccessSuspendMapper
 import com.skydoves.sandwich.operators.ApiResponseOperator
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
 import kotlinx.coroutines.launch
@@ -199,7 +201,7 @@ public sealed interface ApiResponse<out T> {
     @Suppress("UNCHECKED_CAST")
     public fun <T> ApiResponse<T>.maps(): ApiResponse<T> {
       val mappers = SandwichInitializer.sandwichFailureMappers
-      var response: ApiResponse<T> = this
+      var response: ApiResponse<T> = successMaps()
       mappers.forEach { mapper ->
         if (response is Failure) {
           if (mapper is ApiResponseFailureMapper) {
@@ -225,6 +227,64 @@ public sealed interface ApiResponse<out T> {
      *
      * @return [ApiResponse] A target [ApiResponse].
      */
+
+    /**
+     * @author skydoves (Jaewoong Eum)
+     *
+     * Maps [ApiResponse.Success] using global [SandwichInitializer.sandwichSuccessMappers],
+     * which may demote a transport-level success into an [ApiResponse.Failure.Error].
+     *
+     * [com.skydoves.sandwich.mappers.ApiResponseSuccessSuspendMapper] is skipped here, because a
+     * suspending mapper cannot be awaited from a blocking creation path. Use [suspendOf] to have
+     * suspending success mappers applied.
+     *
+     * @return [ApiResponse] The mapped [ApiResponse].
+     */
+    @InternalSandwichApi
+    @Suppress("UNCHECKED_CAST")
+    public fun <T> ApiResponse<T>.successMaps(): ApiResponse<T> {
+      val mappers = SandwichInitializer.sandwichSuccessMappers
+      if (mappers.isEmpty()) return this
+      var response: ApiResponse<T> = this
+      mappers.forEach { mapper ->
+        val current = response
+        if (current is Success && mapper is ApiResponseSuccessMapper) {
+          response = mapper.map(current) as ApiResponse<T>
+        }
+      }
+      return response
+    }
+
+    /**
+     * @author skydoves (Jaewoong Eum)
+     *
+     * Maps [ApiResponse.Success] using global [SandwichInitializer.sandwichSuccessMappers],
+     * which may demote a transport-level success into an [ApiResponse.Failure.Error].
+     *
+     * This suspend version properly awaits
+     * [com.skydoves.sandwich.mappers.ApiResponseSuccessSuspendMapper] operations.
+     *
+     * @return [ApiResponse] The mapped [ApiResponse].
+     */
+    @InternalSandwichApi
+    @Suppress("UNCHECKED_CAST")
+    public suspend fun <T> ApiResponse<T>.suspendSuccessMaps(): ApiResponse<T> {
+      val mappers = SandwichInitializer.sandwichSuccessMappers
+      if (mappers.isEmpty()) return this
+      var response: ApiResponse<T> = this
+      mappers.forEach { mapper ->
+        val current = response
+        if (current is Success) {
+          if (mapper is ApiResponseSuccessMapper) {
+            response = mapper.map(current) as ApiResponse<T>
+          } else if (mapper is ApiResponseSuccessSuspendMapper) {
+            response = mapper.map(current) as ApiResponse<T>
+          }
+        }
+      }
+      return response
+    }
+
     @InternalSandwichApi
     @Suppress("UNCHECKED_CAST")
     public suspend fun <T> ApiResponse<T>.suspendOperate(): ApiResponse<T> = apply {
@@ -252,7 +312,7 @@ public sealed interface ApiResponse<out T> {
     @Suppress("UNCHECKED_CAST")
     public suspend fun <T> ApiResponse<T>.suspendMaps(): ApiResponse<T> {
       val mappers = SandwichInitializer.sandwichFailureMappers
-      var response: ApiResponse<T> = this
+      var response: ApiResponse<T> = suspendSuccessMaps()
       mappers.forEach { mapper ->
         if (response is Failure) {
           if (mapper is ApiResponseFailureMapper) {

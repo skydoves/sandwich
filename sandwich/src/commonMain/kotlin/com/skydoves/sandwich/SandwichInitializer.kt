@@ -16,6 +16,7 @@
 package com.skydoves.sandwich
 
 import com.skydoves.sandwich.mappers.SandwichFailureMapper
+import com.skydoves.sandwich.mappers.SandwichSuccessMapper
 import com.skydoves.sandwich.operators.SandwichOperator
 import com.skydoves.sandwich.platform.platformCoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -73,6 +74,24 @@ public object SandwichInitializer {
    */
   @JvmStatic
   public var sandwichFailureMappers: MutableList<SandwichFailureMapper> = mutableListOf()
+
+  /**
+   * @author skydoves (Jaewoong Eum)
+   *
+   * A list of global success mappers that is executed by [ApiResponse]s globally on each response.
+   *
+   * [com.skydoves.sandwich.mappers.ApiResponseSuccessMapper] allows you to map the successful
+   * responses, including demoting them to [ApiResponse.Failure.Error]. This is the hook that
+   * powers the envelope (`BaseResponse`) pattern, where a server answers HTTP 200 while the body
+   * encodes a business failure.
+   * [com.skydoves.sandwich.mappers.ApiResponseSuccessSuspendMapper] can be used for suspension
+   * scope, and it is only applied on suspending creation paths such as [ApiResponse.suspendOf].
+   *
+   * By setting [sandwichSuccessMappers], Sandwich will automatically map all [ApiResponse] by
+   * using the [ApiResponse.of] function.
+   */
+  @JvmStatic
+  public var sandwichSuccessMappers: MutableList<SandwichSuccessMapper> = mutableListOf()
 
   /**
    * @author skydoves (Jaewoong Eum)
