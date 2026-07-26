@@ -15,6 +15,7 @@
  */
 package com.skydoves.sandwich
 
+import com.skydoves.sandwich.envelope.ApiEnvelopeMapper
 import com.skydoves.sandwich.mappers.SandwichFailureMapper
 import com.skydoves.sandwich.mappers.SandwichSuccessMapper
 import com.skydoves.sandwich.operators.SandwichOperator
@@ -89,9 +90,19 @@ public object SandwichInitializer {
    *
    * By setting [sandwichSuccessMappers], Sandwich will automatically map all [ApiResponse] by
    * using the [ApiResponse.of] function.
+   *
+   * [com.skydoves.sandwich.envelope.ApiEnvelopeMapper] is registered by default, so a response
+   * body implementing [com.skydoves.sandwich.envelope.ApiEnvelope] is classified by its business
+   * outcome out of the box. It only affects models that opt in by implementing the interface.
+   * Remove it from this list to opt out:
+   *
+   * ```kotlin
+   * SandwichInitializer.sandwichSuccessMappers -= ApiEnvelopeMapper
+   * ```
    */
   @JvmStatic
-  public var sandwichSuccessMappers: MutableList<SandwichSuccessMapper> = mutableListOf()
+  public var sandwichSuccessMappers: MutableList<SandwichSuccessMapper> =
+    mutableListOf(ApiEnvelopeMapper)
 
   /**
    * @author skydoves (Jaewoong Eum)

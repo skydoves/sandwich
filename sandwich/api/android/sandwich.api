@@ -248,10 +248,6 @@ public final class com/skydoves/sandwich/envelope/ApiEnvelopeMapper : com/skydov
 	public fun map (Lcom/skydoves/sandwich/ApiResponse$Success;)Lcom/skydoves/sandwich/ApiResponse;
 }
 
-public final class com/skydoves/sandwich/envelope/ApiEnvelopeMapperKt {
-	public static final fun enableEnvelopeSupport (Lcom/skydoves/sandwich/SandwichInitializer;)V
-}
-
 public abstract interface class com/skydoves/sandwich/envelope/ApiEnvelopeSpec {
 	public abstract fun envelopeBody (Ljava/lang/Object;)Ljava/lang/Object;
 	public abstract fun envelopeError (Ljava/lang/Object;)Ljava/lang/Object;

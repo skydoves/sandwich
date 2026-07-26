@@ -25,11 +25,15 @@ import com.skydoves.sandwich.mappers.ApiResponseSuccessMapper
  * A global [ApiResponseSuccessMapper] that demotes a transport-level success into an
  * [ApiResponse.Failure.Error] when the body is an [ApiEnvelope] reporting a business failure.
  *
- * Register it once so that every response carrying an envelope is classified consistently,
- * including responses observed by global operators:
+ * This mapper is registered on [SandwichInitializer.sandwichSuccessMappers] by default, so every
+ * response carrying an envelope is classified consistently, including responses observed by
+ * global operators. A response body that does not implement [ApiEnvelope] passes through
+ * untouched, so the default registration is inert for models that do not opt in.
+ *
+ * Remove it to opt out:
  *
  * ```kotlin
- * SandwichInitializer.sandwichSuccessMappers += ApiEnvelopeMapper
+ * SandwichInitializer.sandwichSuccessMappers -= ApiEnvelopeMapper
  * ```
  *
  * This mapper deliberately does **not** flatten a successful envelope, because doing so would
@@ -45,17 +49,5 @@ public object ApiEnvelopeMapper : ApiResponseSuccessMapper {
     } else {
       apiResponse
     }
-  }
-}
-
-/**
- * @author skydoves (Jaewoong Eum)
- *
- * Registers [ApiEnvelopeMapper] on [SandwichInitializer.sandwichSuccessMappers] if it has not
- * been registered yet.
- */
-public fun SandwichInitializer.enableEnvelopeSupport() {
-  if (!sandwichSuccessMappers.contains(ApiEnvelopeMapper)) {
-    sandwichSuccessMappers += ApiEnvelopeMapper
   }
 }

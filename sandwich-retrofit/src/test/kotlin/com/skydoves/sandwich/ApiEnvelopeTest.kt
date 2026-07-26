@@ -66,7 +66,7 @@ internal class ApiEnvelopeTest {
   fun tearDown() {
     // NOTE: global state leaks between tests today — this is finding C3
     // (sandwich-test needs a reset rule).
-    SandwichInitializer.sandwichSuccessMappers = mutableListOf()
+    SandwichInitializer.sandwichSuccessMappers = mutableListOf(ApiEnvelopeMapper)
     SandwichInitializer.sandwichFailureMappers = mutableListOf()
   }
 
@@ -123,9 +123,7 @@ internal class ApiEnvelopeTest {
   }
 
   @Test
-  fun `global envelope mapper demotes a business failure without an explicit unwrap`() {
-    SandwichInitializer.sandwichSuccessMappers += ApiEnvelopeMapper
-
+  fun `the default envelope mapper demotes a business failure without an explicit unwrap`() {
     // The transport succeeded with HTTP 200, but the body encodes a business failure.
     val response = ApiResponse.of { BaseResponse(code = -1, msg = "fail", data = null) }
 
@@ -134,9 +132,7 @@ internal class ApiEnvelopeTest {
   }
 
   @Test
-  fun `global envelope mapper leaves a business success as Success`() {
-    SandwichInitializer.sandwichSuccessMappers += ApiEnvelopeMapper
-
+  fun `the default envelope mapper leaves a business success as Success`() {
     val response = ApiResponse.of { BaseResponse(code = 0, msg = "success", data = "poster") }
 
     assertThat(response is ApiResponse.Success, `is`(true))
@@ -145,7 +141,6 @@ internal class ApiEnvelopeTest {
 
   @Test
   fun `a demoted envelope failure still flows through global failure mappers`() {
-    SandwichInitializer.sandwichSuccessMappers += ApiEnvelopeMapper
     SandwichInitializer.sandwichFailureMappers += ApiResponseFailureMapper { failure ->
       val payload = (failure as ApiResponse.Failure.Error).payload
       ApiResponse.Failure.Error(payload = "mapped: $payload")
@@ -158,9 +153,7 @@ internal class ApiEnvelopeTest {
   }
 
   @Test
-  fun `global envelope mapper applies on the suspending creation path`() = runTest {
-    SandwichInitializer.sandwichSuccessMappers += ApiEnvelopeMapper
-
+  fun `the default envelope mapper applies on the suspending creation path`() = runTest {
     val response = ApiResponse.suspendOf { BaseResponse(code = -1, msg = "fail", data = null) }
 
     assertThat(response is ApiResponse.Failure.Error, `is`(true))
@@ -168,11 +161,21 @@ internal class ApiEnvelopeTest {
   }
 
   @Test
-  fun `no registered success mapper leaves the pipeline untouched`() {
+  fun `removing the envelope mapper opts out of the automatic demotion`() {
+    SandwichInitializer.sandwichSuccessMappers -= ApiEnvelopeMapper
+
     val response = ApiResponse.of { BaseResponse(code = -1, msg = "fail", data = null) }
 
     assertThat(response is ApiResponse.Success, `is`(true))
     assertThat(response.getOrNull()?.code, `is`(-1))
+  }
+
+  @Test
+  fun `a body that does not implement ApiEnvelope passes through untouched`() {
+    val response = ApiResponse.of { LegacyResponse("NG", "", "quota exceeded") }
+
+    assertThat(response is ApiResponse.Success, `is`(true))
+    assertThat(response.getOrNull()?.reason, `is`("quota exceeded"))
   }
 
   @Test

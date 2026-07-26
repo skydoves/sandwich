@@ -476,7 +476,11 @@ public inline fun <reified T, reified V> ApiResponse<T>.mapSuccess(
 ): ApiResponse<V> {
   contract { callsInPlace(transformer, InvocationKind.AT_MOST_ONCE) }
   if (this is ApiResponse.Success<T>) {
-    return ApiResponse.of(tag = tag) { transformer(data) }
+    return try {
+      ApiResponse.Success(data = transformer(data), tag = tag)
+    } catch (e: Exception) {
+      ApiResponse.Failure.Exception(e)
+    }
   }
   return this as ApiResponse<V>
 }
@@ -497,8 +501,7 @@ public suspend inline fun <reified T, reified V> ApiResponse<T>.suspendMapSucces
   crossinline transformer: suspend T.() -> V,
 ): ApiResponse<V> {
   if (this is ApiResponse.Success<T>) {
-    val invoke = transformer(data)
-    return ApiResponse.of(tag = tag) { invoke }
+    return ApiResponse.Success(data = transformer(data), tag = tag)
   }
   return this as ApiResponse<V>
 }
@@ -517,7 +520,9 @@ public fun <T> ApiResponse<T>.mapFailure(transformer: Any?.() -> Any?): ApiRespo
   if (this is ApiResponse.Failure.Error) {
     return ApiResponse.Failure.Error(payload = transformer.invoke(payload))
   } else if (this is ApiResponse.Failure.Exception) {
-    return ApiResponse.exception(ex = (transformer.invoke(throwable) as? Throwable) ?: throwable)
+    return ApiResponse.Failure.Exception(
+      throwable = (transformer.invoke(throwable) as? Throwable) ?: throwable,
+    )
   }
   return this
 }
@@ -540,9 +545,8 @@ public suspend fun <T> ApiResponse<T>.suspendMapFailure(
   if (this is ApiResponse.Failure.Error) {
     return ApiResponse.Failure.Error(payload = transformer.invoke(payload))
   } else if (this is ApiResponse.Failure.Exception) {
-    return ApiResponse.suspendException(
-      ex =
-      (transformer.invoke(throwable) as? Throwable) ?: throwable,
+    return ApiResponse.Failure.Exception(
+      throwable = (transformer.invoke(throwable) as? Throwable) ?: throwable,
     )
   }
   return this
@@ -805,7 +809,8 @@ public fun <T> ApiResponse<List<T>>.merge(
   val apiResponses = responses.toMutableList()
   apiResponses.add(0, this)
 
-  var apiResponse: ApiResponse<List<T>> = ApiResponse.of(tag = tagOrNull()) { mutableListOf() }
+  var apiResponse: ApiResponse<List<T>> =
+    ApiResponse.Success(data = mutableListOf(), tag = tagOrNull())
 
   val data: MutableList<T> = mutableListOf()
 

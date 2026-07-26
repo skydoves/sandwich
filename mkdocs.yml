@@ -16,6 +16,7 @@ nav:
   - 'Ktorfit': ktorfit.md
   - 'Retrieve': retrieve.md
   - 'Mapper': mapper.md
+  - 'Envelope': envelope.md
   - 'Sequential': sequential.md
   - 'Retry': retry.md
   - 'Operator': operator.md
