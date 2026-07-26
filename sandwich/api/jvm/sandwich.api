@@ -6,9 +6,11 @@ public final class com/skydoves/sandwich/ApiResponse$Companion {
 	public final fun exception (Ljava/lang/Throwable;)Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;
 	public final fun maps (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse;
 	public final fun operate (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse;
+	public final fun successMaps (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse;
 	public final fun suspendException (Ljava/lang/Throwable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun suspendMaps (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun suspendOperate (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun suspendSuccessMaps (Lcom/skydoves/sandwich/ApiResponse;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class com/skydoves/sandwich/ApiResponse$Failure : com/skydoves/sandwich/ApiResponse {
@@ -150,11 +152,13 @@ public final class com/skydoves/sandwich/SandwichInitializer {
 	public static final fun getSandwichFailureMappers ()Ljava/util/List;
 	public static final fun getSandwichOperators ()Ljava/util/List;
 	public final fun getSandwichScope ()Lkotlinx/coroutines/CoroutineScope;
+	public static final fun getSandwichSuccessMappers ()Ljava/util/List;
 	public static final fun getSandwichTimeout ()Ljava/lang/Long;
 	public static final fun getSuccessCodeRange ()Lkotlin/ranges/IntRange;
 	public static final fun setSandwichFailureMappers (Ljava/util/List;)V
 	public static final fun setSandwichOperators (Ljava/util/List;)V
 	public final fun setSandwichScope (Lkotlinx/coroutines/CoroutineScope;)V
+	public static final fun setSandwichSuccessMappers (Ljava/util/List;)V
 	public static final fun setSandwichTimeout (Ljava/lang/Long;)V
 	public static final fun setSuccessCodeRange (Lkotlin/ranges/IntRange;)V
 }
@@ -233,6 +237,30 @@ public abstract interface annotation class com/skydoves/sandwich/SuspensionFunct
 public abstract interface annotation class com/skydoves/sandwich/annotations/InternalSandwichApi : java/lang/annotation/Annotation {
 }
 
+public abstract interface class com/skydoves/sandwich/envelope/ApiEnvelope {
+	public abstract fun getEnvelopeBody ()Ljava/lang/Object;
+	public abstract fun getEnvelopeError ()Ljava/lang/Object;
+	public abstract fun isEnvelopeSuccessful ()Z
+}
+
+public final class com/skydoves/sandwich/envelope/ApiEnvelopeMapper : com/skydoves/sandwich/mappers/ApiResponseSuccessMapper {
+	public static final field INSTANCE Lcom/skydoves/sandwich/envelope/ApiEnvelopeMapper;
+	public fun map (Lcom/skydoves/sandwich/ApiResponse$Success;)Lcom/skydoves/sandwich/ApiResponse;
+}
+
+public abstract interface class com/skydoves/sandwich/envelope/ApiEnvelopeSpec {
+	public abstract fun envelopeBody (Ljava/lang/Object;)Ljava/lang/Object;
+	public abstract fun envelopeError (Ljava/lang/Object;)Ljava/lang/Object;
+	public abstract fun isEnvelopeSuccessful (Ljava/lang/Object;)Z
+}
+
+public final class com/skydoves/sandwich/envelope/EnvelopeTransformer {
+	public static final synthetic fun toApiResponse (Lcom/skydoves/sandwich/envelope/ApiEnvelope;Ljava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
+	public static synthetic fun toApiResponse$default (Lcom/skydoves/sandwich/envelope/ApiEnvelope;Ljava/lang/Object;ILjava/lang/Object;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun unwrap (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse;
+	public static final synthetic fun unwrap (Lcom/skydoves/sandwich/ApiResponse;Lcom/skydoves/sandwich/envelope/ApiEnvelopeSpec;)Lcom/skydoves/sandwich/ApiResponse;
+}
+
 public final class com/skydoves/sandwich/exceptions/NoContentException : java/lang/Throwable {
 	public fun <init> (ILjava/lang/String;)V
 	public synthetic fun <init> (ILjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -256,11 +284,22 @@ public abstract interface class com/skydoves/sandwich/mappers/ApiResponseMapper 
 	public abstract fun map (Lcom/skydoves/sandwich/ApiResponse;)Lcom/skydoves/sandwich/ApiResponse;
 }
 
+public abstract interface class com/skydoves/sandwich/mappers/ApiResponseSuccessMapper : com/skydoves/sandwich/mappers/SandwichSuccessMapper {
+	public abstract fun map (Lcom/skydoves/sandwich/ApiResponse$Success;)Lcom/skydoves/sandwich/ApiResponse;
+}
+
+public abstract interface class com/skydoves/sandwich/mappers/ApiResponseSuccessSuspendMapper : com/skydoves/sandwich/mappers/SandwichSuccessMapper {
+	public abstract fun map (Lcom/skydoves/sandwich/ApiResponse$Success;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public abstract interface class com/skydoves/sandwich/mappers/ApiSuccessModelMapper {
 	public abstract fun map (Lcom/skydoves/sandwich/ApiResponse$Success;)Ljava/lang/Object;
 }
 
 public abstract interface class com/skydoves/sandwich/mappers/SandwichFailureMapper {
+}
+
+public abstract interface class com/skydoves/sandwich/mappers/SandwichSuccessMapper {
 }
 
 public abstract class com/skydoves/sandwich/operators/ApiResponseOperator : com/skydoves/sandwich/operators/SandwichOperator {
