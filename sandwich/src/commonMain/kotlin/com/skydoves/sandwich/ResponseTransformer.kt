@@ -466,11 +466,17 @@ public inline fun <reified T, reified V> ApiResponse<T>.flatmap(
  *
  * Maps a [T] type of the [ApiResponse] to a [V] type of the [ApiResponse] if the [ApiResponse] is [ApiResponse.Success].
  *
+ * If the [transformer] throws, the failure is captured as an [ApiResponse.Failure.Exception].
+ *
+ * Note: A [CancellationException] thrown by the [transformer] is re-thrown instead of being
+ * captured, to preserve coroutine cancellation semantics.
+ *
  * @param transformer A transformer that receives [T] and returns [V].
  *
  * @return A [V] type of the [ApiResponse].
  */
 @Suppress("UNCHECKED_CAST")
+@Throws(CancellationException::class)
 public inline fun <reified T, reified V> ApiResponse<T>.mapSuccess(
   crossinline transformer: T.() -> V,
 ): ApiResponse<V> {
@@ -478,6 +484,8 @@ public inline fun <reified T, reified V> ApiResponse<T>.mapSuccess(
   if (this is ApiResponse.Success<T>) {
     return try {
       ApiResponse.Success(data = transformer(data), tag = tag)
+    } catch (e: CancellationException) {
+      throw e
     } catch (e: Exception) {
       ApiResponse.Failure.Exception(e)
     }

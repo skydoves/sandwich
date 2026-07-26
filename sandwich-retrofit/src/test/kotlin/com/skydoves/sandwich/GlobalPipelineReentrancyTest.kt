@@ -18,11 +18,15 @@ package com.skydoves.sandwich
 import com.skydoves.sandwich.envelope.ApiEnvelopeMapper
 import com.skydoves.sandwich.mappers.ApiResponseFailureMapper
 import com.skydoves.sandwich.operators.ApiResponseOperator
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.After
+import org.junit.Assert.assertThrows
+import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -144,5 +148,30 @@ internal class GlobalPipelineReentrancyTest {
     val response = ApiResponse.Success("poster", tag = "myTag").mapSuccess { length }
 
     assertThat(response.tagOrNull(), `is`("myTag"))
+  }
+
+  @Test
+  fun `mapSuccess re-throws a CancellationException instead of capturing it`() {
+    val cancellation = CancellationException("cancelled")
+
+    val thrown = assertThrows(CancellationException::class.java) {
+      ApiResponse.Success("poster").mapSuccess<String, Int> { throw cancellation }
+    }
+
+    assertThat(thrown, `is`(cancellation))
+  }
+
+  @Test
+  fun `a CancellationException from mapSuccess cancels the enclosing coroutine`() = runTest {
+    val job = launch {
+      ApiResponse.Success("poster").mapSuccess<String, Int> {
+        throw CancellationException("cancelled")
+      }
+      fail("mapSuccess captured the CancellationException instead of re-throwing it")
+    }
+
+    job.join()
+
+    assertThat(job.isCancelled, `is`(true))
   }
 }
