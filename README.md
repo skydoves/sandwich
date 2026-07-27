@@ -28,9 +28,11 @@ Add the dependency below into your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation("com.github.skydoves:sandwich:2.3.0")
-    implementation("com.github.skydoves:sandwich-retrofit:2.3.0") // For Retrofit (Android)
-    testImplementation("com.github.skydoves:sandwich-test:2.3.0") // For Testing
+    implementation(platform("com.github.skydoves:sandwich-bom:2.4.0"))
+
+    implementation("com.github.skydoves:sandwich")
+    implementation("com.github.skydoves:sandwich-retrofit") // For Retrofit (Android)
+    testImplementation("com.github.skydoves:sandwich-test") // For Testing
 }
 ```
 
@@ -40,14 +42,17 @@ For Kotlin Multiplatform, add the dependency below to your module's `build.gradl
 sourceSets {
     val commonMain by getting {
         dependencies {
-            implementation("com.github.skydoves:sandwich:$version")
-            implementation("com.github.skydoves:sandwich-ktor:$version")
-            implementation("com.github.skydoves:sandwich-ktorfit:$version")
+            implementation(project.dependencies.platform("com.github.skydoves:sandwich-bom:$version"))
+
+            implementation("com.github.skydoves:sandwich")
+            implementation("com.github.skydoves:sandwich-ktor")
+            implementation("com.github.skydoves:sandwich-ktor-serialization")
+            implementation("com.github.skydoves:sandwich-ktorfit")
         }
     }
     val commonTest by getting {
         dependencies {
-            implementation("com.github.skydoves:sandwich-test:$version")
+            implementation("com.github.skydoves:sandwich-test")
         }
     }
 }
