@@ -21,6 +21,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 internal class ApiResponseAssertionsTest {
 
@@ -52,8 +53,8 @@ internal class ApiResponseAssertionsTest {
       response.assertSuccess()
     }
     val message = error.message.orEmpty()
-    assert(message.startsWith("Expected ApiResponse.Success but was Exception("))
-    assert(message.contains("timeout"))
+    assertTrue(message.startsWith("Expected ApiResponse.Success but was Exception("))
+    assertTrue(message.contains("timeout"))
   }
 
   @Test

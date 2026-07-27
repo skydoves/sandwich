@@ -20,7 +20,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
   id(libs.plugins.android.library.get().pluginId)
   id(libs.plugins.kotlin.multiplatform.get().pluginId)
+  id(libs.plugins.kotlin.serialization.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
+  id(libs.plugins.baseline.profile.get().pluginId)
 }
 
 apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
@@ -29,12 +31,6 @@ mavenPublishing {
   pom {
     version = rootProject.extra.get("libVersion").toString()
     group = Configuration.artifactGroup
-
-    name.set("sandwich-test")
-    description.set(
-      "A lightweight and pluggable sealed API library for modeling Retrofit " +
-        "responses and handling exceptions on Kotlin and Android."
-    )
   }
 }
 
@@ -138,17 +134,22 @@ kotlin {
   sourceSets {
     all {
       languageSettings.optIn("com.skydoves.sandwich.annotations.InternalSandwichApi")
-      languageSettings.optIn("kotlin.contracts.ExperimentalContracts")
     }
     val commonMain by getting {
       dependencies {
         api(project(":sandwich"))
+        api(project(":sandwich-ktor"))
+        api(libs.serialization)
+        implementation(libs.ktor.core)
+        implementation(libs.coroutines)
       }
     }
+
     val commonTest by getting {
       dependencies {
         implementation(kotlin("test"))
         implementation(libs.coroutines.test)
+        implementation(libs.ktor.mock)
       }
     }
   }
@@ -158,7 +159,7 @@ kotlin {
 
 android {
   compileSdk = Configuration.compileSdk
-  namespace = "com.skydoves.sandwich.test"
+  namespace = "com.skydoves.sandwich.ktor.serialization"
   defaultConfig {
     minSdk = Configuration.minSdk
   }
@@ -167,6 +168,17 @@ android {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
   }
+}
+
+baselineProfile {
+  baselineProfileOutputDir = "../../src/androidMain"
+  filter {
+    include("com.skydoves.sandwich.ktor.serialization.**")
+  }
+}
+
+dependencies {
+  baselineProfile(project(":baselineprofile"))
 }
 
 java {

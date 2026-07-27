@@ -1,0 +1,412 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, watchosArm32, watchosArm64, watchosSimulatorArm64, watchosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.github.skydoves:sandwich>
+open annotation class com.skydoves.sandwich.annotations/InternalSandwichApi : kotlin/Annotation { // com.skydoves.sandwich.annotations/InternalSandwichApi|null[0]
+    constructor <init>() // com.skydoves.sandwich.annotations/InternalSandwichApi.<init>|<init>(){}[0]
+}
+
+open annotation class com.skydoves.sandwich/SuspensionFunction : kotlin/Annotation { // com.skydoves.sandwich/SuspensionFunction|null[0]
+    constructor <init>() // com.skydoves.sandwich/SuspensionFunction.<init>|<init>(){}[0]
+}
+
+final enum class com.skydoves.sandwich/ApiResponseMergePolicy : kotlin/Enum<com.skydoves.sandwich/ApiResponseMergePolicy> { // com.skydoves.sandwich/ApiResponseMergePolicy|null[0]
+    enum entry IGNORE_FAILURE // com.skydoves.sandwich/ApiResponseMergePolicy.IGNORE_FAILURE|null[0]
+    enum entry PREFERRED_FAILURE // com.skydoves.sandwich/ApiResponseMergePolicy.PREFERRED_FAILURE|null[0]
+
+    final val entries // com.skydoves.sandwich/ApiResponseMergePolicy.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.skydoves.sandwich/ApiResponseMergePolicy> // com.skydoves.sandwich/ApiResponseMergePolicy.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.skydoves.sandwich/ApiResponseMergePolicy // com.skydoves.sandwich/ApiResponseMergePolicy.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.skydoves.sandwich/ApiResponseMergePolicy> // com.skydoves.sandwich/ApiResponseMergePolicy.values|values#static(){}[0]
+}
+
+final enum class com.skydoves.sandwich/StatusCode : kotlin/Enum<com.skydoves.sandwich/StatusCode> { // com.skydoves.sandwich/StatusCode|null[0]
+    enum entry Accepted // com.skydoves.sandwich/StatusCode.Accepted|null[0]
+    enum entry AlreadyReported // com.skydoves.sandwich/StatusCode.AlreadyReported|null[0]
+    enum entry BadGateway // com.skydoves.sandwich/StatusCode.BadGateway|null[0]
+    enum entry BadRequest // com.skydoves.sandwich/StatusCode.BadRequest|null[0]
+    enum entry Conflict // com.skydoves.sandwich/StatusCode.Conflict|null[0]
+    enum entry Continue // com.skydoves.sandwich/StatusCode.Continue|null[0]
+    enum entry Created // com.skydoves.sandwich/StatusCode.Created|null[0]
+    enum entry EarlyHints // com.skydoves.sandwich/StatusCode.EarlyHints|null[0]
+    enum entry ExpectationFailed // com.skydoves.sandwich/StatusCode.ExpectationFailed|null[0]
+    enum entry FailedDependency // com.skydoves.sandwich/StatusCode.FailedDependency|null[0]
+    enum entry Forbidden // com.skydoves.sandwich/StatusCode.Forbidden|null[0]
+    enum entry Found // com.skydoves.sandwich/StatusCode.Found|null[0]
+    enum entry GatewayTimeout // com.skydoves.sandwich/StatusCode.GatewayTimeout|null[0]
+    enum entry Gone // com.skydoves.sandwich/StatusCode.Gone|null[0]
+    enum entry HTTPVersionNotSupported // com.skydoves.sandwich/StatusCode.HTTPVersionNotSupported|null[0]
+    enum entry IMATeapot // com.skydoves.sandwich/StatusCode.IMATeapot|null[0]
+    enum entry IMUsed // com.skydoves.sandwich/StatusCode.IMUsed|null[0]
+    enum entry InternalServerError // com.skydoves.sandwich/StatusCode.InternalServerError|null[0]
+    enum entry LengthRequired // com.skydoves.sandwich/StatusCode.LengthRequired|null[0]
+    enum entry Locked // com.skydoves.sandwich/StatusCode.Locked|null[0]
+    enum entry MethodNotAllowed // com.skydoves.sandwich/StatusCode.MethodNotAllowed|null[0]
+    enum entry MisdirectedRequest // com.skydoves.sandwich/StatusCode.MisdirectedRequest|null[0]
+    enum entry MovePermanently // com.skydoves.sandwich/StatusCode.MovePermanently|null[0]
+    enum entry MultiStatus // com.skydoves.sandwich/StatusCode.MultiStatus|null[0]
+    enum entry MultipleChoices // com.skydoves.sandwich/StatusCode.MultipleChoices|null[0]
+    enum entry NetworkAuthenticationRequired // com.skydoves.sandwich/StatusCode.NetworkAuthenticationRequired|null[0]
+    enum entry NoContent // com.skydoves.sandwich/StatusCode.NoContent|null[0]
+    enum entry NonAuthoritative // com.skydoves.sandwich/StatusCode.NonAuthoritative|null[0]
+    enum entry NotAcceptable // com.skydoves.sandwich/StatusCode.NotAcceptable|null[0]
+    enum entry NotExtended // com.skydoves.sandwich/StatusCode.NotExtended|null[0]
+    enum entry NotFound // com.skydoves.sandwich/StatusCode.NotFound|null[0]
+    enum entry NotImplemented // com.skydoves.sandwich/StatusCode.NotImplemented|null[0]
+    enum entry NotModified // com.skydoves.sandwich/StatusCode.NotModified|null[0]
+    enum entry OK // com.skydoves.sandwich/StatusCode.OK|null[0]
+    enum entry PartialContent // com.skydoves.sandwich/StatusCode.PartialContent|null[0]
+    enum entry PayloadTooLarge // com.skydoves.sandwich/StatusCode.PayloadTooLarge|null[0]
+    enum entry PaymentRequired // com.skydoves.sandwich/StatusCode.PaymentRequired|null[0]
+    enum entry PermanentRedirect // com.skydoves.sandwich/StatusCode.PermanentRedirect|null[0]
+    enum entry PreconditionFailed // com.skydoves.sandwich/StatusCode.PreconditionFailed|null[0]
+    enum entry PreconditionRequired // com.skydoves.sandwich/StatusCode.PreconditionRequired|null[0]
+    enum entry Processing // com.skydoves.sandwich/StatusCode.Processing|null[0]
+    enum entry ProxyAuthenticationRequired // com.skydoves.sandwich/StatusCode.ProxyAuthenticationRequired|null[0]
+    enum entry RangeNotSatisfiable // com.skydoves.sandwich/StatusCode.RangeNotSatisfiable|null[0]
+    enum entry RequestHeaderFieldsTooLarge // com.skydoves.sandwich/StatusCode.RequestHeaderFieldsTooLarge|null[0]
+    enum entry RequestTimeout // com.skydoves.sandwich/StatusCode.RequestTimeout|null[0]
+    enum entry ResetContent // com.skydoves.sandwich/StatusCode.ResetContent|null[0]
+    enum entry SeeOther // com.skydoves.sandwich/StatusCode.SeeOther|null[0]
+    enum entry ServiceUnavailable // com.skydoves.sandwich/StatusCode.ServiceUnavailable|null[0]
+    enum entry SwitchProxy // com.skydoves.sandwich/StatusCode.SwitchProxy|null[0]
+    enum entry SwitchingProtocols // com.skydoves.sandwich/StatusCode.SwitchingProtocols|null[0]
+    enum entry TemporaryRedirect // com.skydoves.sandwich/StatusCode.TemporaryRedirect|null[0]
+    enum entry TooEarly // com.skydoves.sandwich/StatusCode.TooEarly|null[0]
+    enum entry TooManyRequests // com.skydoves.sandwich/StatusCode.TooManyRequests|null[0]
+    enum entry URITooLong // com.skydoves.sandwich/StatusCode.URITooLong|null[0]
+    enum entry UnProcessableEntity // com.skydoves.sandwich/StatusCode.UnProcessableEntity|null[0]
+    enum entry Unauthorized // com.skydoves.sandwich/StatusCode.Unauthorized|null[0]
+    enum entry UnavailableForLegalReasons // com.skydoves.sandwich/StatusCode.UnavailableForLegalReasons|null[0]
+    enum entry Unknown // com.skydoves.sandwich/StatusCode.Unknown|null[0]
+    enum entry UnsupportedMediaType // com.skydoves.sandwich/StatusCode.UnsupportedMediaType|null[0]
+    enum entry UpgradeRequired // com.skydoves.sandwich/StatusCode.UpgradeRequired|null[0]
+    enum entry UseProxy // com.skydoves.sandwich/StatusCode.UseProxy|null[0]
+
+    final val code // com.skydoves.sandwich/StatusCode.code|{}code[0]
+        final fun <get-code>(): kotlin/Int // com.skydoves.sandwich/StatusCode.code.<get-code>|<get-code>(){}[0]
+    final val entries // com.skydoves.sandwich/StatusCode.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.skydoves.sandwich/StatusCode> // com.skydoves.sandwich/StatusCode.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.skydoves.sandwich/StatusCode // com.skydoves.sandwich/StatusCode.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.skydoves.sandwich/StatusCode> // com.skydoves.sandwich/StatusCode.values|values#static(){}[0]
+}
+
+abstract fun interface <#A: kotlin/Any?, #B: kotlin/Any?> com.skydoves.sandwich.mappers/ApiResponseMapper { // com.skydoves.sandwich.mappers/ApiResponseMapper|null[0]
+    abstract fun map(com.skydoves.sandwich/ApiResponse<#A>): com.skydoves.sandwich/ApiResponse<#B> // com.skydoves.sandwich.mappers/ApiResponseMapper.map|map(com.skydoves.sandwich.ApiResponse<1:0>){}[0]
+}
+
+abstract fun interface <#A: kotlin/Any?, #B: kotlin/Any?> com.skydoves.sandwich.mappers/ApiSuccessModelMapper { // com.skydoves.sandwich.mappers/ApiSuccessModelMapper|null[0]
+    abstract fun map(com.skydoves.sandwich/ApiResponse.Success<#A>): #B // com.skydoves.sandwich.mappers/ApiSuccessModelMapper.map|map(com.skydoves.sandwich.ApiResponse.Success<1:0>){}[0]
+}
+
+abstract fun interface <#A: kotlin/Any?> com.skydoves.sandwich.mappers/ApiErrorModelMapper { // com.skydoves.sandwich.mappers/ApiErrorModelMapper|null[0]
+    abstract fun map(com.skydoves.sandwich/ApiResponse.Failure.Error): #A // com.skydoves.sandwich.mappers/ApiErrorModelMapper.map|map(com.skydoves.sandwich.ApiResponse.Failure.Error){}[0]
+}
+
+abstract fun interface <#A: kotlin/Any?> com.skydoves.sandwich/ResponseObserver { // com.skydoves.sandwich/ResponseObserver|null[0]
+    abstract fun observe(com.skydoves.sandwich/ApiResponse<#A>) // com.skydoves.sandwich/ResponseObserver.observe|observe(com.skydoves.sandwich.ApiResponse<1:0>){}[0]
+}
+
+abstract fun interface com.skydoves.sandwich.exceptions/SandwichExceptionClassifier { // com.skydoves.sandwich.exceptions/SandwichExceptionClassifier|null[0]
+    abstract fun classify(kotlin/Throwable): com.skydoves.sandwich.exceptions/SandwichException? // com.skydoves.sandwich.exceptions/SandwichExceptionClassifier.classify|classify(kotlin.Throwable){}[0]
+}
+
+abstract fun interface com.skydoves.sandwich.mappers/ApiResponseFailureMapper : com.skydoves.sandwich.mappers/SandwichFailureMapper { // com.skydoves.sandwich.mappers/ApiResponseFailureMapper|null[0]
+    abstract fun map(com.skydoves.sandwich/ApiResponse.Failure<*>): com.skydoves.sandwich/ApiResponse.Failure<*> // com.skydoves.sandwich.mappers/ApiResponseFailureMapper.map|map(com.skydoves.sandwich.ApiResponse.Failure<*>){}[0]
+}
+
+abstract fun interface com.skydoves.sandwich.mappers/ApiResponseSuccessMapper : com.skydoves.sandwich.mappers/SandwichSuccessMapper { // com.skydoves.sandwich.mappers/ApiResponseSuccessMapper|null[0]
+    abstract fun map(com.skydoves.sandwich/ApiResponse.Success<*>): com.skydoves.sandwich/ApiResponse<*> // com.skydoves.sandwich.mappers/ApiResponseSuccessMapper.map|map(com.skydoves.sandwich.ApiResponse.Success<*>){}[0]
+}
+
+abstract interface <#A: in kotlin/Any?, #B: out kotlin/Any?, #C: out kotlin/Any?> com.skydoves.sandwich.envelope/ApiEnvelopeSpec { // com.skydoves.sandwich.envelope/ApiEnvelopeSpec|null[0]
+    abstract fun envelopeBody(#A): #B // com.skydoves.sandwich.envelope/ApiEnvelopeSpec.envelopeBody|envelopeBody(1:0){}[0]
+    abstract fun envelopeError(#A): #C // com.skydoves.sandwich.envelope/ApiEnvelopeSpec.envelopeError|envelopeError(1:0){}[0]
+    abstract fun isEnvelopeSuccessful(#A): kotlin/Boolean // com.skydoves.sandwich.envelope/ApiEnvelopeSpec.isEnvelopeSuccessful|isEnvelopeSuccessful(1:0){}[0]
+}
+
+abstract interface <#A: out kotlin/Any?, #B: out kotlin/Any?> com.skydoves.sandwich.envelope/ApiEnvelope { // com.skydoves.sandwich.envelope/ApiEnvelope|null[0]
+    abstract val envelopeBody // com.skydoves.sandwich.envelope/ApiEnvelope.envelopeBody|{}envelopeBody[0]
+        abstract fun <get-envelopeBody>(): #A // com.skydoves.sandwich.envelope/ApiEnvelope.envelopeBody.<get-envelopeBody>|<get-envelopeBody>(){}[0]
+    abstract val envelopeError // com.skydoves.sandwich.envelope/ApiEnvelope.envelopeError|{}envelopeError[0]
+        abstract fun <get-envelopeError>(): #B // com.skydoves.sandwich.envelope/ApiEnvelope.envelopeError.<get-envelopeError>|<get-envelopeError>(){}[0]
+    abstract val isEnvelopeSuccessful // com.skydoves.sandwich.envelope/ApiEnvelope.isEnvelopeSuccessful|{}isEnvelopeSuccessful[0]
+        abstract fun <get-isEnvelopeSuccessful>(): kotlin/Boolean // com.skydoves.sandwich.envelope/ApiEnvelope.isEnvelopeSuccessful.<get-isEnvelopeSuccessful>|<get-isEnvelopeSuccessful>(){}[0]
+}
+
+abstract interface com.skydoves.sandwich.mappers/ApiResponseFailureSuspendMapper : com.skydoves.sandwich.mappers/SandwichFailureMapper { // com.skydoves.sandwich.mappers/ApiResponseFailureSuspendMapper|null[0]
+    abstract suspend fun map(com.skydoves.sandwich/ApiResponse.Failure<*>): com.skydoves.sandwich/ApiResponse.Failure<*> // com.skydoves.sandwich.mappers/ApiResponseFailureSuspendMapper.map|map(com.skydoves.sandwich.ApiResponse.Failure<*>){}[0]
+}
+
+abstract interface com.skydoves.sandwich.mappers/ApiResponseSuccessSuspendMapper : com.skydoves.sandwich.mappers/SandwichSuccessMapper { // com.skydoves.sandwich.mappers/ApiResponseSuccessSuspendMapper|null[0]
+    abstract suspend fun map(com.skydoves.sandwich/ApiResponse.Success<*>): com.skydoves.sandwich/ApiResponse<*> // com.skydoves.sandwich.mappers/ApiResponseSuccessSuspendMapper.map|map(com.skydoves.sandwich.ApiResponse.Success<*>){}[0]
+}
+
+abstract interface com.skydoves.sandwich.mappers/SandwichFailureMapper // com.skydoves.sandwich.mappers/SandwichFailureMapper|null[0]
+
+abstract interface com.skydoves.sandwich.mappers/SandwichSuccessMapper // com.skydoves.sandwich.mappers/SandwichSuccessMapper|null[0]
+
+abstract interface com.skydoves.sandwich.operators/SandwichOperator // com.skydoves.sandwich.operators/SandwichOperator|null[0]
+
+abstract interface com.skydoves.sandwich.retry/RetryPolicy { // com.skydoves.sandwich.retry/RetryPolicy|null[0]
+    abstract fun retryTimeout(kotlin/Int, kotlin/String?): kotlin/Int // com.skydoves.sandwich.retry/RetryPolicy.retryTimeout|retryTimeout(kotlin.Int;kotlin.String?){}[0]
+    abstract fun shouldRetry(kotlin/Int, kotlin/String?): kotlin/Boolean // com.skydoves.sandwich.retry/RetryPolicy.shouldRetry|shouldRetry(kotlin.Int;kotlin.String?){}[0]
+}
+
+sealed interface <#A: out kotlin/Any?> com.skydoves.sandwich/ApiResponse { // com.skydoves.sandwich/ApiResponse|null[0]
+    sealed interface <#A1: kotlin/Any?> Failure : com.skydoves.sandwich/ApiResponse<#A1> { // com.skydoves.sandwich/ApiResponse.Failure|null[0]
+        open class Error : com.skydoves.sandwich/ApiResponse.Failure<kotlin/Nothing> { // com.skydoves.sandwich/ApiResponse.Failure.Error|null[0]
+            constructor <init>(kotlin/Any?) // com.skydoves.sandwich/ApiResponse.Failure.Error.<init>|<init>(kotlin.Any?){}[0]
+
+            final val payload // com.skydoves.sandwich/ApiResponse.Failure.Error.payload|{}payload[0]
+                final fun <get-payload>(): kotlin/Any? // com.skydoves.sandwich/ApiResponse.Failure.Error.payload.<get-payload>|<get-payload>(){}[0]
+
+            open fun equals(kotlin/Any?): kotlin/Boolean // com.skydoves.sandwich/ApiResponse.Failure.Error.equals|equals(kotlin.Any?){}[0]
+            open fun hashCode(): kotlin/Int // com.skydoves.sandwich/ApiResponse.Failure.Error.hashCode|hashCode(){}[0]
+            open fun toString(): kotlin/String // com.skydoves.sandwich/ApiResponse.Failure.Error.toString|toString(){}[0]
+        }
+
+        open class Exception : com.skydoves.sandwich/ApiResponse.Failure<kotlin/Nothing> { // com.skydoves.sandwich/ApiResponse.Failure.Exception|null[0]
+            constructor <init>(kotlin/Throwable) // com.skydoves.sandwich/ApiResponse.Failure.Exception.<init>|<init>(kotlin.Throwable){}[0]
+
+            final val message // com.skydoves.sandwich/ApiResponse.Failure.Exception.message|{}message[0]
+                final fun <get-message>(): kotlin/String? // com.skydoves.sandwich/ApiResponse.Failure.Exception.message.<get-message>|<get-message>(){}[0]
+            final val throwable // com.skydoves.sandwich/ApiResponse.Failure.Exception.throwable|{}throwable[0]
+                final fun <get-throwable>(): kotlin/Throwable // com.skydoves.sandwich/ApiResponse.Failure.Exception.throwable.<get-throwable>|<get-throwable>(){}[0]
+
+            open fun equals(kotlin/Any?): kotlin/Boolean // com.skydoves.sandwich/ApiResponse.Failure.Exception.equals|equals(kotlin.Any?){}[0]
+            open fun hashCode(): kotlin/Int // com.skydoves.sandwich/ApiResponse.Failure.Exception.hashCode|hashCode(){}[0]
+            open fun toString(): kotlin/String // com.skydoves.sandwich/ApiResponse.Failure.Exception.toString|toString(){}[0]
+        }
+    }
+
+    final class <#A1: kotlin/Any?> Success : com.skydoves.sandwich/ApiResponse<#A1> { // com.skydoves.sandwich/ApiResponse.Success|null[0]
+        constructor <init>(#A1, kotlin/Any? = ...) // com.skydoves.sandwich/ApiResponse.Success.<init>|<init>(1:0;kotlin.Any?){}[0]
+
+        final val data // com.skydoves.sandwich/ApiResponse.Success.data|{}data[0]
+            final fun <get-data>(): #A1 // com.skydoves.sandwich/ApiResponse.Success.data.<get-data>|<get-data>(){}[0]
+        final val tag // com.skydoves.sandwich/ApiResponse.Success.tag|{}tag[0]
+            final fun <get-tag>(): kotlin/Any? // com.skydoves.sandwich/ApiResponse.Success.tag.<get-tag>|<get-tag>(){}[0]
+
+        final fun component1(): #A1 // com.skydoves.sandwich/ApiResponse.Success.component1|component1(){}[0]
+        final fun component2(): kotlin/Any? // com.skydoves.sandwich/ApiResponse.Success.component2|component2(){}[0]
+        final fun copy(#A1 = ..., kotlin/Any? = ...): com.skydoves.sandwich/ApiResponse.Success<#A1> // com.skydoves.sandwich/ApiResponse.Success.copy|copy(1:0;kotlin.Any?){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.skydoves.sandwich/ApiResponse.Success.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.skydoves.sandwich/ApiResponse.Success.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.skydoves.sandwich/ApiResponse.Success.toString|toString(){}[0]
+    }
+
+    final object Companion { // com.skydoves.sandwich/ApiResponse.Companion|null[0]
+        final fun <#A2: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A2>).maps(): com.skydoves.sandwich/ApiResponse<#A2> // com.skydoves.sandwich/ApiResponse.Companion.maps|maps@com.skydoves.sandwich.ApiResponse<0:0>(){0§<kotlin.Any?>}[0]
+        final fun <#A2: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A2>).operate(): com.skydoves.sandwich/ApiResponse<#A2> // com.skydoves.sandwich/ApiResponse.Companion.operate|operate@com.skydoves.sandwich.ApiResponse<0:0>(){0§<kotlin.Any?>}[0]
+        final fun <#A2: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A2>).successMaps(): com.skydoves.sandwich/ApiResponse<#A2> // com.skydoves.sandwich/ApiResponse.Companion.successMaps|successMaps@com.skydoves.sandwich.ApiResponse<0:0>(){0§<kotlin.Any?>}[0]
+        final fun exception(kotlin/Throwable): com.skydoves.sandwich/ApiResponse.Failure.Exception // com.skydoves.sandwich/ApiResponse.Companion.exception|exception(kotlin.Throwable){}[0]
+        final inline fun <#A2: reified kotlin/Any?> of(kotlin/Any? = ..., crossinline kotlin/Function0<#A2>): com.skydoves.sandwich/ApiResponse<#A2> // com.skydoves.sandwich/ApiResponse.Companion.of|of(kotlin.Any?;kotlin.Function0<0:0>){0§<kotlin.Any?>}[0]
+        final suspend fun <#A2: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A2>).suspendMaps(): com.skydoves.sandwich/ApiResponse<#A2> // com.skydoves.sandwich/ApiResponse.Companion.suspendMaps|suspendMaps@com.skydoves.sandwich.ApiResponse<0:0>(){0§<kotlin.Any?>}[0]
+        final suspend fun <#A2: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A2>).suspendOperate(): com.skydoves.sandwich/ApiResponse<#A2> // com.skydoves.sandwich/ApiResponse.Companion.suspendOperate|suspendOperate@com.skydoves.sandwich.ApiResponse<0:0>(){0§<kotlin.Any?>}[0]
+        final suspend fun <#A2: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A2>).suspendSuccessMaps(): com.skydoves.sandwich/ApiResponse<#A2> // com.skydoves.sandwich/ApiResponse.Companion.suspendSuccessMaps|suspendSuccessMaps@com.skydoves.sandwich.ApiResponse<0:0>(){0§<kotlin.Any?>}[0]
+        final suspend fun suspendException(kotlin/Throwable): com.skydoves.sandwich/ApiResponse.Failure.Exception // com.skydoves.sandwich/ApiResponse.Companion.suspendException|suspendException(kotlin.Throwable){}[0]
+        final suspend inline fun <#A2: reified kotlin/Any?> suspendOf(kotlin/Any? = ..., crossinline kotlin.coroutines/SuspendFunction0<#A2>): com.skydoves.sandwich/ApiResponse<#A2> // com.skydoves.sandwich/ApiResponse.Companion.suspendOf|suspendOf(kotlin.Any?;kotlin.coroutines.SuspendFunction0<0:0>){0§<kotlin.Any?>}[0]
+    }
+}
+
+abstract class <#A: kotlin/Any?> com.skydoves.sandwich.operators/ApiResponseOperator : com.skydoves.sandwich.operators/SandwichOperator { // com.skydoves.sandwich.operators/ApiResponseOperator|null[0]
+    constructor <init>() // com.skydoves.sandwich.operators/ApiResponseOperator.<init>|<init>(){}[0]
+
+    abstract fun onError(com.skydoves.sandwich/ApiResponse.Failure.Error) // com.skydoves.sandwich.operators/ApiResponseOperator.onError|onError(com.skydoves.sandwich.ApiResponse.Failure.Error){}[0]
+    abstract fun onException(com.skydoves.sandwich/ApiResponse.Failure.Exception) // com.skydoves.sandwich.operators/ApiResponseOperator.onException|onException(com.skydoves.sandwich.ApiResponse.Failure.Exception){}[0]
+    abstract fun onSuccess(com.skydoves.sandwich/ApiResponse.Success<#A>) // com.skydoves.sandwich.operators/ApiResponseOperator.onSuccess|onSuccess(com.skydoves.sandwich.ApiResponse.Success<1:0>){}[0]
+}
+
+abstract class <#A: kotlin/Any?> com.skydoves.sandwich.operators/ApiResponseSuspendOperator : com.skydoves.sandwich.operators/SandwichOperator { // com.skydoves.sandwich.operators/ApiResponseSuspendOperator|null[0]
+    constructor <init>() // com.skydoves.sandwich.operators/ApiResponseSuspendOperator.<init>|<init>(){}[0]
+
+    abstract suspend fun onError(com.skydoves.sandwich/ApiResponse.Failure.Error) // com.skydoves.sandwich.operators/ApiResponseSuspendOperator.onError|onError(com.skydoves.sandwich.ApiResponse.Failure.Error){}[0]
+    abstract suspend fun onException(com.skydoves.sandwich/ApiResponse.Failure.Exception) // com.skydoves.sandwich.operators/ApiResponseSuspendOperator.onException|onException(com.skydoves.sandwich.ApiResponse.Failure.Exception){}[0]
+    abstract suspend fun onSuccess(com.skydoves.sandwich/ApiResponse.Success<#A>) // com.skydoves.sandwich.operators/ApiResponseSuspendOperator.onSuccess|onSuccess(com.skydoves.sandwich.ApiResponse.Success<1:0>){}[0]
+}
+
+final class com.skydoves.sandwich.exceptions/NoContentException : kotlin/Throwable { // com.skydoves.sandwich.exceptions/NoContentException|null[0]
+    constructor <init>(kotlin/Int, kotlin/String? = ...) // com.skydoves.sandwich.exceptions/NoContentException.<init>|<init>(kotlin.Int;kotlin.String?){}[0]
+
+    final val code // com.skydoves.sandwich.exceptions/NoContentException.code|{}code[0]
+        final fun <get-code>(): kotlin/Int // com.skydoves.sandwich.exceptions/NoContentException.code.<get-code>|<get-code>(){}[0]
+    final val message // com.skydoves.sandwich.exceptions/NoContentException.message|{}message[0]
+        final fun <get-message>(): kotlin/String? // com.skydoves.sandwich.exceptions/NoContentException.message.<get-message>|<get-message>(){}[0]
+}
+
+open class com.skydoves.sandwich.exceptions/SandwichException : kotlin/Throwable { // com.skydoves.sandwich.exceptions/SandwichException|null[0]
+    constructor <init>(kotlin/String? = ..., kotlin/Throwable? = ...) // com.skydoves.sandwich.exceptions/SandwichException.<init>|<init>(kotlin.String?;kotlin.Throwable?){}[0]
+}
+
+open class com.skydoves.sandwich.exceptions/SandwichHttpException : com.skydoves.sandwich.exceptions/SandwichException { // com.skydoves.sandwich.exceptions/SandwichHttpException|null[0]
+    constructor <init>(kotlin/Int? = ..., kotlin/String? = ..., kotlin/Throwable? = ...) // com.skydoves.sandwich.exceptions/SandwichHttpException.<init>|<init>(kotlin.Int?;kotlin.String?;kotlin.Throwable?){}[0]
+
+    final val statusCode // com.skydoves.sandwich.exceptions/SandwichHttpException.statusCode|{}statusCode[0]
+        final fun <get-statusCode>(): kotlin/Int? // com.skydoves.sandwich.exceptions/SandwichHttpException.statusCode.<get-statusCode>|<get-statusCode>(){}[0]
+}
+
+open class com.skydoves.sandwich.exceptions/SandwichNetworkException : com.skydoves.sandwich.exceptions/SandwichException { // com.skydoves.sandwich.exceptions/SandwichNetworkException|null[0]
+    constructor <init>(kotlin/String? = ..., kotlin/Throwable? = ...) // com.skydoves.sandwich.exceptions/SandwichNetworkException.<init>|<init>(kotlin.String?;kotlin.Throwable?){}[0]
+}
+
+open class com.skydoves.sandwich.exceptions/SandwichSerializationException : com.skydoves.sandwich.exceptions/SandwichException { // com.skydoves.sandwich.exceptions/SandwichSerializationException|null[0]
+    constructor <init>(kotlin/String? = ..., kotlin/Throwable? = ...) // com.skydoves.sandwich.exceptions/SandwichSerializationException.<init>|<init>(kotlin.String?;kotlin.Throwable?){}[0]
+}
+
+open class com.skydoves.sandwich.exceptions/SandwichTimeoutException : com.skydoves.sandwich.exceptions/SandwichException { // com.skydoves.sandwich.exceptions/SandwichTimeoutException|null[0]
+    constructor <init>(kotlin/String? = ..., kotlin/Throwable? = ...) // com.skydoves.sandwich.exceptions/SandwichTimeoutException.<init>|<init>(kotlin.String?;kotlin.Throwable?){}[0]
+}
+
+final object com.skydoves.sandwich.envelope/ApiEnvelopeMapper : com.skydoves.sandwich.mappers/ApiResponseSuccessMapper { // com.skydoves.sandwich.envelope/ApiEnvelopeMapper|null[0]
+    final fun map(com.skydoves.sandwich/ApiResponse.Success<*>): com.skydoves.sandwich/ApiResponse<*> // com.skydoves.sandwich.envelope/ApiEnvelopeMapper.map|map(com.skydoves.sandwich.ApiResponse.Success<*>){}[0]
+}
+
+final object com.skydoves.sandwich.retry/RetryPolicies { // com.skydoves.sandwich.retry/RetryPolicies|null[0]
+    final fun exponentialBackoff(kotlin/Int = ..., kotlin/Int = ..., kotlin/Double = ..., kotlin/Int = ..., kotlin/Double = ...): com.skydoves.sandwich.retry/RetryPolicy // com.skydoves.sandwich.retry/RetryPolicies.exponentialBackoff|exponentialBackoff(kotlin.Int;kotlin.Int;kotlin.Double;kotlin.Int;kotlin.Double){}[0]
+    final fun fixedDelay(kotlin/Int = ..., kotlin/Int = ...): com.skydoves.sandwich.retry/RetryPolicy // com.skydoves.sandwich.retry/RetryPolicies.fixedDelay|fixedDelay(kotlin.Int;kotlin.Int){}[0]
+    final fun linear(kotlin/Int = ..., kotlin/Int = ..., kotlin/Int = ...): com.skydoves.sandwich.retry/RetryPolicy // com.skydoves.sandwich.retry/RetryPolicies.linear|linear(kotlin.Int;kotlin.Int;kotlin.Int){}[0]
+    final fun none(): com.skydoves.sandwich.retry/RetryPolicy // com.skydoves.sandwich.retry/RetryPolicies.none|none(){}[0]
+}
+
+final object com.skydoves.sandwich/SandwichInitializer { // com.skydoves.sandwich/SandwichInitializer|null[0]
+    final var sandwichExceptionClassifiers // com.skydoves.sandwich/SandwichInitializer.sandwichExceptionClassifiers|{}sandwichExceptionClassifiers[0]
+        final fun <get-sandwichExceptionClassifiers>(): kotlin.collections/MutableList<com.skydoves.sandwich.exceptions/SandwichExceptionClassifier> // com.skydoves.sandwich/SandwichInitializer.sandwichExceptionClassifiers.<get-sandwichExceptionClassifiers>|<get-sandwichExceptionClassifiers>(){}[0]
+        final fun <set-sandwichExceptionClassifiers>(kotlin.collections/MutableList<com.skydoves.sandwich.exceptions/SandwichExceptionClassifier>) // com.skydoves.sandwich/SandwichInitializer.sandwichExceptionClassifiers.<set-sandwichExceptionClassifiers>|<set-sandwichExceptionClassifiers>(kotlin.collections.MutableList<com.skydoves.sandwich.exceptions.SandwichExceptionClassifier>){}[0]
+    final var sandwichFailureMappers // com.skydoves.sandwich/SandwichInitializer.sandwichFailureMappers|{}sandwichFailureMappers[0]
+        final fun <get-sandwichFailureMappers>(): kotlin.collections/MutableList<com.skydoves.sandwich.mappers/SandwichFailureMapper> // com.skydoves.sandwich/SandwichInitializer.sandwichFailureMappers.<get-sandwichFailureMappers>|<get-sandwichFailureMappers>(){}[0]
+        final fun <set-sandwichFailureMappers>(kotlin.collections/MutableList<com.skydoves.sandwich.mappers/SandwichFailureMapper>) // com.skydoves.sandwich/SandwichInitializer.sandwichFailureMappers.<set-sandwichFailureMappers>|<set-sandwichFailureMappers>(kotlin.collections.MutableList<com.skydoves.sandwich.mappers.SandwichFailureMapper>){}[0]
+    final var sandwichOperators // com.skydoves.sandwich/SandwichInitializer.sandwichOperators|{}sandwichOperators[0]
+        final fun <get-sandwichOperators>(): kotlin.collections/MutableList<com.skydoves.sandwich.operators/SandwichOperator> // com.skydoves.sandwich/SandwichInitializer.sandwichOperators.<get-sandwichOperators>|<get-sandwichOperators>(){}[0]
+        final fun <set-sandwichOperators>(kotlin.collections/MutableList<com.skydoves.sandwich.operators/SandwichOperator>) // com.skydoves.sandwich/SandwichInitializer.sandwichOperators.<set-sandwichOperators>|<set-sandwichOperators>(kotlin.collections.MutableList<com.skydoves.sandwich.operators.SandwichOperator>){}[0]
+    final var sandwichScope // com.skydoves.sandwich/SandwichInitializer.sandwichScope|{}sandwichScope[0]
+        final fun <get-sandwichScope>(): kotlinx.coroutines/CoroutineScope // com.skydoves.sandwich/SandwichInitializer.sandwichScope.<get-sandwichScope>|<get-sandwichScope>(){}[0]
+        final fun <set-sandwichScope>(kotlinx.coroutines/CoroutineScope) // com.skydoves.sandwich/SandwichInitializer.sandwichScope.<set-sandwichScope>|<set-sandwichScope>(kotlinx.coroutines.CoroutineScope){}[0]
+    final var sandwichSuccessMappers // com.skydoves.sandwich/SandwichInitializer.sandwichSuccessMappers|{}sandwichSuccessMappers[0]
+        final fun <get-sandwichSuccessMappers>(): kotlin.collections/MutableList<com.skydoves.sandwich.mappers/SandwichSuccessMapper> // com.skydoves.sandwich/SandwichInitializer.sandwichSuccessMappers.<get-sandwichSuccessMappers>|<get-sandwichSuccessMappers>(){}[0]
+        final fun <set-sandwichSuccessMappers>(kotlin.collections/MutableList<com.skydoves.sandwich.mappers/SandwichSuccessMapper>) // com.skydoves.sandwich/SandwichInitializer.sandwichSuccessMappers.<set-sandwichSuccessMappers>|<set-sandwichSuccessMappers>(kotlin.collections.MutableList<com.skydoves.sandwich.mappers.SandwichSuccessMapper>){}[0]
+    final var sandwichTimeout // com.skydoves.sandwich/SandwichInitializer.sandwichTimeout|{}sandwichTimeout[0]
+        final fun <get-sandwichTimeout>(): kotlin/Long? // com.skydoves.sandwich/SandwichInitializer.sandwichTimeout.<get-sandwichTimeout>|<get-sandwichTimeout>(){}[0]
+        final fun <set-sandwichTimeout>(kotlin/Long?) // com.skydoves.sandwich/SandwichInitializer.sandwichTimeout.<set-sandwichTimeout>|<set-sandwichTimeout>(kotlin.Long?){}[0]
+    final var successCodeRange // com.skydoves.sandwich/SandwichInitializer.successCodeRange|{}successCodeRange[0]
+        final fun <get-successCodeRange>(): kotlin.ranges/IntRange // com.skydoves.sandwich/SandwichInitializer.successCodeRange.<get-successCodeRange>|<get-successCodeRange>(){}[0]
+        final fun <set-successCodeRange>(kotlin.ranges/IntRange) // com.skydoves.sandwich/SandwichInitializer.successCodeRange.<set-successCodeRange>|<set-successCodeRange>(kotlin.ranges.IntRange){}[0]
+}
+
+final val com.skydoves.sandwich.exceptions/isNetworkFailure // com.skydoves.sandwich.exceptions/isNetworkFailure|@com.skydoves.sandwich.ApiResponse.Failure.Exception{}isNetworkFailure[0]
+    final fun (com.skydoves.sandwich/ApiResponse.Failure.Exception).<get-isNetworkFailure>(): kotlin/Boolean // com.skydoves.sandwich.exceptions/isNetworkFailure.<get-isNetworkFailure>|<get-isNetworkFailure>@com.skydoves.sandwich.ApiResponse.Failure.Exception(){}[0]
+final val com.skydoves.sandwich.exceptions/isSerializationFailure // com.skydoves.sandwich.exceptions/isSerializationFailure|@com.skydoves.sandwich.ApiResponse.Failure.Exception{}isSerializationFailure[0]
+    final fun (com.skydoves.sandwich/ApiResponse.Failure.Exception).<get-isSerializationFailure>(): kotlin/Boolean // com.skydoves.sandwich.exceptions/isSerializationFailure.<get-isSerializationFailure>|<get-isSerializationFailure>@com.skydoves.sandwich.ApiResponse.Failure.Exception(){}[0]
+final val com.skydoves.sandwich.exceptions/isTimeout // com.skydoves.sandwich.exceptions/isTimeout|@com.skydoves.sandwich.ApiResponse.Failure.Exception{}isTimeout[0]
+    final fun (com.skydoves.sandwich/ApiResponse.Failure.Exception).<get-isTimeout>(): kotlin/Boolean // com.skydoves.sandwich.exceptions/isTimeout.<get-isTimeout>|<get-isTimeout>@com.skydoves.sandwich.ApiResponse.Failure.Exception(){}[0]
+final val com.skydoves.sandwich.exceptions/sandwichException // com.skydoves.sandwich.exceptions/sandwichException|@com.skydoves.sandwich.ApiResponse.Failure.Exception{}sandwichException[0]
+    final fun (com.skydoves.sandwich/ApiResponse.Failure.Exception).<get-sandwichException>(): com.skydoves.sandwich.exceptions/SandwichException // com.skydoves.sandwich.exceptions/sandwichException.<get-sandwichException>|<get-sandwichException>@com.skydoves.sandwich.ApiResponse.Failure.Exception(){}[0]
+final val com.skydoves.sandwich/isError // com.skydoves.sandwich/isError|@com.skydoves.sandwich.ApiResponse<kotlin.Any>{}isError[0]
+    final inline fun (com.skydoves.sandwich/ApiResponse<kotlin/Any>).<get-isError>(): kotlin/Boolean // com.skydoves.sandwich/isError.<get-isError>|<get-isError>@com.skydoves.sandwich.ApiResponse<kotlin.Any>(){}[0]
+final val com.skydoves.sandwich/isException // com.skydoves.sandwich/isException|@com.skydoves.sandwich.ApiResponse<kotlin.Any>{}isException[0]
+    final inline fun (com.skydoves.sandwich/ApiResponse<kotlin/Any>).<get-isException>(): kotlin/Boolean // com.skydoves.sandwich/isException.<get-isException>|<get-isException>@com.skydoves.sandwich.ApiResponse<kotlin.Any>(){}[0]
+final val com.skydoves.sandwich/isFailure // com.skydoves.sandwich/isFailure|@com.skydoves.sandwich.ApiResponse<kotlin.Any>{}isFailure[0]
+    final inline fun (com.skydoves.sandwich/ApiResponse<kotlin/Any>).<get-isFailure>(): kotlin/Boolean // com.skydoves.sandwich/isFailure.<get-isFailure>|<get-isFailure>@com.skydoves.sandwich.ApiResponse<kotlin.Any>(){}[0]
+final val com.skydoves.sandwich/isSuccess // com.skydoves.sandwich/isSuccess|@com.skydoves.sandwich.ApiResponse<kotlin.Any>{}isSuccess[0]
+    final inline fun (com.skydoves.sandwich/ApiResponse<kotlin/Any>).<get-isSuccess>(): kotlin/Boolean // com.skydoves.sandwich/isSuccess.<get-isSuccess>|<get-isSuccess>@com.skydoves.sandwich.ApiResponse<kotlin.Any>(){}[0]
+final val com.skydoves.sandwich/messageOrNull // com.skydoves.sandwich/messageOrNull|@com.skydoves.sandwich.ApiResponse<kotlin.Any>{}messageOrNull[0]
+    final inline fun (com.skydoves.sandwich/ApiResponse<kotlin/Any>).<get-messageOrNull>(): kotlin/String? // com.skydoves.sandwich/messageOrNull.<get-messageOrNull>|<get-messageOrNull>@com.skydoves.sandwich.ApiResponse<kotlin.Any>(){}[0]
+
+final fun (com.skydoves.sandwich/ApiResponse.Failure.Error).com.skydoves.sandwich/message(): kotlin/String // com.skydoves.sandwich/message|message@com.skydoves.sandwich.ApiResponse.Failure.Error(){}[0]
+final fun (com.skydoves.sandwich/ApiResponse.Failure.Exception).com.skydoves.sandwich/message(): kotlin/String // com.skydoves.sandwich/message|message@com.skydoves.sandwich.ApiResponse.Failure.Exception(){}[0]
+final fun (kotlin/Throwable).com.skydoves.sandwich.exceptions/asSandwichException(): com.skydoves.sandwich.exceptions/SandwichException // com.skydoves.sandwich.exceptions/asSandwichException|asSandwichException@kotlin.Throwable(){}[0]
+final fun <#A: kotlin/Any> (kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#A>>).com.skydoves.sandwich.flow/filterSuccessData(): kotlinx.coroutines.flow/Flow<#A> // com.skydoves.sandwich.flow/filterSuccessData|filterSuccessData@kotlinx.coroutines.flow.Flow<com.skydoves.sandwich.ApiResponse<0:0>>(){0§<kotlin.Any>}[0]
+final fun <#A: kotlin/Any?, #B: com.skydoves.sandwich.operators/ApiResponseOperator<#A>> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/operator(#B): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/operator|operator@com.skydoves.sandwich.ApiResponse<0:0>(0:1){0§<kotlin.Any?>;1§<com.skydoves.sandwich.operators.ApiResponseOperator<0:0>>}[0]
+final fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse.Success<#A>).com.skydoves.sandwich/map(com.skydoves.sandwich.mappers/ApiSuccessModelMapper<#A, #B>): #B // com.skydoves.sandwich/map|map@com.skydoves.sandwich.ApiResponse.Success<0:0>(com.skydoves.sandwich.mappers.ApiSuccessModelMapper<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse.Success<#A>).com.skydoves.sandwich/map(kotlin/Function1<com.skydoves.sandwich/ApiResponse.Success<#A>, #B>): #B // com.skydoves.sandwich/map|map@com.skydoves.sandwich.ApiResponse.Success<0:0>(kotlin.Function1<com.skydoves.sandwich.ApiResponse.Success<0:0>,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich.envelope/unwrap(com.skydoves.sandwich.envelope/ApiEnvelopeSpec<#A, #B, *>): com.skydoves.sandwich/ApiResponse<#B> // com.skydoves.sandwich.envelope/unwrap|unwrap@com.skydoves.sandwich.ApiResponse<0:0>(com.skydoves.sandwich.envelope.ApiEnvelopeSpec<0:0,0:1,*>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/zip(com.skydoves.sandwich/ApiResponse<#B>): com.skydoves.sandwich/ApiResponse<kotlin/Pair<#A, #B>> // com.skydoves.sandwich/zip|zip@com.skydoves.sandwich.ApiResponse<0:0>(com.skydoves.sandwich.ApiResponse<0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?, #B: kotlin/Any?> (kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#A>>).com.skydoves.sandwich.flow/foldToFlow(kotlin.coroutines/SuspendFunction1<#A, #B>, kotlin.coroutines/SuspendFunction1<kotlin/String, #B>): kotlinx.coroutines.flow/Flow<#B> // com.skydoves.sandwich.flow/foldToFlow|foldToFlow@kotlinx.coroutines.flow.Flow<com.skydoves.sandwich.ApiResponse<0:0>>(kotlin.coroutines.SuspendFunction1<0:0,0:1>;kotlin.coroutines.SuspendFunction1<kotlin.String,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.skydoves.sandwich.envelope/ApiEnvelope<#A, *>).com.skydoves.sandwich.envelope/toApiResponse(kotlin/Any? = ...): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich.envelope/toApiResponse|toApiResponse@com.skydoves.sandwich.envelope.ApiEnvelope<0:0,*>(kotlin.Any?){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse.Failure.Error).com.skydoves.sandwich/map(com.skydoves.sandwich.mappers/ApiErrorModelMapper<#A>): #A // com.skydoves.sandwich/map|map@com.skydoves.sandwich.ApiResponse.Failure.Error(com.skydoves.sandwich.mappers.ApiErrorModelMapper<0:0>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse.Failure.Error).com.skydoves.sandwich/map(kotlin/Function1<com.skydoves.sandwich/ApiResponse.Failure.Error, #A>): #A // com.skydoves.sandwich/map|map@com.skydoves.sandwich.ApiResponse.Failure.Error(kotlin.Function1<com.skydoves.sandwich.ApiResponse.Failure.Error,0:0>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse.Failure<#A>).com.skydoves.sandwich/message(): kotlin/String // com.skydoves.sandwich/message|message@com.skydoves.sandwich.ApiResponse.Failure<0:0>(){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/getOrElse(#A): #A // com.skydoves.sandwich/getOrElse|getOrElse@com.skydoves.sandwich.ApiResponse<0:0>(0:0){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/getOrNull(): #A? // com.skydoves.sandwich/getOrNull|getOrNull@com.skydoves.sandwich.ApiResponse<0:0>(){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/getOrThrow(): #A // com.skydoves.sandwich/getOrThrow|getOrThrow@com.skydoves.sandwich.ApiResponse<0:0>(){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/mapFailure(kotlin/Function1<kotlin/Any?, kotlin/Any?>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/mapFailure|mapFailure@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<kotlin.Any?,kotlin.Any?>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/recover(#A): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/recover|recover@com.skydoves.sandwich.ApiResponse<0:0>(0:0){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/tagOrNull(): kotlin/Any? // com.skydoves.sandwich/tagOrNull|tagOrNull@com.skydoves.sandwich.ApiResponse<0:0>(){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/toFlow(): kotlinx.coroutines.flow/Flow<#A> // com.skydoves.sandwich/toFlow|toFlow@com.skydoves.sandwich.ApiResponse<0:0>(){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<com.skydoves.sandwich.envelope/ApiEnvelope<#A, *>>).com.skydoves.sandwich.envelope/unwrap(): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich.envelope/unwrap|unwrap@com.skydoves.sandwich.ApiResponse<com.skydoves.sandwich.envelope.ApiEnvelope<0:0,*>>(){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<kotlin.collections/List<#A>>).com.skydoves.sandwich/merge(kotlin/Array<out com.skydoves.sandwich/ApiResponse<kotlin.collections/List<#A>>>..., com.skydoves.sandwich/ApiResponseMergePolicy = ...): com.skydoves.sandwich/ApiResponse<kotlin.collections/List<#A>> // com.skydoves.sandwich/merge|merge@com.skydoves.sandwich.ApiResponse<kotlin.collections.List<0:0>>(kotlin.Array<out|com.skydoves.sandwich.ApiResponse<kotlin.collections.List<0:0>>>...;com.skydoves.sandwich.ApiResponseMergePolicy){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#A>>).com.skydoves.sandwich.flow/mapToDataOrNull(): kotlinx.coroutines.flow/Flow<#A?> // com.skydoves.sandwich.flow/mapToDataOrNull|mapToDataOrNull@kotlinx.coroutines.flow.Flow<com.skydoves.sandwich.ApiResponse<0:0>>(){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#A>>).com.skydoves.sandwich.flow/onError(kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Failure.Error, kotlin/Unit>): kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#A>> // com.skydoves.sandwich.flow/onError|onError@kotlinx.coroutines.flow.Flow<com.skydoves.sandwich.ApiResponse<0:0>>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Failure.Error,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#A>>).com.skydoves.sandwich.flow/onException(kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Failure.Exception, kotlin/Unit>): kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#A>> // com.skydoves.sandwich.flow/onException|onException@kotlinx.coroutines.flow.Flow<com.skydoves.sandwich.ApiResponse<0:0>>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Failure.Exception,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#A>>).com.skydoves.sandwich.flow/onFailure(kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Failure<#A>, kotlin/Unit>): kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#A>> // com.skydoves.sandwich.flow/onFailure|onFailure@kotlinx.coroutines.flow.Flow<com.skydoves.sandwich.ApiResponse<0:0>>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Failure<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#A>>).com.skydoves.sandwich.flow/onSuccess(kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Success<#A>, kotlin/Unit>): kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#A>> // com.skydoves.sandwich.flow/onSuccess|onSuccess@kotlinx.coroutines.flow.Flow<com.skydoves.sandwich.ApiResponse<0:0>>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Success<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> com.skydoves.sandwich.flow/apiResponseFlow(kotlin.coroutines/SuspendFunction0<com.skydoves.sandwich/ApiResponse<#A>>): kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#A>> // com.skydoves.sandwich.flow/apiResponseFlow|apiResponseFlow(kotlin.coroutines.SuspendFunction0<com.skydoves.sandwich.ApiResponse<0:0>>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any, #B: kotlin/Any> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/then(kotlin/Function1<#A, com.skydoves.sandwich/ApiResponse<#B>>): com.skydoves.sandwich/ApiResponse<#B> // com.skydoves.sandwich/then|then@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<0:0,com.skydoves.sandwich.ApiResponse<0:1>>){0§<kotlin.Any>;1§<kotlin.Any>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Any?, #C: kotlin/Any?, #D: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/zip3(com.skydoves.sandwich/ApiResponse<#B>, com.skydoves.sandwich/ApiResponse<#C>, crossinline kotlin/Function3<#A, #B, #C, #D>): com.skydoves.sandwich/ApiResponse<#D> // com.skydoves.sandwich/zip3|zip3@com.skydoves.sandwich.ApiResponse<0:0>(com.skydoves.sandwich.ApiResponse<0:1>;com.skydoves.sandwich.ApiResponse<0:2>;kotlin.Function3<0:0,0:1,0:2,0:3>){0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.Any?>;3§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Any?, #C: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/zip(com.skydoves.sandwich/ApiResponse<#B>, crossinline kotlin/Function2<#A, #B, #C>): com.skydoves.sandwich/ApiResponse<#C> // com.skydoves.sandwich/zip|zip@com.skydoves.sandwich.ApiResponse<0:0>(com.skydoves.sandwich.ApiResponse<0:1>;kotlin.Function2<0:0,0:1,0:2>){0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse.Success<#A>).com.skydoves.sandwich/map(com.skydoves.sandwich.mappers/ApiSuccessModelMapper<#A, #B>, crossinline kotlin/Function1<#B, kotlin/Unit>) // com.skydoves.sandwich/map|map@com.skydoves.sandwich.ApiResponse.Success<0:0>(com.skydoves.sandwich.mappers.ApiSuccessModelMapper<0:0,0:1>;kotlin.Function1<0:1,kotlin.Unit>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/fold(kotlin/Function1<#A, #B>, kotlin/Function1<kotlin/String, #B>): #B // com.skydoves.sandwich/fold|fold@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<0:0,0:1>;kotlin.Function1<kotlin.String,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/onError(com.skydoves.sandwich.mappers/ApiErrorModelMapper<#B>, crossinline kotlin/Function1<#B, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/onError|onError@com.skydoves.sandwich.ApiResponse<0:0>(com.skydoves.sandwich.mappers.ApiErrorModelMapper<0:1>;kotlin.Function1<0:1,kotlin.Unit>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/onSuccess(com.skydoves.sandwich.mappers/ApiSuccessModelMapper<#A, #B>, crossinline kotlin/Function1<#B, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/onSuccess|onSuccess@com.skydoves.sandwich.ApiResponse<0:0>(com.skydoves.sandwich.mappers.ApiSuccessModelMapper<0:0,0:1>;kotlin.Function1<0:1,kotlin.Unit>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/requireNotNull(crossinline kotlin/Function1<#A, #B?>, crossinline kotlin/Function0<kotlin/String> = ...): com.skydoves.sandwich/ApiResponse<#B> // com.skydoves.sandwich/requireNotNull|requireNotNull@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<0:0,0:1?>;kotlin.Function0<kotlin.String>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/toFlow(crossinline kotlin/Function1<#A, #B>): kotlinx.coroutines.flow/Flow<#B> // com.skydoves.sandwich/toFlow|toFlow@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse.Failure.Error).com.skydoves.sandwich/map(com.skydoves.sandwich.mappers/ApiErrorModelMapper<#A>, crossinline kotlin/Function1<#A, kotlin/Unit>) // com.skydoves.sandwich/map|map@com.skydoves.sandwich.ApiResponse.Failure.Error(com.skydoves.sandwich.mappers.ApiErrorModelMapper<0:0>;kotlin.Function1<0:0,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/getOrElse(kotlin/Function0<#A>): #A // com.skydoves.sandwich/getOrElse|getOrElse@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function0<0:0>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/onError(crossinline kotlin/Function1<com.skydoves.sandwich/ApiResponse.Failure.Error, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/onError|onError@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<com.skydoves.sandwich.ApiResponse.Failure.Error,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/onException(crossinline kotlin/Function1<com.skydoves.sandwich/ApiResponse.Failure.Exception, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/onException|onException@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<com.skydoves.sandwich.ApiResponse.Failure.Exception,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/onFailure(crossinline kotlin/Function1<com.skydoves.sandwich/ApiResponse.Failure<#A>, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/onFailure|onFailure@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<com.skydoves.sandwich.ApiResponse.Failure<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/onProcedure(crossinline kotlin/Function1<com.skydoves.sandwich/ApiResponse.Success<#A>, kotlin/Unit>, crossinline kotlin/Function1<com.skydoves.sandwich/ApiResponse.Failure.Error, kotlin/Unit>, crossinline kotlin/Function1<com.skydoves.sandwich/ApiResponse.Failure.Exception, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/onProcedure|onProcedure@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<com.skydoves.sandwich.ApiResponse.Success<0:0>,kotlin.Unit>;kotlin.Function1<com.skydoves.sandwich.ApiResponse.Failure.Error,kotlin.Unit>;kotlin.Function1<com.skydoves.sandwich.ApiResponse.Failure.Exception,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/onSuccess(crossinline kotlin/Function1<com.skydoves.sandwich/ApiResponse.Success<#A>, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/onSuccess|onSuccess@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<com.skydoves.sandwich.ApiResponse.Success<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/peek(crossinline kotlin/Function1<com.skydoves.sandwich/ApiResponse<#A>, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/peek|peek@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<com.skydoves.sandwich.ApiResponse<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/peekError(crossinline kotlin/Function1<com.skydoves.sandwich/ApiResponse.Failure.Error, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/peekError|peekError@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<com.skydoves.sandwich.ApiResponse.Failure.Error,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/peekException(crossinline kotlin/Function1<com.skydoves.sandwich/ApiResponse.Failure.Exception, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/peekException|peekException@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<com.skydoves.sandwich.ApiResponse.Failure.Exception,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/peekFailure(crossinline kotlin/Function1<com.skydoves.sandwich/ApiResponse.Failure<#A>, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/peekFailure|peekFailure@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<com.skydoves.sandwich.ApiResponse.Failure<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/peekSuccess(crossinline kotlin/Function1<#A, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/peekSuccess|peekSuccess@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<0:0,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/recover(crossinline kotlin/Function0<#A>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/recover|recover@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function0<0:0>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/recoverWith(crossinline kotlin/Function1<com.skydoves.sandwich/ApiResponse.Failure<#A>, com.skydoves.sandwich/ApiResponse<#A>>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/recoverWith|recoverWith@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<com.skydoves.sandwich.ApiResponse.Failure<0:0>,com.skydoves.sandwich.ApiResponse<0:0>>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/validate(crossinline kotlin/Function1<#A, kotlin/Boolean>, crossinline kotlin/Function0<kotlin/String> = ...): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/validate|validate@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<0:0,kotlin.Boolean>;kotlin.Function0<kotlin.String>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<kotlin.collections/List<#A>>).com.skydoves.sandwich/filter(crossinline kotlin/Function1<#A, kotlin/Boolean>): com.skydoves.sandwich/ApiResponse<kotlin.collections/List<#A>> // com.skydoves.sandwich/filter|filter@com.skydoves.sandwich.ApiResponse<kotlin.collections.List<0:0>>(kotlin.Function1<0:0,kotlin.Boolean>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<kotlin.collections/List<#A>>).com.skydoves.sandwich/filterNot(crossinline kotlin/Function1<#A, kotlin/Boolean>): com.skydoves.sandwich/ApiResponse<kotlin.collections/List<#A>> // com.skydoves.sandwich/filterNot|filterNot@com.skydoves.sandwich.ApiResponse<kotlin.collections.List<0:0>>(kotlin.Function1<0:0,kotlin.Boolean>){0§<kotlin.Any?>}[0]
+final inline fun <#A: reified kotlin/Any?, #B: reified kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/flatMap(crossinline kotlin/Function1<com.skydoves.sandwich/ApiResponse<#A>, com.skydoves.sandwich/ApiResponse<#B>>): com.skydoves.sandwich/ApiResponse<#B> // com.skydoves.sandwich/flatMap|flatMap@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<com.skydoves.sandwich.ApiResponse<0:0>,com.skydoves.sandwich.ApiResponse<0:1>>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final inline fun <#A: reified kotlin/Any?, #B: reified kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/flatmap(com.skydoves.sandwich.mappers/ApiResponseMapper<#A, #B>): com.skydoves.sandwich/ApiResponse<#B> // com.skydoves.sandwich/flatmap|flatmap@com.skydoves.sandwich.ApiResponse<0:0>(com.skydoves.sandwich.mappers.ApiResponseMapper<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final inline fun <#A: reified kotlin/Any?, #B: reified kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/mapSuccess(crossinline kotlin/Function1<#A, #B>): com.skydoves.sandwich/ApiResponse<#B> // com.skydoves.sandwich/mapSuccess|mapSuccess@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.Function1<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final inline fun <#A: reified kotlin/Any?, #B: reified kotlin/Any?> (kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#A>>).com.skydoves.sandwich.flow/mapSuccess(crossinline kotlin.coroutines/SuspendFunction1<#A, #B>): kotlinx.coroutines.flow/Flow<com.skydoves.sandwich/ApiResponse<#B>> // com.skydoves.sandwich.flow/mapSuccess|mapSuccess@kotlinx.coroutines.flow.Flow<com.skydoves.sandwich.ApiResponse<0:0>>(kotlin.coroutines.SuspendFunction1<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final suspend fun <#A: kotlin/Any> com.skydoves.sandwich.retry/runAndRetry(com.skydoves.sandwich.retry/RetryPolicy, kotlin.coroutines/SuspendFunction2<kotlin/Int, kotlin/String?, com.skydoves.sandwich/ApiResponse<#A>>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich.retry/runAndRetry|runAndRetry(com.skydoves.sandwich.retry.RetryPolicy;kotlin.coroutines.SuspendFunction2<kotlin.Int,kotlin.String?,com.skydoves.sandwich.ApiResponse<0:0>>){0§<kotlin.Any>}[0]
+final suspend fun <#A: kotlin/Any> com.skydoves.sandwich.retry/runAndRetry(com.skydoves.sandwich.retry/RetryPolicy, kotlin/Function1<com.skydoves.sandwich/ApiResponse.Failure<#A>, kotlin/Boolean>, kotlin.coroutines/SuspendFunction2<kotlin/Int, kotlin/String?, com.skydoves.sandwich/ApiResponse<#A>>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich.retry/runAndRetry|runAndRetry(com.skydoves.sandwich.retry.RetryPolicy;kotlin.Function1<com.skydoves.sandwich.ApiResponse.Failure<0:0>,kotlin.Boolean>;kotlin.coroutines.SuspendFunction2<kotlin.Int,kotlin.String?,com.skydoves.sandwich.ApiResponse<0:0>>){0§<kotlin.Any>}[0]
+final suspend fun <#A: kotlin/Any?, #B: com.skydoves.sandwich.operators/ApiResponseSuspendOperator<#A>> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendOperator(#B): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendOperator|suspendOperator@com.skydoves.sandwich.ApiResponse<0:0>(0:1){0§<kotlin.Any?>;1§<com.skydoves.sandwich.operators.ApiResponseSuspendOperator<0:0>>}[0]
+final suspend fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendMapFailure(kotlin.coroutines/SuspendFunction1<kotlin/Any?, kotlin/Any?>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendMapFailure|suspendMapFailure@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<kotlin.Any?,kotlin.Any?>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any, #B: kotlin/Any> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendThen(crossinline kotlin.coroutines/SuspendFunction1<#A, com.skydoves.sandwich/ApiResponse<#B>>): com.skydoves.sandwich/ApiResponse<#B> // com.skydoves.sandwich/suspendThen|suspendThen@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<0:0,com.skydoves.sandwich.ApiResponse<0:1>>){0§<kotlin.Any>;1§<kotlin.Any>}[0]
+final suspend inline fun <#A: kotlin/Any?, #B: kotlin/Any?, #C: kotlin/Any?, #D: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendZip3(com.skydoves.sandwich/ApiResponse<#B>, com.skydoves.sandwich/ApiResponse<#C>, crossinline kotlin.coroutines/SuspendFunction3<#A, #B, #C, #D>): com.skydoves.sandwich/ApiResponse<#D> // com.skydoves.sandwich/suspendZip3|suspendZip3@com.skydoves.sandwich.ApiResponse<0:0>(com.skydoves.sandwich.ApiResponse<0:1>;com.skydoves.sandwich.ApiResponse<0:2>;kotlin.coroutines.SuspendFunction3<0:0,0:1,0:2,0:3>){0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.Any?>;3§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?, #B: kotlin/Any?, #C: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendZip(com.skydoves.sandwich/ApiResponse<#B>, crossinline kotlin.coroutines/SuspendFunction2<#A, #B, #C>): com.skydoves.sandwich/ApiResponse<#C> // com.skydoves.sandwich/suspendZip|suspendZip@com.skydoves.sandwich.ApiResponse<0:0>(com.skydoves.sandwich.ApiResponse<0:1>;kotlin.coroutines.SuspendFunction2<0:0,0:1,0:2>){0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse.Success<#A>).com.skydoves.sandwich/suspendMap(com.skydoves.sandwich.mappers/ApiSuccessModelMapper<#A, #B>, crossinline kotlin.coroutines/SuspendFunction1<#B, kotlin/Unit>) // com.skydoves.sandwich/suspendMap|suspendMap@com.skydoves.sandwich.ApiResponse.Success<0:0>(com.skydoves.sandwich.mappers.ApiSuccessModelMapper<0:0,0:1>;kotlin.coroutines.SuspendFunction1<0:1,kotlin.Unit>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse.Success<#A>).com.skydoves.sandwich/suspendMap(crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Success<#A>, #B>): #B // com.skydoves.sandwich/suspendMap|suspendMap@com.skydoves.sandwich.ApiResponse.Success<0:0>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Success<0:0>,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendFold(kotlin.coroutines/SuspendFunction1<#A, #B>, kotlin.coroutines/SuspendFunction1<kotlin/String, #B>): #B // com.skydoves.sandwich/suspendFold|suspendFold@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<0:0,0:1>;kotlin.coroutines.SuspendFunction1<kotlin.String,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendOnError(com.skydoves.sandwich.mappers/ApiErrorModelMapper<#B>, crossinline kotlin.coroutines/SuspendFunction1<#B, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendOnError|suspendOnError@com.skydoves.sandwich.ApiResponse<0:0>(com.skydoves.sandwich.mappers.ApiErrorModelMapper<0:1>;kotlin.coroutines.SuspendFunction1<0:1,kotlin.Unit>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendOnSuccess(com.skydoves.sandwich.mappers/ApiSuccessModelMapper<#A, #B>, crossinline kotlin.coroutines/SuspendFunction1<#B, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendOnSuccess|suspendOnSuccess@com.skydoves.sandwich.ApiResponse<0:0>(com.skydoves.sandwich.mappers.ApiSuccessModelMapper<0:0,0:1>;kotlin.coroutines.SuspendFunction1<0:1,kotlin.Unit>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendRequireNotNull(crossinline kotlin.coroutines/SuspendFunction1<#A, #B?>, kotlin/String = ...): com.skydoves.sandwich/ApiResponse<#B> // com.skydoves.sandwich/suspendRequireNotNull|suspendRequireNotNull@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<0:0,0:1?>;kotlin.String){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/toSuspendFlow(crossinline kotlin.coroutines/SuspendFunction1<#A, #B>): kotlinx.coroutines.flow/Flow<#B> // com.skydoves.sandwich/toSuspendFlow|toSuspendFlow@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse.Failure.Error).com.skydoves.sandwich/suspendMap(com.skydoves.sandwich.mappers/ApiErrorModelMapper<#A>, crossinline kotlin.coroutines/SuspendFunction1<#A, kotlin/Unit>) // com.skydoves.sandwich/suspendMap|suspendMap@com.skydoves.sandwich.ApiResponse.Failure.Error(com.skydoves.sandwich.mappers.ApiErrorModelMapper<0:0>;kotlin.coroutines.SuspendFunction1<0:0,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse.Failure.Error).com.skydoves.sandwich/suspendMap(crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Failure.Error, #A>): #A // com.skydoves.sandwich/suspendMap|suspendMap@com.skydoves.sandwich.ApiResponse.Failure.Error(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Failure.Error,0:0>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendOnError(crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Failure.Error, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendOnError|suspendOnError@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Failure.Error,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendOnException(crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Failure.Exception, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendOnException|suspendOnException@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Failure.Exception,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendOnFailure(crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Failure<#A>, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendOnFailure|suspendOnFailure@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Failure<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendOnProcedure(crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Success<#A>, kotlin/Unit>, crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Failure.Error, kotlin/Unit>, crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Failure.Exception, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendOnProcedure|suspendOnProcedure@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Success<0:0>,kotlin.Unit>;kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Failure.Error,kotlin.Unit>;kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Failure.Exception,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendOnSuccess(crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Success<#A>, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendOnSuccess|suspendOnSuccess@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Success<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendPeek(crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse<#A>, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendPeek|suspendPeek@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendPeekError(crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Failure.Error, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendPeekError|suspendPeekError@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Failure.Error,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendPeekException(crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Failure.Exception, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendPeekException|suspendPeekException@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Failure.Exception,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendPeekFailure(crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Failure<#A>, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendPeekFailure|suspendPeekFailure@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Failure<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendPeekSuccess(crossinline kotlin.coroutines/SuspendFunction1<#A, kotlin/Unit>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendPeekSuccess|suspendPeekSuccess@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<0:0,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendRecover(crossinline kotlin.coroutines/SuspendFunction0<#A>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendRecover|suspendRecover@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction0<0:0>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendRecoverWith(crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse.Failure<#A>, com.skydoves.sandwich/ApiResponse<#A>>): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendRecoverWith|suspendRecoverWith@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse.Failure<0:0>,com.skydoves.sandwich.ApiResponse<0:0>>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendValidate(crossinline kotlin.coroutines/SuspendFunction1<#A, kotlin/Boolean>, kotlin/String = ...): com.skydoves.sandwich/ApiResponse<#A> // com.skydoves.sandwich/suspendValidate|suspendValidate@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<0:0,kotlin.Boolean>;kotlin.String){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<kotlin.collections/List<#A>>).com.skydoves.sandwich/suspendFilter(crossinline kotlin.coroutines/SuspendFunction1<#A, kotlin/Boolean>): com.skydoves.sandwich/ApiResponse<kotlin.collections/List<#A>> // com.skydoves.sandwich/suspendFilter|suspendFilter@com.skydoves.sandwich.ApiResponse<kotlin.collections.List<0:0>>(kotlin.coroutines.SuspendFunction1<0:0,kotlin.Boolean>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: kotlin/Any?> (com.skydoves.sandwich/ApiResponse<kotlin.collections/List<#A>>).com.skydoves.sandwich/suspendFilterNot(crossinline kotlin.coroutines/SuspendFunction1<#A, kotlin/Boolean>): com.skydoves.sandwich/ApiResponse<kotlin.collections/List<#A>> // com.skydoves.sandwich/suspendFilterNot|suspendFilterNot@com.skydoves.sandwich.ApiResponse<kotlin.collections.List<0:0>>(kotlin.coroutines.SuspendFunction1<0:0,kotlin.Boolean>){0§<kotlin.Any?>}[0]
+final suspend inline fun <#A: reified kotlin/Any?, #B: reified kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendFlatMap(crossinline kotlin.coroutines/SuspendFunction1<com.skydoves.sandwich/ApiResponse<#A>, com.skydoves.sandwich/ApiResponse<#B>>): com.skydoves.sandwich/ApiResponse<#B> // com.skydoves.sandwich/suspendFlatMap|suspendFlatMap@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<com.skydoves.sandwich.ApiResponse<0:0>,com.skydoves.sandwich.ApiResponse<0:1>>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final suspend inline fun <#A: reified kotlin/Any?, #B: reified kotlin/Any?> (com.skydoves.sandwich/ApiResponse<#A>).com.skydoves.sandwich/suspendMapSuccess(crossinline kotlin.coroutines/SuspendFunction1<#A, #B>): com.skydoves.sandwich/ApiResponse<#B> // com.skydoves.sandwich/suspendMapSuccess|suspendMapSuccess@com.skydoves.sandwich.ApiResponse<0:0>(kotlin.coroutines.SuspendFunction1<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]

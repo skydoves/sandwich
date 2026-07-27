@@ -51,8 +51,21 @@ kotlin {
   iosArm64()
   iosSimulatorArm64()
 
-  // ktorfit-lib-light does not publish a macosX64 variant, so it is omitted here.
+  // ktorfit-lib-light does not publish macosX64, watchosX64 or tvosX64 variants,
+  // so those three targets are omitted here.
   macosArm64()
+
+  watchosArm32()
+  watchosArm64()
+  watchosSimulatorArm64()
+
+  tvosArm64()
+  tvosSimulatorArm64()
+
+  linuxX64()
+  linuxArm64()
+
+  mingwX64()
 
   @Suppress("OPT_IN_USAGE")
   applyHierarchyTemplate {
@@ -61,8 +74,8 @@ kotlin {
         withAndroidTarget()
         withJvm()
       }
-      group("skia") {
-        group("darwin") {
+      group("nonJvm") {
+        group("native") {
           group("apple") {
             group("ios") {
               withIosX64()
@@ -72,7 +85,25 @@ kotlin {
             group("macos") {
               withMacosArm64()
             }
+            group("watchos") {
+              withWatchosArm32()
+              withWatchosArm64()
+              withWatchosSimulatorArm64()
+            }
+            group("tvos") {
+              withTvosArm64()
+              withTvosSimulatorArm64()
+            }
           }
+          group("linux") {
+            withLinuxX64()
+            withLinuxArm64()
+          }
+          group("mingw") {
+            withMingwX64()
+          }
+        }
+        group("web") {
           withJs()
           withWasmJs()
         }

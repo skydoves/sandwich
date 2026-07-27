@@ -70,6 +70,20 @@ kotlin {
   macosX64()
   macosArm64()
 
+  watchosX64()
+  watchosArm32()
+  watchosArm64()
+  watchosSimulatorArm64()
+
+  tvosX64()
+  tvosArm64()
+  tvosSimulatorArm64()
+
+  linuxX64()
+  linuxArm64()
+
+  mingwX64()
+
   @Suppress("OPT_IN_USAGE")
   applyHierarchyTemplate {
     common {
@@ -77,8 +91,8 @@ kotlin {
         withAndroidTarget()
         withJvm()
       }
-      group("skia") {
-        group("darwin") {
+      group("nonJvm") {
+        group("native") {
           group("apple") {
             group("ios") {
               withIosX64()
@@ -89,7 +103,27 @@ kotlin {
               withMacosX64()
               withMacosArm64()
             }
+            group("watchos") {
+              withWatchosX64()
+              withWatchosArm32()
+              withWatchosArm64()
+              withWatchosSimulatorArm64()
+            }
+            group("tvos") {
+              withTvosX64()
+              withTvosArm64()
+              withTvosSimulatorArm64()
+            }
           }
+          group("linux") {
+            withLinuxX64()
+            withLinuxArm64()
+          }
+          group("mingw") {
+            withMingwX64()
+          }
+        }
+        group("web") {
           withJs()
           withWasmJs()
         }

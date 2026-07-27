@@ -1,0 +1,15 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, mingwX64, tvosArm64, tvosSimulatorArm64, wasmJs, watchosArm32, watchosArm64, watchosSimulatorArm64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.github.skydoves:sandwich-ktorfit>
+final class com.skydoves.sandwich.ktorfit/ApiResponseConverterFactory : de.jensklingenberg.ktorfit.converter/Converter.Factory { // com.skydoves.sandwich.ktorfit/ApiResponseConverterFactory|null[0]
+    final fun suspendResponseConverter(de.jensklingenberg.ktorfit.converter/TypeData, de.jensklingenberg.ktorfit/Ktorfit): de.jensklingenberg.ktorfit.converter/Converter.SuspendResponseConverter<io.ktor.client.statement/HttpResponse, com.skydoves.sandwich/ApiResponse<kotlin/Any>>? // com.skydoves.sandwich.ktorfit/ApiResponseConverterFactory.suspendResponseConverter|suspendResponseConverter(de.jensklingenberg.ktorfit.converter.TypeData;de.jensklingenberg.ktorfit.Ktorfit){}[0]
+
+    final object Companion { // com.skydoves.sandwich.ktorfit/ApiResponseConverterFactory.Companion|null[0]
+        final fun create(): com.skydoves.sandwich.ktorfit/ApiResponseConverterFactory // com.skydoves.sandwich.ktorfit/ApiResponseConverterFactory.Companion.create|create(){}[0]
+    }
+}

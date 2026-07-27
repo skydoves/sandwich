@@ -37,6 +37,37 @@ jobs:
       - name: API check
         run: ./gradlew apiCheck
 
+  test:
+    name: Unit tests
+    runs-on: macos-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: zulu
+          java-version: 17
+      - name: Cache Gradle and wrapper
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      # The JS and Wasm test tasks are left out because they need a yarn lock refresh
+      # and a browser runtime. Every test source set is still covered by JVM and Native.
+      - name: Run unit tests
+        run: ./gradlew test jvmTest macosArm64Test iosSimulatorArm64Test -x :app:test -x :baselineprofile:test
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v5
+        with:
+          name: test-reports
+          path: '**/build/reports/tests/'
+
   build:
     runs-on: macos-latest
     steps:

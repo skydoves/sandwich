@@ -12,3 +12,12 @@ public final class com/skydoves/sandwich/ktor/ApiResponseExtensionKt {
 	public static final fun getTagResponse (Lcom/skydoves/sandwich/ApiResponse$Success;)Lio/ktor/client/statement/HttpResponse;
 }
 
+public final class com/skydoves/sandwich/ktor/RetryAfterExtensionsKt {
+	public static final fun getRetryAfterMillis (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Ljava/lang/Long;
+}
+
+public final class com/skydoves/sandwich/ktor/exceptions/KtorExceptionClassifier : com/skydoves/sandwich/exceptions/SandwichExceptionClassifier {
+	public static final field INSTANCE Lcom/skydoves/sandwich/ktor/exceptions/KtorExceptionClassifier;
+	public fun classify (Ljava/lang/Throwable;)Lcom/skydoves/sandwich/exceptions/SandwichException;
+}
+
