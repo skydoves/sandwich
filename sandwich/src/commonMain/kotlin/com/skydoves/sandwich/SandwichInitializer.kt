@@ -24,14 +24,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
-import kotlin.native.concurrent.ThreadLocal
 
 /**
  * @author skydoves (Jaewoong Eum)
  *
  * SandwichInitializer is a rules and strategies initializer of the network response.
+ *
+ * The configuration held here is shared across every thread, so it should be written once during
+ * application startup and only read afterwards. Mutating it while requests are in flight is not
+ * synchronized, and on Kotlin/Native a concurrent write is an unsafe publication.
  */
-@ThreadLocal
 public object SandwichInitializer {
 
   /**
