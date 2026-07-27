@@ -16,6 +16,7 @@
 package com.skydoves.sandwich
 
 import com.skydoves.sandwich.envelope.ApiEnvelopeMapper
+import com.skydoves.sandwich.exceptions.SandwichExceptionClassifier
 import com.skydoves.sandwich.mappers.SandwichFailureMapper
 import com.skydoves.sandwich.mappers.SandwichSuccessMapper
 import com.skydoves.sandwich.operators.SandwichOperator
@@ -105,6 +106,25 @@ public object SandwichInitializer {
   @JvmStatic
   public var sandwichSuccessMappers: MutableList<SandwichSuccessMapper> =
     mutableListOf(ApiEnvelopeMapper)
+
+  /**
+   * @author skydoves (Jaewoong Eum)
+   *
+   * A list of classifiers that translate a transport specific throwable into a
+   * [com.skydoves.sandwich.exceptions.SandwichException].
+   *
+   * Register the classifier shipped by the integration you use, so that shared code can tell a
+   * timeout from a connectivity failure without depending on the transport:
+   *
+   * ```kotlin
+   * SandwichInitializer.sandwichExceptionClassifiers += KtorExceptionClassifier
+   * ```
+   *
+   * Classifiers are consulted in order, and the first one that recognizes the throwable wins.
+   */
+  @JvmStatic
+  public var sandwichExceptionClassifiers: MutableList<SandwichExceptionClassifier> =
+    mutableListOf()
 
   /**
    * @author skydoves (Jaewoong Eum)

@@ -29,6 +29,10 @@ public final class com/skydoves/sandwich/retrofit/ResponseTransformerKt {
 	public static final synthetic fun request (Lretrofit2/Call;Lkotlin/jvm/functions/Function1;)Lretrofit2/Call;
 }
 
+public final class com/skydoves/sandwich/retrofit/RetryAfterExtensionsKt {
+	public static final fun getRetryAfterMillis (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Ljava/lang/Long;
+}
+
 public final class com/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapterFactory : retrofit2/CallAdapter$Factory {
 	public static final field Companion Lcom/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapterFactory$Companion;
 	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -39,6 +43,11 @@ public final class com/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapte
 public final class com/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapterFactory$Companion {
 	public final fun create (Lkotlinx/coroutines/CoroutineScope;)Lcom/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapterFactory;
 	public static synthetic fun create$default (Lcom/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapterFactory$Companion;Lkotlinx/coroutines/CoroutineScope;ILjava/lang/Object;)Lcom/skydoves/sandwich/retrofit/adapters/ApiResponseCallAdapterFactory;
+}
+
+public final class com/skydoves/sandwich/retrofit/exceptions/RetrofitExceptionClassifier : com/skydoves/sandwich/exceptions/SandwichExceptionClassifier {
+	public static final field INSTANCE Lcom/skydoves/sandwich/retrofit/exceptions/RetrofitExceptionClassifier;
+	public fun classify (Ljava/lang/Throwable;)Lcom/skydoves/sandwich/exceptions/SandwichException;
 }
 
 public final class com/skydoves/sandwich/retrofit/interceptors/EmptyBodyInterceptor : okhttp3/Interceptor {

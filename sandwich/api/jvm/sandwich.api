@@ -149,12 +149,14 @@ public final class com/skydoves/sandwich/ResponseTransformer {
 
 public final class com/skydoves/sandwich/SandwichInitializer {
 	public static final field INSTANCE Lcom/skydoves/sandwich/SandwichInitializer;
+	public static final fun getSandwichExceptionClassifiers ()Ljava/util/List;
 	public static final fun getSandwichFailureMappers ()Ljava/util/List;
 	public static final fun getSandwichOperators ()Ljava/util/List;
 	public final fun getSandwichScope ()Lkotlinx/coroutines/CoroutineScope;
 	public static final fun getSandwichSuccessMappers ()Ljava/util/List;
 	public static final fun getSandwichTimeout ()Ljava/lang/Long;
 	public static final fun getSuccessCodeRange ()Lkotlin/ranges/IntRange;
+	public static final fun setSandwichExceptionClassifiers (Ljava/util/List;)V
 	public static final fun setSandwichFailureMappers (Ljava/util/List;)V
 	public static final fun setSandwichOperators (Ljava/util/List;)V
 	public final fun setSandwichScope (Lkotlinx/coroutines/CoroutineScope;)V
@@ -268,6 +270,60 @@ public final class com/skydoves/sandwich/exceptions/NoContentException : java/la
 	public fun getMessage ()Ljava/lang/String;
 }
 
+public class com/skydoves/sandwich/exceptions/SandwichException : java/lang/Throwable {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public abstract interface class com/skydoves/sandwich/exceptions/SandwichExceptionClassifier {
+	public abstract fun classify (Ljava/lang/Throwable;)Lcom/skydoves/sandwich/exceptions/SandwichException;
+}
+
+public final class com/skydoves/sandwich/exceptions/SandwichExceptions {
+	public static final fun asSandwichException (Ljava/lang/Throwable;)Lcom/skydoves/sandwich/exceptions/SandwichException;
+	public static final fun getSandwichException (Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;)Lcom/skydoves/sandwich/exceptions/SandwichException;
+	public static final fun isNetworkFailure (Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;)Z
+	public static final fun isSerializationFailure (Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;)Z
+	public static final fun isTimeout (Lcom/skydoves/sandwich/ApiResponse$Failure$Exception;)Z
+}
+
+public class com/skydoves/sandwich/exceptions/SandwichHttpException : com/skydoves/sandwich/exceptions/SandwichException {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getStatusCode ()Ljava/lang/Integer;
+}
+
+public class com/skydoves/sandwich/exceptions/SandwichNetworkException : com/skydoves/sandwich/exceptions/SandwichException {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public class com/skydoves/sandwich/exceptions/SandwichSerializationException : com/skydoves/sandwich/exceptions/SandwichException {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public class com/skydoves/sandwich/exceptions/SandwichTimeoutException : com/skydoves/sandwich/exceptions/SandwichException {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class com/skydoves/sandwich/flow/FlowTransformer {
+	public static final synthetic fun apiResponseFlow (Lkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/flow/Flow;
+	public static final synthetic fun filterSuccessData (Lkotlinx/coroutines/flow/Flow;)Lkotlinx/coroutines/flow/Flow;
+	public static final synthetic fun foldToFlow (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/flow/Flow;
+	public static final synthetic fun mapToDataOrNull (Lkotlinx/coroutines/flow/Flow;)Lkotlinx/coroutines/flow/Flow;
+	public static final synthetic fun onError (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/flow/Flow;
+	public static final synthetic fun onException (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/flow/Flow;
+	public static final synthetic fun onFailure (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/flow/Flow;
+	public static final synthetic fun onSuccess (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/flow/Flow;
+}
+
 public abstract interface class com/skydoves/sandwich/mappers/ApiErrorModelMapper {
 	public abstract fun map (Lcom/skydoves/sandwich/ApiResponse$Failure$Error;)Ljava/lang/Object;
 }
@@ -320,7 +376,29 @@ public abstract interface class com/skydoves/sandwich/operators/SandwichOperator
 }
 
 public final class com/skydoves/sandwich/retry/ApiResponseRetryKt {
+	public static final fun runAndRetry (Lcom/skydoves/sandwich/retry/RetryPolicy;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun runAndRetry (Lcom/skydoves/sandwich/retry/RetryPolicy;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/skydoves/sandwich/retry/RetryPolicies {
+	public static final field INSTANCE Lcom/skydoves/sandwich/retry/RetryPolicies;
+	public static final fun exponentialBackoff ()Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static final fun exponentialBackoff (I)Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static final fun exponentialBackoff (II)Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static final fun exponentialBackoff (IID)Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static final fun exponentialBackoff (IIDI)Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static final fun exponentialBackoff (IIDID)Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static synthetic fun exponentialBackoff$default (IIDIDILjava/lang/Object;)Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static final fun fixedDelay ()Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static final fun fixedDelay (I)Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static final fun fixedDelay (II)Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static synthetic fun fixedDelay$default (IIILjava/lang/Object;)Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static final fun linear ()Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static final fun linear (I)Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static final fun linear (II)Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static final fun linear (III)Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static synthetic fun linear$default (IIIILjava/lang/Object;)Lcom/skydoves/sandwich/retry/RetryPolicy;
+	public static final fun none ()Lcom/skydoves/sandwich/retry/RetryPolicy;
 }
 
 public abstract interface class com/skydoves/sandwich/retry/RetryPolicy {

@@ -31,10 +31,12 @@ dependencyResolutionManagement {
 rootProject.name = "SandwichDemo"
 include(":app")
 include(":sandwich")
+include(":sandwich-bom")
 include(":sandwich-retrofit-datasource")
 include(":sandwich-retrofit-serialization")
 include(":sandwich-retrofit")
 include(":sandwich-ktor")
+include(":sandwich-ktor-serialization")
 include(":sandwich-ktorfit")
 include(":sandwich-test")
 include(":baselineprofile")

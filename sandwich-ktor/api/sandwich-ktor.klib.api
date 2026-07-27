@@ -1,11 +1,15 @@
 // Klib ABI Dump
-// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, macosArm64, macosX64, wasmJs]
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, watchosArm32, watchosArm64, watchosSimulatorArm64, watchosX64]
 // Rendering settings:
 // - Signature version: 2
 // - Show manifest properties: true
 // - Show declarations: true
 
 // Library unique name: <com.github.skydoves:sandwich-ktor>
+final object com.skydoves.sandwich.ktor.exceptions/KtorExceptionClassifier : com.skydoves.sandwich.exceptions/SandwichExceptionClassifier { // com.skydoves.sandwich.ktor.exceptions/KtorExceptionClassifier|null[0]
+    final fun classify(kotlin/Throwable): com.skydoves.sandwich.exceptions/SandwichException? // com.skydoves.sandwich.ktor.exceptions/KtorExceptionClassifier.classify|classify(kotlin.Throwable){}[0]
+}
+
 final val com.skydoves.sandwich.ktor/headers // com.skydoves.sandwich.ktor/headers|@com.skydoves.sandwich.ApiResponse.Failure.Error{}headers[0]
     final inline fun (com.skydoves.sandwich/ApiResponse.Failure.Error).<get-headers>(): io.ktor.http/Headers // com.skydoves.sandwich.ktor/headers.<get-headers>|<get-headers>@com.skydoves.sandwich.ApiResponse.Failure.Error(){}[0]
 final val com.skydoves.sandwich.ktor/headers // com.skydoves.sandwich.ktor/headers|@com.skydoves.sandwich.ApiResponse.Success<0:0>{0§<kotlin.Any?>}headers[0]
@@ -14,6 +18,8 @@ final val com.skydoves.sandwich.ktor/httpResponse // com.skydoves.sandwich.ktor/
     final inline fun <#A1: kotlin/Any?> (com.skydoves.sandwich/ApiResponse.Success<#A1>).<get-httpResponse>(): io.ktor.client.statement/HttpResponse // com.skydoves.sandwich.ktor/httpResponse.<get-httpResponse>|<get-httpResponse>@com.skydoves.sandwich.ApiResponse.Success<0:0>(){0§<kotlin.Any?>}[0]
 final val com.skydoves.sandwich.ktor/payloadResponse // com.skydoves.sandwich.ktor/payloadResponse|@com.skydoves.sandwich.ApiResponse.Failure.Error{}payloadResponse[0]
     final inline fun (com.skydoves.sandwich/ApiResponse.Failure.Error).<get-payloadResponse>(): io.ktor.client.statement/HttpResponse // com.skydoves.sandwich.ktor/payloadResponse.<get-payloadResponse>|<get-payloadResponse>@com.skydoves.sandwich.ApiResponse.Failure.Error(){}[0]
+final val com.skydoves.sandwich.ktor/retryAfterMillis // com.skydoves.sandwich.ktor/retryAfterMillis|@com.skydoves.sandwich.ApiResponse.Failure.Error{}retryAfterMillis[0]
+    final fun (com.skydoves.sandwich/ApiResponse.Failure.Error).<get-retryAfterMillis>(): kotlin/Long? // com.skydoves.sandwich.ktor/retryAfterMillis.<get-retryAfterMillis>|<get-retryAfterMillis>@com.skydoves.sandwich.ApiResponse.Failure.Error(){}[0]
 final val com.skydoves.sandwich.ktor/statusCode // com.skydoves.sandwich.ktor/statusCode|@com.skydoves.sandwich.ApiResponse.Failure.Error{}statusCode[0]
     final inline fun (com.skydoves.sandwich/ApiResponse.Failure.Error).<get-statusCode>(): com.skydoves.sandwich/StatusCode // com.skydoves.sandwich.ktor/statusCode.<get-statusCode>|<get-statusCode>@com.skydoves.sandwich.ApiResponse.Failure.Error(){}[0]
 final val com.skydoves.sandwich.ktor/statusCode // com.skydoves.sandwich.ktor/statusCode|@com.skydoves.sandwich.ApiResponse.Success<0:0>{0§<kotlin.Any?>}statusCode[0]

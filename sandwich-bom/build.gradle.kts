@@ -1,0 +1,53 @@
+/*
+ * Designed and developed by 2020 skydoves (Jaewoong Eum)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import com.github.skydoves.sandwich.Configuration
+
+plugins {
+  `java-platform`
+  id(libs.plugins.nexus.plugin.get().pluginId)
+}
+
+apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
+
+val libVersion = rootProject.extra.get("libVersion").toString()
+
+mavenPublishing {
+  pom {
+    version = libVersion
+    group = Configuration.artifactGroup
+
+    name.set("sandwich-bom")
+    description.set("A Bill of Materials that aligns the versions of every Sandwich artifact.")
+  }
+}
+
+dependencies {
+  constraints {
+    listOf(
+      "sandwich",
+      "sandwich-ktor",
+      "sandwich-ktor-serialization",
+      "sandwich-ktorfit",
+      "sandwich-retrofit",
+      "sandwich-retrofit-datasource",
+      "sandwich-retrofit-serialization",
+      "sandwich-test",
+    ).forEach { artifact ->
+      api("${Configuration.artifactGroup}:$artifact:$libVersion")
+    }
+  }
+}

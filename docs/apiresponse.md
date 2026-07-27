@@ -414,3 +414,56 @@ val response = disneyService.fetchDisneyPosterList()
     cache.savePosters(posters) // suspend function
   }
 ```
+## Flow
+
+`apiResponseFlow` wraps a request in a `Flow` and captures a throwing block as
+`ApiResponse.Failure.Exception`, so the flow is not cancelled by a failed request:
+
+```kotlin
+fun posters(): Flow<ApiResponse<List<Poster>>> = apiResponseFlow {
+  service.fetchPosters()
+}.flowOn(Dispatchers.IO)
+```
+
+The same handling extensions are available directly on `Flow<ApiResponse<T>>`, so a chain does not
+have to be unwrapped first:
+
+```kotlin
+posters()
+  .onSuccess { posterDao.insert(data) }
+  .onError { logger.warn(message()) }
+  .mapSuccess { map(Poster::toUiModel) }
+  .foldToFlow(
+    onSuccess = { UiState.Content(it) },
+    onFailure = { UiState.Error(it) },
+  )
+```
+
+- **onSuccess**, **onError**, **onException**, **onFailure**: run an action for matching emissions
+  and pass the response through.
+- **mapSuccess**: transform the data of successful emissions.
+- **mapToDataOrNull**: map every emission to its data, or `null` for a failure.
+- **filterSuccessData**: keep only successful emissions and unwrap their data.
+- **foldToFlow**: collapse both branches into one type, such as a UI state.
+
+## Classifying exceptions
+
+The transport libraries each report their own exception types for the same situation, so telling a
+timeout apart from a connectivity failure means writing platform specific code. Register the
+classifier shipped by your integration once, and shared code can branch on the cause instead:
+
+```kotlin
+SandwichInitializer.sandwichExceptionClassifiers += KtorExceptionClassifier
+// or RetrofitExceptionClassifier
+
+response.onException {
+  when (sandwichException) {
+    is SandwichTimeoutException -> retryLater()
+    is SandwichNetworkException -> showOfflineBanner()
+    is SandwichSerializationException -> reportContractBreak()
+    else -> report(throwable)
+  }
+}
+```
+
+`isTimeout`, `isNetworkFailure` and `isSerializationFailure` are available for the common checks.

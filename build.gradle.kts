@@ -32,7 +32,7 @@ plugins {
 }
 
 apiValidation {
-  ignoredProjects.addAll(listOf("app"))
+  ignoredProjects.addAll(listOf("app", "sandwich-bom"))
 
   @OptIn(kotlinx.validation.ExperimentalBCVApi::class)
   klib {

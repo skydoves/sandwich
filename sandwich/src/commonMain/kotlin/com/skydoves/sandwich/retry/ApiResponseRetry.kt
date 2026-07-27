@@ -34,16 +34,50 @@ import kotlinx.coroutines.delay
 public suspend fun <T : Any> runAndRetry(
   retryPolicy: RetryPolicy,
   task: suspend (attempt: Int, reason: String?) -> ApiResponse<T>,
+): ApiResponse<T> = runAndRetry(retryPolicy, { true }, task)
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ *
+ * Run the [task] and retry if the result of [task] is a failure that [retryOn] accepts, following
+ * the [retryPolicy].
+ *
+ * [RetryPolicy] only sees the failure message, which is not enough to decide whether retrying is
+ * worthwhile. [retryOn] receives the failure itself, so the decision can be based on the status
+ * code or on the classified cause:
+ *
+ * ```kotlin
+ * runAndRetry(
+ *   retryPolicy = RetryPolicies.exponentialBackoff(maxAttempts = 4),
+ *   retryOn = { failure ->
+ *     failure is ApiResponse.Failure.Exception && failure.isTimeout
+ *   },
+ * ) { _, _ -> repository.fetchPosters() }
+ * ```
+ *
+ * @param retryPolicy A policy that determines whether to retry the [task] and how long to wait.
+ * @param retryOn A predicate that decides whether a given failure is worth retrying at all.
+ * @param task A task that you should run and retry. The default 'attempt' parameter starts from 1,
+ * and the 'reason' parameter represents the error message if the [task] is failed. If the [task]
+ * succeeds, it will be null.
+ */
+@SuspensionFunction
+public suspend fun <T : Any> runAndRetry(
+  retryPolicy: RetryPolicy,
+  retryOn: (failure: ApiResponse.Failure<T>) -> Boolean,
+  task: suspend (attempt: Int, reason: String?) -> ApiResponse<T>,
 ): ApiResponse<T> {
   var attempt = 1
   var reason: String? = null
   var apiResponse: ApiResponse<T>
   while (true) {
     apiResponse = task(attempt, reason)
-    when (apiResponse) {
+    when (val response = apiResponse) {
       is ApiResponse.Success -> break
       is ApiResponse.Failure -> {
-        reason = apiResponse.messageOrNull
+        reason = response.messageOrNull
+        if (!retryOn(response)) break
+
         val shouldRetry = retryPolicy.shouldRetry(attempt, reason)
         val timeout = retryPolicy.retryTimeout(attempt, reason)
 
