@@ -63,7 +63,7 @@ jobs:
         run: ./gradlew test jvmTest macosArm64Test iosSimulatorArm64Test -x :app:test -x :baselineprofile:test
       - name: Upload test reports
         if: failure()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: test-reports
           path: '**/build/reports/tests/'
