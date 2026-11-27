@@ -15,7 +15,6 @@
  */
 package com.skydoves.sandwich
 
-import com.skydoves.sandwich.ErrorEnvelopeMapper.map
 import com.skydoves.sandwich.retrofit.responseOf
 import com.skydoves.sandwich.retrofit.statusCode
 import kotlinx.coroutines.flow.first
@@ -925,7 +924,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun validateOnSuccessPassTest() {
     val response = Response.success("foo")
     val apiResponse = ApiResponse.responseOf { response }
-    val validated = apiResponse.validate({ it.length > 2 }) { "Too short" }
+    val validated = apiResponse.validate({ it.length > 2 }, errorMessage = "Too short")
 
     assertThat(validated.getOrNull(), `is`("foo"))
   }
@@ -934,7 +933,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun validateOnSuccessFailTest() {
     val response = Response.success("fo")
     val apiResponse = ApiResponse.responseOf { response }
-    val validated = apiResponse.validate({ it.length > 2 }) { "Too short" }
+    val validated = apiResponse.validate({ it.length > 2 }, errorMessage = "Too short")
 
     assertThat(validated is ApiResponse.Failure.Error, `is`(true))
   }
@@ -942,7 +941,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun validateOnFailureTest() {
     val apiResponse = ApiResponse.exception(Throwable("error"))
-    val validated = apiResponse.validate({ true }) { "Error" }
+    val validated = apiResponse.validate({ true }, "Error")
 
     assertThat(validated is ApiResponse.Failure.Exception, `is`(true))
   }
@@ -969,7 +968,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun requireNotNullOnSuccessWithValueTest() {
     val response = Response.success("foo" to "bar")
     val apiResponse = ApiResponse.responseOf { response }
-    val required = apiResponse.requireNotNull({ it.first }) { "Value is null" }
+    val required = apiResponse.requireNotNull({ it.first }, "Value is null")
 
     assertThat(required.getOrNull(), `is`("foo"))
   }
@@ -978,7 +977,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   fun requireNotNullOnSuccessWithNullTest() {
     val response = Response.success("foo" to null as String?)
     val apiResponse = ApiResponse.responseOf { response }
-    val required = apiResponse.requireNotNull({ it.second }) { "Value is null" }
+    val required = apiResponse.requireNotNull({ it.second }, "Value is null")
 
     assertThat(required is ApiResponse.Failure.Error, `is`(true))
   }
@@ -986,7 +985,7 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
   @Test
   fun requireNotNullOnFailureTest() {
     val apiResponse = ApiResponse.exception(Throwable("error"))
-    val required = apiResponse.requireNotNull({ it }) { "Value is null" }
+    val required = apiResponse.requireNotNull({ it }, errorMessage = "Value is null")
 
     assertThat(required is ApiResponse.Failure.Exception, `is`(true))
   }
@@ -1469,7 +1468,9 @@ internal class ResponseTransformerTest : ApiAbstract<DisneyService>() {
       onError = {},
       onException = {
         // This block should never be called
-        throw AssertionError("onException block should not be called for CancellationException")
+        throw AssertionError(
+          "onException block should not be called for CancellationException",
+        )
       },
     )
   }
